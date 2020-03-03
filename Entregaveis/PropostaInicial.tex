@@ -1,0 +1,162 @@
+%% o documento é definido do tipo "book" em a4, font 12pt
+\documentclass[a4paper,12pt]{book}
+
+%% para usar caracteres acentuados
+\usepackage[utf8]{inputenc} % no Unix (com codificação UTF-8)
+%\usepackage[latin1]{inputenc} % no Windows (com codificação ISO-8859-1, ou ISO-8859-15)
+
+% para aspectos de hifenização (do Português)
+\usepackage[portuguese]{babel}
+
+%% para incluir imagens e tratar de modo adequado endereços url
+\usepackage{graphicx,url}
+
+%% para usar \begin{comment} ... \end{comment}
+\usepackage{verbatim}
+
+%% para usar o símbolo do euro
+%usepackage{eurosym}
+
+%% para juntar multiplas linhas em tabelas
+\usepackage{multirow}
+
+%% Para usar símbolos matemáticos
+\usepackage[centertags]{amsmath}
+
+%% Para usar \mathds{...}
+\usepackage{dsfont}
+
+%% para formatação (e.g. espaçamento) de Tabelas
+\usepackage{tabls}
+
+%% Para usar listagens de código
+\usepackage{listings}
+
+%% para escrita "formal" de algoritmos
+\usepackage{algorithm}
+
+%% Para que a numeracao de listings seja global
+%% (e nao no contexto de cada capitulo!)
+\usepackage{chngcntr}
+
+% Para usar um estilo diferente na identificação de "Capítulo"
+%Sonny, Lenny(x), Glenn, Conny, Rejne, Bjarne
+%\usepackage[Lenny]{fncychap}
+% Para ter no "heading" o nome do capítulo e da secção
+\usepackage{fancyhdr}
+
+%%________________________________________________________________________
+%% para incluir o estilo proposto
+\usepackage{./PRJ_Style}
+%%________________________________________________________________________
+%%________________________________________________________________________
+% mudar alguns nomes fixos para Português
+%%________________________________________________________________________
+% renomear "Listing" para "Código"
+\renewcommand{\lstlistingname}{Código}
+\addto\captionsportuges{
+    \renewcommand{\contentsname}{Índice}}
+\addto\captionsportuges{
+    \renewcommand{\bibname}{Bibliografia}}
+\addto\captionsportuges{
+    \renewcommand{\proofname}{Prova}}
+\addto\captionsportuges{
+    \renewcommand{\chaptername}{Capítulo}}
+\setlength{\headheight}{15pt}
+%%________________________________________________________________________
+
+
+
+
+
+%%________________________________________________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begin Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+% para que a numeracao de listings seja global
+% (e nao no contexto de cada capitulo!)
+\counterwithout{lstlisting}{chapter}
+%% incluir a capa
+\frontmatter
+\fazerCapa
+%% incluir o resumo e abstract
+%% caso pretenda, incluir os agradecimentos e a dedicatória
+\frontmatter
+%%________________________________________________________________________
+%% comentar o que não interessar
+\include{./PRJ_Abstract}
+\include{./PRJ_Agradecimentos}
+\include{./PRJ_Dedicatoria}
+%%________________________________________________________________________
+
+
+
+
+
+%% incluir a lista de conteúdos (índice, tabelas e figuras)
+%comentar se quiser alterar o espaçamento entre linhas
+\setlinespacing{1.15} 
+\myTableOfContents
+%%________________________________________________________________________
+%% comentar o que não interessar
+\myListOfTables
+\myListOfFigures
+%%________________________________________________________________________
+
+
+
+
+
+%% "Corpo Principal" do texto
+\mainmatter
+\myPageStyle
+%% cada um dos Capítulos
+%% (aqui separados em dois ficheiros)
+%%________________________________________________________________________
+%% comentar o que não interessar (ou incluir outros ficheiros)
+\input{./PRJ_intro.tex}
+%%________________________________________________________________________
+
+
+
+
+\appendix
+%%________________________________________________________________________
+%% comentar o que não interessar (ou incluir outros ficheiros)
+%\input{./02_PRJ_cap_apendice.tex}
+%%________________________________________________________________________
+
+
+
+
+
+%% bibliografia
+\begin{thebibliography}{1}
+\bibitem{a} 
+
+\bibitem{b} 
+
+\bibitem{c} 
+
+\end{thebibliography}
+
+\chapter*{Webografia}
+\begin{itemize}
+	\item[1]  
+
+	\item[2] 
+    
+	\item[3] 
+
+	\item[4] 
+
+	\item[5] 
+
+	\item[6] 
+
+	\item[7] 
+\end{itemize}
+
+%%________________________________________________________________________
+\end{document}

@@ -1,0 +1,247 @@
+\long\def\comment#1{}
+
+
+
+%%% ----------------------------------------------------------------------
+% para definir a capa
+%%% ----------------------------------------------------------------------
+\newcommand{\fazerCapa} {
+\thispagestyle{empty}
+\begin{titlepage}
+\begin{center}
+%%________________________________________________________________________
+%% logo do ISEL, nome e área departamental
+\begin{figure}[h]
+   \begin{minipage}[b]{0.17\linewidth}
+      \centering
+      \includegraphics[width=2cm]{./fig_logo_ISEL}
+   \end{minipage}
+   \begin{minipage}[b]{0.82\linewidth}
+      \centering
+      \textsc{\small ISEL -- Instituto Superior de Engenharia de Lisboa}
+      \\[0.2cm]
+      \textsc{\small ADEETC -- Área Departamental de Engenharia de Electrónica e Teleconumicações e de Computadores}
+   \end{minipage}
+\end{figure}
+%%________________________________________________________________________
+
+
+
+%%________________________________________________________________________
+%% identificação do curso e unidade curricular
+\begin{table}[h]
+   \centering
+   \begin{tabular}{c}
+   \hline
+   \textsc{\small MERCM}
+   \\
+   \textsc{\small Mestrado em Eng. de Redes de Comunicação e Multimédia}
+   \\
+   \textsc{\small Dissertação}
+   \\
+   \hline
+   \end{tabular}
+\end{table}
+\vspace{0.5cm}
+%%________________________________________________________________________
+
+
+
+%%________________________________________________________________________
+%% identificação do trabalho (título)
+\Large \textbf{
+Título da tese
+\\
+}
+\vspace{0.5cm}
+%%________________________________________________________________________
+
+
+
+%%________________________________________________________________________
+%% imagem ilustrativa do trabalho
+\setlength{\unitlength}{1cm}
+\begin{picture}(13, 4)(0, 0)
+   \linethickness{0.0pt}
+   \put(0,0){\framebox(13,4){
+   \centering
+   \includegraphics[width=6cm]{./capa.jpg}
+   }}
+\end{picture}
+%%________________________________________________________________________
+
+
+
+%%________________________________________________________________________
+%% identificação do(s) autor(es), orientador(es) e data
+\normalsize
+\begin{table}[ht]
+   \centering
+   \begin{tabular}{lr}
+   \\
+   NOME ALUNO
+   \\
+   \end{tabular}
+   \\
+   \begin{tabular}{lr}
+   \\ \\
+   \multicolumn{2}{c}{\textit{Orientador(es)}}
+   \\
+   \hline
+   \\
+   \textit{Professor [Doutor]} & XPTO
+   \\
+   \\
+   \textit{Professor [Doutor]} & XPTZ
+   \\ \\
+   \hline
+   \\ \\
+   \multicolumn{2}{c}{\textit{
+   Setembro, 2015
+   }}
+   \end{tabular}
+\end{table}
+%%________________________________________________________________________
+\end{center}
+\end{titlepage}
+\newpage
+\setcounter{page}{0}
+\normalsize
+}
+
+
+
+
+
+%%________________________________________________________________________
+%% para colocar, no índice, Capítulos não numerados
+%%________________________________________________________________________
+\newcommand{\noNumChapterInIndex}[1]
+   {
+   \chapter*{#1}
+   \addcontentsline{toc}{chapter}{#1}
+   }
+
+%% Para os "Capítulos" do "\frontmatter"
+%% (anteriores ao corpo principal do texto)
+\newcommand{\myPrefaceChapter}[1]
+   {
+   \noNumChapterInIndex{#1}
+   }
+%%________________________________________________________________________
+
+
+
+
+
+%%________________________________________________________________________
+%% para a dedicatória
+%%________________________________________________________________________
+\newenvironment{myDedication}
+   {
+   \chapter*{\null}
+   \begin{flushright}
+   \em\null\vskip1in
+   }
+   {
+   \vfill\end{flushright}
+   }
+
+
+
+
+
+
+%%________________________________________________________________________
+%% Para colocar as listas de conteúdos (Índice, Tabelas e Figuras)
+%% como entrada no Índice
+%% (em vez dos comandos LaTeX:
+%% \tableofcontents, \listoftables, \listoffigures
+%%________________________________________________________________________
+\newcommand{\myTocXX}[2]
+   {
+   \chapter*{#1\@mkboth{Conteúdo}{CONTENTS}}
+   \addcontentsline{toc}{chapter}{#1}
+   \@starttoc{#2}
+   }
+
+\newcommand{\myTableOfContents}
+   { \myTocXX{Índice}{toc} }
+
+\newcommand{\myListOfTables}
+   { \myTocXX{Lista de Tabelas}{lot} }
+
+\newcommand{\myListOfFigures}
+   { \myTocXX{Lista de Figuras}{lof} }
+
+
+
+
+
+%%________________________________________________________________________
+%% Para o comando "\thebibliography" gerar uma entrada no índice
+%%________________________________________________________________________
+\let\@myTheBibliography\thebibliography
+\renewcommand{\thebibliography}[1]
+   {
+   \@myTheBibliography{#1}
+   \addcontentsline{toc}{chapter}{Bibliografia}
+   }
+
+
+
+
+
+%%________________________________________________________________________
+%% Para definir o estilo para o cabeçalho e para a nota de rodapé
+%% (usar com: "\usepackage{fancyhdr}")
+%%________________________________________________________________________
+\newcommand{\myPageStyle}
+   {
+   \pagestyle{fancy}
+   \fancypagestyle{plain}
+       {
+       \fancyhead{} % get rid of headers on plain pages
+       \renewcommand{\headrulewidth}{0pt} % and the line
+       }
+   \fancyhf{} % delete current setting for header and footer
+   \fancyhead[LE,RO]{\thepage}
+   \fancyhead[LO]{\nouppercase{\rightmark}}
+   \fancyhead[RE]{\nouppercase{\leftmark}}
+   %\fancyhead[RE]{\leftmark} % em uppercase títulos compridos não cabem
+   \addtolength{\headheight}{0.5pt} % make space for the rule
+   }
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%\renewcommand{\headrulewidth}{0.5pt}
+%\renewcommand{\footrulewidth}{0pt}
+%\addtolength{\headheight}{0.5pt} % make space for the rule
+
+
+%%________________________________________________________________________
+%% ... alguns aspctos adicionais
+%%________________________________________________________________________
+% Tipos de "Aspas"
+\newcommand{\plicas}[1]{`{#1}'}
+\newcommand{\aspas}[1]{``{#1}''}
+
+% Vocábulos Latinos e Gregos
+\newcommand{\versus}{\plicas{versus}}
+\newcommand{\aPriori}{\plicas{a priori}}
+\newcommand{\cf}{cf.}
+\newcommand{\eg}{e.g.}
+\newcommand{\ie}{i.e.}
+\newcommand{\etAl}{et al.}
+
+
+
+% ------------------------------------------------------------------------
+% Espaçamento de Linhas
+% ------------------------------------------------------------------------
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]
+           {\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}
+                           {2.0 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{\defbaselineskip}}
