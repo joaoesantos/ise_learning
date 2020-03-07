@@ -1,1 +1,56 @@
 tarefas
+- introdução docker, react, bash, python -> 3 semana/homem
+
+- set up base de dados -> 1 semana/homem
+    - definição de schema
+    - preenchimento de dados
+    - configuração ambiente local (em container)
+
+- configuração de ambientes de execução (java, C#, javascript, python e kotlin) -> 9 semanas/homem
+    - criação de aplicação (para cada linguagem)
+     - criação de template projecto para execucao
+     - definição dos comandos bash
+
+- configuração de ambiente de produção -> 
+    - base de dados
+
+- Autenticação -> 1 semana/homem
+    - /login
+    - /logout
+    - desenvolver rest api
+    - documentação (swagger)
+    - configuração ambiente local (container)
+    - testes unitarios
+    - colecao postman
+
+- User Services -> 1 semana/homem
+    - desenvolver rest api
+    - documentação (swagger)
+    - configuração ambiente local (container)
+    - testes unitarios
+    - colecao postman
+
+- Questions service -> 3 semana/homem
+    - desenvolver rest api
+    - documentação (swagger)
+    - configuração ambiente local (container)
+    - testes unitarios
+    - colecao postman
+
+- Questionnaire service -> 3 semana/homem
+    - desenvolver rest api
+    - documentação (swagger)
+    - configuração ambiente local (container)
+    - testes unitarios
+    - colecao postman
+
+- webserver react configuration -> 1 semana/homem
+
+- front-end
+    - home -> 2 semana/homem
+    - GET Question -> 4 semana/homem
+    - Editar perfil -> 4 semana/homem
+    - pagina login e signin -> 1 semana/homem
+    - criar/editar questionario -> 2 semana/homem
+    - preenchimento de questionario -> 2 semana/homem
+

@@ -14,6 +14,8 @@ PUT /users/:username
 //Questions
 GET /questions
 GET /questions/:id
+GET /questions?tag=a1,a2
+GET /querions?title=cenas
 POST /questions
 PUT /question/:id
 DELETE /questions/:id
@@ -31,6 +33,12 @@ GET /questionanswer/:id
 POST /questionanswer 
 POST /questionanswer ?execute=true/false (opcional)
 DELETE /questionanswer/:id
+
+
+//QuestionnaireAnswer
+GET /Questionnaireanswer
+GET /Questionnaireanswer/:id
+POST /questionnairesanswer 
 
 //notas
 falta endpoint para obter o link para partilhar o questionario~
