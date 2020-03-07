@@ -1,0 +1,38 @@
+endpoint:
+GET /
+Descrição: Pagina home
+
+//Authentication
+POST /login
+DELETE /logout
+
+//User
+GET /users/:username
+POST /users
+PUT /users/:username
+
+//Questions
+GET /questions
+GET /questions/:id
+POST /questions
+PUT /question/:id
+DELETE /questions/:id
+
+//Questionnaires
+GET /questionnaires
+GET /questionnaires/:id
+POST /questionnaires
+PUT /questionnaires/:id
+DELETE /questionnaires/:id
+
+//Answer
+GET /answers
+GET /answers/:id
+POST /answers 
+POST /answers ?execute=true/false (opcional)
+DELETE /answers/:id
+
+//notas
+falta endpoint para obter o link para partilhar o questionario~
+falta timer
+falta logica de manipulaçao de questionarios
