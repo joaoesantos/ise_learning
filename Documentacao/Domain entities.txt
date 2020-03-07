@@ -1,0 +1,39 @@
+Domain entities
+
+User:
+- username
+- password
+- email
+PK(username)
+
+Question:
+- questionId: guid
+- statement: string
+- solutions: Map<string, string> -> linguagem, solução
+- test:  Map<string, string> -> linguagem, solução
+- owner: username (string)
+- category?:
+- tags: string[]
+PK(qid)
+
+QuestionAnswer:
+- owner: username (string)
+- questionId: guid (FK)
+- language: string
+- solution: string
+- tests: string
+- output: string
+- isSuccessful: boolean
+PK(username, qid, language)
+
+Questionnaire:
+- owner: username(string)
+- questionnaireId: guid
+- questions: Collection<Question>
+
+QuestionnaireAnswer:
+- questionnaireId: guid (FK)
+- questionAnswers: Collection<QuestionAnswer>
+- questionAnswerId: guid
+- evaluation: float (percentagem) ?
+PK(guid)

@@ -25,12 +25,12 @@ POST /questionnaires
 PUT /questionnaires/:id
 DELETE /questionnaires/:id
 
-//Answer
-GET /answers
-GET /answers/:id
-POST /answers 
-POST /answers ?execute=true/false (opcional)
-DELETE /answers/:id
+//QuestionAnswer
+GET /questionanswer
+GET /questionanswer/:id
+POST /questionanswer 
+POST /questionanswer ?execute=true/false (opcional)
+DELETE /questionanswer/:id
 
 //notas
 falta endpoint para obter o link para partilhar o questionario~

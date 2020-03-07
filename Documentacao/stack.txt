@@ -1,0 +1,21 @@
+front-end:
+    - react
+    - vue
+
+backend:
+    - kotlin
+        - spring boot
+        - spring reactive web
+    - docker
+    - arquitectura microserviços
+    - cloud container host solution 
+
+execution environments:
+    - docker
+    - cloud container host solution 
+    - selected runtime environments
+    - bash
+    - 1 aplicação para cada runtime
+
+database:
+    - Postgres/ MariaDB
