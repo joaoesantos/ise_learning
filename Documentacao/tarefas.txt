@@ -11,8 +11,11 @@ tarefas
      - criação de template projecto para execucao
      - definição dos comandos bash
 
-- configuração de ambiente de produção -> 
+- configuração de ambiente de produção -> 3 semana/homem
     - base de dados
+    - containers dos microservicos
+    - contain de ambiente de execucao
+    - testes de integracao
 
 - Autenticação -> 1 semana/homem
     - /login
@@ -54,3 +57,4 @@ tarefas
     - criar/editar questionario -> 2 semana/homem
     - preenchimento de questionario -> 2 semana/homem
 
+- 
