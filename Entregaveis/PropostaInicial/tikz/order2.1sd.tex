@@ -1,0 +1,66 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shadows} % for pgf-umlsd
+\usepackage[underline=true,rounded corners=false]{pgf-umlsd}
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+\begin{document}
+
+  \begin{sequencediagram}
+    \begin{pgfonlayer}{background} 
+    \node[anchor=center] at (6.47,-1.8)  {\footnotesize \texttt{\color{gray} internal transactions}};
+    \draw[color=black!50,dashed,fill=gray!20] (3.2,-11) rectangle (8,-2);
+    \end{pgfonlayer}
+
+    \newthread{client2}{Client2}{0.4}
+    \newthread{shop2}{Shop2}{0.4}
+    \newthread[green!30]{charge}{Charge}{0.4}
+    \newthread[blue!30]{pack}{Pack}{0.4}
+    \newthread[green!30]{bank}{Bank}{0.4}
+    \newthread[blue!30]{warehouse}{Warehouse}{0.4}
+  
+    \plotthread{1}{10.2mm}{163mm}
+    \plotthread{2}{13.2mm}{163mm}
+    \plotthread{3}{25.2mm}{130mm}
+    \plotthread{4}{37.2mm}{120mm}
+    \plotthread{5}{31.2mm}{120mm}
+    \plotthread{6}{43.2mm}{110mm}
+
+
+
+    \mess{client2}{$\mathit{client}$}{shop2}{midway}
+    \mess{shop2}{$\mathit{ack}$}{client2}{midway}
+    \mess{shop2}{$\mathit{initchg}$}{charge}{midway}
+    \mess{charge}{$\mathit{bank}$}{bank}{midway}
+    \mess{shop2}{$\mathit{initpck}$}{pack}{pos=0.25}
+    \mess{pack}{$\mathit{pack}$}{warehouse}{pos=0.25}
+    \mess{bank}{$\mathit{valid}$}{charge}{pos=0.25}
+    \mess{charge}{$\mathit{recp}$}{client2}{pos=0.25}
+    \mess{client2}{$\mathit{okShop}$}{shop2}{midway}
+    \mess{shop2}{$\mathit{ok}$}{charge}{midway}
+    \mess{charge}{$\mathit{end1}$}{bank}{pos=0.25}
+    \mess{warehouse}{$\mathit{notExists}$}{pack}{pos=0.25}
+
+    \xmess{pack}{$t$}{shop2}{pos=0.25}{color=red}
+    \xmess{shop2}{\color{red} {\footnotesize `cancel'}}{charge}{midway}{dashed,color=red}
+    \xmess{shop2}{\color{red} {\footnotesize `cancel'}}{pack}{pos=0.235}{dashed,color=red}
+    \xmess{charge}{$q$}{bank}{pos=0.25}{color=red}
+    \xmess{pack}{$w$}{warehouse}{pos=0.25}{color=red}
+
+  \end{sequencediagram}
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: Tex-PDF
+%%% TeX-master: t
+%%% End: 
