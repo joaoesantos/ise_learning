@@ -1,1 +1,75 @@
-\lipsum[2-4]
+\renewcommand{\labelitemii}{$\star$}
+After analysing the objectives of this project we identified functional and non-functional requirements.
+\\
+\\
+Functional:
+\begin{description}[font=$\bullet$~\normalfont\scshape\color{red!50!black}]
+\item [Multi-Language] Provide run environment for multiple programming languages.(eg. Java, Kotlin, C\#, JS, Python)
+
+\item [Execute Solution] Any user may write a code solution, run it and get the result trough the front-end application.
+
+\item [Basic Authentication] Users can create an account, with a profile information and will be able to get access to more features(eg. keep track of the solved challenges, create/solve Questionnaires to/from other users).
+
+\item [Challenges] are a programming problem that needs to be solve. Every challenge has a built in answer that will be compared with the user submitted solution to determinate its "correctness" trough unit tests.
+   \begin{itemize}
+     \item Any user may create a Challenge, BUT also has to create its unit tests, and they have to compile/run successfully before being able to submit it. Only its creator can edit the Challenge.
+     \item Challenges may have tags associated, and they can be searched by them.
+     \item A logged in user can track the Challenge he/she submitted.
+   \end{itemize}
+\item[Questionnaires] are a group of Challenges.
+	\begin{itemize}
+	\item Questionnaires can only be submitted or solved by logged in users, and they consist in a group of existing Challenges.
+    \item A user may choose any number of Challenges to create a Questionnaire and set it a timer. Only its creator can edit the Questionnaire.
+    (eg. user A created a Questionnaire with 5 Challenges that has to be solved by user B in one hour).
+    \item A user may save its favourite Questionnaires.
+    \item Questionnaires may be shared trough a link.
+    \item Only logged in users have access to the Questionnaires.
+	\end{itemize}
+\end{description}
+
+\begin{flushleft}
+Non-Functional Requirements:
+\end{flushleft}
+
+\begin{description}[font=$\bullet$~\normalfont\scshape\color{red!50!black}]
+\item[Scalability] This platform may be accessed by hundreds or even thousands of users. As such the proposed architecture takes into consideration the scalability of its usage.
+\\
+	\begin{itemize}
+		\item The microservice architecture allows tasks to be broken down into smaller units since the services follow the single responsibility principle.
+		\item Hosting these services in containers and managed in a Kubernetes cloud based environment makes it easier to scale up instances of those services, meeting high peek demands when necessary.
+	\end{itemize}
+         
+\item[Security] Executing third party code in a machine raises security concerns.
+	\begin{itemize}
+		\item Executing the services which will execute this code in containers adresses some of these concerns. A self-contained run environment limits the impact of malicious code to the container which executes it, protecting the remaining infrastructure.
+	\end{itemize}	   
+              
+\item[Solution Maintenance]     
+        Maintaining a complex solution requires a balance between many moving parts, as such this project's architecture reflects the principles of loose coupling and modularity which facilitate the solution maintenance. 
+		\begin{itemize}
+			\item The module separation of the platform maintains loose coupling between the modules.
+			\item The microservice architecture maintains the services scope smaller and reduces dependence from services implementation.
+			\item Components will be deployed in containers the infrastructure maintenance will be easier because it will only need to support Docker containers
+		\end{itemize}		        
+
+\item[Efficiency]     
+        Hosting the solution in a cloud based environment improves efficiency of the solution. 
+		\begin{itemize}
+			\item Cloud based hosting provides load balancing for services, improving network load efficiently across multiple servers.
+			\item Cloud based hosting allows for a more efficient resource management, allowing for scaling up or down resource usage adjusting to current demand.
+		\end{itemize}		        
+         
+
+\item[Infrastructure Agnostic]     
+        Because every component will be deployed in separate containers the deployment will be platform independent and fault tolerant to component failure when managed in a Kubernetes cloud based environment.
+
+\item[Open source]     
+        Open source software refers to something people can modify and share because its design is publicly accessible.
+        \begin{itemize}
+        	\item Improved control since the is publicly available.
+        	\item Improved security since the code is accessible to be tested and verified stimulating error detection.
+        	\item Improved stability since the source code is always available
+        	\item Fosters community, group of people invested in producing, testing, using and promoting the software.
+        \end{itemize}
+
+\end{description}

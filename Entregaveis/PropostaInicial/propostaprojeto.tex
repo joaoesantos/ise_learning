@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[portuguese]{babel}
+\usepackage[english]{babel}
 \usepackage{color}\usepackage{rotating}
 %\usepackage[amsfonts,amssymb,boldsans]{concmath}
 %\usepackage[T1]{fontenc}
@@ -16,8 +16,15 @@
 \usepackage{amssymb}
 \usepackage{url}
 \usepackage{xcolor}
+\usepackage{blindtext}
+\usepackage{enumitem}
 \usepackage[round,authoryear]{natbib}
 \usepackage{lipsum}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{pgfgantt}
+\usepackage{lscape}
+\usepackage{enumitem}
 
 \def\paperid{\hfill}
                       
@@ -39,22 +46,49 @@
 {\small Projeto e Seminário\\[-1ex]
  Licenciatura em Engenharia Informática e Computadores}
 }
-\author{ André de Oliveira nº44580\\[1ex]
- Rodrigo Leal nº44823\\[1ex]
- João Santos nº44847\\[1ex]
+\author[1]{Author A\thanks{A.A@university.edu}}
+\author[1]{Author B\thanks{B.B@university.edu}}
+\author[1]{Author C\thanks{C.C@university.edu}}
+
+\author{ André de Oliveira nº44580
+\\[1ex]
+917135594 alaqo@hotmail.com
+\\
+\\
+ Rodrigo Leal nº44823
+ \\[1ex]
+ 961604272 rodrigomfl@hotmail.com
+ \\
+ \\
+ João Santos nº44847
+  \\[1ex]
+926366577 j.ers.santos@outlook.com 
+\\
+\noindent\rule{\textwidth}{1pt}
+\\
+Supervisors:
+\\
+Cátia Vaz, cvaz@cc.isel.ipl.pt
+\\
+José Simão jsimao@cc.isel.ipl.pt
+\\
+\noindent\rule{\textwidth}{1pt}
 }
+
 \date{\small\today}
 \maketitle
 \def\paperid{\hfill}
 
 %%%%% AS SECÇÕES %%%%%%%
-\section{Introdução}\label{section:primeiraSec}
+\section{Introduction}\label{section:primeiraSec}
 \input{./introducao.tex}
 
-\section{Requisitos}
+\section{Analysis}
+\input{./analise.tex}
+\subsection{Requirements}
 \input{./requisitos.tex}
 
-\section{Calendarização}
+\section{Schedule}
 \input{./calendarizacao.tex}
 
 

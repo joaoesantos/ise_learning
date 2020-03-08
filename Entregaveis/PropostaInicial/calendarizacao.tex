@@ -1,15 +1,25 @@
-A calendarização do projeto está descrita na Figura \ref{fig2}
-\begin{figure}[!p]
+\newcounter{myWeekNum}
+\stepcounter{myWeekNum}
+%
+\newcommand{\myWeek}{\themyWeekNum
+    \stepcounter{myWeekNum}
+    \ifnum\themyWeekNum=53
+         \setcounter{myWeekNum}{1}
+    \else\fi
+}
+
+\begin{table}[H]
+    \caption{A table displaying the sequences for the strands which make up the DNA receptors for both the bulk and vesicle experiments} 
+    \label{sequences}\centering
     \centering
-    \begin{minipage}[c][\textheight]{393pt}
-        \vfill
-	\begin{center}
-        \includegraphics[scale=0.7,angle=90]{imgs/LOGO_principalGrande}
-	\end{center}
-	\vfill
-    \end{minipage}
-    \hspace{2pt}
-    \begin{minipage}[c][\textheight]{22.5pt}
-        \rotcaption{Legenda desta figura }\label{fig2}
-    \end{minipage}
-\end{figure}
+    \begin{tabular}[t]{c c c}
+        \hline\hline \\ [-1.5ex]
+        Date & Duration(weeks) & Assignment \\ [0.5ex]
+        \hline \\ [-1.5ex]
+        Bulk & Q & TTGCTAGGTCTCGCTATGAGGATCTAT  
+        \\ [0.5ex]
+        Vesicles & B & GTGTTGAGTAGTGAGATGTTTTT
+        \\ [0.5ex]
+        \hline
+    \end{tabular}
+\end{table}
