@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÃO GERAL DO LATEX %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{color}\usepackage{rotating}
+%\usepackage[amsfonts,amssymb,boldsans]{concmath}
+%\usepackage[T1]{fontenc}
+\usepackage{xarticle}
+\usepackage{graphicx}%standardLaTeXgraphicstool%whenincludingfigurefiles
+\usepackage{setspace}
+%\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{revnum}
+\usepackage{amsmath} % One of these two gives nice R, Z, and N
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[round,authoryear]{natbib}
+
+\def\paperid{\hfill}
+                      
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% CONFIGURAÇÃO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% INÍCIO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%O Título
+\title{\vskip-1.45cm
+\hskip-13cm\scalebox{0.867}{\includegraphics{imgs/LOGO_principal.png}}  {\small {\vskip-1.45cm{\hskip2.8cm\textbf{INSTITUTO SUPERIOR DE ENGENHARIA DE LISBOA}}}}
+\vskip1.45cm
+{\bf Título da Proposta} \\[3ex]
+{\small Projeto e Seminário\\[-1ex]
+ Licenciatura em Engenharia Informática e Computadores}
+}
+\author{ Nome do primeiro aluno\\[1ex]
+ Nome do segundo aluno\\[1ex]
+}
+\date{\small\today}
+\maketitle
+\def\paperid{\hfill}
+
+%%%%% AS SECÇÕES %%%%%%%
+\section{Introdução}\label{section:primeiraSec}
+
+Este documento é um exemplo da estrutura de relatório... Tem várias secções como
+a Secção \ref{section:primeiraSec}.  E podemos fazer citações, {\it i.e.}, \citep{ref1}.
+\section{Requisitos}
+
+
+\section{Calendarização}
+A calendarização do projeto está descrita na Figura \ref{fig2}
+\begin{figure}[!p]
+    \centering
+    \begin{minipage}[c][\textheight]{393pt}
+        \vfill
+	\begin{center}
+        \includegraphics[scale=0.7,angle=90]{imgs/LOGO_principalGrande}
+	\end{center}
+	\vfill
+    \end{minipage}
+    \hspace{2pt}
+    \begin{minipage}[c][\textheight]{22.5pt}
+        \rotcaption{Legenda desta figura }\label{fig2}
+    \end{minipage}
+\end{figure}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrvnat}
+\bibliography{referencias}
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

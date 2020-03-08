@@ -1,0 +1,68 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÃO GERAL DO LATEX %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{color}\usepackage{rotating}
+%\usepackage[amsfonts,amssymb,boldsans]{concmath}
+%\usepackage[T1]{fontenc}
+\usepackage{xarticle}
+\usepackage{graphicx}%standardLaTeXgraphicstool%whenincludingfigurefiles
+\usepackage{setspace}
+%\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{revnum}
+\usepackage{amsmath} % One of these two gives nice R, Z, and N
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[round,authoryear]{natbib}
+\usepackage{lipsum}
+
+\def\paperid{\hfill}
+                      
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% CONFIGURAÇÃO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% INÍCIO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%O Título
+\title{\vskip-1.45cm
+\hskip-13cm\scalebox{0.867}{\includegraphics{imgs/LOGO_principal.png}}  {\small {\vskip-1.45cm{\hskip2.8cm\textbf{INSTITUTO SUPERIOR DE ENGENHARIA DE LISBOA}}}}
+\vskip1.45cm
+{\bf Plataforma de e-learning, open source} \\[3ex]
+{\small Projeto e Seminário\\[-1ex]
+ Licenciatura em Engenharia Informática e Computadores}
+}
+\author{ André de Oliveira nº44580\\[1ex]
+ Rodrigo Leal nº44823\\[1ex]
+ João Santos nº44847\\[1ex]
+}
+\date{\small\today}
+\maketitle
+\def\paperid{\hfill}
+
+%%%%% AS SECÇÕES %%%%%%%
+\section{Introdução}\label{section:primeiraSec}
+\input{./introducao.tex}
+
+\section{Requisitos}
+\input{./requisitos.tex}
+
+\section{Calendarização}
+\input{./calendarizacao.tex}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrvnat}
+\bibliography{referencias}
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

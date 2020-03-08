@@ -1,0 +1,70 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shadows,shapes} % for pgf-umlsd
+\usepackage[underline=true,rounded corners=false]{pgf-umlsd}
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+\begin{document}
+
+  \begin{sequencediagram}
+    \begin{pgfonlayer}{background} 
+    \node[anchor=center] at (7.87,-2.4)  {\footnotesize \texttt{\color{gray} internal transactions}};
+    \draw[color=black!50,dashed,fill=gray!20] (4.0,-13.1) rectangle (9.4,-2.6);
+    \end{pgfonlayer}
+
+    \newthread{client}{Client}{0.8}
+    \newthread{shop}{Shop}{0.8}
+    \newthread[green!30]{charge}{Charge}{0.8}
+    \newthread[blue!30]{pack}{Pack}{0.8}
+    \newthread[green!30]{bank}{Bank}{0.8}
+    \newthread[blue!30]{warehouse}{Warehouse}{0.8}
+  
+    \plotthread{1}{10.2mm}{138mm}
+    \plotthread{2}{13.2mm}{198mm}
+    \plotthread{3}{31.2mm}{155mm}
+    \plotthread{4}{37.2mm}{155mm}
+    \plotthread{5}{43.2mm}{135mm}
+    \plotthread{6}{49.2mm}{135mm}
+
+    \mess{client}{$\mathit{ord}\langle\mathit{ctl},\mathit{msg}\rangle$}{shop}{midway}
+    \mess{shop}{$\mathit{ctl}\langle s\rangle$}{client}{midway}
+    \mess{client}{$\mathit{ctl}\langle u\rangle$}{shop}{midway}
+    \xmess{shop}{{\footnotesize `create'}}{charge}{midway}{dashed}
+    \xmess{shop}{{\footnotesize `create'}}{pack}{pos=0.235}{dashed}
+
+    \mess{charge}{$\mathit{op}\langle \mathit{ctl}_1, \mathit{msg}_1\rangle$}{bank}{pos=0.235}
+    \mess{pack}{$\mathit{pkg}\langle \mathit{ctl}_2, \mathit{msg}_2\rangle$}{warehouse}{pos=0.235}
+    \mess{warehouse}{$\mathit{ctl_2}\langle t\rangle$}{pack}{pos=0.235}
+    \mess{pack}{$\mathit{ctl_2}\langle p\rangle$}{warehouse}{pos=0.235}
+    \mess{bank}{$\mathit{ctl_1}\langle q\rangle$}{charge}{pos=0.235}
+    \mess{charge}{$\mathit{ctl_1}\langle r\rangle$}{bank}{pos=0.235}
+ 
+    \mess{warehouse}{$\mathit{msg_2}\langle \mathit{packed}\rangle$}{pack}{pos=0.235}
+    \mess{bank}{$\mathit{msg_1}\langle \mathit{valid}\rangle$}{charge}{pos=0.235}
+
+    \xmess{client}{\color{red} $s$}{shop}{midway}{color=red}
+    \xmess{shop}{\color{red} {\footnotesize `cancel'}}{charge}{midway}{dashed,color=red}
+    \xmess{shop}{\color{red} {\footnotesize `cancel'}}{pack}{pos=0.235}{dashed,color=red}
+    \xmess{charge}{\color{red} $q$}{bank}{pos=0.235}{color=red}
+    \xmess{pack}{\color{red} $t$}{warehouse}{pos=0.235}{color=red}
+
+    \xmess{bank}{\color{red} $\mathit{msg_1}\langle \mathit{refunded}\rangle$}{charge}{pos=0.235}{color=red}
+    \xmess{warehouse}{\color{red} $\mathit{msg_2}\langle \mathit{unpacked}\rangle$}{pack}{pos=0.235}{color=red}
+
+  \end{sequencediagram}
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: Tex-PDF
+%%% TeX-master: t
+%%% End: 

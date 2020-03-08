@@ -1,0 +1,90 @@
+% EPC flow charts
+% Author: Fabian Schuh
+\documentclass[12pt]{article}
+
+\usepackage{pgf}
+\usepackage{tikz}
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+\usepackage[utf8]{inputenc}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{positioning}
+
+
+\tikzset{
+    state/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           minimum height=2em,
+           inner sep=2pt,
+           text centered,
+           },
+}
+
+\begin{document}
+
+\begin{tikzpicture}[->,>=stealth']
+
+ \node[state,initial,initial text={},
+  anchor=center,
+  fill=green!30,
+  node distance=6cm,
+  text width=3cm] (ACTIVE) 
+ {
+ \textbf{Active}
+ };
+  
+ % State: ACK with different content
+ \node[state,    	% layout (defined above)
+  text width=3cm, 	% max text width
+  fill=green!30,
+  xshift=5cm, 		% move 2cm in y
+  below of=ACTIVE, 	% Position is to the right of QUERY
+  node distance=6cm, 	% distance to QUERY
+  anchor=center] (COMPENSATED) 	% posistion relative to the center of the 'box'
+ {%
+  \textbf{Compensated}
+ };
+ 
+ % STATE QUERYREP
+ \node[state,
+  below of=ACTIVE,
+  fill=red!30,
+  xshift=-4cm,
+  anchor=center,
+  node distance=4cm, 	% distance to QUERY
+  text width=3cm] (FAILED) 
+ {%
+  \textbf{Failed}
+ };
+
+ % draw the paths and and print some Text below/above the graph
+ \path (ACTIVE) edge[bend left=35]    node[xshift=-0.2cm,anchor=left,left]{$\texttt{sMap[$s$]}_2=\emptyset$}
+                                   node[xshift=0.2cm,text width=2.5cm,anchor=right,right] {
+					   $(s,\tau(t), \lambda X.X)$
+					   $(s,t, \lambda X.X)$
+				   }    (COMPENSATED)
+       (ACTIVE) edge[bend right=37]   node[xshift=-0.1cm,anchor=left,left]{$\phi(a) = \emptyset$}
+                                   node[xshift=0.1cm,anchor=right,right]{$(s,\tau (a), (\tilde{w}) \lambda X.Q)$}    (COMPENSATED)
+       (ACTIVE)	edge[bend right=37]   node[xshift=-0.2cm,anchor=left,left]{$\texttt{sMap[$s$]}_2\neq\emptyset$}
+       					node[xshift=0.2cm,text width=2.5cm,anchor=right,right]{
+      					   $(s,\tau(t), \lambda X.X)$
+					   $(s,t, \lambda X.X)$
+       					} (FAILED)
+       (FAILED)	edge[bend right=15]   node[yshift=0.2cm,anchor=north,above]{$\texttt{sMap[$s$]}_2=\emptyset$}
+                                      node[yshift=-0.2cm,anchor=south,below]{$(s,\tau (a), (\tilde{w}) \lambda X.Q)$}  
+       (COMPENSATED)
+       (ACTIVE)	edge[loop above]   node[xshift=0.2cm,anchor=north,right]{$(s,\tau (a), (\tilde{w}) \lambda X.Q)$} 
+          		           node[xshift=-0.2cm,anchor=north,left]{$\phi(a) \neq \emptyset$} (ACTIVE) 
+       (FAILED)	edge[loop left]    node[xshift=0.8cm,yshift=-0.5cm,anchor=south,below]{$(s,\tau (a), (\tilde{w}) \lambda X.Q)$}
+				   node[xshift=0.8cm,yshift=0.5cm,anchor=north,above]{$\texttt{sMap[$s$]}_2\neq\emptyset$}     (FAILED);
+
+\end{tikzpicture}
+
+\end{document}

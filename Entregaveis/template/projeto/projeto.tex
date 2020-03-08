@@ -1,0 +1,131 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÃO GERAL DO LATEX %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[envcountsame,envcountchap]{svmono}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{makeidx}%allowsindexgeneration
+\usepackage{graphicx}%standardLaTeXgraphicstool%whenincludingfigurefiles
+\usepackage{color}\usepackage{rotating}
+\usepackage[bottom]{footmisc}\usepackage[margin=3.0cm]{geometry}\usepackage{calc}\usepackage{setspace}\onehalfspacing
+%\usepackage{subfigure} % side by side figures
+\usepackage[dvipsnames]{xcolor}
+\usepackage{latexsym}
+%\usepackage{amsmath} % One of these two gives nice R, Z, and N
+%\usepackage{amssymb} %
+%\usepackage{fancyvrb} % verbatim in footnotes
+%\usepackage{forloop}
+\usepackage{xspace}
+%\usepackage{cite} % Must remove natbib above.
+\usepackage{url}
+%\usepackage{bbm} % cls already has the needed symbols
+\usepackage{theorem}    %to change style in newtheorems
+\usepackage{comment}
+\usepackage[Algoritmo]{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Dados: }}
+\renewcommand{\algorithmicensure}{\textbf{Resultado: }}
+
+
+\usepackage[round,authoryear]{natbib}
+\usepackage[final]{listofsymbols}
+\renewcommand{\symheading}{
+    \chapter*{\symheadingname}
+    \addcontentsline{toc}{chapter}{Lista de S\'{i}mbolos}}
+\usepackage{proof}
+\usepackage{tabularx}
+\usepackage{ctable}
+\usepackage{lscape}
+%\usepackage{caption}
+\usepackage{stmaryrd}
+\usepackage{extarrows}
+\usepackage{mathrsfs}
+\usepackage{multicol}
+% Stuff for pdf links. Comment out both lines for printout.
+\usepackage[
+  pdftex,
+  bookmarks,
+  bookmarksnumbered,
+%  bookmarksopen,
+  colorlinks,
+  plainpages=false,
+  pdfpagelabels,
+%  backref
+  pagebackref
+]{hyperref}
+\usepackage{hypernat}
+ \makeindex%%used for the subject index
+                      
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% CONFIGURAÇÃO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CONFIGURAÇÃO DA CAPA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\mytitle{Título\\[1ex] ....}
+\def\myauthor{ Primeiro Nome \\[1ex]  Segundo Nome}
+\def\typeofreport{Relatório Final}
+\def\myadvisor{Nome do Orientador}
+\def\mycoadvisor{Nome do Co-orientador}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% INÍCIO DO DOCUMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+\hypersetup{
+    linkcolor={black},
+    citecolor={black},
+    urlcolor={blue!80!black}
+}
+\pagenumbering{Alph}
+
+%%%% A CAPA %%%%
+  \input{styles/cover} 
+\frontmatter
+\addtolength{\topmargin}{3ex}
+\addtolength{\headsep}{1ex}
+\addtolength{\textheight}{-4ex}
+
+%%%% O RESUMO %%%%
+
+\input{resumo}
+
+%%%% OS AGRADECIMENTOS, opcional %%%%
+%\input{agradecimentos}
+
+\renewcommand{\contentsname}{Índice}
+%%%% Os conteúdos do ficheiro %%%%
+\tableofcontents 
+%%%% A listagem de figuras %%%%
+\listoffigures
+%%%% A listagem de tabelas %%%%
+\listoftables
+
+%%%% A listagem de figuras %%%%
+\include{losymb}
+%\listofsymbols
+
+\mainmatter
+
+%%%%% OS CAPÍTULOS %%%%%%%
+\include{capitulo1}
+\include{capitulo2}
+
+%%%%%%%
+%%%%%%%%% Apendice, se necessário %%%%%%%%%%%
+\appendix
+%\include{capitulo3}
+\numberwithin{equation}{chapter}
+
+
+\backmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrvnat}
+\bibliography{referencias}
+
+\printindex
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

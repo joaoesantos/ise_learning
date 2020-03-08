@@ -1,0 +1,89 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,shadows,shapes} % for pgf-umlsd
+\usepackage[underline=true,rounded corners=false]{pgf-umlsd}
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+\begin{document}
+
+  \begin{sequencediagram}
+    \begin{pgfonlayer}{background} 
+    \node[anchor=center] at (12.47,-1.9)  {\footnotesize \texttt{\color{gray} internal transactions}};
+    \draw[color=black!50,dashed,fill=gray!20] (4.5,-9.7) rectangle (14.0,-2.1);
+    \end{pgfonlayer}
+
+    \newthread{client}{Client}{0.8}
+    \newthread{ta}{TravelAgency}{0.8}
+    \newthread[green!30]{bhA}{BookHotelA}{0.8}
+    \newthread[blue!30]{bhB}{BookHotelB}{0.8}
+    \newthread[red!30]{bf}{BookFlight}{0.8}
+    \newthread[green!30]{hA}{HotelA}{0.8}
+    \newthread[blue!30]{hB}{HotelB}{0.8}
+    \newthread[red!30]{f}{Flight}{0.8}
+  
+    \plotthread{1}{10.2mm}{148mm}
+    \plotthread{2}{13.2mm}{143mm}
+    \plotthread{3}{25.2mm}{75mm}
+    \plotthread{4}{31.2mm}{85mm}
+    \plotthread{5}{37.2mm}{95mm}
+    \plotthread{6}{43.2mm}{25mm}
+    \plotthread{7}{49.2mm}{55mm}
+    \plotthread{8}{55.2mm}{55mm}
+
+    \mess{client}{$\mathit{client}\langle\mathit{ord}\rangle$}{ta}{midway}
+    \mess{ta}{$\mathit{ack}$}{client}{midway}
+    \xmess{ta}{{\footnotesize `create'}}{bhA}{midway}{dashed}
+    \xmess{ta}{{\footnotesize `create'}}{bhB}{pos=0.240}{dashed}
+    \xmess{ta}{{\footnotesize `create'}}{bf}{pos=0.160}{dashed}
+
+    \mess{bhA}{$\mathit{bookA}\langle\mathit{ord},\mathit{ansA}\rangle$}{hA}{pos=0.165}
+    \mess{bhB}{$\mathit{bookB}\langle\mathit{ord},\mathit{ansB}\rangle$}{hB}{pos=0.170}
+    \mess{hA}{$\mathit{ansA}\langle\mathit{okA}\rangle$}{bhA}{pos=0.145}
+    \mess{bf}{$\mathit{flight}\langle\mathit{ord}\rangle$}{f}{pos=0.165}
+    \mess{bhA}{$\mathit{hotelOk}\langle\mathit{hotelA}\rangle$}{ta}{midway}
+
+    \xmess{ta}{\color{red} $\mathit{hq}$}{bhB}{pos=0.235}{color=red}
+    \xmess{bhB}{\color{red} $\mathit{q}$}{hB}{pos=0.165}{color=red}
+
+    \mess{f}{$\mathit{ans}\langle\mathit{ok}\rangle$}{bf}{midway}
+    \mess{bf}{$\mathit{flightOk}$}{ta}{midway}
+    \mess{ta}{$\mathit{done}$}{client}{midway}
+
+
+%    \mess{client}{$\mathit{ctl}\langle u\rangle$}{shop}{midway}
+%    \mess{charge}{$\mathit{op}\langle \mathit{ctl}_1, \mathit{msg}_1\rangle$}{bank}{pos=0.235}
+%    \mess{pack}{$\mathit{pkg}\langle \mathit{ctl}_2, \mathit{msg}_2\rangle$}{warehouse}{pos=0.235}
+%    \mess{warehouse}{$\mathit{ctl_2}\langle t\rangle$}{pack}{pos=0.235}
+%    \mess{pack}{$\mathit{ctl_2}\langle p\rangle$}{warehouse}{pos=0.235}
+%    \mess{bank}{$\mathit{ctl_1}\langle q\rangle$}{charge}{pos=0.235}
+%    \mess{charge}{$\mathit{ctl_1}\langle r\rangle$}{bank}{pos=0.235}
+ 
+%    \mess{warehouse}{$\mathit{msg_2}\langle \mathit{packed}\rangle$}{pack}{pos=0.235}
+%    \mess{bank}{$\mathit{msg_1}\langle \mathit{valid}\rangle$}{charge}{pos=0.235}
+
+%    \xmess{client}{\color{red} $s$}{shop}{midway}{color=red}
+%    \xmess{shop}{\color{red} {\footnotesize `cancel'}}{charge}{midway}{dashed,color=red}
+%    \xmess{shop}{\color{red} {\footnotesize `cancel'}}{pack}{pos=0.235}{dashed,color=red}
+%    \xmess{charge}{\color{red} $q$}{bank}{pos=0.235}{color=red}
+%    \xmess{pack}{\color{red} $t$}{warehouse}{pos=0.235}{color=red}
+
+%    \xmess{bank}{\color{red} $\mathit{msg_1}\langle \mathit{refunded}\rangle$}{charge}{pos=0.235}{color=red}
+%    \xmess{warehouse}{\color{red} $\mathit{msg_2}\langle \mathit{unpacked}\rangle$}{pack}{pos=0.235}{color=red}
+
+  \end{sequencediagram}
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: Tex-PDF
+%%% TeX-master: t
+%%% End: 

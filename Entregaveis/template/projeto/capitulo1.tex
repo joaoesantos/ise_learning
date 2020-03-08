@@ -1,0 +1,83 @@
+\chapter{Capítulo 1}\label{cap1}
+
+Deve ser colocado aqui um resumo do que irá ser descrito neste capítulo.
+
+
+
+%
+\section{Secção 1}\label{section:primeiraSec}
+Este documento é um exemplo da estrutura de relatório... Tem várias secções como
+a Secção \ref{section:primeiraSec}.  E podemos fazer citações, {\it i.e.},\citep{ref1}.
+
+\paragraph{Cabeçalho de parágrafo} %
+O texto do parágrafo é aqui.
+
+\subparagraph{Cabeçado do sub-parágrafo.} %
+O texto do sub-parágrafo é aqui \index{algoritmo}
+% Usar este índice se quiseremos criar um índice de palavras
+%
+% para tabelas
+%
+\begin{table}
+\centering
+\caption{Legenda das tabelas}
+\label{tab:1}       % Dar um nome de etiqueta único.
+%
+% For LaTeX tables use
+%
+\begin{tabular}{lll}
+\hline\noalign{\smallskip}
+first & second & third  \\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+number & number & number \\
+number & number & number \\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table}
+%
+%
+
+%
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.8]{imgs/LOGO_principal}
+\caption[ Legenda 1 resumida para a lista de figuras ]{
+Legenda desta figura\label{fig1}}
+\end{figure}
+%
+
+A figura\ref{fig1}
+
+
+\subsection{A subsecção 1}
+
+
+\begin{figure}[!p]
+    \centering
+    \begin{minipage}[c][\textheight-1pt]{393pt}
+        \vfill
+	\begin{center}
+        \includegraphics[scale=0.99,angle=90]{imgs/LOGO_principal}
+	\end{center}
+	\vfill
+    \end{minipage}
+    \hspace{2pt}
+    \begin{minipage}[c][\textheight-1pt]{22.5pt}
+        \rotcaption[ Legenda 2 resumida para a lista de figuras ]{ Legenda desta figura \label{fig3}}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!p]
+    \centering
+    \begin{minipage}[c][\textheight-1pt]{393pt}
+        \vfill
+	\begin{center}
+        \includegraphics[scale=0.7,angle=90]{imgs/LOGO_principalGrande}
+	\end{center}
+	\vfill
+    \end{minipage}
+    \hspace{2pt}
+    \begin{minipage}[c][\textheight-1pt]{22.5pt}
+        \rotcaption[ Legenda 3 resumida para a lista de figuras ]{Legenda desta figura \label{fig2}}
+    \end{minipage}
+\end{figure}
