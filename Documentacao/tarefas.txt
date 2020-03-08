@@ -1,17 +1,17 @@
 tarefas
 - introdução docker, react, bash, python -> 3 semana/homem
 
-- set up base de dados -> 1 semana/homem
+- set up base de dados -> 2 semana/homem
     - definição de schema
     - preenchimento de dados
     - configuração ambiente local (em container)
 
-- configuração de ambientes de execução (java e kotlin) -> 4 semanas/homem
+- configuração de ambientes de execução (java e kotlin) -> 5 semanas/homem
     - criação de aplicação (para cada linguagem)
      - criação de template projecto para execucao
      - definição dos comandos bash
 
-- configuração de ambientes de execução ( C#, javascript) -> 4 semanas/homem
+- configuração de ambientes de execução ( C#, javascript) -> 6 semanas/homem
     - criação de aplicação (para cada linguagem)
      - criação de template projecto para execucao
      - definição dos comandos bash
@@ -28,7 +28,7 @@ tarefas
     - contain de ambiente de execucao
     - testes de integracao
 
-- Autenticação -> 1 semana/homem
+- Autenticação -> 2 semana/homem
     - /login
     - /logout
     - desenvolver rest api
@@ -37,35 +37,41 @@ tarefas
     - testes unitarios
     - colecao postman
 
-- User Services -> 1 semana/homem
+- User Services -> 2 semana/homem
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- Questions service -> 3 semana/homem
+- Questions service -> 4 semana/homem
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- Questionnaire service -> 3 semana/homem
+- Questionnaire service -> 4 semana/homem
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- webserver react configuration -> 1 semana/homem
+- webserver react configuration -> 2 semana/homem
 
 - front-end
     - home -> 2 semana/homem
     - GET Question -> 4 semana/homem
     - Editar perfil -> 4 semana/homem
-    - pagina login e signin -> 1 semana/homem
-    - criar/editar questionario -> 2 semana/homem
+    - pagina login e signin -> 2 semana/homem
+    - criar/editar questionario -> 3 semana/homem
     - preenchimento de questionario -> 2 semana/homem
 
-- 
+- Apresentação individual -> 3 semana/homem
+
+- Poster -> 1 semana/homem
+
+- Prepare Beta version -> 1 semana/homem
+
+- Wrap up final report -> 2 semana/homem
