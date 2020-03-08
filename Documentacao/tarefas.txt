@@ -1,7 +1,7 @@
 tarefas
 - introdução docker, react, bash, python -> 3 semana/homem
 
-- set up base de dados -> 2 semana/homem
+- set up base de dados -> 2 semana/homem quintela
     - definição de schema
     - preenchimento de dados
     - configuração ambiente local (em container)
@@ -28,7 +28,7 @@ tarefas
     - contain de ambiente de execucao
     - testes de integracao
 
-- Autenticação -> 2 semana/homem
+- Autenticação -> 2 semana/homem rodri
     - /login
     - /logout
     - desenvolver rest api
@@ -37,36 +37,36 @@ tarefas
     - testes unitarios
     - colecao postman
 
-- User Services -> 2 semana/homem
+- User Services -> 2 semana/homem joao
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- Questions service -> 4 semana/homem
+- Questions service -> 4 semana/homem rodri
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- Questionnaire service -> 4 semana/homem
+- Questionnaire service -> 4 semana/homem quintela
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
     - testes unitarios
     - colecao postman
 
-- webserver react configuration -> 2 semana/homem
+- webserver react configuration -> 2 semana/homem joao
 
 - front-end
-    - home -> 2 semana/homem
-    - GET Question -> 4 semana/homem
-    - Editar perfil -> 4 semana/homem
-    - pagina login e signin -> 2 semana/homem
-    - criar/editar questionario -> 3 semana/homem
-    - preenchimento de questionario -> 2 semana/homem
+    - home -> 2 semana/homem quintela
+    - GET Question -> 4 semana/homem rodri
+    - Editar perfil -> 4 semana/homem joao
+    - pagina login e signin -> 2 semana/homem quintela
+    - criar/editar questionario -> 3 semana/homem rodri
+    - preenchimento de questionario -> 2 semana/homem joao
 
 - Apresentação individual -> 3 semana/homem
 
