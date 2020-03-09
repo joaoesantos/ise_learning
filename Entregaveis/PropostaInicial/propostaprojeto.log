@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  8 MAR 2020 20:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  9 MAR 2020 21:45
 entering extended mode
 **./propostaprojeto.tex
 (propostaprojeto.tex
@@ -652,37 +652,45 @@ File: pgfcalendar.code.tex 2020/01/08 v3.1.5b (3.1.5b)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\lscape.sty"
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
+("C:\Program Files\MiKTeX 2.9\tex/latex/wrapfig\wrapfig.sty"
+\wrapoverhang=\dimen256
+\WF@size=\dimen257
+\c@WF@wrappedlines=\count337
+\WF@box=\box65
+\WF@everypar=\toks44
+Package: wrapfig 2003/01/31  v 3.6
+)
 (propostaprojeto.aux)
 \openout1 = `propostaprojeto.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
 
 ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count337
-\scratchdimen=\dimen256
-\scratchbox=\box65
-\nofMPsegments=\count338
-\nofMParguments=\count339
-\everyMPshowfont=\toks44
-\MPscratchCnt=\count340
-\MPscratchDim=\dimen257
-\MPnumerator=\count341
-\makeMPintoPDFobject=\count342
-\everyMPtoPDFconversion=\toks45
+\scratchcounter=\count338
+\scratchdimen=\dimen258
+\scratchbox=\box66
+\nofMPsegments=\count339
+\nofMParguments=\count340
+\everyMPshowfont=\toks45
+\MPscratchCnt=\count341
+\MPscratchDim=\dimen259
+\MPnumerator=\count342
+\makeMPintoPDFobject=\count343
+\everyMPtoPDFconversion=\toks46
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/epstopdf-pkg\epstopdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -690,32 +698,34 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 )
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 40.
+(lastpage)             ! on input line 41.
 
 ABD: EveryShipout initializing macros
 <imgs/LOGO_principal.png, id=4, 97.86563pt x 60.225pt>
 File: imgs/LOGO_principal.png Graphic file (type png)
 <use imgs/LOGO_principal.png>
-Package pdftex.def Info: imgs/LOGO_principal.png  used on input line 75.
+Package pdftex.def Info: imgs/LOGO_principal.png  used on input line 70.
 (pdftex.def)             Requested size: 97.86537pt x 60.22484pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 75.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 75.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Overfull \hbox (12.00002pt too wide) in paragraph at lines 75--75
- [][] 
- []
+) (introducao.tex)
+(analise.tex
+<./imgs/arquitectura.JPG, id=6, 498.36188pt x 292.59312pt>
+File: ./imgs/arquitectura.JPG Graphic file (type jpg)
+<use ./imgs/arquitectura.JPG>
+Package pdftex.def Info: ./imgs/arquitectura.JPG  used on input line 6.
+(pdftex.def)             Requested size: 299.01942pt x 175.55722pt.
 
-(introducao.tex) (analise.tex
-Underfull \hbox (badness 10000) in paragraph at lines 1--3
+Underfull \hbox (badness 10000) in paragraph at lines 1--9
 
  []
 
@@ -723,23 +733,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--3
 
 {C:/Users/wolf_/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./imgs/LOGO
 _principal.png>]
-<./imgs/arquitectura.JPG, id=16, 498.36188pt x 292.59312pt>
-File: ./imgs/arquitectura.JPG Graphic file (type jpg)
-<use ./imgs/arquitectura.JPG>
-Package pdftex.def Info: ./imgs/arquitectura.JPG  used on input line 5.
-(pdftex.def)             Requested size: 199.34122pt x 117.03516pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 12--14
-
+Underfull \hbox (badness 2735) in paragraph at lines 9--16
+\OT1/cmr/m/n/12 pro-vide a REST API
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--21
+Underfull \hbox (badness 3623) in paragraph at lines 9--16
+\OT1/cmr/m/n/12 which is the core of
+ []
+
+
+Underfull \hbox (badness 1721) in paragraph at lines 9--16
+\OT1/cmr/m/n/12 ing a mi-croser-vice ar-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 9--16
 
  []
 
 )
-Underfull \hbox (badness 10000) in paragraph at lines 22--84
+Underfull \hbox (badness 10000) in paragraph at lines 17--79
 
  []
 
@@ -748,37 +762,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
 
-[2 <./imgs/arquitectura.JPG>]
-Underfull \hbox (badness 10000) in paragraph at lines 35--38
+[2 <./imgs/arquitectura.JPG>] [3]) (calendarizacao.tex
+<./imgs/requisitios.PNG, id=26, 504.6855pt x 434.22224pt>
+File: ./imgs/requisitios.PNG Graphic file (type png)
+<use ./imgs/requisitios.PNG>
+Package pdftex.def Info: ./imgs/requisitios.PNG  used on input line 3.
+(pdftex.def)             Requested size: 454.21275pt x 390.7964pt.
 
+Overfull \hbox (1.24486pt too wide) in paragraph at lines 3--4
+[][] 
  []
 
-[3]) (calendarizacao.tex
-\c@myWeekNum=\count343
-) [4]
+[4])
 No file propostaprojeto.bbl.
 
 AED: lastpage setting LastPage
-[5] (propostaprojeto.aux) ) 
+[5 <./imgs/requisitios.PNG>] (propostaprojeto.aux) ) 
 Here is how much of TeX's memory you used:
- 17104 strings out of 481556
- 345218 string characters out of 2923635
- 680981 words of memory out of 3000000
- 31970 multiletter control sequences out of 15000+200000
- 542995 words of font info for 64 fonts, out of 3000000 for 9000
+ 17169 strings out of 481556
+ 346116 string characters out of 2923635
+ 683274 words of memory out of 3000000
+ 32027 multiletter control sequences out of 15000+200000
+ 543332 words of font info for 66 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,8n,69p,477b,314s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/l
-jfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\
-fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1440.pk><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
-s/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr1
-2.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on propostaprojeto.pdf (5 pages, 181962 bytes).
+ 68i,7n,69p,477b,292s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\wolf_\AppData\Lo
+cal\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk> <C:\Users\wolf_\
+AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmtt10.pfb>
+Output written on propostaprojeto.pdf (5 pages, 244098 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
+ 61 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 28 words of extra memory for PDF output out of 10000 (max. 10000000)
 

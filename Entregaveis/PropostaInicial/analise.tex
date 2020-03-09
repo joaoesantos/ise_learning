@@ -1,17 +1,12 @@
 To develop the e-learning platform 3 main modules were identified: UI, Services and Execution Environments.
 \\
-\begin{center}
-	\begin{figure}[H]
-  		\includegraphics[scale=0.4]{./imgs/arquitectura.JPG}
-  		\caption{Architecture}
-  		\label{fig:architecture}
-	\end{figure}
-\end{center}
-
-
 The UI module is the presentation layer, with which the final user will interact. This interface will be developed with React, a JavaScript library for building user interfaces, as a single page application.
 \\
- 
+	\begin{wrapfigure}{l}{0.7\textwidth}
+  		\includegraphics[scale=0.6]{./imgs/arquitectura.JPG}
+  		\caption{Architecture}
+  		\label{fig:architecture}
+	\end{wrapfigure} 
 The Services module will provide a REST API which is the core of the platform, this module will be developed using a microservice architecture. This REST API can be used standalone or with the UI module. In this project the REST API will be used to support the UI module. This module will be developed with the following technological stack: Kotlin; Gradle; Spring; Docker; Postgres; Swagger; Cloud based hosting solution.
 \\
 Kotlin is the programming language which will be used to develop the microservices, Gradle will be used for dependency management, Spring will be used as a support framework for dependency injection and REST application development.
