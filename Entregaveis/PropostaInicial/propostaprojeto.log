@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  9 MAR 2020 21:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  9 MAR 2020 22:06
 entering extended mode
 **./propostaprojeto.tex
 (propostaprojeto.tex
@@ -752,12 +752,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 9--16
 
  []
 
-)
-Underfull \hbox (badness 10000) in paragraph at lines 17--79
-
- []
-
-(requisitos.tex
+) (requisitos.tex
 Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
@@ -795,7 +790,7 @@ X 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
 public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
 msfonts/cm/cmtt10.pfb>
-Output written on propostaprojeto.pdf (5 pages, 244098 bytes).
+Output written on propostaprojeto.pdf (5 pages, 244574 bytes).
 PDF statistics:
  61 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
