@@ -18,12 +18,12 @@ Functional:
    \end{itemize}
 \item \underline{Questionnaires} are a group of Challenges.
 	\begin{itemize}
-	\item Questionnaires can only be submitted or solved by logged in users, and they consist in a group of existing Challenges.
-    \item A user may choose any number of Challenges to create a Questionnaire and set it a timer. Only its creator can edit the Questionnaire.
+	\item Questionnaires can only be submitted or solved by logged in users.
+	\item Only its creator can edit the Questionnaire.
+    \item A user may choose any number of Challenges to create a Questionnaire and set it a timer. 
     (eg. user A created a Questionnaire with 5 Challenges that has to be solved by user B in one hour).
     \item A user may save its favourite Questionnaires.
-    \item Questionnaires may be shared trough a link.
-    \item Only logged in users have access to the Questionnaires.
+    \item Questionnaires can be shared through a link created by the platform.
 	\end{itemize}
 \end{description}
 
@@ -33,42 +33,24 @@ Non-Functional Requirements:
 
 \begin{description}[font=$\bullet$~\normalfont\scshape\color{red!50!black}]
 \item \underline{Scalability} This platform may be accessed by hundreds or even thousands of users. As such the proposed architecture takes into consideration the scalability of its usage.
-	\begin{itemize}
-		\item The microservice architecture allows tasks to be broken down into smaller units since the services follow the single responsibility principle.
-		\item Hosting these services in containers and managed in a Kubernetes cloud based environment makes it easier to scale up instances of those services, meeting high peek demands when necessary.
-	\end{itemize}
          
 \item \underline{Security} Executing third party code in a machine raises security concerns.
 	\begin{itemize}
-		\item Executing the services which will execute this code in containers adresses some of these concerns. A self-contained run environment limits the impact of malicious code to the container which executes it, protecting the remaining infrastructure.
+		\item 
+		\iffalse		
+		Executing the services which will execute this code in containers adresses some of these concerns.
+		\fi 
+		A self-contained run environment limits the impact of malicious code to the container which executes it, protecting the remaining infrastructure.
 	\end{itemize}	   
               
 \item \underline{Solution Maintenance}     
-        Maintaining a complex solution requires a balance between many moving parts, as such this project's architecture reflects the principles of loose coupling and modularity which facilitate the solution maintenance. 
-		\begin{itemize}
-			\item The module separation of the platform maintains loose coupling between the modules.
-			\item The microservice architecture maintains the services scope smaller and reduces dependence from services implementation.
-			\item Components will be deployed in containers the infrastructure maintenance will be easier because it will only need to support Docker containers
-		\end{itemize}		        
+        Maintaining a complex solution requires a balance between many moving parts, as such this project's architecture reflects the principles of loose coupling and modularity which facilitate the solution maintenance.      
 
+\iffalse
 \item \underline{Efficiency}    
         Hosting the solution in a cloud based environment improves efficiency of the solution. 
-		\begin{itemize}
-			\item Cloud based hosting provides load balancing for services, improving network load efficiently across multiple servers.
-			\item Cloud based hosting allows for a more efficient resource management, allowing for scaling up or down resource usage adjusting to current demand.
-		\end{itemize}		        
-         
-
-\item \underline{Infrastructure Agnostic}     
-        Because every component will be deployed in separate containers the deployment will be platform independent and fault tolerant to component failure when managed in a Kubernetes cloud based environment.
-
+\fi
 \item \underline{Open source}     
         Open source software refers to something people can modify and share because its design is publicly accessible.
-        \begin{itemize}
-        	\item Improved control since the is publicly available.
-        	\item Improved security since the code is accessible to be tested and verified stimulating error detection.
-        	\item Improved stability since the source code is always available
-        	\item Fosters community, group of people invested in producing, testing, using and promoting the software.
-        \end{itemize}
 
 \end{description}
