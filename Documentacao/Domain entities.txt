@@ -14,6 +14,7 @@ Question:
 - owner: username (string)
 - category?:
 - tags: string[]
+- isPrivate: boolean
 PK(qid)
 
 QuestionAnswer:
