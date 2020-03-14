@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: server.ProgramTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.046 s <<< FAILURE! - in server.ProgramTest
+initializationError(server.ProgramTest)  Time elapsed: 0.006 s  <<< ERROR!
+org.junit.runners.model.InvalidTestClassError: 
+Invalid test class 'server.ProgramTest':
+  1. The class server.ProgramTest is not public.
+  2. Test class should have exactly one public constructor
+
