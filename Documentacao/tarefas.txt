@@ -11,13 +11,17 @@ tarefas
      - criação de template projecto para execucao
      - definição dos comandos bash
 
-- configuração de ambientes de execução ( C#, javascript) -> 6 semanas/homem
+- configuração de ambientes de execução ( C#) -> 3 semanas/homem
     - criação de aplicação (para cada linguagem)
      - criação de template projecto para execucao
      - definição dos comandos bash
 
+- configuração de ambientes de execução ( javascript) -> 3 semanas/homem
+    - criação de aplicação (para cada linguagem)
+     - criação de template projecto para execucao
+     - definição dos comandos bash
 
-- configuração de ambientes de execução ( python ) -> 4 semanas/homem
+- configuração de ambientes de execução ( python ) -> 3 semanas/homem
     - criação de aplicação (para cada linguagem)
      - criação de template projecto para execucao
      - definição dos comandos bash
@@ -44,7 +48,7 @@ tarefas
     - testes unitarios
     - colecao postman
 
-- Questions service -> 4 semana/homem rodri
+- Chanllenges service -> 4 semana/homem rodri
     - desenvolver rest api
     - documentação (swagger)
     - configuração ambiente local (container)
@@ -62,7 +66,8 @@ tarefas
 
 - front-end
     - home -> 2 semana/homem quintela
-    - GET Question -> 4 semana/homem rodri
+    - execute code page -> 2 semana/homem quintela
+    - GET Question -> 3 semana/homem rodri
     - Editar perfil -> 4 semana/homem joao
     - pagina login e signin -> 2 semana/homem quintela
     - criar/editar questionario -> 3 semana/homem rodri
