@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  14 MAR 2020 12:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  15 MAR 2020 13:23
 entering extended mode
 **./propostaprojeto.tex
 (propostaprojeto.tex
@@ -777,17 +777,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
 
-[2 <./imgs/arquitectura.JPG>]) (calendarizacao.tex
-<./imgs/requisitiosV2.PNG, id=22, 658.8615pt x 436.63126pt>
+[2 <./imgs/arquitectura.JPG>]) [3] (calendarizacao.tex
+<./imgs/requisitiosV2.PNG, id=26, 658.8615pt x 436.63126pt>
 File: ./imgs/requisitiosV2.PNG Graphic file (type png)
 <use ./imgs/requisitiosV2.PNG>
-Package pdftex.def Info: ./imgs/requisitiosV2.PNG  used on input line 3.
+Package pdftex.def Info: ./imgs/requisitiosV2.PNG  used on input line 4.
 (pdftex.def)             Requested size: 543.56009pt x 360.24521pt.
- [3]
 <./imgs/activityType.PNG, id=27, 499.11469pt x 144.54pt>
 File: ./imgs/activityType.PNG Graphic file (type png)
 <use ./imgs/activityType.PNG>
-Package pdftex.def Info: ./imgs/activityType.PNG  used on input line 12.
+Package pdftex.def Info: ./imgs/activityType.PNG  used on input line 13.
 (pdftex.def)             Requested size: 271.7835pt x 78.70766pt.
 )
 No file propostaprojeto.bbl.
@@ -796,13 +795,13 @@ AED: lastpage setting LastPage
 [4 <./imgs/requisitiosV2.PNG> <./imgs/activityType.PNG>] (propostaprojeto.aux) 
 ) 
 Here is how much of TeX's memory you used:
- 17176 strings out of 481556
- 346296 string characters out of 2923635
+ 17177 strings out of 481556
+ 346313 string characters out of 2923635
  681282 words of memory out of 3000000
- 32033 multiletter control sequences out of 15000+200000
+ 32034 multiletter control sequences out of 15000+200000
  543332 words of font info for 66 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,7n,69p,477b,309s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 68i,7n,69p,477b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\t
 crm1200.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/e
 c/dpi600\tcrm1095.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
@@ -811,7 +810,7 @@ m/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12
 Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program F
 iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on propostaprojeto.pdf (4 pages, 274694 bytes).
+Output written on propostaprojeto.pdf (4 pages, 274831 bytes).
 PDF statistics:
  60 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
