@@ -10,7 +10,7 @@ Functional:
 
 \item \underline {Basic Authentication} Users can create an account, with a profile information and will be able to get access to more features (eg. keep track of the solved challenges, create/solve Questionnaires to/from other users).
 
-\item \underline{Challenges} are a programming problem that needs to be solve. Every challenge has a built in answer that will be compared with the user submitted solution to determinate its "correctness" through unit tests.
+\item \underline{Challenges} are a programming problem that needs to be solve. Every challenge has a built in solution that will be compared with the user submitted answer to determinate its "correctness" through unit tests.
    \begin{itemize}
      \item To create a Challenge a user must supply its unit tests, and they have to compile/run successfully before being able to submit it. Only its creator can edit the Challenge.
      \item Challenges may have tags associated, and they can be searched by them.
@@ -18,11 +18,10 @@ Functional:
    \end{itemize}
 \item \underline{Questionnaires} are a group of Challenges.
 	\begin{itemize}
-	\item Questionnaires can only be submitted or solved by logged in users.
+	\item Questionnaires can only be submitted by logged in users.
 	\item Only its creator can edit the Questionnaire.
     \item A user may choose any number of Challenges to create a Questionnaire and set it a timer. 
     (eg. user A created a Questionnaire with 5 Challenges that has to be solved by user B in one hour).
-    \item A user may save its favourite Questionnaires.
     \item Questionnaires can be shared through a link created by the platform.
 	\end{itemize}
 \end{description}
