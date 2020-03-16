@@ -1,4 +1,4 @@
-package server;
+package models;
 
 public class Executable {
     private String code;
@@ -17,7 +17,17 @@ public class Executable {
         return executeTests;
     }
 
-    enum ExecutionType {CODE, UNIT_TESTS};
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setUnitTests(String unitTests) {
+        this.unitTests = unitTests;
+    }
+
+    public void setExecuteTests(boolean executeTests) {
+        this.executeTests = executeTests;
+    }
 
     public Executable(String code, String unitTests, boolean executeTests) {
         this.code = code;
