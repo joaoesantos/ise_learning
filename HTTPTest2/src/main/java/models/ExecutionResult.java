@@ -1,4 +1,4 @@
-package server;
+package models;
 
 public class ExecutionResult {
     private String rawResult;
