@@ -1,0 +1,18 @@
+openapi: 3.0.0
+info:
+  description: This is the ISE-Learning REST API
+  version: "0.0.0"
+  title: ISE-Learning REST API
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Execution Environments
+    description: Operations for accessing the execution environments.
+  - name: Services
+    description: Operations for the application services.
+paths:
+  /Execution Environments:
+   
+  /Services:
+    
