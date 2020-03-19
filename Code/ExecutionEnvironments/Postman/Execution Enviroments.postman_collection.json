@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "d8745641-bd35-4b1a-897b-8a971c30f162",
+		"name": "Execution Enviroments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Java",
+			"item": [
+				{
+					"name": "Execute Java Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Kotlin",
+			"item": [],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
