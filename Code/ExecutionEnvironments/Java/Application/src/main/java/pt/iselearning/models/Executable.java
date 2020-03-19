@@ -1,4 +1,4 @@
-package models;
+package pt.iselearning.models;
 
 /**
  * Model received by controller.

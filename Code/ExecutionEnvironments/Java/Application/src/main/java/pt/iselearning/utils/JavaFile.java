@@ -1,4 +1,4 @@
-package utils;
+package pt.iselearning.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;

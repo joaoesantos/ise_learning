@@ -1,11 +1,11 @@
-package codeExecution;
+package pt.iselearning.codeExecution;
 
-import exceptions.MissingClassException;
-import models.ExecutionResult;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-import utils.CodeParser;
-import utils.CommandLineExecutor;
-import utils.JavaFile;
+import pt.iselearning.exceptions.MissingClassException;
+import pt.iselearning.models.ExecutionResult;
+import pt.iselearning.utils.CodeParser;
+import pt.iselearning.utils.CommandLineExecutor;
+import pt.iselearning.utils.JavaFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -59,7 +59,7 @@ public class Executor {
         FileUtils.deleteDirectory(COMPILED_OUTPUT.toFile());
         compile(codeClassName, code, new Path[]{});
         if(testCode != null) {
-            Path junitJar = Paths.get(".", "src", "main", "resources", "junit-4.13.jar");
+            Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
             compile(testClassName, testCode, new Path[]{junitJar});
         }
     }
@@ -92,8 +92,8 @@ public class Executor {
      * @throws InterruptedException
      */
     public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
-        Path junitJar = Paths.get(".", "src", "main", "resources", "junit-4.13.jar");
-        Path hamcrestJar = Paths.get(".", "src", "main", "resources", "hamcrest-all-1.3.jar");
+        Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
+        Path hamcrestJar = Paths.get(".", "libs", "hamcrest-all-1.3.jar");
         Path[] classpathJars = new Path[]{junitJar, hamcrestJar};
         String classpath = mergeClasspathPaths(COMPILED_OUTPUT, classpathJars);
         String result = cmdExec.executionCommand(CommandLineExecutor.CodeType.TEST, classpath,

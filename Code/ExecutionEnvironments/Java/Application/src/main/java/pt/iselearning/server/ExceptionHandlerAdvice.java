@@ -1,10 +1,10 @@
-package server;
+package pt.iselearning.server;
 
-import exceptions.MissingClassException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import pt.iselearning.exceptions.MissingClassException;
 
 import java.io.IOException;
 

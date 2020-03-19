@@ -1,6 +1,5 @@
-package utils;
+package pt.iselearning.utils;
 
-import exceptions.MissingClassException;
 import org.junit.Assert;
 import org.junit.Test;
 

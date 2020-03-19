@@ -1,4 +1,4 @@
-package codeExecution;
+package pt.iselearning.codeExecution;
 
 import org.junit.Assert;
 import org.junit.Test;
