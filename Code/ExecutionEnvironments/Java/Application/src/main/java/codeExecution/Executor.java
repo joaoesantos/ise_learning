@@ -122,7 +122,7 @@ public class Executor {
      * @param otherClasspaths
      * @return
      */
-    private String mergeClasspathPaths(Path originalClasspath, Path[] otherClasspaths) {
+    static String mergeClasspathPaths(Path originalClasspath, Path[] otherClasspaths) {
         String classpath = originalClasspath.toAbsolutePath().toString();
         if(otherClasspaths.length > 0) {
             classpath = Arrays.stream(otherClasspaths).map(cp -> cp.toAbsolutePath().toString())

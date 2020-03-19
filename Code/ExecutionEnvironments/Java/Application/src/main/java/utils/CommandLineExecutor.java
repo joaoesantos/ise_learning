@@ -52,10 +52,8 @@ public class CommandLineExecutor {
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
         if (exitVal == 0) {
-            System.out.println("Success!");
             return getDataFromCmdResultFile();
         } else {
-            System.out.println("Shit!");
             return getDataFromCmdResultFile();
         }
     }
@@ -78,17 +76,12 @@ public class CommandLineExecutor {
         } else if(type.equals(CodeType.CODE)) {
             processBuilder.command("cmd.exe", "/c",
                     String.format("java -cp %s %s", classpath, fullQualifiedClassNameToExecute));
-            System.out.println(String.format("java -cp %s %s",
-                    classpath,
-                    fullQualifiedClassNameToExecute));
         }
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
         if (exitVal == 0) {
-            System.out.println("Success2!");
             return getDataFromCmdResultFile();
         } else {
-            System.out.println("Shit2!");
             return getDataFromCmdResultFile();
         }
     }
@@ -99,7 +92,7 @@ public class CommandLineExecutor {
      * @return
      * @throws IOException
      */
-    private String getDataFromCmdResultFile() throws IOException {
+    private static String getDataFromCmdResultFile() throws IOException {
         try(Stream<String> lines = Files.lines(CMD_OUTPUT_FILE)) {
             String data = lines.collect(Collectors.joining("\n"));
             return data;
