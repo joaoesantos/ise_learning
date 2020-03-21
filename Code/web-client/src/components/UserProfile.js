@@ -9,7 +9,7 @@ class UserProfile extends React.Component{
     }
 
     componentDidMount(){
-        fetch('/users/1')
+        fetch('/users/2')
         .then(response => response.json())
         .then(json => this.setState(
             {
