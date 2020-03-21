@@ -1,7 +1,10 @@
 # Outputs
 **\target
-**\out
+**\code
 CMD_Output.txt
+
+# Build
+*-spring-boot.jar
 
 # InteliJ
 **\.DS_Store

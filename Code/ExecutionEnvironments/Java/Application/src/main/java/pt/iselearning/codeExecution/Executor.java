@@ -27,8 +27,8 @@ public class Executor {
      * Constants holding the path value needed for the execution
      */
     private final static String PACKAGE_NAME = "app";
-    private final static Path UNCOMPILED_OUTPUT = Paths.get(".", "out", "uncompiled");
-    private final static Path COMPILED_OUTPUT = Paths.get(".", "out", "compiled");
+    private final static Path UNCOMPILED_OUTPUT = Paths.get(".", "code", "uncompiled");
+    private final static Path COMPILED_OUTPUT = Paths.get(".", "code", "compiled");
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
         this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);

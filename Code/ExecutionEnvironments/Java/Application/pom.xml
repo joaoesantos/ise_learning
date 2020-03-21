@@ -50,6 +50,7 @@
                             <mainClass>
                                 pt.iselearning.server.App
                             </mainClass>
+                            <outputDirectory>./</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
