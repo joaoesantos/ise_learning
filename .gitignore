@@ -6,3 +6,4 @@ CMD_Output.txt
 # InteliJ
 **\.DS_Store
 **\.idea
+*.iml

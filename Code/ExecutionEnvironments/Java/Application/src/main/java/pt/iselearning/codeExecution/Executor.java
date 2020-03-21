@@ -4,21 +4,19 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import pt.iselearning.exceptions.MissingClassException;
 import pt.iselearning.models.ExecutionResult;
 import pt.iselearning.utils.CodeParser;
-import pt.iselearning.utils.CommandLineExecutor;
+import pt.iselearning.utils.CommandExecutor;
 import pt.iselearning.utils.JavaFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * This class is responsible for orchestrating the execution of a java project with a single class and maybe a test
  * class if initialized for that purpose.
  */
 public class Executor {
-    private final CommandLineExecutor cmdExec;
+    private final CommandExecutor cmdExec;
     private String codeClassName;
     private String code;
 
@@ -32,7 +30,7 @@ public class Executor {
     private final static Path UNCOMPILED_OUTPUT = Paths.get(".", "out", "uncompiled");
     private final static Path COMPILED_OUTPUT = Paths.get(".", "out", "compiled");
 
-    public Executor(String code, String testCode) throws MissingClassException {
+    public Executor(String code, String testCode) throws MissingClassException, IOException {
         this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);
         this.codeClassName = CodeParser.extractClassName(this.code);
         if(this.codeClassName == null) {
@@ -45,7 +43,7 @@ public class Executor {
                 throw new MissingClassException("Cannot parse public class name from unit test code.");
             }
         }
-        this.cmdExec = CommandLineExecutor.getInstance();
+        this.cmdExec = CommandExecutor.getInstance();
     }
 
     /**
@@ -57,30 +55,26 @@ public class Executor {
     public void compileCode() throws IOException, InterruptedException {
         FileUtils.deleteDirectory(UNCOMPILED_OUTPUT.toFile());
         FileUtils.deleteDirectory(COMPILED_OUTPUT.toFile());
-        compile(codeClassName, code, new Path[]{});
+        Path fullPathToCodeFile = UNCOMPILED_OUTPUT.resolve(String.format("%s.java", codeClassName));
+        compile(fullPathToCodeFile, code, new Path[]{UNCOMPILED_OUTPUT});
         if(testCode != null) {
             Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
-            compile(testClassName, testCode, new Path[]{junitJar});
+            Path fullPathToTestFile = UNCOMPILED_OUTPUT.resolve(String.format("%s.java", testClassName));
+            compile(fullPathToTestFile, testCode, new Path[]{junitJar, UNCOMPILED_OUTPUT});
         }
     }
 
     /**
      * Orchestrates code compilation for a single java file, including file creation.
      *
-     * @param codeClassName
+     * @param fullPathToFile
      * @param code
-     * @param classpathJars
+     * @param classpath
      * @throws IOException
      * @throws InterruptedException
      */
-    private void compile(String codeClassName, String code, Path[] classpathJars) throws IOException, InterruptedException {
-        Path packagePath = Paths.get(".");
-        for (String folder : PACKAGE_NAME.split(".")) {
-            packagePath = packagePath.resolve(folder);
-        }
-        Path fullPathToFile = UNCOMPILED_OUTPUT.resolve(String.format("%s.java", codeClassName));
+    private void compile(Path fullPathToFile, String code, Path[] classpath) throws IOException, InterruptedException {
         JavaFile.createJavaFile(fullPathToFile, code);
-        String classpath = mergeClasspathPaths(UNCOMPILED_OUTPUT, classpathJars);
         cmdExec.compileCommand(classpath, fullPathToFile, COMPILED_OUTPUT);
     }
 
@@ -94,9 +88,8 @@ public class Executor {
     public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
         Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
         Path hamcrestJar = Paths.get(".", "libs", "hamcrest-all-1.3.jar");
-        Path[] classpathJars = new Path[]{junitJar, hamcrestJar};
-        String classpath = mergeClasspathPaths(COMPILED_OUTPUT, classpathJars);
-        String result = cmdExec.executionCommand(CommandLineExecutor.CodeType.TEST, classpath,
+        Path[] classpath = new Path[]{junitJar, hamcrestJar, COMPILED_OUTPUT};
+        String result = cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
                 String.format("%s.%s", PACKAGE_NAME, testClassName));
         return new ExecutionResult(result);
     }
@@ -109,25 +102,9 @@ public class Executor {
      * @throws InterruptedException
      */
     public ExecutionResult executeCode() throws IOException, InterruptedException {
-        String classpath = mergeClasspathPaths(COMPILED_OUTPUT, new Path[]{});
-        String result = cmdExec.executionCommand(CommandLineExecutor.CodeType.CODE, classpath,
+        Path[] classpath = new Path[]{COMPILED_OUTPUT};
+        String result = cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
                 String.format("%s.%s", PACKAGE_NAME, codeClassName));
         return new ExecutionResult(result);
-    }
-
-    /**
-     * Auxiliary method to merge a path with an array of paths into string with format necessary to use as classpath.
-     *
-     * @param originalClasspath
-     * @param otherClasspaths
-     * @return
-     */
-    static String mergeClasspathPaths(Path originalClasspath, Path[] otherClasspaths) {
-        String classpath = originalClasspath.toAbsolutePath().toString();
-        if(otherClasspaths.length > 0) {
-            classpath = Arrays.stream(otherClasspaths).map(cp -> cp.toAbsolutePath().toString())
-                    .collect(Collectors.joining(";")) + ";" + classpath;
-        }
-        return classpath;
     }
 }
