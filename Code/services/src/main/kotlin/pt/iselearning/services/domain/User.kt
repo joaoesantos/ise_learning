@@ -6,6 +6,9 @@ import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 
+/**
+ *
+ */
 @Table("user_app")
 data class User (
     @Id

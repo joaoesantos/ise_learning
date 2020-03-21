@@ -3,6 +3,7 @@ package pt.iselearning.services.configuration
 import kotlinx.coroutines.FlowPreview
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -11,7 +12,11 @@ import org.springframework.web.reactive.function.server.router
 import pt.iselearning.services.controller.UserController
 import pt.iselearning.services.domain.User
 
+/**
+ *
+ */
 @Configuration
+@EnableR2dbcRepositories
 class UserConfiguration {
 
     @FlowPreview
@@ -29,7 +34,8 @@ class UserConfiguration {
             accept(MediaType.APPLICATION_JSON)
             POST("") {req ->
                 ServerResponse.ok().body(req.bodyToMono(User::class.java).doOnNext { user ->
-                        controller.createUser(user)                })
+                        controller.createUser(user)
+                })
             }
 
             accept(MediaType.APPLICATION_JSON)
