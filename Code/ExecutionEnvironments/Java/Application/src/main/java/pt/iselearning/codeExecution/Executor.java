@@ -27,8 +27,7 @@ public class Executor {
      * Constants holding the path value needed for the execution
      */
     private final static String PACKAGE_NAME = "app";
-    private final static Path UNCOMPILED_OUTPUT = Paths.get(".", "code", "uncompiled");
-    private final static Path COMPILED_OUTPUT = Paths.get(".", "code", "compiled");
+    private final static Path CODE_OUTPUT = Paths.get(".", "code");
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
         this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);
@@ -37,7 +36,7 @@ public class Executor {
             throw new MissingClassException("Cannot parse public class name from code.");
         }
         if(testCode != null) {
-            this.testCode = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
+            this.testCode = String.format("package %s; import %s.%s;",PACKAGE_NAME, PACKAGE_NAME, codeClassName) + CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
                 throw new MissingClassException("Cannot parse public class name from unit test code.");
@@ -53,15 +52,24 @@ public class Executor {
      * @throws InterruptedException
      */
     public void compileCode() throws IOException, InterruptedException {
-        FileUtils.deleteDirectory(UNCOMPILED_OUTPUT.toFile());
-        FileUtils.deleteDirectory(COMPILED_OUTPUT.toFile());
-        Path fullPathToCodeFile = UNCOMPILED_OUTPUT.resolve(String.format("%s.java", codeClassName));
-        compile(fullPathToCodeFile, code, new Path[]{UNCOMPILED_OUTPUT});
+        FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
+        Path fullPathToCodeFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", codeClassName));
+        compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
         if(testCode != null) {
-            Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
-            Path fullPathToTestFile = UNCOMPILED_OUTPUT.resolve(String.format("%s.java", testClassName));
-            compile(fullPathToTestFile, testCode, new Path[]{junitJar, UNCOMPILED_OUTPUT});
+            compileTestCode();
         }
+    }
+
+    /**
+     * Orchestrates test code compilation for the java project.
+     *
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private void compileTestCode() throws IOException, InterruptedException {
+        Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
+        Path fullPathToTestFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", testClassName));
+        compile(fullPathToTestFile, testCode, new Path[]{junitJar, CODE_OUTPUT});
     }
 
     /**
@@ -75,7 +83,7 @@ public class Executor {
      */
     private void compile(Path fullPathToFile, String code, Path[] classpath) throws IOException, InterruptedException {
         JavaFile.createJavaFile(fullPathToFile, code);
-        cmdExec.compileCommand(classpath, fullPathToFile, COMPILED_OUTPUT);
+        cmdExec.compileCommand(classpath, fullPathToFile, CODE_OUTPUT);
     }
 
     /**
@@ -88,7 +96,7 @@ public class Executor {
     public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
         Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
         Path hamcrestJar = Paths.get(".", "libs", "hamcrest-all-1.3.jar");
-        Path[] classpath = new Path[]{junitJar, hamcrestJar, COMPILED_OUTPUT};
+        Path[] classpath = new Path[]{junitJar, hamcrestJar, CODE_OUTPUT};
         String result = cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
                 String.format("%s.%s", PACKAGE_NAME, testClassName));
         return new ExecutionResult(result);
@@ -102,7 +110,7 @@ public class Executor {
      * @throws InterruptedException
      */
     public ExecutionResult executeCode() throws IOException, InterruptedException {
-        Path[] classpath = new Path[]{COMPILED_OUTPUT};
+        Path[] classpath = new Path[]{CODE_OUTPUT};
         String result = cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
                 String.format("%s.%s", PACKAGE_NAME, codeClassName));
         return new ExecutionResult(result);
