@@ -6,19 +6,19 @@ import pt.iselearning.models.ExecutionResult;
 import pt.iselearning.utils.CodeParser;
 import pt.iselearning.utils.CommandExecutor;
 import pt.iselearning.utils.JarLocations;
-import pt.iselearning.utils.JavaFile;
+import pt.iselearning.utils.KotlinFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * This class is responsible for orchestrating the execution of a java project with a single class and maybe a test
+ * This class is responsible for orchestrating the execution of a kotlin project with a single class and maybe a test
  * class if initialized for that purpose.
  */
 public class Executor {
+    private static final String CODE_FILE_NAME = "Code";
     private final CommandExecutor cmdExec;
-    private String codeClassName;
     private String code;
 
     private String testClassName;
@@ -27,17 +27,12 @@ public class Executor {
     /**
      * Constants holding the path value needed for the execution
      */
-    private final static String PACKAGE_NAME = "app";
     private final static Path CODE_OUTPUT = Paths.get(".", "codeOutput");
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
-        this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);
-        this.codeClassName = CodeParser.extractClassName(this.code);
-        if(this.codeClassName == null) {
-            throw new MissingClassException("Cannot parse public class name from code.");
-        }
+        this.code = CodeParser.removeEndLinesAndDuplicateSpaces(code);
         if(testCode != null) {
-            this.testCode = String.format("package %s; import %s.%s;",PACKAGE_NAME, PACKAGE_NAME, codeClassName) + CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
+            this.testCode = CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
                 throw new MissingClassException("Cannot parse public class name from unit test code.");
@@ -47,7 +42,7 @@ public class Executor {
     }
 
     /**
-     * Orchestrates code compilation for the java project.
+     * Orchestrates code compilation for the koltin project.
      *
      * @throws IOException
      * @throws InterruptedException
@@ -55,8 +50,8 @@ public class Executor {
      */
     public ExecutionResult compileCode() throws IOException, InterruptedException {
         FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
-        Path fullPathToCodeFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", codeClassName));
-        ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
+        Path fullPathToCodeFile = CODE_OUTPUT.resolve(String.format("%s.kt", CODE_FILE_NAME));
+        ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{}, CODE_FILE_NAME);
         if (codeCompileRes.wasError()) {
             return codeCompileRes;
         } else if (testCode != null) {
@@ -66,19 +61,20 @@ public class Executor {
     }
 
     /**
-     * Orchestrates test code compilation for the java project.
+     * Orchestrates test code compilation for the koltin project.
      *
      * @throws IOException
      * @throws InterruptedException
      * @return
      */
     private ExecutionResult compileTestCode() throws IOException, InterruptedException {
-        Path fullPathToTestFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", testClassName));
-        return compile(fullPathToTestFile, testCode, new Path[]{JarLocations.JUNIT_JAR, CODE_OUTPUT});
+        Path codeJar = CODE_OUTPUT.resolve(String.format("%s.jar", CODE_FILE_NAME));
+        Path fullPathToTestFile = CODE_OUTPUT.resolve(String.format("%s.kt", testClassName));
+        return compile(fullPathToTestFile, testCode, new Path[]{JarLocations.JUNIT_JAR, codeJar}, testClassName);
     }
 
     /**
-     * Orchestrates code compilation for a single java file, including file creation.
+     * Orchestrates code compilation for a single koltin file, including file creation.
      *
      * @param fullPathToFile
      * @param code
@@ -87,26 +83,27 @@ public class Executor {
      * @throws InterruptedException
      * @return
      */
-    private ExecutionResult compile(Path fullPathToFile, String code, Path[] classpath) throws IOException, InterruptedException {
-        JavaFile.createJavaFile(fullPathToFile, code);
-        return cmdExec.compileCommand(classpath, fullPathToFile, CODE_OUTPUT);
+    private ExecutionResult compile(Path fullPathToFile, String code, Path[] classpath, String jarName) throws IOException, InterruptedException {
+        KotlinFile.createJavaFile(fullPathToFile, code);
+        return  cmdExec.compileCommand(classpath, fullPathToFile, CODE_OUTPUT.resolve(String.format("%s.jar", jarName)));
     }
 
     /**
-     * Orchestrates execution of unit tests for the java project.
+     * Orchestrates execution of unit tests for the kotlin project.
      *
      * @return
      * @throws IOException
      * @throws InterruptedException
      */
     public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
-        Path[] classpath = new Path[]{JarLocations.JUNIT_JAR, JarLocations.HAMCREST_JAR, CODE_OUTPUT};
-        return cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
-                String.format("%s.%s", PACKAGE_NAME, testClassName));
+        Path codeJar = CODE_OUTPUT.resolve(String.format("%s.jar", CODE_FILE_NAME));
+        Path testJar = CODE_OUTPUT.resolve(String.format("%s.jar", testClassName));
+        Path[] classpath = new Path[]{JarLocations.JUNIT_JAR, JarLocations.HAMCREST_JAR, codeJar, testJar};
+        return cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath, testClassName);
     }
 
     /**
-     * Orchestrates execution of the main method for the java project.
+     * Orchestrates execution of the main method for the kotlin project.
      *
      * @return
      * @throws IOException
@@ -114,7 +111,6 @@ public class Executor {
      */
     public ExecutionResult executeCode() throws IOException, InterruptedException {
         Path[] classpath = new Path[]{CODE_OUTPUT};
-        return cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
-                String.format("%s.%s", PACKAGE_NAME, codeClassName));
+        return cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath, CODE_FILE_NAME);
     }
 }
