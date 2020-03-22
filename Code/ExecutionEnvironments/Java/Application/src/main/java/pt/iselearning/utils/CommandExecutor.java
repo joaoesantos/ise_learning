@@ -1,6 +1,9 @@
 package pt.iselearning.utils;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pt.iselearning.models.ExecutionResult;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,6 +19,7 @@ import java.util.stream.Stream;
  *
  */
 public class CommandExecutor {
+    private static final Logger LOGGER = LogManager.getLogger(CommandExecutor.class);
     private static final Path CMD_OUTPUT_FILE = Paths.get(".", "CMD_Output.txt");
     private static CommandExecutor instance;
 
@@ -38,10 +42,13 @@ public class CommandExecutor {
 
     private CommandExecutor() throws IOException {
         if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC){
+            LOGGER.debug("Linux or Mac environment detected.");
             this.shellType = ShellType.BASH;
         } else if(SystemUtils.IS_OS_WINDOWS) {
+            LOGGER.debug("Windows environment detected.");
             this.shellType = ShellType.CMD;
         } else {
+            LOGGER.debug("Other environment detected.");
             this.shellType = ShellType.BASH;
         }
         processBuilder = new ProcessBuilder();
@@ -68,17 +75,16 @@ public class CommandExecutor {
      * @throws InterruptedException
      * @throws IOException
      */
-    public String compileCommand(Path[] classpath, Path filesPath, Path output) throws InterruptedException, IOException {
-        processBuilder.command(shellType.exec, shellType.c, String.format("javac -cp %s %s -d %s",
-                classpathPathArrayToString(classpath), filesPath.toAbsolutePath().toString(),
-                output.toAbsolutePath().toString()));
+    public ExecutionResult compileCommand(Path[] classpath, Path filesPath, Path output) throws InterruptedException, IOException {
+        String commandText = String.format("javac%s %s -d %s",
+                (classpath == null || classpath.length == 0)
+                        ? "" : " -cp " + classpathPathArrayToString(classpath),
+                filesPath.toAbsolutePath().toString(), output.toAbsolutePath().toString());
+        LOGGER.info(String.format("Execute compile command %s", commandText));
+        processBuilder.command(shellType.exec, shellType.c, commandText);
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
-        if (exitVal == 0) {
-            return getDataFromCmdResultFile();
-        } else {
-            return getDataFromCmdResultFile();
-        }
+        return getExecutionResult(exitVal);
     }
 
     /**
@@ -91,23 +97,38 @@ public class CommandExecutor {
      * @throws InterruptedException
      * @throws IOException
      */
-    public String executionCommand(CodeType type, Path[] classpath, String fullQualifiedClassNameToExecute)
+    public ExecutionResult executionCommand(CodeType type, Path[] classpath, String fullQualifiedClassNameToExecute)
             throws InterruptedException, IOException {
         if(type.equals(CodeType.TEST)) {
-            processBuilder.command(shellType.exec, shellType.c,
-                    String.format("java -cp %s org.junit.runner.JUnitCore %s", classpathPathArrayToString(classpath),
-                            fullQualifiedClassNameToExecute));
+            String executeTestCommandText = String.format("java -cp %s org.junit.runner.JUnitCore %s",
+                    classpathPathArrayToString(classpath), fullQualifiedClassNameToExecute);
+            LOGGER.info(String.format("Execute execute tests command %s", executeTestCommandText));
+            processBuilder.command(shellType.exec, shellType.c, executeTestCommandText);
         } else if(type.equals(CodeType.CODE)) {
-            processBuilder.command(shellType.exec, shellType.c,
-                    String.format("java -cp %s %s", classpathPathArrayToString(classpath),
-                            fullQualifiedClassNameToExecute));
+            String executeCodeCommandText = String.format("java -cp %s %s", classpathPathArrayToString(classpath),
+                    fullQualifiedClassNameToExecute);
+            LOGGER.info(String.format("Execute execute code command %s", executeCodeCommandText));
+            processBuilder.command(shellType.exec, shellType.c, executeCodeCommandText);
         }
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
+        return getExecutionResult(exitVal);
+    }
+
+    /**
+     * Auxiliary method to get Execution result depending of value returned from shell.
+     *
+     * @param exitVal
+     * @return
+     * @throws IOException
+     */
+    public ExecutionResult getExecutionResult(int exitVal) throws IOException {
         if (exitVal == 0) {
-            return getDataFromCmdResultFile();
+            LOGGER.info("Command executed successfuly.");
+            return new ExecutionResult(getDataFromCmdResultFile(), false);
         } else {
-            return getDataFromCmdResultFile();
+            LOGGER.error("Command executed with error.");
+            return new ExecutionResult(getDataFromCmdResultFile(), true);
         }
     }
 

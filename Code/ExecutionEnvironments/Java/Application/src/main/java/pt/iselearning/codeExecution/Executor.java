@@ -5,6 +5,7 @@ import pt.iselearning.exceptions.MissingClassException;
 import pt.iselearning.models.ExecutionResult;
 import pt.iselearning.utils.CodeParser;
 import pt.iselearning.utils.CommandExecutor;
+import pt.iselearning.utils.JarLocations;
 import pt.iselearning.utils.JavaFile;
 
 import java.io.IOException;
@@ -50,14 +51,18 @@ public class Executor {
      *
      * @throws IOException
      * @throws InterruptedException
+     * @return
      */
-    public void compileCode() throws IOException, InterruptedException {
+    public ExecutionResult compileCode() throws IOException, InterruptedException {
         FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
         Path fullPathToCodeFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", codeClassName));
-        compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
-        if(testCode != null) {
-            compileTestCode();
+        ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
+        if (codeCompileRes.wasError()) {
+            return codeCompileRes;
+        } else if (testCode != null) {
+            return compileTestCode();
         }
+        return codeCompileRes;
     }
 
     /**
@@ -65,11 +70,11 @@ public class Executor {
      *
      * @throws IOException
      * @throws InterruptedException
+     * @return
      */
-    private void compileTestCode() throws IOException, InterruptedException {
-        Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
+    private ExecutionResult compileTestCode() throws IOException, InterruptedException {
         Path fullPathToTestFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", testClassName));
-        compile(fullPathToTestFile, testCode, new Path[]{junitJar, CODE_OUTPUT});
+        return compile(fullPathToTestFile, testCode, new Path[]{JarLocations.JUNIT_JAR, CODE_OUTPUT});
     }
 
     /**
@@ -80,10 +85,11 @@ public class Executor {
      * @param classpath
      * @throws IOException
      * @throws InterruptedException
+     * @return
      */
-    private void compile(Path fullPathToFile, String code, Path[] classpath) throws IOException, InterruptedException {
+    private ExecutionResult compile(Path fullPathToFile, String code, Path[] classpath) throws IOException, InterruptedException {
         JavaFile.createJavaFile(fullPathToFile, code);
-        cmdExec.compileCommand(classpath, fullPathToFile, CODE_OUTPUT);
+        return cmdExec.compileCommand(classpath, fullPathToFile, CODE_OUTPUT);
     }
 
     /**
@@ -94,12 +100,9 @@ public class Executor {
      * @throws InterruptedException
      */
     public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
-        Path junitJar = Paths.get(".", "libs", "junit-4.13.jar");
-        Path hamcrestJar = Paths.get(".", "libs", "hamcrest-all-1.3.jar");
-        Path[] classpath = new Path[]{junitJar, hamcrestJar, CODE_OUTPUT};
-        String result = cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
+        Path[] classpath = new Path[]{JarLocations.JUNIT_JAR, JarLocations.HAMCREST_JAR, CODE_OUTPUT};
+        return cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
                 String.format("%s.%s", PACKAGE_NAME, testClassName));
-        return new ExecutionResult(result);
     }
 
     /**
@@ -111,8 +114,7 @@ public class Executor {
      */
     public ExecutionResult executeCode() throws IOException, InterruptedException {
         Path[] classpath = new Path[]{CODE_OUTPUT};
-        String result = cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
+        return cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
                 String.format("%s.%s", PACKAGE_NAME, codeClassName));
-        return new ExecutionResult(result);
     }
 }

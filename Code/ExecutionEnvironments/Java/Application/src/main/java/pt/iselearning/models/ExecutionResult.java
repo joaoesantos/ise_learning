@@ -5,12 +5,18 @@ package pt.iselearning.models;
  */
 public class ExecutionResult {
     private String rawResult;
+    private boolean wasError;
 
     public String getRawResult() {
         return rawResult;
     }
 
-    public ExecutionResult(String rawResult) {
+    public boolean wasError() {
+        return wasError;
+    }
+
+    public ExecutionResult(String rawResult, boolean wasError) {
         this.rawResult = rawResult;
+        this.wasError = wasError;
     }
 }
