@@ -1,0 +1,27 @@
+examples on how to process binary data using the PostgreSQL JDBC driver
+
+TO INSERT IMAGE
+File file = new File("myimage.gif");
+FileInputStream fis = new FileInputStream(file);
+PreparedStatement ps = conn.prepareStatement("INSERT INTO images VALUES (?, ?)");
+ps.setString(1, file.getName());
+ps.setBinaryStream(2, fis, file.length());
+ps.executeUpdate();
+ps.close();
+fis.close();
+
+TO GET IMAGE
+PreparedStatement ps = con.prepareStatement("SELECT img FROM images WHERE imgname = ?");
+ps.setString(1, "myimage.gif");
+ResultSet rs = ps.executeQuery();
+if (rs != null) {
+    while (rs.next()) {
+        byte[] imgBytes = rs.getBytes(1);
+        // use the data in some way here
+    }
+    rs.close();
+}
+ps.close();
+
+// set connections on google cloud sql 
+https://www.youtube.com/watch?v=XAowXcmQ-kA
