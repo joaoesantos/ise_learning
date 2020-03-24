@@ -49,7 +49,9 @@ public class Executor {
      * @return
      */
     public ExecutionResult compileCode() throws IOException, InterruptedException {
-        FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
+        if(CODE_OUTPUT.toFile().exists()) {
+            FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
+        }
         Path fullPathToCodeFile = CODE_OUTPUT.resolve(String.format("%s.kt", CODE_FILE_NAME));
         ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{}, CODE_FILE_NAME);
         if (codeCompileRes.wasError()) {

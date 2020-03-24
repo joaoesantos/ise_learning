@@ -54,7 +54,9 @@ public class Executor {
      * @return
      */
     public ExecutionResult compileCode() throws IOException, InterruptedException {
-        FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
+        if(CODE_OUTPUT.toFile().exists()) {
+            FileUtils.cleanDirectory(CODE_OUTPUT.toFile());
+        }
         Path fullPathToCodeFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", codeClassName));
         ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
         if (codeCompileRes.wasError()) {
