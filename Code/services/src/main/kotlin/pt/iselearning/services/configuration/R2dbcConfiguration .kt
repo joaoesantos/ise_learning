@@ -9,12 +9,15 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 
 /**
- *
+ * Class with configuration for the R2dbc repositories
  */
 @Configuration
 @EnableR2dbcRepositories
 class R2dbcConfiguration  : AbstractR2dbcConfiguration() {
 
+    /**
+     * Bean to implement connection factory
+     */
     @Bean
     override fun connectionFactory(): ConnectionFactory  {
 

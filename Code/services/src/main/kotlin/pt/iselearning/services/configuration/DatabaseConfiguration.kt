@@ -1,7 +1,6 @@
 package pt.iselearning.services.configuration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import java.io.File
 import java.nio.file.Paths
 
 /**
@@ -11,7 +10,7 @@ object DatabaseConfiguration {
     var props : Properties = Properties()
 
     /**
-     *
+     * Inner data class to hold information while reading json file that must be present in the resources folder
      */
     data class Properties (
             val host : String = "",

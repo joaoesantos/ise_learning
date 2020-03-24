@@ -6,9 +6,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.router
 import pt.iselearning.services.handler.UserHandler
 
+/**
+ * Class configuration for the User endpoints
+ */
 @Configuration
 class UserRouter {
 
+    /**
+     * Router function to register handler functions
+     */
     @FlowPreview
     @Bean
     fun route(userHandler: UserHandler) = router {
@@ -17,6 +23,7 @@ class UserRouter {
             GET("/{id}", userHandler::getUserById)
             POST("", userHandler::createUser)
             PUT("", userHandler::updateUser)
+            DELETE("/{id}", userHandler::deleteUser)
         }
     }
 }
