@@ -13,6 +13,88 @@ tags:
     description: Operations for the application services.
 paths:
   /Execution Environments:
-   
+    /:
+      post:
+        tags:
+          -execute
+        summary: Execute code or unit tests sent
+        operationId: execute
+        description: |
+          Executes code or unit tests sent, depending on the value of "executeTests" field.
+
+        requestBody:
+          description: Code and unit tests to be executed.
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/executable'
+
+        responses:
+          '200':
+            description: Code result
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    rawResult:
+                      type: string
+                      description: Result or execution of compilation.
+                      example: "Hello World".
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                      errorMessage:
+                        type: string
+                        description: Technical error message.
+                        example: "Cannot parse public class name from code.".
+          '404':
+            description: Not Found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                      errorMessage:
+                        type: string
+                        description: Technical error message.
+                        example: "Method not supported".
+          '500':
+            description: Server error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMessage:
+                        type: string
+                        description: Technical error message.
+                        example: "Internal Server Error".
   /Services:
     
+
+  components:
+    schemas:
+      executable:
+        type: object
+        required:
+          - code
+          - executeTests
+        properties:
+          code:
+            type: string
+            example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+            description: Code must be ready to execute in typical execution format depending on language
+          unitTests:
+            type: string
+            example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+            description: Unit Tests must be ready to execute in typical execution format depending on language
+          executeTests:
+            type: booleam
+            example: true
+            description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
