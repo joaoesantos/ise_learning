@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  15 MAR 2020 16:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  26 MAR 2020 11:47
 entering extended mode
 **./propostaprojeto.tex
 (propostaprojeto.tex
@@ -101,7 +101,54 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 \rotFPbot=\skip50
 \rot@float@box=\box45
 \rot@mess@toks=\toks17
-) (xarticle.sty
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\concmath.sty"
+Package: concmath 1999/03/10 v2.0b LaTeX package for Concrete math fonts
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 43.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ccr/m/n on input line 43.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/m/n on input line 43.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 44.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ccm/m/it on input line 44.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ccm/m/it on input line 44.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 45.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ccsy/m/n on input line 45.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ccsy/m/n on input line 45.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 46.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ccex/m/n on input line 46.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ccex/m/n on input line 46.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/ccr/m/n --> OT1/ccr/bx/n on input line 47.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/ccm/m/it --> OML/ccm/b/it on input line 48.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/ccsy/m/n --> OMS/ccsy/b/n on input line 49.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 53.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/bx/n on input line 53.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ccr/bx/n on input line 53.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 54.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ccr/m/it on input line 54.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ccr/m/it on input line 54.
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\fontenc.sty"
+Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+ccr on input line 11
+2.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/ccfonts\t1ccr.fd"
+File: t1ccr.fd 1999/11/22 v1.0a (WaS)
+)) (xarticle.sty
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amscls\amsthm.sty"
 Package: amsthm 2017/10/31 v2.20.4
 \thm@style=\toks18
@@ -264,28 +311,21 @@ Package: enumitem 2019/06/20 v3.9 Customized lists
 \enit@count@id=\count280
 \enitdp@description=\count281
 )
-("C:\Program Files\MiKTeX 2.9\tex/latex/natbib\natbib.sty"
-Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip62
-\bibsep=\skip63
-LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count282
-)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/lipsum\lipsum.sty"
 ("C:\Program Files\MiKTeX 2.9\tex/latex/l3kernel\expl3.sty"
 Package: expl3 2020-02-14 L3 programming layer (loader) 
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/l3backend\l3backend-pdfmode.def"
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count283
+\l__kernel_color_stack_int=\count282
 \l__pdf_internal_box=\box49
 ))
 ("C:\Program Files\MiKTeX 2.9\tex/latex/l3packages/xparse\xparse.sty"
 Package: xparse 2020-02-14 L3 Experimental document command parser
-\l__xparse_current_arg_int=\count284
-\g__xparse_grabber_int=\count285
-\l__xparse_m_args_int=\count286
-\l__xparse_v_nesting_int=\count287
+\l__xparse_current_arg_int=\count283
+\g__xparse_grabber_int=\count284
+\l__xparse_m_args_int=\count285
+\l__xparse_v_nesting_int=\count286
 )
 Package: lipsum 2019/01/02 v2.2 150 paragraphs of Lorem Ipsum dummy text
 
@@ -294,7 +334,7 @@ File: lipsum.ltd.tex 2019/01/02 v2.2 The Lorem ipsum dummy text
 ))
 ("C:\Program Files\MiKTeX 2.9\tex/latex/float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count288
+\c@float@type=\count287
 \float@exts=\toks30
 \float@box=\box50
 \@float@everytoks=\toks31
@@ -303,364 +343,41 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/placeins\placeins.sty"
 Package: placeins 2005/04/18  v 2.2
 )
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgfgantt\pgfgantt.sty"
-Package: pgfgantt 2018/01/10 v5.0 Draw Gantt diagrams with TikZ
-
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/frontendlayer\tikz.sty"
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/basiclayer\pgf.sty"
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/utilities\pgfrcs.sty"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfutil-common.tex"
-\pgfutil@everybye=\toks32
-\pgfutil@tempdima=\dimen149
-\pgfutil@tempdimb=\dimen150
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfutil-common-lists.te
-x")) ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfutil-latex.def"
-\pgfutil@abb=\box52
-("C:\Program Files\MiKTeX 2.9\tex/latex/ms\everyshi.sty"
-Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfrcs.code.tex"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf\pgf.revision.tex")
-Package: pgfrcs 2020/01/08 v3.1.5b (3.1.5b)
-))
-Package: pgf 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/basiclayer\pgfcore.sty"
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/systemlayer\pgfsys.sty"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgfsys.code.tex"
-Package: pgfsys 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfkeys.code.tex"
-\pgfkeys@pathtoks=\toks33
-\pgfkeys@temptoks=\toks34
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfkeysfiltered.code.te
-x"
-\pgfkeys@tmptoks=\toks35
-))
-\pgf@x=\dimen151
-\pgf@y=\dimen152
-\pgf@xa=\dimen153
-\pgf@ya=\dimen154
-\pgf@xb=\dimen155
-\pgf@yb=\dimen156
-\pgf@xc=\dimen157
-\pgf@yc=\dimen158
-\pgf@xd=\dimen159
-\pgf@yd=\dimen160
-\w@pgf@writea=\write3
-\r@pgf@reada=\read3
-\c@pgf@counta=\count289
-\c@pgf@countb=\count290
-\c@pgf@countc=\count291
-\c@pgf@countd=\count292
-\t@pgf@toka=\toks36
-\t@pgf@tokb=\toks37
-\t@pgf@tokc=\toks38
-\pgf@sys@id@count=\count293
- ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgf.cfg"
-File: pgf.cfg 2020/01/08 v3.1.5b (3.1.5b)
-)
-Driver file for pgf: pgfsys-pdftex.def
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgfsys-pdftex.def"
-File: pgfsys-pdftex.def 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
-"
-File: pgfsys-common-pdf.def 2020/01/08 v3.1.5b (3.1.5b)
-)))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.t
-ex"
-File: pgfsyssoftpath.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfsyssoftpath@smallbuffer@items=\count294
-\pgfsyssoftpath@bigbuffer@items=\count295
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/systemlayer\pgfsysprotocol.code.t
-ex"
-File: pgfsysprotocol.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)) ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcore.code.tex"
-Package: pgfcore 2020/01/08 v3.1.5b (3.1.5b)
- ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmath.code.tex"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathcalc.code.tex"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathutil.code.tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathparser.code.tex"
-\pgfmath@dimen=\dimen161
-\pgfmath@count=\count296
-\pgfmath@box=\box53
-\pgfmath@toks=\toks39
-\pgfmath@stack@operand=\toks40
-\pgfmath@stack@operation=\toks41
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.code.tex"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.basic.code.
-tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.trigonometr
-ic.code.tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.random.code
-.tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.comparison.
-code.tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.base.code.t
-ex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.round.code.
-tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.misc.code.t
-ex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfunctions.integerarit
-hmetics.code.tex")))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmathfloat.code.tex"
-\c@pgfmathroundto@lastzeros=\count297
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfint.code.tex")
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
-"
-File: pgfcorepoints.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@picminx=\dimen162
-\pgf@picmaxx=\dimen163
-\pgf@picminy=\dimen164
-\pgf@picmaxy=\dimen165
-\pgf@pathminx=\dimen166
-\pgf@pathmaxx=\dimen167
-\pgf@pathminy=\dimen168
-\pgf@pathmaxy=\dimen169
-\pgf@xx=\dimen170
-\pgf@xy=\dimen171
-\pgf@yx=\dimen172
-\pgf@yy=\dimen173
-\pgf@zx=\dimen174
-\pgf@zy=\dimen175
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorepathconstruct.c
-ode.tex"
-File: pgfcorepathconstruct.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@path@lastx=\dimen176
-\pgf@path@lasty=\dimen177
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorepathusage.code.
-tex"
-File: pgfcorepathusage.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@shorten@end@additional=\dimen178
-\pgf@shorten@start@additional=\dimen179
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
-"
-File: pgfcorescopes.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfpic=\box54
-\pgf@hbox=\box55
-\pgf@layerbox@main=\box56
-\pgf@picture@serial@count=\count298
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoregraphicstate.co
-de.tex"
-File: pgfcoregraphicstate.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgflinewidth=\dimen180
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoretransformations
-.code.tex"
-File: pgfcoretransformations.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@pt@x=\dimen181
-\pgf@pt@y=\dimen182
-\pgf@pt@temp=\dimen183
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorequick.code.tex"
-File: pgfcorequick.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoreobjects.code.te
-x"
-File: pgfcoreobjects.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorepathprocessing.
-code.tex"
-File: pgfcorepathprocessing.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
-"
-File: pgfcorearrows.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfarrowsep=\dimen184
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex"
-File: pgfcoreshade.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@max=\dimen185
-\pgf@sys@shading@range@num=\count299
-\pgf@shadingcount=\count300
-) ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoreimage.code.te
-x"
-File: pgfcoreimage.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoreexternal.code.t
-ex"
-File: pgfcoreexternal.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfexternal@startupbox=\box57
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
-"
-File: pgfcorelayers.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcoretransparency.co
-de.tex"
-File: pgfcoretransparency.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorepatterns.code.t
-ex"
-File: pgfcorepatterns.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex"
-File: pgfcorerdf.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-))) ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/modules\pgfmoduleshapes.code.
-tex"
-File: pgfmoduleshapes.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfnodeparttextbox=\box58
-) ("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/modules\pgfmoduleplot.code.tex"
-File: pgfmoduleplot.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/compatibility\pgfcomp-version-0-65.
-sty"
-Package: pgfcomp-version-0-65 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@nodesepstart=\dimen186
-\pgf@nodesepend=\dimen187
-)
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/compatibility\pgfcomp-version-1-18.
-sty"
-Package: pgfcomp-version-1-18 2020/01/08 v3.1.5b (3.1.5b)
-)) ("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/utilities\pgffor.sty"
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/utilities\pgfkeys.sty"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfkeys.code.tex"))
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/math\pgfmath.sty"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmath.code.tex"))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgffor.code.tex"
-Package: pgffor 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfmath.code.tex")
-\pgffor@iter=\dimen188
-\pgffor@skip=\dimen189
-\pgffor@stack=\toks42
-\pgffor@toks=\toks43
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex"
-Package: tikz 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/libraries\pgflibraryplothandlers.
-code.tex"
-File: pgflibraryplothandlers.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@plot@mark@count=\count301
-\pgfplotmarksize=\dimen190
-)
-\tikz@lastx=\dimen191
-\tikz@lasty=\dimen192
-\tikz@lastxsaved=\dimen193
-\tikz@lastysaved=\dimen194
-\tikz@lastmovetox=\dimen195
-\tikz@lastmovetoy=\dimen196
-\tikzleveldistance=\dimen197
-\tikzsiblingdistance=\dimen198
-\tikz@figbox=\box59
-\tikz@figbox@bg=\box60
-\tikz@tempbox=\box61
-\tikz@tempbox@bg=\box62
-\tikztreelevel=\count302
-\tikznumberofchildren=\count303
-\tikznumberofcurrentchild=\count304
-\tikz@fig@count=\count305
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/modules\pgfmodulematrix.code.tex"
-File: pgfmodulematrix.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgfmatrixcurrentrow=\count306
-\pgfmatrixcurrentcolumn=\count307
-\pgf@matrix@numberofcolumns=\count308
-)
-\tikz@expandcount=\count309
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-librarytopaths.code.tex"
-File: tikzlibrarytopaths.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-libraryarrows.code.tex"
-File: tikzlibraryarrows.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/libraries\pgflibraryarrows.code.t
-ex"
-File: pgflibraryarrows.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\arrowsize=\dimen199
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-librarybackgrounds.code.tex"
-File: tikzlibrarybackgrounds.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-\pgf@layerbox@background=\box63
-\pgf@layerboxsaved@background=\box64
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-librarycalc.code.tex"
-File: tikzlibrarycalc.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-librarypatterns.code.tex"
-File: tikzlibrarypatterns.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/libraries\pgflibrarypatterns.code
-.tex"
-File: pgflibrarypatterns.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-))
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-librarypositioning.code.tex"
-File: tikzlibrarypositioning.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-)
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/frontendlayer/tikz/libraries\tikz
-libraryshapes.geometric.code.tex"
-File: tikzlibraryshapes.geometric.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/libraries/shapes\pgflibraryshapes
-.geometric.code.tex"
-File: pgflibraryshapes.geometric.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-))
-("C:\Program Files\MiKTeX 2.9\tex/latex/pgf/utilities\pgfcalendar.sty"
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/utilities\pgfcalendar.code.tex"
-File: pgfcalendar.code.tex 2020/01/08 v3.1.5b (3.1.5b)
-
-("C:\Program Files\MiKTeX 2.9\tex/generic/pgf/math\pgfint.code.tex")
-\pgfcalendarcurrentjulian=\count310
-\pgf@cal@easter@Y=\count311
-\pgf@cal@easter@G=\count312
-\pgf@cal@easter@C=\count313
-\pgf@cal@easter@X=\count314
-\pgf@cal@easter@Z=\count315
-\pgf@cal@easter@D=\count316
-\pgf@cal@easter@E=\count317
-\pgf@cal@easter@N=\count318
-\pgf@cal@easter@M=\count319
-\pgf@cal@easter@julianday=\count320
-))
-\gtt@currentline=\count321
-\gtt@lasttitleline=\count322
-\gtt@currgrid=\count323
-\gtt@chartwidth=\count324
-\gtt@lasttitleslot=\count325
-\gtt@elementid=\count326
-\gtt@today@slot=\count327
-\gtt@startjulian=\count328
-\gtt@endjulian=\count329
-\gtt@chartid=\count330
-\gtt@vrule@slot=\count331
-\gtt@calendar@slots=\count332
-\gtt@calendar@weeknumber=\count333
-\gtt@calendar@startofweek=\count334
-\gtt@left@slot=\count335
-\gtt@right@slot=\count336
-)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\lscape.sty"
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
 ("C:\Program Files\MiKTeX 2.9\tex/latex/wrapfig\wrapfig.sty"
-\wrapoverhang=\dimen256
-\WF@size=\dimen257
-\c@WF@wrappedlines=\count337
-\WF@box=\box65
-\WF@everypar=\toks44
+\wrapoverhang=\dimen149
+\WF@size=\dimen150
+\c@WF@wrappedlines=\count288
+\WF@box=\box52
+\WF@everypar=\toks32
 Package: wrapfig 2003/01/31  v 3.6
 )
-(propostaprojeto.aux)
+("C:\Program Files\MiKTeX 2.9\tex/latex/natbib\natbib.sty"
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip62
+\bibsep=\skip63
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count289
+)
+(propostaprojeto.aux
+
+! Package natbib Error: Bibliography not compatible with author-year citations.
+
+(natbib)                Press <return> to continue in numerical citation style.
+
+
+See the natbib package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.25 ...mand\NAT@force@numbers{}\NAT@force@numbers
+                                                  
+Check the bibliography entries for non-compliant syntax,
+or select author-year BibTeX style, e.g. plainnat
+
+)
 \openout1 = `propostaprojeto.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
@@ -677,49 +394,165 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
-
-("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
+ ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count338
-\scratchdimen=\dimen258
-\scratchbox=\box66
-\nofMPsegments=\count339
-\nofMParguments=\count340
-\everyMPshowfont=\toks45
-\MPscratchCnt=\count341
-\MPscratchDim=\dimen259
-\MPnumerator=\count342
-\makeMPintoPDFobject=\count343
-\everyMPtoPDFconversion=\toks46
+\scratchcounter=\count290
+\scratchdimen=\dimen151
+\scratchbox=\box53
+\nofMPsegments=\count291
+\nofMParguments=\count292
+\everyMPshowfont=\toks33
+\MPscratchCnt=\count293
+\MPscratchDim=\dimen152
+\MPnumerator=\count294
+\makeMPintoPDFobject=\count295
+\everyMPtoPDFconversion=\toks34
 ) ("C:\Program Files\MiKTeX 2.9\tex/latex/epstopdf-pkg\epstopdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/infwarerr\infwarerr.sty"
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex/latex/grfext\grfext.sty"
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/kvdefinekeys\kvdefinekeys.sty"
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+))
+("C:\Program Files\MiKTeX 2.9\tex/latex/kvoptions\kvoptions.sty"
+Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/ltxcmds\ltxcmds.sty"
+Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex/generic/kvsetkeys\kvsetkeys.sty"
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+))
+("C:\Program Files\MiKTeX 2.9\tex/latex/pdftexcmds\pdftexcmds.sty"
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+("C:\Program Files\MiKTeX 2.9\tex/generic/iftex\iftex.sty"
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
 )
+LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
+(Font)                  U/msa/m/n --> U/cca/m/n on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/msa/m/n --> U/cca/m/n on input line 41.
+LaTeX Font Info:    Redeclaring symbol font `AMSb' on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `normal'
+(Font)                  U/msb/m/n --> U/ccb/m/n on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/msb/m/n --> U/ccb/m/n on input line 41.
+LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
+(Font)                  U/cca/m/n --> U/cca/m/n on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/cca/m/n --> U/cca/m/n on input line 41.
+LaTeX Font Info:    Redeclaring symbol font `AMSb' on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `normal'
+(Font)                  U/ccb/m/n --> U/ccb/m/n on input line 41.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/ccb/m/n --> U/ccb/m/n on input line 41.
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
 (lastpage)             ! on input line 41.
-
-ABD: EveryShipout initializing macros
-<imgs/LOGO_principal.png, id=4, 97.86563pt x 60.225pt>
-File: imgs/LOGO_principal.png Graphic file (type png)
-<use imgs/LOGO_principal.png>
-Package pdftex.def Info: imgs/LOGO_principal.png  used on input line 70.
-(pdftex.def)             Requested size: 97.86537pt x 60.22484pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 70.
+<imgs/LOGO_principal.jpg, id=1, 426.393pt x 301.125pt>
+File: imgs/LOGO_principal.jpg Graphic file (type jpg)
+<use imgs/LOGO_principal.jpg>
+Package pdftex.def Info: imgs/LOGO_principal.jpg  used on input line 70.
+(pdftex.def)             Requested size: 426.39195pt x 301.12425pt.
 
 
-("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 70.
+
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 70.
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 70.
+
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <20.74> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 70.
+LaTeX Font Info:    Trying to load font information for OT1+ccr on input line 7
+0.
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\ot1ccr.fd"
+File: ot1ccr.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 70.
+LaTeX Font Info:    Trying to load font information for OML+ccm on input line 7
+0.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\omlccm.fd"
+File: omlccm.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Trying to load font information for OMS+ccsy on input line 
+70.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\omsccsy.fd"
+File: omsccsy.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Trying to load font information for OMX+ccex on input line 
+70.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\omxccex.fd"
+File: omxccex.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <14.4> on input line 70.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <10> on input line 70.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <7> on input line 70.
+LaTeX Font Info:    Trying to load font information for U+cca on input line 70.
 
 
-("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (introducao.tex)
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\ucca.fd"
+File: ucca.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Trying to load font information for U+ccb on input line 70.
+
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/concmath\uccb.fd"
+File: uccb.fd 1999/03/10 v2.0b LaTeX font defs for Concrete math fonts
+)
+LaTeX Font Info:    Trying to load font information for TS1+ccr on input line 7
+0.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/ccfonts\ts1ccr.fd"
+File: ts1ccr.fd 1999/11/22 v1.0a (WaS)
+)
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 7
+0.
+
+("C:\Program Files\MiKTeX 2.9\tex/latex/base\t1cmtt.fd"
+File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 74.
+
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <17.28> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 74.
+(introducao.tex)
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 77.
+
 (analise.tex
-<./imgs/arquitectura.JPG, id=6, 498.36188pt x 292.59312pt>
+<./imgs/arquitectura.JPG, id=2, 498.36188pt x 292.59312pt>
 File: ./imgs/arquitectura.JPG Graphic file (type jpg)
 <use ./imgs/arquitectura.JPG>
 Package pdftex.def Info: ./imgs/arquitectura.JPG  used on input line 6.
@@ -732,39 +565,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 1--9
 [1
 
 {C:/Users/wolf_/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./imgs/LOGO
-_principal.png>])
-Underfull \hbox (badness 2735) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 pro-vide a REST API
+_principal.jpg>])
+Underfull \hbox (badness 7203) in paragraph at lines 9--79
+[]\T1/ccr/m/n/12 The Ser-vices mod-ule
  []
 
 
-Underfull \hbox (badness 4505) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 This REST API can
+Underfull \hbox (badness 2662) in paragraph at lines 9--79
+\T1/ccr/m/n/12 will pro-vide a REST
  []
 
 
-Underfull \hbox (badness 1297) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 be used stan-dalone or
+Underfull \hbox (badness 6575) in paragraph at lines 9--79
+\T1/ccr/m/n/12 The Ex-e-cu-tion En-vi-
  []
 
 
-Underfull \hbox (badness 7151) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 with the UI mod-ule
+Underfull \hbox (badness 6961) in paragraph at lines 9--79
+\T1/ccr/m/n/12 ron-ment mod-ule will
  []
 
 
-Underfull \hbox (badness 4353) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 and will be used to
+Underfull \hbox (badness 1067) in paragraph at lines 9--79
+\T1/ccr/m/n/12 be re-spon-si-ble for ex-
  []
 
 
-Underfull \hbox (badness 3260) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 sup-port the UI mod-
- []
-
-
-Underfull \hbox (badness 1052) in paragraph at lines 9--79
-\OT1/cmr/m/n/12 spon-si-ble for ex-e-cut-ing
+Underfull \hbox (badness 1681) in paragraph at lines 9--79
+\T1/ccr/m/n/12 e-cut-ing code pro-vided
  []
 
 
@@ -772,47 +600,107 @@ Underfull \hbox (badness 10000) in paragraph at lines 9--79
 
  []
 
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 79.
+
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 79.
 (requisitos.tex
 Underfull \hbox (badness 10000) in paragraph at lines 2--6
 
  []
 
-[2 <./imgs/arquitectura.JPG>]) [3] (calendarizacao.tex
-<./imgs/requisitiosV2.PNG, id=26, 658.8615pt x 436.63126pt>
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 7.
+
+LaTeX Font Info:    Font shape `T1/ccr/bx/n' in size <12> not available
+(Font)              Font shape `T1/cmr/bx/n' tried instead on input line 7.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <12> on input line 7.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <8> on input line 7.
+LaTeX Font Info:    External font `xccex10' loaded for size
+(Font)              <6> on input line 7.
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 9.
+
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 11.
+
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 13.
+
+[2 <./imgs/arquitectura.JPG>]
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 19.
+
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 36.
+
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 45.
+
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 52.
+
+) [3]
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 82.
+
+(calendarizacao.tex
+<./imgs/requisitiosV2.PNG, id=23, 658.8615pt x 436.63126pt>
 File: ./imgs/requisitiosV2.PNG Graphic file (type png)
 <use ./imgs/requisitiosV2.PNG>
 Package pdftex.def Info: ./imgs/requisitiosV2.PNG  used on input line 5.
 (pdftex.def)             Requested size: 543.56009pt x 360.24521pt.
-<./imgs/activityType.PNG, id=27, 499.11469pt x 144.54pt>
+<./imgs/activityType.PNG, id=25, 499.11469pt x 144.54pt>
 File: ./imgs/activityType.PNG Graphic file (type png)
 <use ./imgs/activityType.PNG>
 Package pdftex.def Info: ./imgs/activityType.PNG  used on input line 15.
 (pdftex.def)             Requested size: 271.7835pt x 78.70766pt.
-)
-No file propostaprojeto.bbl.
+) (propostaprojeto.bbl
+
+LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
+(Font)              using `T1/ccr/bx/n' instead on input line 1.
+
+[4 <./imgs/requisitiosV2.PNG> <./imgs/activityType.PNG>])
 
 AED: lastpage setting LastPage
-[4 <./imgs/requisitiosV2.PNG> <./imgs/activityType.PNG>] (propostaprojeto.aux) 
-) 
+[5] (propostaprojeto.aux) ) 
 Here is how much of TeX's memory you used:
- 17177 strings out of 481556
- 346313 string characters out of 2923635
- 681282 words of memory out of 3000000
- 32034 multiletter control sequences out of 15000+200000
- 543332 words of font info for 66 fonts, out of 3000000 for 9000
+ 6330 strings out of 481556
+ 95775 string characters out of 2923635
+ 512375 words of memory out of 3000000
+ 21365 multiletter control sequences out of 15000+200000
+ 551343 words of font info for 72 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,7n,69p,477b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\t
-crm1200.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/e
-c/dpi600\tcrm1095.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on propostaprojeto.pdf (4 pages, 274798 bytes).
+ 38i,7n,38p,477b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/l
+jfour/public/ecc/dpi720\eoti10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fon
+ts/pk/ljfour/public/ecc/dpi720\torm10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\
+2.9\fonts/pk/ljfour/public/concmath-fonts/dpi720\xccsy10.pk> <C:\Users\wolf_\Ap
+pData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\User
+s\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/public/ecc/dpi720\eorm10.pk> <
+C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx
+1728.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/d
+pi600\ectt1095.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/pub
+lic/ecc/dpi657\torm10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljf
+our/public/ecc/dpi657\eorm10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts
+/pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\wolf_\AppData\Local\MiKTeX
+\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk>
+Output written on propostaprojeto.pdf (5 pages, 429403 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 309 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
