@@ -48,6 +48,7 @@ BEGIN
 	
 	CREATE TABLE ANSWER (
 		answerID INT GENERATED ALWAYS AS IDENTITY,
+		codeLanguage VARCHAR(20) NOT NULL,
 		answerCode TEXT,
 		unitTests TEXT,
 		output TEXT,
@@ -58,18 +59,12 @@ BEGIN
 	CREATE TABLE CHALLENGE (
 		challengeID INT GENERATED ALWAYS AS IDENTITY,
 		creatorID INT NOT NULL,
-		codeLanguage VARCHAR(20) NOT NULL,
 		challengeText TEXT NOT NULL,
-		challengeCode TEXT NOT NULL,
-		solutionCode TEXT NOT NULL,
-		unitTests TEXT NOT NULL,
 		privacy BOOLEAN NOT NULL,
 		--
 		PRIMARY KEY (challengeID),
 		FOREIGN KEY (creatorID) 
-			REFERENCES USERS (userID) ON DELETE CASCADE,
-		FOREIGN KEY (codeLanguage) 
-			REFERENCES CODELANGUAGE (codeLanguage)
+			REFERENCES USERS (userID) ON DELETE CASCADE
 	);
 	
 	-- MANY TO MANY (CHALLENGE-TAG)
@@ -83,6 +78,23 @@ BEGIN
 			REFERENCES CHALLENGE (challengeID) ON DELETE CASCADE,
 		FOREIGN KEY (tag) 
 			REFERENCES TAG (tag) ON DELETE CASCADE
+	);
+	
+	CREATE TABLE CHALLENGE_SOLUTION (
+		challengeSolutionID INT GENERATED ALWAYS AS IDENTITY,
+		challengeID INT NOT NULL,
+		codeLanguage VARCHAR(20) NOT NULL,
+		challengeCode TEXT NOT NULL,
+		solutionCode TEXT NOT NULL,
+		unitTests TEXT NOT NULL,
+		--
+		PRIMARY KEY (challengeSolutionID),
+		FOREIGN KEY (challengeID) 
+			REFERENCES CHALLENGE (challengeID) ON DELETE CASCADE,
+		FOREIGN KEY (codeLanguage) 
+			REFERENCES CODELANGUAGE (codeLanguage) ON DELETE CASCADE,
+		--
+		UNIQUE(challengeID,codeLanguage)
 	);
 
 	CREATE TABLE CHALLENGE_ANSWER (
@@ -118,6 +130,7 @@ BEGIN
 		ID INT GENERATED ALWAYS AS IDENTITY,
 		questionnaireID INT NOT NULL,
 		challengeID INT NOT NULL,
+		langFilter VARCHAR(20) NOT NULL,
 		--
 		PRIMARY KEY(ID),
 		FOREIGN KEY (questionnaireID) 
