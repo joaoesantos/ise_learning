@@ -24,12 +24,13 @@ class Executable {
     }
 
     static validate = () => {
-        console.log("validating")
         return [
-            body('code', 'code field is missing')
-                .exists()
+            body('code', "value must be provided")
+                .exists(),
+            body('code', "value can't be empty")
                 .not()
-                .isEmpty()
+                .isEmpty(),
+            body('code', 'value must be a string')
                 .isString(),
             body("executeTests", "value must be provided")
                 .exists(),

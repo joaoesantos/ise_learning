@@ -1,15 +1,16 @@
 const express = require('express');
 const {validationResult } = require('express-validator');
-var router = express.Router();
-var Executable = require('../models/Executable')
+const router = express.Router();
+const executableHandler = require('../handlers/executableHandler')()
+
+let Executable = require('../models/Executable')
 
 /* GET home page. */
 router.post('/', Executable.validate(), function(req, res, next) {
   try{
     validationResult(req).throw();
-    res.status(200).json({
-      message: "all ok"
-    })
+    executableHandler.runCode(req, res)
+    res.status(200)
   }catch(err){
     console.log("error caught")
     console.log(err)

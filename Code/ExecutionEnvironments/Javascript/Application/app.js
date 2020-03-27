@@ -35,4 +35,6 @@ app.use(function(err, req, res, next) {
   res.json({message:"grave error"})
 });
 
+app.listen(3500,()=> {console.log("Listening....")})
+
 module.exports = app;
