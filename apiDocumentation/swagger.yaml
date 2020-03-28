@@ -9,92 +9,513 @@ info:
 tags:
   - name: Execution Environments
     description: Operations for accessing the execution environments.
-  - name: Services
-    description: Operations for the application services.
+  - name: Challenges
+    description: Operations for managing the services.
 paths:
-  /Execution Environments:
-    /:
-      post:
-        tags:
-          -execute
-        summary: Execute code or unit tests sent
-        operationId: execute
-        description: |
-          Executes code or unit tests sent, depending on the value of "executeTests" field.
-
-        requestBody:
-          description: Code and unit tests to be executed.
-          required: true
+  /:
+    post:
+      tags:
+        - Execution Environments
+      summary: Execute code or unit tests sent
+      operationId: execute
+      description: |
+        Executes code or unit tests sent, depending on the value of "executeTests" field.
+      requestBody:
+        description: Code and unit tests to be executed.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/executable'
+      responses:
+        '200':
+          description: Code result
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/executable'
-
-        responses:
-          '200':
-            description: Code result
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    rawResult:
-                      type: string
-                      description: Result or execution of compilation.
-                      example: "Hello World".
-          '400':
-            description: Bad Request
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                      errorMessage:
-                        type: string
-                        description: Technical error message.
-                        example: "Cannot parse public class name from code.".
-          '404':
-            description: Not Found
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                      errorMessage:
-                        type: string
-                        description: Technical error message.
-                        example: "Method not supported".
-          '500':
-            description: Server error
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
+                type: object
+                properties:
+                  rawResult:
+                    type: string
+                    description: Result or execution of compilation.
+                    example: "Hello World"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                     errorMessage:
-                        type: string
-                        description: Technical error message.
-                        example: "Internal Server Error".
-  /Services:
-    
+                      type: string
+                      description: Technical error message.
+                      example: "Cannot parse public class name from code."
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    errorMessage:
+                      type: string
+                      description: Technical error message.
+                      example: "Method not supported"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorMessage:
+                      type: string
+                      description: Technical error message.
+                      example: "Internal Server Error"
+  /v0/challenges:
+    get:
+      tags:
+        - Challenges
+      summary: Retreives all challenges
+      operationId: getAllChallenges
+      description: |
+        Retrieves every challenge the user has read access to.
+      parameters:
+        - in: query
+          name: privacy
+          schema:
+            type: string
+            enum: [private, public]
+          required: false
+          description: Optional filtering condition determining whether public or private challenges will be returned.
+        - in: query
+          name: tags
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+          description: Optional parameter filtering challenges by tags.
+      responses:
+        '200':
+          description: List of challenges.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    description: List of challenges.
+                    items:
+                      $ref: '#/components/schemas/challenge'
+    post:
+      tags:
+        - Challenges
+      summary: Creates a challenge
+      operationId: createsChallenge
+      description: |
+        Creates a challenge based on payload content.
+      requestBody:
+        description: Challenge to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/challengeNoId'
+      responses:
+        '201':
+          description: Successful challenge created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challenge'
+  /v0/challenges/{challengeId}:
+    get:
+      tags:
+        - Challenges
+      summary: Retreives a challenge
+      operationId: getChallenge
+      description: |
+        Retrieves every challenge the user has read access to.
+      parameters:
+        - in: path
+          name: Challenge Id
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      responses:
+        '200':
+          description: Challenge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challenge'
+    put:
+      tags:
+        - Challenges
+      summary: Updates a challenge
+      operationId: updateChallenge
+      description: |
+        Updates a challenge based on payload content and the id on the uri.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      requestBody:
+        description: Challenge to be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/challengeNoId'
+      responses:
+        '200':
+          description: Successful updated challenge.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challenge'
+    delete:
+      tags:
+        - Challenges
+      summary: Deletes a challenge
+      operationId: deleteChallenge
+      description: |
+        Delete a challenge based on the id on the uri.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      responses:
+        '204':
+          description: Successful deleted challenge.
+          content:
+            application/json:
+              schema:
+                type: object
+  /v0/challenges/{userId}:
+    get:
+      tags:
+        - Challenges
+      summary: Retreives all challenges of a given user
+      operationId: getUserChallenges
+      description: |
+        Retrieves every challenge of a given user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User unique id.
+        - in: query
+          name: privacy
+          schema:
+            type: string
+            enum: [private, public]
+          required: false
+          description: Optional filtering condition determining whether public or private challenges will be returned.
+        - in: query
+          name: tags
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+          description: Optional parameter filtering challenges by tags.
+      responses:
+        '200':
+          description: User challenge list.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    description: List of challenges from a given user.
+                    items:
+                      $ref: '#/components/schemas/challenge'
+  /v0/challenges/{challengeId}/answers:
+    post:
+      tags:
+        - Challenges
+      summary: Creates a challenge answer
+      operationId: createsChallengeAnswer
+      description: |
+        Creates a challenge answer for a given challenge.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      requestBody:
+        description: Challenge answer to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/challengeAnswer'
+      responses:
+        '201':
+          description: Successfully created challenge answer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challengeAnswer'
+  /v0/challenges/{challengeId}/answers/{userId}:
+    get:
+      tags:
+        - Challenges
+      summary: Retreives a challenge answer
+      operationId: getChallengeAnswer
+      description: |
+        Retrieves every challenge answer of the user for a specific challenge.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User unique id.
+      responses:
+        '200':
+          description: Challenge answer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challengeAnswer'
+    put:
+      tags:
+        - Challenges
+      summary: Updates a challenge answer
+      operationId: updateChallengeAnswer
+      description: |
+        Updates a challenge answer of the user for a specific challenge.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User unique id.
+      requestBody:
+        description: Challenge to be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/challengeAnswer'
+      responses:
+        '200':
+          description: Successful updated challenge answer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challengeAnswerNoUserID'
+    delete:
+      tags:
+        - Challenges
+      summary: Deletes a challenge answer
+      operationId: deleteChallengeAnswer
+      description: |
+        Delete a challenge answer of the used for a specific challenge.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User unique id.
+      responses:
+        '204':
+          description: Successful deleted challenge answer.
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    executable:
+      type: object
+      required:
+        - code
+        - executeTests
+      properties:
+        code:
+          type: string
+          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          description: Code must be ready to execute in typical execution format depending on language
+        unitTests:
+          type: string
+          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          description: Unit Tests must be ready to execute in typical execution format depending on language
+        executeTests:
+          type: boolean
+          example: true
+          description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
+    challenge:
+      type: object
+      required:
+        - challengeID
+        - challengeText
+        - isPrivate
+        - solutions
+      properties:
+        challengeID:
+          type: integer
+          example: 548
+          description: Unique identifier of challenge.
+        challengeText:
+          type: string
+          example: 'Implement Hello world, by printing Hello world into the console.'
+          description: Test describing the challenge and its goal.
+        isPrivate:
+          type: boolean
+          example: true
+          description: Boolean value indicating whether the challenge can only be seen by its creator
+        solutions:
+          type: array
+          description: List of challenges.
+          items:
+            $ref: '#/components/schemas/solution'
+    challengeNoId:
+      type: object
+      required:
+        - challengeText
+        - isPrivate
+        - solutions
+      properties:
+        challengeText:
+          type: string
+          example: 'Implement Hello world, by printing Hello world into the console.'
+          description: Test describing the challenge and its goal.
+        isPrivate:
+          type: boolean
+          example: true
+          description: Boolean value indicating whether the challenge can only be seen by its creator
+        solutions:
+          type: array
+          description: List of challenges.
+          items:
+            $ref: '#/components/schemas/solution'
+    solution:
+      type: object
+      required:
+        - codeLanguage
+        - challengeCode
+        - solutionCode
+        - unitTests
+      properties:
+        codeLanguage:
+          type: string
+          example: 'java'
+          description: Text specifying in which language the solution is.
+        challengeCode:
+          type: string
+          example: 'public class code { public static void main(String[] args) { }}'
+          description: Default code of the code presented to user.
+        solutionCode:
+          type: string
+          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          description: Solution of the challenge.
+        unitTests:
+          type: string
+          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          description: Unit tests to which the the user submitted will be tested against.
+    challengeAnswer:
+      type: object
+      required:
+        - userID
+        - answerCode
+        - unitTests
+      properties:
+        userID:
+          type: integer
+          example: 54954
+          description: Unique user id of user to which the aswer belongs to.
+        answerCode:
+          type: string
+          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          description: Solution of the challenge submitted.
+        unitTests:
+          type: string
+          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          description: Unit tests developed by the user.
+    challengeAnswerNoUserID:
+      type: object
+      required:
+        - userID
+        - answerCode
+        - unitTests
+      properties:
+        userID:
+          type: integer
+          example: 54954
+          description: Unique user id of user to which the aswer belongs to.
+        answerCode:
+          type: string
+          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          description: Solution of the challenge submitted.
+        unitTests:
+          type: string
+          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          description: Unit tests developed by the user.
 
-  components:
-    schemas:
-      executable:
-        type: object
-        required:
-          - code
-          - executeTests
-        properties:
-          code:
-            type: string
-            example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
-            description: Code must be ready to execute in typical execution format depending on language
-          unitTests:
-            type: string
-            example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
-            description: Unit Tests must be ready to execute in typical execution format depending on language
-          executeTests:
-            type: booleam
-            example: true
-            description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
+
