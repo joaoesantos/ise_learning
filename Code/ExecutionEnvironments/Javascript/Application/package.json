@@ -14,5 +14,8 @@
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
     "uuid": "^7.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1"
   }
 }

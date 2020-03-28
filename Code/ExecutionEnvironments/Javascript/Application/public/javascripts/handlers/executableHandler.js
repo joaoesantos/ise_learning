@@ -17,6 +17,11 @@ let executableHandler = () => {
 
             console.log("file written")
         })
+
+        if(runnable.executeTests){
+            new Function(strictString + runnable.unitTests)()
+        }
+
         res.json(new ExecutionResult("ok", false).toJson())
     }
 
