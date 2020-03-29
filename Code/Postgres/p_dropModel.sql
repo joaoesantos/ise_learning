@@ -9,13 +9,13 @@ LANGUAGE 'plpgsql'
 AS $BODY$
 BEGIN
 	SET search_path TO ise_learning,public;
-	DROP TABLE CHALLENGE_ANSWER, QUESTIONNAIRE_ANSWER, ANSWER;
-	DROP TABLE QC, CT; -- MANY TO MANY
-	DROP TABLE CHALLENGE, QUESTIONNAIRE;
-	DROP TABLE USERS;
-	DROP TABLE TAG;
-	DROP TABLE RUNCODE;
-	DROP TABLE CODELANGUAGE;
+	DROP TABLE challenge_solution, challenge_answer, questionnaire_answer, answer;
+	DROP TABLE qc, ct; -- MANY TO MANY
+	DROP TABLE challenge, questionnaire;
+	DROP TABLE app_user;
+	DROP TABLE tag;
+	DROP TABLE runcode;
+	DROP TABLE code_language;
     COMMIT;
 END;
 $BODY$;

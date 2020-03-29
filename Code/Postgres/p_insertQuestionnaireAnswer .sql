@@ -4,10 +4,11 @@
 SET search_path TO ise_learning,public;
 
 CREATE OR REPLACE PROCEDURE p_insertquestionnaireanswer(
-	questionnaireid INT,
-	qcID INT,
+	questionnaireId INT,
+	qcId INT,
+	codeLanguage VARCHAR(20),
 	answercode TEXT,
-	unittests TEXT,
+	unitTests TEXT,
 	label VARCHAR(20))
 LANGUAGE 'plpgsql'
 
@@ -16,7 +17,7 @@ DECLARE id INT;
 BEGIN
 	-- SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 	SET search_path TO ise_learning,public;
-	INSERT INTO ANSWER(answerCode,unitTests) VALUES(answerCode,unitTests) RETURNING answerID INTO id;
-	INSERT INTO QUESTIONNAIRE_ANSWER(answerID,questionnaireID,qcID,label) VALUES(id,questionnaireID,qcID,label);
+	INSERT INTO answer(codeLanguage,answerCode,unitTests) VALUES(codeLanguage,answerCode,unitTests) RETURNING answerID INTO id;
+	INSERT INTO questionnaire_answer(answerId,questionnaireID,qcId,label) VALUES(id,questionnaireId,qcId,label);
 END;
 $BODY$;
