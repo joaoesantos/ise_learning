@@ -10,7 +10,7 @@ AS $BODY$
 BEGIN
 	SET search_path TO ise_learning,public;
 
-	INSERT INTO USERS(username,password,name,email) VALUES
+	INSERT INTO app_user(username,password,name,email) VALUES
 	('user1','user1','User One','user1@example.com'),	-- created challenge 1,2 & questionnaire 1
 	('user2','user2','User Two','user2@example.com'),	-- created challenge 3,4 & answered challenge 1,2
 	('user3','user3','User Three','user3@example.com'),	-- created challenge 5 & questionnaire 2,3
@@ -38,13 +38,13 @@ BEGIN
 	-- | C4 |    | X  |	   |
 	-- | C5 |    | X  |	   |
 
-	INSERT INTO CODELANGUAGE (codeLanguage) VALUES
+	INSERT INTO code_language (codeLanguage) VALUES
 	('Java'),('Kotlin'),('JavaScript'),('C#'),('Python');
 
-	INSERT INTO TAG (tag) VALUES
+	INSERT INTO tag (tag) VALUES
 	('Array'),('Divide and Conquer'),('Hash Table'),('Recursion');
 
-	INSERT INTO RUNCODE(codeLanguage,code,output) VALUES
+	INSERT INTO runcode(codeLanguage,code,output) VALUES
 	-- JAVA
 	(
 		'Java',
@@ -88,7 +88,7 @@ BEGIN
 		'Hello World!'
 	);
 
-	INSERT INTO CHALLENGE(creatorID,challengeText,privacy) VALUES
+	INSERT INTO challenge(creatorId,challengeText,isPrivate) VALUES
 	-- CHALLENGE 1
 	(
 		1,
@@ -120,14 +120,14 @@ BEGIN
 		FALSE
 	);
 
-	INSERT INTO CT(challengeID,tag) VALUES
+	INSERT INTO ct(challengeId,tag) VALUES
 	(1,'Array'),(1,'Divide and Conquer'),(1,'Recursion'),
 	(2,'Divide and Conquer'),
 	(3,'Array'),
 	(4,'Divide and Conquer'),
 	(5,NULL);
 	
-	INSERT INTO CHALLENGE_SOLUTION(challengeID,codeLanguage,challengeCode,solutionCode,unitTests) VALUES
+	INSERT INTO challenge_solution(challengeID,codeLanguage,challengeCode,solutionCode,unitTests) VALUES
 	-- CHALLENGE 1 EM JAVA
 	(
 		1,
@@ -499,12 +499,12 @@ BEGIN
 	);
 
 
-	INSERT INTO QUESTIONNAIRE(creatorID,timer) VALUES
+	INSERT INTO questionnaire(creatorId,timer) VALUES
 	(1,3600000),
 	(3,3600000),
 	(3,0);
 
-	INSERT INTO QC(questionnaireID,challengeID,langFilter) VALUES
+	INSERT INTO qc(questionnaireId,challengeId,langFilter) VALUES
 	(1,1,'Python'),(1,2,'Java'),(1,3,'Kotlin'),
 	(2,2,'Java'),(2,3,'Kotlin'),(2,4,'JavaScript'),(2,5,'C#');
 	
@@ -512,6 +512,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
 		1, -- qcID 1 -> challenge 1
+		'Python',
 		'print("Hello World!")',
 		'TRUE',
 		'label1'
@@ -520,6 +521,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
 		2, -- qcID 2 -> challenge 2
+		'Java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
@@ -532,6 +534,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
 		3, -- qcID 3 -> challenge 3
+		'Kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
@@ -542,6 +545,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
 		4, -- qcID 4 -> challenge 2
+		'Java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
@@ -554,6 +558,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
 		5, -- qcID 5 -> challenge 3
+		'Kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
@@ -564,6 +569,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
 		6, -- qcID 6 -> challenge 4
+		'JavaScript',
 		'function main() {
 			console.log("Hello World!");
 		}());',
@@ -574,6 +580,7 @@ BEGIN
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
 		7, -- qcID 7 -> challenge 5
+		'C#',
 		'class HelloWorld {
 			static void Main() {
 				System.Console.WriteLine("Hello World!");

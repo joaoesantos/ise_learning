@@ -9,7 +9,7 @@ LANGUAGE 'plpgsql'
 
 AS $BODY$
 BEGIN
-	IF EXISTS(SELECT * FROM QUESTIONNAIRE_ANSWER QA WHERE QA.answerID = NEW.answerID )
+	IF EXISTS(SELECT * FROM questionnaire_answer QA WHERE QA.answerID = NEW.answerID )
 	THEN
 		RAISE EXCEPTION 'Already exists an questionnaire answer with this answer id';
 	ELSE
@@ -19,7 +19,7 @@ END;
 $BODY$;
 
 CREATE TRIGGER trig_on_challenge_answer 
-BEFORE INSERT ON CHALLENGE_ANSWER
+BEFORE INSERT ON challenge_answer
 FOR EACH ROW 
 EXECUTE PROCEDURE before_insert_challenge_answer();
 
@@ -31,7 +31,7 @@ LANGUAGE 'plpgsql'
 
 AS $BODY$
 BEGIN
-	IF EXISTS(SELECT * FROM CHALLENGE_ANSWER CA WHERE CA.answerID = NEW.answerID )
+	IF EXISTS(SELECT * FROM challenge_answer CA WHERE CA.answerID = NEW.answerID )
 	THEN 
 		RAISE EXCEPTION 'Already exists an challenge answer with this answer id';
 	ELSE
@@ -41,6 +41,6 @@ END;
 $BODY$;
 
 CREATE TRIGGER trig_on_questionaire_answer 
-BEFORE INSERT ON QUESTIONNAIRE_ANSWER
+BEFORE INSERT ON questionnaire_answer
 FOR EACH ROW 
 EXECUTE PROCEDURE before_insert_questionnaire_answer();
