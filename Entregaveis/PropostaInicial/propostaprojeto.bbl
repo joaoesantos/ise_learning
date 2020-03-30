@@ -1,13 +1,14 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{}
 
-\bibitem{ref2}
-M.~Fowler.
-\newblock {\em {Patterns of Enterprise Application Architecture}}.
-\newblock {Addison-Wesley Educational Publishers Inc}, 1 edition, 2002.
+\bibitem[\protect\citename{Fowler, }2002]{ref2}
+Fowler, Martin. 2002.
+\newblock {\em {Patterns of Enterprise Application Architecture}}. 1 edn.
+\newblock {Addison-Wesley Educational Publishers Inc}.
 
-\bibitem{ref1}
-S.~M. Jain.
-\newblock {\em {Linux Containers and Virtualization - A kernel perspective}}.
-\newblock {Independently published}, 3 edition, 2019.
+\bibitem[\protect\citename{Jain, }2019]{ref1}
+Jain, Shashank~Mohan. 2019.
+\newblock {\em {Linux Containers and Virtualization - A kernel perspective}}. 3
+  edn.
+\newblock {Independently published}.
 
 \end{thebibliography}
