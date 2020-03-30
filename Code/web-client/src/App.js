@@ -1,45 +1,43 @@
+// react
 import React from 'react';
-import logo from './logo.svg';
-import UserProfile from './components/UserProfile'
-import Challenges from './components/Challenges'
-import Home from './components/Home'
-import NoMatch from './components/NoMatch'
-import {
-  Route,
-  NavLink,
-  HashRouter,
-  Switch
-} from "react-router-dom";
-import './App.css';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+// navbar function
+import Navbar from './spa/navigation/Navbar.js'
+// pages function
+import Home from './spa/home/HomePage.js';
+import Challenge from './spa/challenge/ChallengePage.js';
+import Questionnaire from './spa/questionnaire/QuestionnairePage.js';
+import RunCode from './spa/runCode/RunCodePage.js';
+// footer function
+import Footer from './spa/Footer.js';
+// css normalization
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles } from '@material-ui/core/styles';
 
-class App extends React.Component {
+const useStyles = makeStyles(theme => ({
+  layout: {
+    height:'100vh',
+  },
+}));
 
-  state = {
-    data: {},
-    userId: 1
-  }
-
-  render(){
-    return (
-      <HashRouter>
-        <ul className="header">
-            <li><NavLink to="/">Home</NavLink></li>
-            <li><NavLink to={`/profile/${this.state.userId}`}>Profile</NavLink></li>
-            <li><NavLink to="/challenges">Challenges</NavLink></li>
-          </ul>
-        <div className="content">
-          <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route path="/profile" component={UserProfile}/>
-            <Route exact path="/challenges" component={Challenges}/>
-            <Route component={NoMatch}/>
-          </Switch>
-        </div>
-      </HashRouter>
-      
-    );
-  }
-  
+function App() {
+  const classes = useStyles();
+  return (
+    <Router>
+      <div className={classes.layout}>
+        <CssBaseline />
+        <Navbar />
+        <Switch>
+          < Route path="/" exact component={Home} />
+          < Route path="/challenges" component={Challenge} />
+          < Route path="/questionnaires" component={Questionnaire} />
+          < Route path="/runCode" component={RunCode} />
+        </Switch>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
+

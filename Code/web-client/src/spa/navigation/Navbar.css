@@ -1,0 +1,73 @@
+/* Elements */
+li {
+    padding: 10px 0;
+}
+
+li:hover {
+    color: white;
+    list-style-type: none;
+}
+
+button {
+    font-size: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Class */
+.navBar {
+    width: 100%;
+    padding: 10px;
+    color: #505050;
+    font-weight: bold;
+    background-color: #101010;
+}
+
+/* Horizontal */
+.navBar-horizontal {
+  height: 45px;
+  overflow: hidden;
+}
+
+.navBar-horizontal li {
+    float: left;
+    padding: 15px;
+    text-align: center;
+
+}
+
+.navBar-vertical {
+    height: auto;
+}
+
+.button-alignLeft {
+    color: white;
+    float: left;
+}
+
+.button-faBell{
+    color: white;
+    float: right;
+}
+
+.button-powerOff{
+    color: white;
+    float: right;
+}
+
+/* Media screen size */
+@media screen and (min-width: 768px) {
+    button {
+        display: none;
+    }
+
+    .navBar-horizontal {
+        display: flex;
+    }
+
+    li {
+        padding: 0 15px;
+    }
+}
