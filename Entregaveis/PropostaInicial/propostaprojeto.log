@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  26 MAR 2020 11:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7300 64-bit) (preloaded format=pdflatex 2020.3.7)  30 MAR 2020 11:10
 entering extended mode
 **./propostaprojeto.tex
 (propostaprojeto.tex
@@ -361,23 +361,7 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count289
 )
-(propostaprojeto.aux
-
-! Package natbib Error: Bibliography not compatible with author-year citations.
-
-(natbib)                Press <return> to continue in numerical citation style.
-
-
-See the natbib package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.25 ...mand\NAT@force@numbers{}\NAT@force@numbers
-                                                  
-Check the bibliography entries for non-compliant syntax,
-or select author-year BibTeX style, e.g. plainnat
-
-)
+(propostaprojeto.aux)
 \openout1 = `propostaprojeto.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
@@ -394,7 +378,8 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
 LaTeX Font Info:    ... okay on input line 41.
- ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
+
+("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count290
 \scratchdimen=\dimen151
@@ -552,10 +537,10 @@ LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
 (Font)              using `T1/ccr/bx/n' instead on input line 77.
 
 (analise.tex
-<./imgs/arquitectura.JPG, id=2, 498.36188pt x 292.59312pt>
-File: ./imgs/arquitectura.JPG Graphic file (type jpg)
-<use ./imgs/arquitectura.JPG>
-Package pdftex.def Info: ./imgs/arquitectura.JPG  used on input line 6.
+<./imgs/arquitecturaV2.JPG, id=2, 498.36188pt x 292.59312pt>
+File: ./imgs/arquitecturaV2.JPG Graphic file (type jpg)
+<use ./imgs/arquitecturaV2.JPG>
+Package pdftex.def Info: ./imgs/arquitecturaV2.JPG  used on input line 6.
 (pdftex.def)             Requested size: 299.01942pt x 175.55722pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 1--9
@@ -635,7 +620,7 @@ LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
 LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
 (Font)              using `T1/ccr/bx/n' instead on input line 13.
 
-[2 <./imgs/arquitectura.JPG>]
+[2 <./imgs/arquitecturaV2.JPG>]
 
 LaTeX Font Warning: Font shape `T1/ccr/b/n' undefined
 (Font)              using `T1/ccr/bx/n' instead on input line 19.
@@ -679,8 +664,8 @@ AED: lastpage setting LastPage
 [5] (propostaprojeto.aux) ) 
 Here is how much of TeX's memory you used:
  6330 strings out of 481556
- 95775 string characters out of 2923635
- 512375 words of memory out of 3000000
+ 95787 string characters out of 2923635
+ 513375 words of memory out of 3000000
  21365 multiletter control sequences out of 15000+200000
  551343 words of font info for 72 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -698,9 +683,9 @@ lic/ecc/dpi657\torm10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts/pk/ljf
 our/public/ecc/dpi657\eorm10.pk> <C:\Users\wolf_\AppData\Local\MiKTeX\2.9\fonts
 /pk/ljfour/jknappen/ec/dpi600\ecbx2074.pk> <C:\Users\wolf_\AppData\Local\MiKTeX
 \2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk>
-Output written on propostaprojeto.pdf (5 pages, 429403 bytes).
+Output written on propostaprojeto.pdf (5 pages, 403226 bytes).
 PDF statistics:
- 309 PDF objects out of 1000 (max. 8388607)
+ 306 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
