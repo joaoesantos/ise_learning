@@ -1,29 +1,29 @@
 // react
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// icons
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import Badge from '@material-ui/core/Badge';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 // material-ui components
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-// login-logout
-import Switch from '@material-ui/core/Switch';
+import Badge from '@material-ui/core/Badge';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
-// styles
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import Typography from '@material-ui/core/Typography';
+// logo
+import logo from '../../images/ISELearning_logo_wht.png';
+
+// login-logout
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles(theme => ({
   layout: {
-      //flexGrow: 1,
       marginLeft: theme.spacing(0),
     },
     appBar: {
@@ -73,18 +73,18 @@ export default function Navbar() {
 
   return (
     <div className={classes.layout}>
-      {/* <FormGroup>
+      <FormGroup>
         <FormControlLabel
           control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
           label={auth ? 'Logout' : 'Login'}
         />
-      </FormGroup> */}
+      </FormGroup>
       <AppBar className={classes.appBar}>
         <Toolbar variant="dense">
-          <Typography className={classes.title}>
             <Link className={classes.link} component={RouterLink} to="/">
-              ISE-Learning
+              <img src={logo} height={40}/>
             </Link>
+          <Typography className={classes.title}>
             <Link className={classes.link} component={RouterLink} to="/challenges">
               Challenges
             </Link>
@@ -95,15 +95,13 @@ export default function Navbar() {
               Run Code
             </Link>
           </Typography>
-          {auth && (
-            <div>
-              <Tooltip title="xora no meu pau">
+            {auth ? 
+              <div>
                 <IconButton color="inherit">
                   <Badge badgeContent={4} color="secondary">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-              </Tooltip>
               <IconButton
                 aria-controls="menu-user"
                 aria-haspopup="true"
@@ -128,12 +126,19 @@ export default function Navbar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile   </MenuItem>
-                <MenuItem component={RouterLink} to="/account" onClick={handleClose}>My account</MenuItem>
-                <MenuItem component={RouterLink} to="/logout"  onClick={handleClose}>Log out   </MenuItem>
+                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
+                <MenuItem component={RouterLink} to="/logout"  onClick={handleClose}>Log out</MenuItem>
               </Menu>
             </div>
-          )}
+            :
+            <div>
+              <Tooltip title="Login">
+                <IconButton color="inherit" component={RouterLink} to="/login">
+                  <PowerSettingsNewIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+          }
         </Toolbar>
       </AppBar>
     </div>

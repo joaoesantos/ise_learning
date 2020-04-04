@@ -1,7 +1,11 @@
-var map = new Map();
+'use strict';
+
+export const apiBaseUrl = "http://localhost:3000";
+export const codeMirrorDefault = 'java';
+export const CodeMirrorOptions = new Map();
 
 // JAVA
-map.set('java',{
+CodeMirrorOptions.set('java',{
 mode:'text/x-java',
 value:
 `// "static void main" must be defined in a public class.
@@ -12,7 +16,7 @@ public class Main {
 }`
 });
 // KOTLIN
-map.set('kotlin',{
+CodeMirrorOptions.set('kotlin',{
 mode:'text/x-java',
 value:
 `fun main(args: Array<String>) {
@@ -20,16 +24,16 @@ value:
 }`
 });
 // JAVASCRIPT
-map.set('javascript',{
+CodeMirrorOptions.set('javascript',{
 mode:'javascript',
 value:
 `(function main() {
     console.log('Hello World!');
-  }())`
+}())`
 });
 // C#
-map.set('csharp',{
-mode:'csharp',
+CodeMirrorOptions.set('csharp',{
+mode:'text/x-csharp',
 value:
 `class HelloWorld {
     static void Main() {
@@ -38,9 +42,9 @@ value:
 }`
 });
 // PYTHON
-map.set('python',{
+CodeMirrorOptions.set('python',{
 mode:'python',
 value:`print "Hello World!"`
 });
 
-export { map }
+export default { apiBaseUrl, codeMirrorDefault, CodeMirrorOptions }

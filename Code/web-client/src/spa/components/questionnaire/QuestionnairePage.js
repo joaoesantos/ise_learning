@@ -6,17 +6,16 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
-    layout: {
-        flexGrow: 1,
-        height:'85vh',
-      },
+    layout: { },
 }));
 
-export default function ChallengePage() {
+export default function QuestionnairePage() {
     const classes = useStyles();
     return(
         <div className={classes.layout}>
-            <h1>Challenges</h1>
+            <h1><a href='https://material-ui.com/getting-started/templates/checkout/'>
+                Exemplo de como fazer mover entre challeges no questionnaire
+            </a></h1>
         </div>
     )
 };
