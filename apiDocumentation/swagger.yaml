@@ -145,7 +145,7 @@ paths:
         Retrieves every challenge the user has read access to.
       parameters:
         - in: path
-          name: Challenge Id
+          name: challengeId
           schema:
             type: integer
           required: true
@@ -170,7 +170,7 @@ paths:
         Updates a challenge based on payload content and the id on the uri.
       parameters:
         - in: path
-          name: id
+          name: challengeId
           schema:
             type: integer
           required: true
@@ -203,7 +203,7 @@ paths:
         Delete a challenge based on the id on the uri.
       parameters:
         - in: path
-          name: id
+          name: challengeId
           schema:
             type: integer
           required: true
@@ -333,7 +333,7 @@ paths:
         Updates a challenge answer of the user for a specific challenge.
       parameters:
         - in: path
-          name: id
+          name: challengeId
           schema:
             type: integer
           required: true
@@ -372,7 +372,7 @@ paths:
         Delete a challenge answer of the used for a specific challenge.
       parameters:
         - in: path
-          name: id
+          name: challengeId
           schema:
             type: integer
           required: true
