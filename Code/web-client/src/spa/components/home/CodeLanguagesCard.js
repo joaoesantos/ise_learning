@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  text: {
+    textAlign: 'center'
+  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -30,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RunEnvironmentCard() {
+export default function CodeLanguagesCard() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -42,15 +45,15 @@ export default function RunEnvironmentCard() {
     <Card className={classes.layout}>
       <CardMedia
         className={classes.media}
-        image={require('./runEnvironments.jpg')}
+        image={require('./codeLanguages.jpg')}
         //title="Run environments"
       />
       <CardContent>
-        <Typography paragraph component="h1">Run environments</Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography paragraph component="h1">Code Languages</Typography>
+        <Typography className={classes.text}  variant="body2" color="textSecondary" component="p">
         There's nothing more frustrating than opening an interview prep book, 
         only to find a bunch of solutions in a programming language that you don't know. 
-        That's why all of our challenges come with complete written solutions in 5 popular languages.
+        That is you can write your solutions in 5 popular languages!
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

@@ -8,7 +8,12 @@ import Paper from '@material-ui/core/Paper';
 // IS E-Learning images
 import mainImage from '../../images/ISELearning.png';
 // cards components
-import RunEnvironmentsCard from './RunEnvironmentsCard.js'
+import WeWantYouCard from './WeWantYouCard.js';
+import ChallengesCard from './ChallengesCard.js';
+import QuestionnairesCard from './QuestionnairesCard.js'
+import CodeLanguagesCard from './CodeLanguagesCard.js';
+import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js';
+import OpenSourceCard from './OpenSourceCard.js';
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -17,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     padding: theme.spacing(2),
+    maxWidth: '85%'
   },
   mainPaper : {
     fontFamily: 'Lucida Console, Courier, monospace',
@@ -49,22 +55,22 @@ export default function HomePage() {
                     </Paper>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <RunEnvironmentsCard />
+                <WeWantYouCard />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Paper className={classes.paper}>xs=12 sm=6</Paper>
+                  <ChallengesCard />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Paper className={classes.paper}>xs=12 sm=6</Paper>
+                  <QuestionnairesCard />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Paper className={classes.paper}>xs=12 sm=6</Paper>
+                  <CodeLanguagesCard />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Paper className={classes.paper}>xs=12 sm=6</Paper>
+                  <CodeExecutionEnvironmentsCard />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Paper className={classes.paper}>xs=12 sm=6</Paper>
+                  <OpenSourceCard />
                 </Grid>
             </Grid>
       </Container>

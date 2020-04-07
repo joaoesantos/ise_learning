@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 // logo
 import logo from '../../images/ISELearning_logo_wht.png';
 
-// login-logout
+// login-logout for tests
 import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles(theme => ({
@@ -54,8 +54,8 @@ const useStyles = makeStyles(theme => ({
 }));
   
 export default function Navbar() {
-  const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+
+  const [auth, setAuth] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -71,6 +71,12 @@ export default function Navbar() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    setAnchorEl(null);
+    setAuth(false);
+  };
+
+  const classes = useStyles();
   return (
     <div className={classes.layout}>
       <FormGroup>
@@ -84,17 +90,24 @@ export default function Navbar() {
             <Link className={classes.link} component={RouterLink} to="/">
               <img src={logo} height={40}/>
             </Link>
-          <Typography className={classes.title}>
-            <Link className={classes.link} component={RouterLink} to="/challenges">
-              Challenges
-            </Link>
-            <Link className={classes.link} component={RouterLink} to="/questionnaires">
-              Questionnaires
-            </Link>
-            <Link className={classes.link} component={RouterLink} to="/runCode">
-              Run Code
-            </Link>
-          </Typography>
+          {auth ? 
+            <Typography className={classes.title}>
+              <Link className={classes.link} component={RouterLink} to="/challenges">
+                Challenges
+              </Link>
+              <Link className={classes.link} component={RouterLink} to="/questionnaires">
+                Questionnaires
+              </Link>
+              <Link className={classes.link} component={RouterLink} to="/runCode">
+                Run Code
+              </Link>
+            </Typography>
+            :
+            <Typography className={classes.title}>
+              <Link className={classes.link} component={RouterLink} to="/runCode">
+                Run Code
+              </Link>
+            </Typography>}
             {auth ? 
               <div>
                 <IconButton color="inherit">
@@ -127,7 +140,7 @@ export default function Navbar() {
                 onClose={handleClose}
               >
                 <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/logout"  onClick={handleClose}>Log out</MenuItem>
+                <MenuItem component={RouterLink} to="/"  onClick={handleLogout}>Log out</MenuItem>
               </Menu>
             </div>
             :

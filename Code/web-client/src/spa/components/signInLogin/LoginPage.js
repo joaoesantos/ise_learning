@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-  const classes = useStyles();
 
+  const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>

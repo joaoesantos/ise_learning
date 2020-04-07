@@ -1,5 +1,3 @@
-'use strict';
-
 // client side configurations
 import { runCodeModel } from '../models/runCodeModel.js';
 

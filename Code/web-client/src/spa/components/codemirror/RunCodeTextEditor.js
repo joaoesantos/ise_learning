@@ -14,7 +14,9 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/clike/clike.js'; // mode: text/x-java (Java, Kotlin), csharp (C#)
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/mode/python/python.js';
-import 'codemirror/theme/monokai.css';
+import 'codemirror/theme/neat.css';
+import 'codemirror/addon/edit/closebrackets.js'
+import 'codemirror/addon/edit/matchbrackets.js'
 // client side configurations
 import { codeMirrorDefault, CodeMirrorOptions } from '../../clientSideConfig';
 // controller
@@ -30,14 +32,17 @@ const styles = theme => ({
     button: {
         margin: theme.spacing(1),
         textTransform:"none",
-        backgroundColor:'#6dab00', // cor isel -> '#963727'
+        color:'#ffffff',
+        backgroundColor:'#5cb85c', // cor isel -> '#963727'
+        '&:hover' : {
+            backgroundColor: '#17b033',
+        }
     }
   });
   
   class RunCodeTextEditor extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             codeLanguage: codeMirrorDefault,
         }
@@ -50,8 +55,10 @@ const styles = theme => ({
     }
 
     onRunCode = async () => {
+        this.props.runCodeFuncs.updateRunningState.call(this,'running');
         let result = await runCodeCtrl(this.state.codeLanguage, this.editor.doc.getValue());
-        console.log(result.environment, result.executionTime, result)
+        this.props.runCodeFuncs.sendResult.call(this,result);
+        this.props.runCodeFuncs.updateRunningState.call(this,'finished');
     }
   
     // is invoked immediately after a component is mounted (inserted into the tree)
@@ -62,8 +69,10 @@ const styles = theme => ({
                 matchBrackets: true,
                 value:CodeMirrorOptions.get(this.state.codeLanguage).value, 
                 mode:CodeMirrorOptions.get(this.state.codeLanguage).mode, 
-                theme:"monokai",
+                theme:"neat",
+                smartIndent: true,
                 matchClosing: true, 
+                autoCloseBrackets: true,
             }
         );
         this.editor.setSize("100%", 700);

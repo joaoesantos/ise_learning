@@ -1,8 +1,7 @@
 // react
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
-// styles
+// material-ui components
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -10,6 +9,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function QuestionnairePage() {
+    
     const classes = useStyles();
     return(
         <div className={classes.layout}>

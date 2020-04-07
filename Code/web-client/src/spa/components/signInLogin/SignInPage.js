@@ -6,7 +6,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -34,8 +33,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-  const classes = useStyles();
 
+  const [auth, setAuth] = React.useState(false);
+
+  const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -110,6 +111,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            component={RouterLink} to="/runCode"
           >
             Sign Up
           </Button>

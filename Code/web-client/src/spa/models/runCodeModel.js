@@ -1,5 +1,3 @@
-'use strict';
-
 // client side configurations
 import { apiBaseUrl } from '../clientSideConfig';
 
@@ -27,7 +25,7 @@ export function runCodeModel(codeLanguage, code) {
     return({
         environment: codeLanguage,
         executionTime : 15,
-        result : "HelloWorld!"
+        result : code
     })
 }
 

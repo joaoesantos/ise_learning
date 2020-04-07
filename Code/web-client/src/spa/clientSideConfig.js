@@ -1,6 +1,5 @@
-'use strict';
-
-export const apiBaseUrl = "http://localhost:3000";
+//export const apiBaseUrl = "http://localhost:3000";
+export const apiBaseUrl = "http://localhost:8080";
 export const codeMirrorDefault = 'java';
 export const CodeMirrorOptions = new Map();
 

@@ -27,30 +27,20 @@ const styles = theme => ({
   },
   paper: {
     elevation:1,
-    backgroundColor:'#6dab00'
-  }
+    borderStyle:'solid',
+  },
 });
 
 class OutputTextEditor extends Component {
   constructor(props) {
-    super(props);
-
-    this.state = {
-      finished: true,
-    }
+    super(props); // props are read-only
   };
 
-  onUpdateOutpuyTextEditor = (output) => {
-    this.editor.setValue(output);
-    this.setState({finished: true});
-    // this.setState(prevState => ({
-    //   finished: !prevState.finished
-    // }))
-  }
-
   onClearConsole = () => {
-    this.editor.setValue('');
-    this.setState({finished: false});
+    if(this.props.runState.runState !== 'notRunning') {
+      this.props.runCodeFuncs.updateRunningState.call(this,'notRunning');
+      this.editor.setValue('');
+    }
   }
 
   // is invoked immediately after a component is mounted (inserted into the tree)
@@ -58,12 +48,24 @@ class OutputTextEditor extends Component {
     this.editor = codemirror(this.instance, 
       {
         readOnly: true,
-        value:"Hello World!",
-        theme:"neat"
+        mode: 'markdown',
+        //theme:"neat"
       }
     );
     this.editor.setSize("100%", 700);
   };
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.runState !== this.props.runState) {
+      console.log('i was here')
+      if(this.props.runState.runState === 'finished' && this.props.output.result) {
+        const _this = this.props.output.result;
+        const oldText = this.editor.doc.getValue();
+        this.editor.setValue(oldText === '' ? `## Finished in ${String(_this.executionTime)} ms\n${_this.result}\n\n` 
+                                            : `${oldText} ## Finished in ${_this.executionTime} ms\n${_this.result}\n\n`);
+      }
+    }
+  }
 
   render = () => {
     const { classes } = this.props;
@@ -73,11 +75,21 @@ class OutputTextEditor extends Component {
             <Toolbar className={classes.toolbar} variant="dense">
               <Box display="flex">
                 <Typography style={{paddingRight:5}}>
-                Output:
+                  Output:
                 </Typography>
-                {this.state.finished && (
-                  <Paper className={classes.paper}>
+                {this.props.runState.runState === 'running' && (
+                  <Paper className={classes.paper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
+                    Running...
+                  </Paper>
+                )}
+                {this.props.runState.runState === 'finished' && (
+                  <Paper className={classes.paper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
                     Finished
+                  </Paper>
+                )}
+                {this.props.runState.runState === 'compileError' && (
+                  <Paper className={classes.paper} style={{color:'#d9534f',backgroundColor:'#17b033'}}>
+                    Compile Error
                   </Paper>
                 )}
               </Box>
