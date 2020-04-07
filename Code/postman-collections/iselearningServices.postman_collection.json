@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d0bf543-d058-438a-bd85-e65638a04287",
+		"_postman_id": "8b3ad517-e76a-4c43-a1d2-8cc36bbe1714",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -125,6 +125,320 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Challenges",
+			"item": [
+				{
+					"name": "Challenge Answers",
+					"item": [
+						{
+							"name": "getChallengesAnswersByUser",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/v0/challenges/:challengeId/answers/users/:userId",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"answers",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "2"
+										},
+										{
+											"key": "userId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createChallengesAnswers",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}/v0/challengeAnswers",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateChallengesAnswers Copy",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}/v0/challengeAnswers/:challengeAnswerId",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers",
+										":challengeAnswerId"
+									],
+									"variable": [
+										{
+											"key": "challengeAnswerId",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteChallengesAnswers Copy Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}/v0/challengeAnswers/:challengeAnswerId",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers",
+										":challengeAnswerId"
+									],
+									"variable": [
+										{
+											"key": "challengeAnswerId",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "getChallenges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/v0/challenges",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createChallenge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/v0/challenges",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallengeById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/v0/challenges/:challengeId",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallengesByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/v0/challenges/users/:userId",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editChallenge",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 31,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 32,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/v0/challenges/:challengeId",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteChallenge",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/v0/challenges/:challengeId",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "21"
+								}
+							]
 						}
 					},
 					"response": []
