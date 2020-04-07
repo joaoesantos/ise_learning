@@ -10,7 +10,6 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.repository.UserRepository
 import java.lang.String
-import java.net.URI
 
 /**
  * Handler responsible to respond to requests regard User entity

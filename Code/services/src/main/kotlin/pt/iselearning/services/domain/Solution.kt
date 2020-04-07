@@ -1,34 +1,29 @@
 package pt.iselearning.services.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.*
 
 /**
  * data class that represents solution entity
  */
-
-@Table("challenge_solution")
+@Entity
+@Table(name="challenge_solution")
 data class Solution (
     @Id
-    @Column("challengeSolutionId")
+    @Column(name="challenge_solution_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    var id : Int? =  null,
+    var solutionId : Int? =  null,
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST])
-    @JoinColumn(name="challengeId", referencedColumnName = "challengeId")
-    var challengeId : Int? =  null,
-
-    @Column("challengeCode")
+    @Column(name="challenge_code")
     var challengeCode : String?,
 
-    @Column("codeLanguage")
-    var username : String?,
+    @Column(name="code_language")
+    var codeLanguage : String?,
 
-    @Column("solutionCode")
-    var email : String?,
+    @Column(name="solution_code")
+    var solutionCode : String?,
 
-    @Column("unitTests")
-    var name : String?
-)
+    @Column(name="unit_tests")
+    var unitTests : String?
+) {
+    constructor() : this(null, null, null, null, null)
+}

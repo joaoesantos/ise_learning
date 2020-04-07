@@ -1,31 +1,29 @@
 package pt.iselearning.services.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
+import javax.persistence.*
 
 /**
  * data class that represents answer entity
  */
-
-@Table("answer")
+@Entity
+@Table(name="answer")
 data class Answer (
     @Id
-    @Column("answerId")
+    @Column(name="answer_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     var id : Int? =  null,
 
-    @Column("codeLanguage")
+    @Column(name="code_language")
     var codeLanguage : String?,
 
-    @Column("answerCode")
+    @Column(name="answer_code")
     var answerCode : String?,
 
-    @Column("unitTests")
+    @Column(name="unit_tests")
     var unitTests : String?,
 
-    @Column("isCorrect")
+    @Column(name="is_correct")
     var creatorId : Boolean?
-)
+) {
+    constructor() : this(null, null, null, null, null)
+}

@@ -1,32 +1,30 @@
 package pt.iselearning.services.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 /**
  * data class that represents challenge entity
  */
-
-@Table("challenge")
+@Entity
+@Table(name="challenge")
 data class Challenge (
     @Id
-    @Column("challengeId")
+    @Column(name="challenge_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    var id : Int? =  null,
+    var challengeId : Int? =  null,
 
-    @Column("creatorID")
-    var creatorId : String?,
+    @Column(name="creator_id")
+    var creatorId : Int?,
 
-    @Column("challengeText")
+    @Column(name="challenge_text")
     var challengeText : String?,
 
-    @Column("isPrivate")
+    @Column(name="is_private")
     var isPrivate : Boolean?,
 
-    @OneToMany(mappedBy = "challengeId")
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
     var solutions : List<Solution>?
-)
+) {
+    constructor() : this(null, null, null, null, null)
+}
