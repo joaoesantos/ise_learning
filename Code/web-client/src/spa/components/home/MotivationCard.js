@@ -8,8 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import iconBlack from '../../images/icons/blk/challengeBlk.png';
-import iconYellow from '../../images/icons/color/challengeYlw.png';
+import iconBlack from '../../images/icons/blk/motivationBlk.png';
+import iconYellow from '../../images/icons/color/motivationYlw.png';
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChallengesCard(props) {
+export default function MotivationCard(props) {
 
   const classes = useStyles();
   const [onOver, setOnMouseOver] = React.useState(0);
@@ -49,17 +49,18 @@ export default function ChallengesCard(props) {
         elevation={onOver}
         onMouseOver={handleOnMouseOver}
         onMouseOut={handleOnMouseOut}
+        //component={RouterLink} to="#codeLanguages"
       >
         <CardMedia
           className={classes.media}
           image={icon}
         />
         <CardContent>
-          <Typography paragraph component="h1">Challenges</Typography>
+          <Typography paragraph component="h1">Our motivation</Typography>
           <Typography className={classes.text} variant="body2" color="textSecondary" component="p">
-            Coding interview preparation is a numbers game that many cadidates lose. 
-            So why don't you share your expertise, make a problem that has kicked yout butt and 
-            help other fellow coders not to do the same mistakes?
+            We feel that we already did to much work.
+            Now we want YOU to do the rest! Share your experiences, copy paste here some code
+            and let the platform grow to something that everyone can enjoy.
           </Typography>
         </CardContent>
       </Card>
