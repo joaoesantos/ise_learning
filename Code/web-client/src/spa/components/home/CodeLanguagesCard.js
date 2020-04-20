@@ -7,7 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
+// icons
 import iconBlack from '../../images/icons/blk/codeLanguageBlk.png';
 import iconYellow from '../../images/icons/color/codeLanguageYlw.png';
 

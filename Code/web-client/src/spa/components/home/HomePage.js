@@ -19,9 +19,7 @@ import QuestionnairesCard from './QuestionnairesCard.js'
 import CodeLanguagesCard from './CodeLanguagesCard.js';
 import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js';
 //import OpenSourceCard from './OpenSourceCard.js';
-
 import '../../images/wickedcss.min.css';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -118,9 +116,15 @@ export default function HomePage() {
               Who are we?
           </Typography>
           <Typography className={classes.textContent} variant="h6">
-            Coding interviews go beyond just algorithms and data structures. 
-            Our coding interview tips video series gives you crucial tips and tricks that'll make 
-            you stand out from other software engineers.
+            We are 3 friends (for most of the time, when we agree on semantic) doing our final IT project.<br/>
+            Nowadays there are some platforms that provide an environment for defining algorithms and testing, 
+            but not all of them are open source, don't have such an appealing environment 
+            or they don't allow multi-language. Therefore, this project intends to develop an open source e-learning platform,
+            dedicated to the definition and testing of algorithms in a multi-language environment.<br/>
+            This platform will have several challenges which can be solved for study or evaluation purposes. And if you think they aren't
+            enought, you can also create more and share your expertise.
+            your expertise and create more challenges 
+            This can be useful in academic environments, professional interviews or programming enthusiast.
           </Typography>
           <Grid className={classes.businessGrid}
           container
@@ -188,7 +192,7 @@ export default function HomePage() {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Typography className={classes.textTitle} variant="h4" style={{textAlign:'left'}}>
-                We Speak 5 Languages.
+                We Speak 5 Languages
               </Typography>
               <Typography className={classes.textContent}  variant="h6" style={{textAlign:'left'}}>
                 There's nothing more frustrating than opening an interview prep book, 
@@ -205,7 +209,7 @@ export default function HomePage() {
                 in your language of choice, getting some hints if necessary, running your code against test cases, 
                 and looking at solutions when done.
                 We've turned that ideal world into the real world. Pick a language. Read the prompt. 
-                Write your solution. Get some hints. Run your code again. Check the output. Pass the tests. 
+                Write your solution. Run your code. Check the output. Pass the tests. 
                 View our solution. All within the same workspace.
               </Typography>
             </Grid>

@@ -132,20 +132,14 @@ export default function Navbar() {
                 id="menu-user"
                 getContentAnchorEl={null}
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
+                anchorOrigin={{vertical:'bottom', horizontal:'right'}}
                 keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
+                transformOrigin={{vertical:'top', horizontal:'center'}}
                 open={open}
                 onClose={handleClose}
               >
                 <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/"  onClick={handleLogout}>Log out</MenuItem>
+                <MenuItem component={RouterLink} to="/" onClick={handleLogout}>Log out</MenuItem>
               </Menu>
             </div>
             :

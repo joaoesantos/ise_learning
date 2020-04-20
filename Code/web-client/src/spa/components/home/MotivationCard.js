@@ -58,9 +58,9 @@ export default function MotivationCard(props) {
         <CardContent>
           <Typography paragraph component="h1">Our motivation</Typography>
           <Typography className={classes.text} variant="body2" color="textSecondary" component="p">
-            We feel that we already did to much work.
-            Now we want YOU to do the rest! Share your experiences, copy paste here some code
-            and let the platform grow to something that everyone can enjoy.
+            Coding interviews go beyond just algorithms and data structures. 
+            This project intends to develop an open source e-learning platform that
+            can be useful in academic environments, professional interviews or programming enthusiast.
           </Typography>
         </CardContent>
       </Card>
