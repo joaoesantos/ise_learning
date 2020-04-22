@@ -57,7 +57,6 @@ class OutputTextEditor extends Component {
 
   componentDidUpdate(prevProps) {
     if(prevProps.runState !== this.props.runState) {
-      console.log('i was here')
       if(this.props.runState.runState === 'finished' && this.props.output.result) {
         const _this = this.props.output.result;
         const oldText = this.editor.doc.getValue();
