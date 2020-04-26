@@ -1,0 +1,76 @@
+What is Docker?
+	1.1 - Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.
+	2.1 - Docker created the industry standard for containers, so they could be portable anywhere
+	2.2 - Running a virtual instance of a computer system in a layer abstracted from the actual hardware, so there can be more than one virtual computer in one physical computer
+	2.3 - Containers are a standardized unit of software that allows developers to isolate their app from its environment, solving the “it works on my machine” Includes everything needed to run an application: code, runtime, system tools, system libraries and settings.
+	Any docker client will be able to run the container in any machine
+	For developers, it means that they can focus on writing code without worrying about the system that it will ultimately be running on.
+	2.4 - Require fewer resources and have very quick start up times
+	2.5 - The security comes mostly due to the isolation of each container
+	- isto soa parecido a uma VM, qual é a diferença?
+Container VS Virtual Machine
+	1 - Os vantagens a nivel de isolamento da aplicação e de alocação de recursos é semelhante quer na VM quer no container
+	2 - A grande vantagem é que os contentores partilham o Kernel entre eles, neste o Cliente Docker utiliza o Kernel do sistem que por sua vez é partilhado por todos os contentores, esta partilha torna os contentores mais leves e mais rapidas no arranque
+	Nas VMs é replicado todo o SO incluindo o Kernel
+	Kernel é a camada do sistema operativo responsável pelo comunicação com o Hardware
+	-então já percebemos a diferença entre VM e container, mas como é que isto funciona debaixo do capo? debaixo do capo ha um motor.
+Under the Hood
+	1.1 -  runtime de execução dos contentores que pode executar em diferentes ambientes Linux (CentOS, Debian, Fedora, Oracle Linux, RHEL, SUSE, and Ubuntu) and Windows Server operating systems.
+	1.2 - O cliente Docker, tipicamente utilizamos os comandos do CLI do Docker que recorrem a API docker que por sua vez faz chamada ao Daemon do Docker (dockerd) que execute o comando
+	Daemon - processo em background
+	quando é remoto: daemon communicate using a REST API, over UNIX sockets or a network interface
+	1.3 - Docker daemon é responsavel por gerir o ciclo de vida dos contentores
+	1.4 - Além disso manipula contentores, imagens, servicos do Docker
+	serviços é por exemplo escalar contentores por varios Docker daemons, cujo resultado é uma docker swarm, rede entre os diferentes contentores, e os volumes de persistência de cada contentor
+	- conseguimos ver aqui na imagem uma coisas que se chamam imagens e outr que é o registry, o que é isto?
+Docker Image
+	1.1 - is an immutable (unchangeable) file. Due to their read-only quality, these images are sometimes referred to as snapshots.
+	1.2 - They represent an application and its virtual environment at a specific point in time.
+	a template which contains the source code, libraries, dependencies, tools, and other files needed for an application to run
+	1.3 - images become containers when they run on Docker Engine, at runtime
+	A container is, ultimately, just a running image.
+	Once you create a container, it adds a writable layer on top of the immutable image, meaning you can now modify it.
+	- e de onde vêm estas imagens? uma das origens pode ser um docker registry
+	2.1 - Docker registries contêm imagens de docker já construidas
+	2.2 - Podem ser publicos, acessiveis por toda a gente como o Docker Hub
+	2.3 - Ou podem ser privados acessiveis apenas por um grupo restrito de pessoas
+	O docker suporta a criação destes registos, e há outras soluções comercias por exemplo o Artifactory ou o Amazon Elastic Container Registry
+	- Mas frequentemente há a nessecidade de construir imagens costumizadas, por especificidades de cada applicação. Por isso existe a capacidade dos desenvolvedores construirem imagens, e é aqui que entra o Dockerfile
+	também se pode usar o dockercompose mas não vou abordar essa tema nesta apresentção
+Docker File
+	1 - A Dockerfile is a text file written in an easy-to-understand syntax that includes the instructions to build a Docker image
+	1.1 - A instrução FROM inicializa a fase de contrução e configura a imagem base para as restantes instruções, como tal todos os ficheiros Docker têm de começar com uma destas instruções. Apenas a instrução ARG pode preceder o FROM
+	1.2 - A instrução ARG permite aos utilizadores passar argumentos em build-time
+	1.3 - A instrução RUN executa commandos na imagem 
+	1.4 - A instrução ENV permite configurar valores de variaveis de ambiente na imagem
+	1.5 e 1.6 - A instruções ADD e COPY têm propositos semelhantes mas algumas diferenças. Ambas permitem copiar ficheiros ou diretories da maquina local. Porem o ADD permite tabem utilizar URL's como fonte dos ficheiros a sere copiados
+	1.7 - A instrução CMD permite definir os valores por amossões para a execução do contentor, apenas uma destas mintruções pode estar presente no Dockerfile.
+	Estes valores default podem incluir um executavel, se não não for definido nesta instrução terá de ser definido na instrução ENTRYPOINT
+	1.7 e 1.8 - Os comandos CMD e ENTRYPOINT ambos definem que comando vai ser executado quando o container começar a correr,e pelo menos um destes comandos deve estar presente no Dockerfile.
+	O comando CMD representa o comando que será executado por default, os valores podem ser subtituidos executando comandos alternativos, o ENTRYPOINT não pode ser subtituido na linha de comandos
+	1.9 - A instrução EXPOSE informa o Docker que o contentor estará à escuta numa dada porta em TCP ou UDP, por omissao é TCP
+	1.10 - A instrução USER define o utlizador a utilizar para a execução de intruções RUN, CMD e ENTRYPOINT que estejam a seguir desta instrução
+	Exemplo útil disto é se queres que um comando seja executa por um admin ou não, por razoes de segurança
+Docker file example
+	descrever o que fizeste em cada linha
+	pontos relevantes:
+		podia ter encadeado alguns RUNs, isto faria a imagem mais pequena
+			cada RUN executa um comando e faz commit dos resultados para a imagem
+			por isso teria menos commits
+		Oracle-Linux
+-----------------------------------------------------------------------------------	
+USER
+	The USER instruction sets the user name (or UID) and optionally the user group (or GID) to use when running the image and for any RUN, CMD and ENTRYPOINT instructions that follow it in the Dockerfile.
+ENTRYPOINT
+	An ENTRYPOINT allows you to configure a container that will run as an executable.
+	The shell form prevents any CMD or run command line arguments from being used, but has the disadvantage that your ENTRYPOINT will be started as a subcommand of /bin/sh -c, which does not pass signals. This means that the executable will not be the container’s PID 1 - and will not receive Unix signals - so your executable will not receive a SIGTERM from docker stop <container>.
+
+	Only the last ENTRYPOINT instruction in the Dockerfile will have an effect.
+Docker Image
+	Often, an image is based on another image, with some additional customization. For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run.
+
+	You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt. This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.
+
+	It also allows them to get a head start by using one of thousands of programs already designed to run in a Docker container as a part of their application.
+
+	
