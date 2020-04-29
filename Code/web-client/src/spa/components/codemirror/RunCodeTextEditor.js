@@ -18,7 +18,7 @@ import 'codemirror/theme/neat.css';
 import 'codemirror/addon/edit/closebrackets.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 // client side configurations
-import { codeMirrorDefault, CodeMirrorOptions } from '../../clientSideConfig';
+import { CodeMirrorOptions } from '../../clientSideConfig';
 // controller
 import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
 
@@ -44,22 +44,9 @@ const styles = theme => ({
     constructor(props) {
         super(props);
         this.state = {
-            codeLanguage: codeMirrorDefault,
+            codeLanguage: this.props.codeLanguage,
         }
     };
-
-    onLanguageChange = event => {
-        this.setState({codeLanguage: event.target.value}); // carefull, setState is asynchronous...
-        this.editor.setOption("mode", CodeMirrorOptions.get(event.target.value).mode);
-        this.editor.setValue(CodeMirrorOptions.get(event.target.value).value);
-    }
-
-    onRunCode = async () => {
-        this.props.runCodeFuncs.updateRunningState.call(this,'running');
-        let result = await runCodeCtrl(this.state.codeLanguage, this.editor.doc.getValue());
-        this.props.runCodeFuncs.sendResult.call(this,result);
-        this.props.runCodeFuncs.updateRunningState.call(this,'finished');
-    }
   
     // is invoked immediately after a component is mounted (inserted into the tree)
     componentDidMount = () => {
@@ -67,51 +54,36 @@ const styles = theme => ({
             {
                 lineNumbers: true,
                 matchBrackets: true,
-                value:CodeMirrorOptions.get(this.state.codeLanguage).value, 
-                mode:CodeMirrorOptions.get(this.state.codeLanguage).mode, 
+                value:CodeMirrorOptions.get(this.props.codeLanguage).value, 
+                mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
                 theme:"neat",
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
             }
         );
+        this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
         this.editor.setSize("100%", 700);
+        this.editor.on('change', () => {
+            this.props.setTextEditorData(this.editor.doc.getValue())
+        })
     };
+
+    // is invoked immediately after props change
+    componentDidUpdate(prevProps) {
+        if(prevProps !== this.props) {
+            if(prevProps.codeLanguage !== this.props.codeLanguage) {
+                this.editor.setValue(CodeMirrorOptions.get(this.props.codeLanguage).value);
+            }
+        }
+    }
   
     render = () => {
         const { classes } = this.props;
         return (
-            <div>
-                <Grid>
-                    <Toolbar className={classes.toolbar} variant="dense">
-                        <Button className={classes.button}
-                        id="runCodeButton"
-                        variant="contained"
-                        onClick={this.onRunCode}
-                        >
-                            Run Code
-                        </Button>
-                        <FormControl variant="standard" className={classes.form}>
-                            <Select
-                            id="languageSelect"
-                            native
-                            onChange={this.onLanguageChange}
-                            >
-                            <option value={'java'}>Java</option>
-                            <option value={'kotlin'}>Kotlin</option>
-                            <option value={'javascript'}>JavaScript</option>
-                            <option value={'csharp'}>C#</option>
-                            <option value={'python'}>Python</option>
-                            </Select>
-                        </FormControl>
-                    </Toolbar>
-                </Grid>
-                <Grid>
-                    <Paper variant="outlined" square elevation={1} >
-                        <div ref={(ref) => this.instance = ref} />
-                    </Paper>
-                </Grid>
-            </div>
+            <Paper variant="outlined" square elevation={1} >
+                <div ref={(ref) => this.instance = ref} />
+            </Paper>
         )
     }
 }

@@ -1,6 +1,6 @@
 // react
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { HashRouter as Router, Switch, Route} from 'react-router-dom';
 // material-ui components
 import { makeStyles } from '@material-ui/core/styles';
 // page components
@@ -22,18 +22,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+
+  const [isAuthed, setAuth] = React.useState(false);
+
   const classes = useStyles();
   return (
     <Router>
       <div className={classes.layout}>
         <CssBaseline />
-        <Navbar />
+        <Navbar isAuthed={isAuthed} setAuth={setAuth}/>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/signIn" component={SignIn} />
-          <Route path="/challenges" component={Challenge} />
-          <Route path="/questionnaires" component={Questionnaire} />
+          <Route path="/login" render={() => <Login isAuthed={isAuthed} setAuth={setAuth} />} />
+          <Route path="/signIn" render={() => <SignIn isAuthed={isAuthed} setAuth={setAuth} />} />
+          <Route path="/challenges" render={() => <Challenge isAuthed={isAuthed} />} />
+          <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
           <Route path="/runCode" component={RunCode} />
         </Switch>
         <Footer />
