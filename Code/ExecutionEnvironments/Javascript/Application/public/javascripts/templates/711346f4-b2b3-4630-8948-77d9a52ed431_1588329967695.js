@@ -1,0 +1,1 @@
+'use strict';function getNthFib(n) {return n};exports.getNthFib = getNthFib;
