@@ -1,12 +1,7 @@
 // react
 import React, { Component } from 'react';
 // material-ui components
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 // codemirror
 import codemirror from 'codemirror';
@@ -19,8 +14,6 @@ import 'codemirror/addon/edit/closebrackets.js'
 import 'codemirror/addon/edit/matchbrackets.js'
 // client side configurations
 import { CodeMirrorOptions } from '../../clientSideConfig';
-// controller
-import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
 
 const styles = theme => ({
     toolbar: {
@@ -43,9 +36,6 @@ const styles = theme => ({
   class RunCodeTextEditor extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            codeLanguage: this.props.codeLanguage,
-        }
     };
   
     // is invoked immediately after a component is mounted (inserted into the tree)
