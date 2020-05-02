@@ -33,3 +33,4 @@ out/
 
 ### Configuration Files ###
 src/main/resources/databaseAccess.json
+src/main/resources/application.properties
