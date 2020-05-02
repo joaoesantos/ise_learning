@@ -1,23 +1,25 @@
 const ExecutionResult = require('../models/ExecutionResult')
-const {exec} = require('child_process')
 const util = require('util');
+const exec = util.promisify(require('child_process').exec)
 const path = require('path')
 const { v4 } = require('uuid');
-const strictString = "'use strict';";
 const fs = require('fs').promises;
-const bufferReplace = require('buffer-replace');
+
 
 let executableHandler = () => {
     async function run(req, res) {
-        let runnable = req.body
-        let guid = v4();
-        let today = new Date()
-        let fileIdentifier = `${guid}_${today.getTime()}`
-        let filename =  `${fileIdentifier}.js`;
- 
+        const strictString = "'use strict';";
+        const runnable = req.body
+        const guid = v4();
+        const today = new Date()
+        const fileIdentifier = `${guid}_${today.getTime()}`
+        const filename =  `${fileIdentifier}.js`;
         const filePath = path.join('public','javascripts','templates',filename)
-
-        await fs.writeFile(filePath, strictString + runnable.code)
+        let rawResult = "";
+        let wasError = false;
+ 
+        try {
+            await fs.writeFile(filePath, strictString + runnable.code)
         
         if(runnable.executeTests){
             const templateTestContent = await fs.readFile(
@@ -40,75 +42,39 @@ let executableHandler = () => {
                                 .replace('#function_names',functionNames)
                                 .replace('#testCases', runnable.unitTests);
             await fs.writeFile(testFilePath, strictString + fileContent) 
+            const {stdout, stderr, error} = await exec(`npx mocha ${testFilePath}`)
+            if(error){
+                rawResult = error;
+                wasError = true;
+            }
+            else if(stderr || stderr !== ""){
+                rawResult = stderr;
+                wasError = true;
+            }
+            else{
+                rawResult = stdout;
+            }
 
-            exec(`npx mocha ${testFilePath}`, (error,stdout, stderr) => {
-                if (error) {
-                    console.error(`exec error: ${error}`);
-                    return;
-                  }
-                  console.log(`stdout test: ${stdout}`);
-                  console.error(`stderr test: ${stderr}`);
-            }) 
+        }else{
+            const {stdout, stderr, error} = await exec(`node ${filePath}`)
+            if(error){
+                rawResult = error;
+                wasError = true;
+            }
+            else if(stderr || stderr !== ""){
+                rawResult = stderr;
+                wasError = true;
+            }
+            else{
+                rawResult = stdout;
+            }
         }
-
-        // fs.writeFile(filePath, strictString + runnable.code,(err) => {
-        //     if(err) throw err
-            
-        //     console.log("code file written")
-        //     const fileFunctions = require(`../templates/${fileIdentifier}`)
+        res.json(new ExecutionResult(rawResult, wasError).toJson())
+        } catch (error) {
+            console.log(error)
+            res.json(new ExecutionResult("Error running:" + error, true).toJson())
+        }
         
-        //     Object.keys(fileFunctions).forEach(function(key,index) {
-        //         console.log(`key ${index}:${key}`)
-        //     });
-
-        //     //read from test template
-        //     if(runnable.executeTests){
-        //         fs.readFile(path.join('public','javascripts','templates','testTemplate.js'), (err, data) =>{
-        //             const testFilename = `${fileIdentifier}_test.js`
-        //             const testFilePath = path.join('public','javascripts','templates',testFilename)
-        //             const fileFunctions = require(`../templates/${fileIdentifier}`)
-                    
-        //             const functionNames = Object.keys(fileFunctions).reduce((fName, key) => {
-        //                 if(fName == undefined || fName == ""){
-        //                     return key
-        //                 }
-        //                 return `${fName},${key}`
-        //             }, "")
-                   
-        //             let fileContent = bufferReplace(data,'#function_names',functionNames)
-        //             fileContent = bufferReplace(fileContent, '#path',`\'./${fileIdentifier}\'`)
-        //             fileContent = bufferReplace(fileContent,'#testCases', runnable.unitTests)
-        //             fs.writeFile(testFilePath, strictString + fileContent,(err) => {
-        //                 if(err) throw err
-                        
-        //                 console.log(" test file written")
-        //                 exec(`npx mocha ${testFilePath}`, (error,stdout, stderr) => {
-        //                     if (error) {
-        //                         console.error(`exec error: ${error}`);
-        //                         return;
-        //                       }
-        //                       console.log(`stdout test: ${stdout}`);
-        //                       console.error(`stderr test: ${stderr}`);
-        //                 }) 
-                                                
-        //             })
-        //         })
-        //     }
-            
-            
-
-            
-        // })
-
-        exec(`node ${filePath}`, (error,stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-              }
-              console.log(`stdout: ${stdout}`);
-              console.error(`stderr: ${stderr}`);
-        }) 
-        res.json(new ExecutionResult("ok", false).toJson())
     }
 
     return {
