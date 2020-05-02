@@ -15,14 +15,14 @@ class DatasourceConfiguration {
      * Bean for implementing provider datasource
      */
     @Bean
-    fun createDataSource() : DataSource {
+    fun createDataSource(dataSourceProperties: DatasourceProperties) : DataSource {
         val dataSourceBuilder = DataSourceBuilder.create()
-        dataSourceBuilder.driverClassName(DatasourceProperties.props.driverClassName)
-        dataSourceBuilder.url("${DatasourceProperties.props.providerUrl}//" +
-                "${DatasourceProperties.props.host}:${DatasourceProperties.props.port}" +
-                "/${DatasourceProperties.props.database}")
-        dataSourceBuilder.username(DatasourceProperties.props.username)
-        dataSourceBuilder.password(DatasourceProperties.props.password)
+        dataSourceBuilder.driverClassName(dataSourceProperties.driverClassName)
+        dataSourceBuilder.url("${dataSourceProperties.providerUrl}//" +
+                "${dataSourceProperties.host}:${dataSourceProperties.port}" +
+                "/${dataSourceProperties.database}")
+        dataSourceBuilder.username(dataSourceProperties.username)
+        dataSourceBuilder.password(dataSourceProperties.password)
 
         return dataSourceBuilder.build()
     }
