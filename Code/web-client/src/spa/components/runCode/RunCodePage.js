@@ -94,9 +94,9 @@ export default function RunCodePage() {
             <Grid>
               <Toolbar className={classes.runCodetoolbar} variant="dense">
                 <Button className={classes.runButton}
-                id="runCodeButton"
-                variant="contained"
-                onClick={onRunCode}
+                  id="runCodeButton"
+                  variant="contained"
+                  onClick={onRunCode}
                 >
                   Run Code
                 </Button>
@@ -141,9 +141,9 @@ export default function RunCodePage() {
                   )}
                 </Box>
                 <Button className={classes.clearButton}
-                id="clearConsoleButton"
-                variant="contained"
-                onClick={onClearConsole}
+                  id="clearConsoleButton"
+                  variant="contained"
+                  onClick={onClearConsole}
                 >
                   Clear Console
                 </Button>
