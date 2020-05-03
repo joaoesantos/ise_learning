@@ -42,32 +42,13 @@ let executableHandler = () => {
                                 .replace('#function_names',functionNames)
                                 .replace('#testCases', runnable.unitTests);
             await fs.writeFile(testFilePath, strictString + fileContent) 
-            const {stdout, stderr, error} = await exec(`npx mocha ${testFilePath}`)
-            if(error){
-                rawResult = error;
-                wasError = true;
-            }
-            else if(stderr || stderr !== ""){
-                rawResult = stderr;
-                wasError = true;
-            }
-            else{
-                rawResult = stdout;
-            }
-
+            const obj = await execChildProcess(`npx mocha ${testFilePath}`)
+            rawResult = obj.rawResult
+            wasError = obj.error
         }else{
-            const {stdout, stderr, error} = await exec(`node ${filePath}`)
-            if(error){
-                rawResult = error;
-                wasError = true;
-            }
-            else if(stderr || stderr !== ""){
-                rawResult = stderr;
-                wasError = true;
-            }
-            else{
-                rawResult = stdout;
-            }
+            const obj = await execChildProcess(`node ${filePath}`)
+            rawResult = obj.rawResult
+            wasError = obj.error
         }
         res.json(new ExecutionResult(rawResult, wasError).toJson())
         } catch (error) {
@@ -75,6 +56,27 @@ let executableHandler = () => {
             res.json(new ExecutionResult("Error running:" + error, true).toJson())
         }
         
+    }
+
+    async function execChildProcess(command){
+        const {stdout, stderr, error} = await exec(command)
+        let res = ""
+        let err = false;
+            if(error){
+                res = error;
+                err = true;
+            }
+            else if(stderr || stderr !== ""){
+                res = stderr;
+                err = true;
+            }
+            else{
+                res = stdout;
+            }
+        return {
+            rawResult: res,
+            wasError: err
+        }
     }
 
     return {
