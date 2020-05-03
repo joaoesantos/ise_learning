@@ -5,9 +5,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.Challenge
-import pt.iselearning.services.domain.ChallengeAnswer
-import pt.iselearning.services.exception.IselearningException
-import pt.iselearning.services.repository.ChallengeAnswerRepository
 import pt.iselearning.services.service.ChallengeAnswerService
 import pt.iselearning.services.service.ChallengeService
 import java.lang.String
@@ -28,8 +25,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      */
     @GetMapping
     fun getAllChallenges(@RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?): ResponseEntity<List<Challenge>> {
-        ///TODO por a cena das queries
-        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.getAllChallenges())
+        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.getAllChallenges(tags, privacy))
     }
 
 
@@ -54,7 +50,6 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      */
     @GetMapping("/users/{userId}")
     fun getChallengeByUserId(@PathVariable userId : Int, @RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?) : ResponseEntity<List<Challenge>> {
-        ///TODO por a cena das queries
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getChallengeByUserId(userId, tags, privacy))
     }
