@@ -8,6 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.ChallengeAnswer
 import pt.iselearning.services.repository.ChallengeAnswerRepository
+import pt.iselearning.services.service.ChallengeAnswerService
 import java.lang.String
 
 /**
@@ -15,11 +16,7 @@ import java.lang.String
  */
 @RestController
 @RequestMapping("/v0/challengeAnswers")
-class ChallengeAnswerController {
-    constructor(challengeAnswerRepository: ChallengeAnswerRepository) {
-        this.challengeAnswerRepository = challengeAnswerRepository
-    }
-    private lateinit var challengeAnswerRepository: ChallengeAnswerRepository
+class ChallengeAnswerController (private val challengeAnswerService: ChallengeAnswerService){
 
     /**
      * Method to create an user.
@@ -28,11 +25,10 @@ class ChallengeAnswerController {
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping
-    fun createChallenge(@RequestBody challengeAnswer: ChallengeAnswer, ucb : UriComponentsBuilder): ResponseEntity<ChallengeAnswer> {
-        val badRequest : ResponseEntity<Challenge> = ResponseEntity.badRequest().build()
-        val challengeAnswer = challengeAnswerRepository.save(challengeAnswer);
+    fun createChallengeAnswer(@RequestBody challengeAnswer: ChallengeAnswer, ucb : UriComponentsBuilder): ResponseEntity<ChallengeAnswer> {
+        val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswer)
         val location = ucb.path("/v0/challengeAnswers")
-                .path(String.valueOf(challengeAnswer.challengeAnswerId))
+                .path(String.valueOf(challengeAnswer!!.challengeAnswerId))
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(challengeAnswer)
@@ -45,14 +41,10 @@ class ChallengeAnswerController {
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{challengeAnswerId}")
-    fun updateChallenge(@PathVariable challengeAnswerId : Int, @RequestBody challengeAnswer: ChallengeAnswer): ResponseEntity<ChallengeAnswer> {
-        val notFound : ResponseEntity<ChallengeAnswer> = ResponseEntity.notFound().build()
+    fun updateChallengeAnswer(@PathVariable challengeAnswerId : Int, @RequestBody challengeAnswer: ChallengeAnswer): ResponseEntity<ChallengeAnswer> {
         challengeAnswer.challengeAnswerId = challengeAnswerId
-        return challengeAnswerRepository.findById(challengeAnswerId)
-                .map {
-                    ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswerRepository.save(challengeAnswer))
-                }
-                .orElse(notFound)
+        return ResponseEntity.ok().contentType(APPLICATION_JSON)
+                .body(challengeAnswerService.updateChallengeAnswer(challengeAnswer))
     }
 
     /**
@@ -62,16 +54,21 @@ class ChallengeAnswerController {
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @DeleteMapping("/{challengeAnswerId}")
-    fun deleteChallenge(@PathVariable challengeAnswerId : Int): ResponseEntity<Void> {
-        val notFound : ResponseEntity<Void> = ResponseEntity.notFound().build()
+    fun deleteChallengeAnswer(@PathVariable challengeAnswerId : Int): ResponseEntity<Void> {
+        challengeAnswerService.deleteChallengeAnswer(challengeAnswerId)
+        return ResponseEntity.ok().build()
+    }
 
-        return challengeAnswerRepository.findById(challengeAnswerId)
-                .map { u ->
-                    challengeAnswerRepository.delete(u)
-                    val resp : ResponseEntity<Void> = ResponseEntity.ok().build()
-                    resp
-                }
-                .orElse(notFound)
+    /**
+     * Method to delete an user
+     * Path variable "id" must be present
+     * @param ServerRequest represents an HTTP message
+     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @GetMapping("/{challengeId}/answers/users/{userId}")
+    fun getChallengeAnswerByUserId(@PathVariable challengeId : Int, @PathVariable userId : Int): ResponseEntity<ChallengeAnswer> {
+        val challengeAnswer = challengeAnswerService.getChallengeAnswerByUserId(challengeId, userId)
+        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
     }
 }
 
