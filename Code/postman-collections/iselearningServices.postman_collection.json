@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8b3ad517-e76a-4c43-a1d2-8cc36bbe1714",
+		"_postman_id": "7aefa9b0-6c47-492e-8ae2-817cb796605d",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -24,12 +24,10 @@
 							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users"
 							]
@@ -43,12 +41,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users",
 								":id"
@@ -69,12 +65,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users",
 								":id"
@@ -105,12 +99,10 @@
 							"raw": "{\n\t\"name\":\"Sergio\",\n\t\"id\":1,\n\t\"username\":\"sergionNew\",\n\t\"email\":\"sergio@email.com\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users"
 							]
@@ -124,7 +116,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{hostServices}}/v0/users",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"users"
+							]
 						}
 					},
 					"response": []
@@ -144,10 +143,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{host}}/v0/challenges/:challengeId/answers/users/:userId",
-									"protocol": "http",
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
 									"host": [
-										"{{host}}"
+										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
@@ -186,10 +184,9 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}/v0/challengeAnswers",
-									"protocol": "http",
+									"raw": "{{hostServices}}/v0/challengeAnswers",
 									"host": [
-										"{{host}}"
+										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
@@ -214,10 +211,9 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}/v0/challengeAnswers/:challengeAnswerId",
-									"protocol": "http",
+									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeAnswerId",
 									"host": [
-										"{{host}}"
+										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
@@ -249,10 +245,9 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{host}}/v0/challengeAnswers/:challengeAnswerId",
-									"protocol": "http",
+									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeAnswerId",
 									"host": [
-										"{{host}}"
+										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
@@ -279,14 +274,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}/v0/challenges",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges?privacy=private",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
 								"challenges"
+							],
+							"query": [
+								{
+									"key": "privacy",
+									"value": "private"
+								}
 							]
 						}
 					},
@@ -307,10 +307,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{host}}/v0/challenges",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
@@ -326,10 +325,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}/v0/challenges/:challengeId",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
@@ -352,16 +350,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}/v0/challenges/users/:userId",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges/users/:userId?tags=Array,Divide and Conquer",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
 								"challenges",
 								"users",
 								":userId"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "Array,Divide and Conquer"
+								}
 							],
 							"variable": [
 								{
@@ -388,10 +391,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{host}}/v0/challenges/:challengeId",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
@@ -423,10 +425,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{host}}/v0/challenges/:challengeId",
-							"protocol": "http",
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
 							"host": [
-								"{{host}}"
+								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
@@ -438,6 +439,43 @@
 									"key": "challengeId",
 									"value": "21"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Execute",
+			"item": [
+				{
+					"name": "Execute Java Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/execute",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"execute"
 							]
 						}
 					},

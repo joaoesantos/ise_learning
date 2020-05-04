@@ -10,13 +10,11 @@ import pt.iselearning.services.domain.ExecutableWithNoLanguage
 
 @Service
 class ExecutionService {
-    private val webClient : WebClient
     private val remoteExecUrls : RemoteExecutionUrls
     private val languageUrlMap : Map<String, String>
 
 
-    constructor(webClient : WebClient, remoteExecUrls : RemoteExecutionUrls){
-        this.webClient = webClient
+    constructor(remoteExecUrls : RemoteExecutionUrls){
         this.remoteExecUrls = remoteExecUrls
         this.languageUrlMap = HashMap()
         this.languageUrlMap.put("java", remoteExecUrls.javaExecutionEnvironment)

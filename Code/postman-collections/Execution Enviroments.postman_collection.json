@@ -21,13 +21,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}"
+							"raw": "{\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
-							"raw": "http://{{host}}",
-							"protocol": "http",
+							"raw": "{{hostJavaExec}}",
 							"host": [
-								"{{host}}"
+								"{{hostJavaExec}}"
 							]
 						}
 					},
@@ -52,13 +54,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"code\": \"fun main(args : Array<String>) {println(\\\"Hello World!\\\")}fun cenas() {println(\\\"<<Test>>\\\")}\",\n    \"unitTests\": \"import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {cenas(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}"
+							"raw": "{\n    \"code\": \"fun main(args : Array<String>) {println(\\\"Hello World!\\\")}fun cenas() {println(\\\"<<Test>>\\\")}\",\n    \"unitTests\": \"import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {cenas(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
-							"raw": "http://{{host}}",
-							"protocol": "http",
+							"raw": "{{hostKotlinExec}}",
 							"host": [
-								"{{host}}"
+								"{{hostKotlinExec}}"
 							]
 						}
 					},
