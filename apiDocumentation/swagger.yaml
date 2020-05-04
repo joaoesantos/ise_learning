@@ -9,8 +9,12 @@ info:
 tags:
   - name: Execution Environments
     description: Operations for accessing the execution environments.
+  - name: Execute
+    description: Operations for executing code remotely.
   - name: Challenges
-    description: Operations for managing the services.
+    description: Operations for managing the challenges.
+  - name: Challenge Answer
+    description: Operations for managing the challenge answers.
 paths:
   /:
     post:
@@ -72,6 +76,33 @@ paths:
                       type: string
                       description: Technical error message.
                       example: "Internal Server Error"
+  /v0/execute:
+    post:
+      tags:
+        - Execute
+      summary: Remote code execution
+      operationId: executeCode
+      description: |
+        Requests the server to execute code remotely.
+      requestBody:
+        description: Code to be executed.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/executableWithLanguage'
+      responses:
+        '200':
+          description: Successful executed the code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rawResult:
+                    type: string
+                    description: Result or execution of compilation.
+                    example: "Hello World"
   /v0/challenges:
     get:
       tags:
@@ -380,6 +411,30 @@ components:
         - code
         - executeTests
       properties:
+        code:
+          type: string
+          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          description: Code must be ready to execute in typical execution format depending on language
+        unitTests:
+          type: string
+          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          description: Unit Tests must be ready to execute in typical execution format depending on language
+        executeTests:
+          type: boolean
+          example: true
+          description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
+    executableWithLanguage:
+      type: object
+      required:
+        - language
+        - code
+        - executeTests
+      properties:
+        language:
+          type: string
+          enum: [java, kotlin, javascript, c#, python]
+          example: 'java'
+          description: Text representing one of the supported languages, must be lowercase
         code:
           type: string
           example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
