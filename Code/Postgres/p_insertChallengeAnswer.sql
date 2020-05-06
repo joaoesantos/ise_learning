@@ -4,11 +4,11 @@
 SET search_path TO ise_learning,public;
 
 CREATE OR REPLACE PROCEDURE p_insertchallengeanswer(
-	userId INT,
-	challengeId INT,
-	codeLanguage VARCHAR(20),
-	answercode TEXT,
-	unitTests TEXT)
+	user_id INT,
+	challenge_id INT,
+	code_language VARCHAR(20),
+	answer_code TEXT,
+	unit_tests TEXT)
 LANGUAGE 'plpgsql'
 
 AS $BODY$
@@ -16,7 +16,7 @@ DECLARE id INT;
 BEGIN
 	-- SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 	SET search_path TO ise_learning,public;
-	INSERT INTO answer(codeLanguage,answerCode,unitTests) VALUES(codeLanguage,answerCode,unitTests) RETURNING answerID INTO id;
-	INSERT INTO challenge_answer(answerId,challengeId,userId) VALUES(id,challengeId,userId);
+	INSERT INTO answer(code_language,answer_code,unit_tests) VALUES(code_language,answer_code,unit_tests) RETURNING answer_id INTO id;
+	INSERT INTO challenge_answer(answer_id,challenge_id,user_id) VALUES(id,challenge_id,user_id);
 END;
 $BODY$;

@@ -9,7 +9,7 @@ LANGUAGE 'plpgsql'
 
 AS $BODY$
 BEGIN
-	IF EXISTS(SELECT * FROM questionnaire_answer QA WHERE QA.answerID = NEW.answerID )
+	IF EXISTS(SELECT * FROM questionnaire_answer QA WHERE QA.answer_id = NEW.answer_id )
 	THEN
 		RAISE EXCEPTION 'Already exists an questionnaire answer with this answer id';
 	ELSE
@@ -31,7 +31,7 @@ LANGUAGE 'plpgsql'
 
 AS $BODY$
 BEGIN
-	IF EXISTS(SELECT * FROM challenge_answer CA WHERE CA.answerID = NEW.answerID )
+	IF EXISTS(SELECT * FROM challenge_answer CA WHERE CA.answer_id = NEW.answer_id )
 	THEN 
 		RAISE EXCEPTION 'Already exists an challenge answer with this answer id';
 	ELSE

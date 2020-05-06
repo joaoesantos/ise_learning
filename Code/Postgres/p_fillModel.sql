@@ -38,13 +38,13 @@ BEGIN
 	-- | C4 |    | X  |	   |
 	-- | C5 |    | X  |	   |
 
-	INSERT INTO code_language (codeLanguage) VALUES
+	INSERT INTO code_language (code_language) VALUES
 	('Java'),('Kotlin'),('JavaScript'),('C#'),('Python');
 
 	INSERT INTO tag (tag) VALUES
 	('Array'),('Divide and Conquer'),('Hash Table'),('Recursion');
 
-	INSERT INTO runcode(codeLanguage,code,output) VALUES
+	INSERT INTO runcode(code_language,code,output) VALUES
 	-- JAVA
 	(
 		'Java',
@@ -88,7 +88,7 @@ BEGIN
 		'Hello World!'
 	);
 
-	INSERT INTO challenge(creatorId,challengeText,isPrivate) VALUES
+	INSERT INTO challenge(creator_id,challenge_text,is_private) VALUES
 	-- CHALLENGE 1
 	(
 		1,
@@ -120,14 +120,14 @@ BEGIN
 		FALSE
 	);
 
-	INSERT INTO ct(challengeId,tag) VALUES
+	INSERT INTO ct(challenge_id,tag) VALUES
 	(1,'Array'),(1,'Divide and Conquer'),(1,'Recursion'),
 	(2,'Divide and Conquer'),
 	(3,'Array'),
 	(4,'Divide and Conquer'),
 	(5,NULL);
 	
-	INSERT INTO challenge_solution(challengeID,codeLanguage,challengeCode,solutionCode,unitTests) VALUES
+	INSERT INTO challenge_solution(challenge_id,code_language,challenge_code,solution_code,unit_tests) VALUES
 	-- CHALLENGE 1 EM JAVA
 	(
 		1,
@@ -499,19 +499,19 @@ BEGIN
 	);
 
 
-	INSERT INTO questionnaire(creatorId,timer) VALUES
+	INSERT INTO questionnaire(creator_id,timer) VALUES
 	(1,3600000),
 	(3,3600000),
 	(3,0);
 
-	INSERT INTO qc(questionnaireId,challengeId,langFilter) VALUES
+	INSERT INTO qc(questionnaire_id,challenge_id,lang_filter) VALUES
 	(1,1,'Python'),(1,2,'Java'),(1,3,'Kotlin'),
 	(2,2,'Java'),(2,3,'Kotlin'),(2,4,'JavaScript'),(2,5,'C#');
 	
 	-- INSERT INTO QUESTIONNAIRE_ANSWER
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
-		1, -- qcID 1 -> challenge 1
+		1, -- qc_id 1 -> challenge 1
 		'Python',
 		'print("Hello World!")',
 		'TRUE',
@@ -520,7 +520,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
-		2, -- qcID 2 -> challenge 2
+		2, -- qc_id 2 -> challenge 2
 		'Java',
 		'public class Main {
 			public static void main(String[] args) {
@@ -533,7 +533,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		1, -- questionnaire
-		3, -- qcID 3 -> challenge 3
+		3, -- qc_id 3 -> challenge 3
 		'Kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
@@ -544,7 +544,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
-		4, -- qcID 4 -> challenge 2
+		4, -- qc_id 4 -> challenge 2
 		'Java',
 		'public class Main {
 			public static void main(String[] args) {
@@ -557,7 +557,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
-		5, -- qcID 5 -> challenge 3
+		5, -- qc_id 5 -> challenge 3
 		'Kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
@@ -568,7 +568,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
-		6, -- qcID 6 -> challenge 4
+		6, -- qc_id 6 -> challenge 4
 		'JavaScript',
 		'function main() {
 			console.log("Hello World!");
@@ -579,7 +579,7 @@ BEGIN
 	
 	CALL p_insertquestionnaireanswer(
 		2, -- questionnaire
-		7, -- qcID 7 -> challenge 5
+		7, -- qc_id 7 -> challenge 5
 		'C#',
 		'class HelloWorld {
 			static void Main() {

@@ -11,151 +11,151 @@ BEGIN
 	SET search_path TO ise_learning,public;
 	
 	CREATE TABLE app_user (
-		userId INT GENERATED ALWAYS AS IDENTITY,
+		user_id INT GENERATED ALWAYS AS IDENTITY,
 		username VARCHAR(50) UNIQUE NOT NULL,
 		password VARCHAR(255) NOT NULL,
 		email VARCHAR(50) UNIQUE NOT NULL,
 		name VARCHAR(50) NOT NULL,
 		image BYTEA,
 		--
-		PRIMARY KEY (userID)
+		PRIMARY KEY (user_id)
 	);
 	
 	CREATE TABLE code_language (
-		codeLanguageId INT GENERATED ALWAYS AS IDENTITY,
-		codeLanguage VARCHAR(20) UNIQUE NOT NULL,
+		code_language_id INT GENERATED ALWAYS AS IDENTITY,
+		code_language VARCHAR(20) UNIQUE NOT NULL,
 		--
-		PRIMARY KEY (codeLanguageId)
+		PRIMARY KEY (code_language_id)
 	);
 
 	CREATE TABLE runcode (
-		runCodeId INT GENERATED ALWAYS AS IDENTITY,
-		codeLanguage VARCHAR(20),
+		run_code_id INT GENERATED ALWAYS AS IDENTITY,
+		code_language VARCHAR(20),
 		code TEXT,
 		output TEXT,
 		--
-		PRIMARY KEY (runCodeId),
-		FOREIGN KEY (codeLanguage) 
-			REFERENCES code_language (codeLanguage)
+		PRIMARY KEY (run_code_id),
+		FOREIGN KEY (code_language) 
+			REFERENCES code_language (code_language)
 	);
 
 	CREATE TABLE tag (
-		tagId INT GENERATED ALWAYS AS IDENTITY,
+		tag_id INT GENERATED ALWAYS AS IDENTITY,
 		tag VARCHAR(20) UNIQUE NOT NULL,
 		--
-		PRIMARY KEY (tagId)
+		PRIMARY KEY (tag_id)
 	);
 	
 	CREATE TABLE answer (
-		answerId INT GENERATED ALWAYS AS IDENTITY,
-		codeLanguage VARCHAR(20) NOT NULL,
-		answerCode TEXT,
-		unitTests TEXT,
-		isCorrect BOOLEAN DEFAULT FALSE,
+		answer_id INT GENERATED ALWAYS AS IDENTITY,
+		code_language VARCHAR(20) NOT NULL,
+		answer_code TEXT,
+		unit_tests TEXT,
+		is_correct BOOLEAN DEFAULT FALSE,
 		--
-		PRIMARY KEY (answerId),
-		FOREIGN KEY (codeLanguage) 
-			REFERENCES code_language (codeLanguage) ON DELETE CASCADE
+		PRIMARY KEY (answer_id),
+		FOREIGN KEY (code_language) 
+			REFERENCES code_language (code_language) ON DELETE CASCADE
 	);
 
 	CREATE TABLE challenge (
-		challengeId INT GENERATED ALWAYS AS IDENTITY,
-		creatorId INT NOT NULL,
-		challengeText TEXT NOT NULL,
-		isPrivate BOOLEAN NOT NULL,
+		challenge_id INT GENERATED ALWAYS AS IDENTITY,
+		creator_id INT NOT NULL,
+		challenge_text TEXT NOT NULL,
+		is_private BOOLEAN NOT NULL,
 		--
-		PRIMARY KEY (challengeId),
-		FOREIGN KEY (creatorId) 
-			REFERENCES app_user (userId) ON DELETE CASCADE
+		PRIMARY KEY (challenge_id),
+		FOREIGN KEY (creator_id) 
+			REFERENCES app_user (user_id) ON DELETE CASCADE
 	);
 	
 	-- MANY TO MANY (CHALLENGE-TAG)
 	CREATE TABLE ct(
 		id INT GENERATED ALWAYS AS IDENTITY,
-		challengeId INT,
+		challenge_id INT,
 		tag VARCHAR(20),
 		--
-		PRIMARY KEY(id,challengeId),
-		FOREIGN KEY (challengeId) 
-			REFERENCES CHALLENGE (challengeId) ON DELETE CASCADE,
+		PRIMARY KEY(id,challenge_id),
+		FOREIGN KEY (challenge_id) 
+			REFERENCES CHALLENGE (challenge_id) ON DELETE CASCADE,
 		FOREIGN KEY (tag) 
 			REFERENCES tag (tag) ON DELETE CASCADE
 	);
 	
 	CREATE TABLE challenge_solution (
-		challengeSolutionId INT GENERATED ALWAYS AS IDENTITY,
-		challengeId INT NOT NULL,
-		codeLanguage VARCHAR(20) NOT NULL,
-		challengeCode TEXT NOT NULL,
-		solutionCode TEXT NOT NULL,
-		unitTests TEXT NOT NULL,
+		challenge_solution_id INT GENERATED ALWAYS AS IDENTITY,
+		challenge_id INT NOT NULL,
+		code_language VARCHAR(20) NOT NULL,
+		challenge_code TEXT NOT NULL,
+		solution_code TEXT NOT NULL,
+		unit_tests TEXT NOT NULL,
 		--
-		PRIMARY KEY (challengeSolutionId),
-		FOREIGN KEY (challengeId) 
-			REFERENCES challenge (challengeId) ON DELETE CASCADE,
-		FOREIGN KEY (codeLanguage) 
-			REFERENCES code_language (codeLanguage) ON DELETE CASCADE,
+		PRIMARY KEY (challenge_solution_id),
+		FOREIGN KEY (challenge_id) 
+			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
+		FOREIGN KEY (code_language) 
+			REFERENCES code_language (code_language) ON DELETE CASCADE,
 		--
-		UNIQUE(challengeId,codeLanguage)
+		UNIQUE(challenge_id,code_language)
 	);
 
 	CREATE TABLE challenge_answer (
-		challengeAnswerId INT GENERATED ALWAYS AS IDENTITY,
-		answerId INT UNIQUE NOT NULL,
-		challengeId INT NOT NULL,
-		userId INT NOT NULL,
+		challenge_answer_id INT GENERATED ALWAYS AS IDENTITY,
+		answer_id INT UNIQUE NOT NULL,
+		challenge_id INT NOT NULL,
+		user_id INT NOT NULL,
 		--
-		PRIMARY KEY (challengeAnswerId),
-		FOREIGN KEY (challengeId) 
-			REFERENCES challenge (challengeId) ON DELETE CASCADE,
-		FOREIGN KEY (answerId) 
-			REFERENCES answer (answerId) ON DELETE CASCADE,
-		FOREIGN KEY (userId) 
-			REFERENCES app_user (userId) ON DELETE CASCADE,
+		PRIMARY KEY (challenge_answer_id),
+		FOREIGN KEY (challenge_id) 
+			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
+		FOREIGN KEY (answer_id) 
+			REFERENCES answer (answer_id) ON DELETE CASCADE,
+		FOREIGN KEY (user_id) 
+			REFERENCES app_user (user_id) ON DELETE CASCADE,
 		--
-		UNIQUE(challengeId,userId)
+		UNIQUE(challenge_id,user_id)
 	);
 
 	CREATE TABLE questionnaire (
-		questionnaireId INT GENERATED ALWAYS AS IDENTITY,
-		creatorId INT NOT NULL,
+		questionnaire_id INT GENERATED ALWAYS AS IDENTITY,
+		creator_id INT NOT NULL,
 		timer INT DEFAULT 0,
 		--
-		PRIMARY KEY (questionnaireId),
-		FOREIGN KEY (creatorId) 
-			REFERENCES app_user (userId) ON DELETE CASCADE,
+		PRIMARY KEY (questionnaire_id),
+		FOREIGN KEY (creator_id) 
+			REFERENCES app_user (user_id) ON DELETE CASCADE,
 		CHECK(timer >= 0)
 	);
 	
 	-- MANY TO MANY (QUESTIONNAIRE-CHALLENGE)
 	CREATE TABLE qc(
 		id INT GENERATED ALWAYS AS IDENTITY,
-		questionnaireId INT NOT NULL,
-		challengeId INT NOT NULL,
-		langFilter VARCHAR(20) NOT NULL,
+		questionnaire_id INT NOT NULL,
+		challenge_id INT NOT NULL,
+		lang_filter VARCHAR(20) NOT NULL,
 		--
 		PRIMARY KEY(id),
-		FOREIGN KEY (questionnaireId) 
-			REFERENCES questionnaire (questionnaireId) ON DELETE CASCADE,
-		FOREIGN KEY (challengeId) 
-			REFERENCES challenge (challengeId) ON DELETE CASCADE,
+		FOREIGN KEY (questionnaire_id) 
+			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE,
+		FOREIGN KEY (challenge_id) 
+			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
 		--
-		UNIQUE(questionnaireId,challengeId)
+		UNIQUE(questionnaire_id,challenge_id)
 	);
 
 	CREATE TABLE questionnaire_answer (
-		questionnaireAnswerId INT GENERATED ALWAYS AS IDENTITY,
-		answerId INT UNIQUE NOT NULL,
-		questionnaireId INT NOT NULL,
-		qcId INT UNIQUE NOT NULL,
+		questionnaireanswer_id INT GENERATED ALWAYS AS IDENTITY,
+		answer_id INT UNIQUE NOT NULL,
+		questionnaire_id INT NOT NULL,
+		qc_id INT UNIQUE NOT NULL,
 		label VARCHAR(20) NOT NULL,
 		--
-		PRIMARY KEY (questionnaireAnswerId),
-		FOREIGN KEY (answerId) 
-			REFERENCES answer (answerId) ON DELETE CASCADE,
-		FOREIGN KEY (questionnaireId) 
-			REFERENCES questionnaire (questionnaireId) ON DELETE CASCADE,
-		FOREIGN KEY (qcId) 
+		PRIMARY KEY (questionnaireanswer_id),
+		FOREIGN KEY (answer_id) 
+			REFERENCES answer (answer_id) ON DELETE CASCADE,
+		FOREIGN KEY (questionnaire_id) 
+			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE,
+		FOREIGN KEY (qc_id) 
 			REFERENCES qc (id) ON DELETE CASCADE
 	);
 

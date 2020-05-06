@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d0bf543-d058-438a-bd85-e65638a04287",
+		"_postman_id": "7aefa9b0-6c47-492e-8ae2-817cb796605d",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -24,12 +24,10 @@
 							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users"
 							]
@@ -43,12 +41,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users",
 								":id"
@@ -69,12 +65,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users",
 								":id"
@@ -105,12 +99,10 @@
 							"raw": "{\n\t\"name\":\"Sergio\",\n\t\"id\":1,\n\t\"username\":\"sergionNew\",\n\t\"email\":\"sergio@email.com\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
+							"raw": "{{hostServices}}/users",
 							"host": [
-								"localhost"
+								"{{hostServices}}"
 							],
-							"port": "8080",
 							"path": [
 								"users"
 							]
@@ -124,7 +116,367 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{hostServices}}/v0/users",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Challenges",
+			"item": [
+				{
+					"name": "Challenge Answers",
+					"item": [
+						{
+							"name": "getChallengesAnswersByUser",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"answers",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "2"
+										},
+										{
+											"key": "userId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createChallengesAnswers",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/challengeAnswers",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateChallengesAnswers Copy",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers",
+										":challengeAnswerId"
+									],
+									"variable": [
+										{
+											"key": "challengeAnswerId",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteChallengesAnswers Copy Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challengeAnswers",
+										":challengeAnswerId"
+									],
+									"variable": [
+										{
+											"key": "challengeAnswerId",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "getChallenges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges?privacy=private",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							],
+							"query": [
+								{
+									"key": "privacy",
+									"value": "private"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createChallenge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallengeById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallengesByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/users/:userId?tags=Array,Divide and Conquer",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"users",
+								":userId"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "Array,Divide and Conquer"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editChallenge",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 31,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 32,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteChallenge",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/:challengeId",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								":challengeId"
+							],
+							"variable": [
+								{
+									"key": "challengeId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Execute",
+			"item": [
+				{
+					"name": "Execute Java Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/execute",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"execute"
+							]
 						}
 					},
 					"response": []
