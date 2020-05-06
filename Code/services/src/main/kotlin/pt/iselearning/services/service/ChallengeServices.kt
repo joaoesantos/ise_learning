@@ -41,7 +41,7 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
         return challenge.get()
     }
 
-    fun getChallengeByUserId(userId: Int, tags: String?, privacy: String?): List<Challenge>? {
+    fun getUserChallenges(userId: Int, tags: String?, privacy: String?): List<Challenge>? {
         //acrescentar validador para o privacy, pode ser "private" "public" ou null, mas nao pode ser mais nada
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTag(tag) }

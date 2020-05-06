@@ -20,8 +20,8 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     private lateinit var webClient : WebClient*/
 
     /**
-     * Method to get all users
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * Method to get all challenges
+     * @return ResponseEntity<List<Challenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @GetMapping
     fun getAllChallenges(@RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?): ResponseEntity<List<Challenge>> {
@@ -30,10 +30,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
 
 
     /**
-     * Method to get a single user.
+     * Method to get a single challenge.
      * Path variable "id" must be present
-     * @param id represens user id
-     * @return ResponseEntity<User>
+     * @param id represens challenge id
+     * @return ResponseEntity<Challenge>
      */
     @GetMapping("/{challengeId}")
     fun getChallengeById(@PathVariable challengeId : Int): ResponseEntity<Challenge> {
@@ -43,23 +43,26 @@ class ChallengeController (private val challengeService: ChallengeService, priva
 
 
     /**
-     * Method to get a single user.
+     * Method to get a single challenge.
      * Path variable "id" must be present
-     * @param id represens user id
-     * @return ResponseEntity<User>
+     * @param id represens challenge id
+     * @param tags represens tags to search for
+     * @param privacy represens privacy to search for
+     * @return ResponseEntity<List<Challenge>>
      */
     @GetMapping("/users/{userId}")
     fun getChallengeByUserId(@PathVariable userId : Int, @RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?) : ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
-                .body(challengeService.getChallengeByUserId(userId, tags, privacy))
+                .body(challengeService.getUserChallenges(userId, tags, privacy))
     }
 
 
     /**
-     * Method to create an user.
-     * A json object that represents a object of the type User must be present in the body
-     * @param ServerRequest represents an HTTP message
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * Method to create an challenge.
+     * A json object that represents a object of the type Challenge must be present in the body
+     * @param ucb helps build URLs
+     * @param challenge represents a Challenge
+     * @return ResponseEntity<Challenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping
     fun createChallenge(@RequestBody challenge: Challenge, ucb : UriComponentsBuilder): ResponseEntity<Challenge> {
@@ -72,10 +75,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     }
 
     /**
-     * Method to update an user.
-     * A json object that represents a object of the type User must be present in the body
-     * @param ServerRequest represents an HTTP message
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * Method to update an challenge.
+     * A json object that represents a object of the type Challenge must be present in the body
+     * @param challengeId represents a challenge Id
+     * @param challenge represents a Challenge
+     * @return ResponseEntity<Challenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{challengeId}")
     fun updateChallenge(@PathVariable challengeId : Int, @RequestBody challenge: Challenge): ResponseEntity<Challenge> {
@@ -84,10 +88,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     }
 
     /**
-     * Method to delete an user
+     * Method to delete an challenge
      * Path variable "id" must be present
-     * @param ServerRequest represents an HTTP message
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * @param challengeId represents an HTTP message
+     * @return ResponseEntity<Void> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @DeleteMapping("/{challengeId}")
     fun deleteChallenge(@PathVariable challengeId : Int): ResponseEntity<Void> {
