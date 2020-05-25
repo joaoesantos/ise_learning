@@ -1,12 +1,18 @@
 package pt.iselearning.services.domain
 
+import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.util.SupportedLanguages
+import javax.validation.constraints.Pattern
+
 /**
 * data class that represents the result of an execution
 */
+@Validated
 data class Executable(
-        var language : String?,
-        var code : String?,
-        var unitTests : String?,
-        var executeTests : Boolean?
+        @Pattern(regexp = SupportedLanguages.REGEX_STRING_SUPPORTED_LANGUAGES)
+        var language : String,
+        var code : String,
+        var unitTests : String,
+        var executeTests : Boolean
 ) {
 }

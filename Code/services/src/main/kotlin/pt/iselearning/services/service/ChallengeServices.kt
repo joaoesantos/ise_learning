@@ -6,15 +6,21 @@ import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.ChallengeTagRepository
-import pt.iselearning.services.repository.TagRepository
 import java.lang.String
 import java.util.*
+import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.util.CustomValidators
+import javax.validation.Valid
+import javax.validation.constraints.Pattern
+import javax.validation.constraints.Positive
 
+@Validated
 @Service
 class ChallengeService (private val challengeRepository: ChallengeRepository,
                         private val challengeTagRepository: ChallengeTagRepository) {
-    fun getAllChallenges(tags: String?, privacy: String?): List<Challenge> {
-        //acrescentar validador para o privacy, pode ser "private" "public" ou null, mas nao pode ser mais nada
+    @Validated
+    fun getAllChallenges(tags: String?,
+                         @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -35,14 +41,16 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
         }
     }
 
-    fun getChallengeById(challengeId : Int) : Challenge {
+    @Validated
+    fun getChallengeById(@Positive challengeId : Int) : Challenge {
         val challenge = challengeRepository.findById(challengeId)
         checkIfChallengeExists(challenge, challengeId)
         return challenge.get()
     }
 
-    fun getUserChallenges(userId: Int, tags: String?, privacy: String?): List<Challenge>? {
-        //acrescentar validador para o privacy, pode ser "private" "public" ou null, mas nao pode ser mais nada
+    @Validated
+    fun getUserChallenges(@Positive userId: Int, tags: String?,
+                          @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge>? {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -64,17 +72,20 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
         }
     }
 
-    fun createChallenge(challenge: Challenge): Challenge? {
+    @Validated
+    fun createChallenge(@Valid challenge: Challenge): Challenge? {
         return challengeRepository.save(challenge);
     }
 
-    fun updateChallenge(challenge: Challenge): Challenge? {
+    @Validated
+    fun updateChallenge(@Valid challenge: Challenge): Challenge? {
         val challengeFromDb = challengeRepository.findById(challenge.challengeId!!)
         checkIfChallengeExists(challengeFromDb, challenge.challengeId!!)
         return challengeRepository.save(challenge)
     }
 
-    fun deleteChallenge(challengeId: Int) {
+    @Validated
+    fun deleteChallenge(@Positive challengeId: Int) {
         val challengeFromDb = challengeRepository.findById(challengeId)
         checkIfChallengeExists(challengeFromDb, challengeId)
         challengeRepository.findById(challengeId)
