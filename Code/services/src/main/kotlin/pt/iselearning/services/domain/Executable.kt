@@ -7,9 +7,9 @@ import org.springframework.validation.annotation.Validated
 */
 @Validated
 data class Executable(
-        var language : String?,
-        var code : String?,
-        var unitTests : String?,
-        var executeTests : Boolean?
+        var language : String,
+        var code : String,
+        var unitTests : String,
+        var executeTests : Boolean
 ) {
 }
