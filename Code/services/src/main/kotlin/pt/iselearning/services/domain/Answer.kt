@@ -30,7 +30,7 @@ data class Answer (
     var unitTests : String?,
 
     @Column(name="is_correct")
-    var creatorId : Boolean?
+    var isCorrect : Boolean?
 ) {
     constructor() : this(null, null, null, null, null)
 }

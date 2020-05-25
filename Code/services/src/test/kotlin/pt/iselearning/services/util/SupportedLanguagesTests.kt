@@ -10,7 +10,7 @@ class ApplicationTests {
         val regex = SupportedLanguages.getRegexForSupportedLanguages().toRegex()
         Assert.isTrue(regex.matches("java"), "The java language should match")
         Assert.isTrue(regex.matches("kotlin"), "The kotlin language should match")
-        Assert.isTrue(regex.matches("cs"), "The cs language should match")
+        Assert.isTrue(regex.matches("csharp"), "The csharp language should match")
         Assert.isTrue(regex.matches("javascript"), "The javascript language should match")
         Assert.isTrue(regex.matches("python"), "The python language should match")
     }
@@ -28,7 +28,6 @@ class ApplicationTests {
     @Test
     fun testRegexConstantAgainstDynamicRegex() {
         val regexString = SupportedLanguages.getRegexForSupportedLanguages()
-        print(SupportedLanguages.getRegexForSupportedLanguages())
         Assert.isTrue(regexString == SupportedLanguages.REGEX_STRING_SUPPORTED_LANGUAGES,
                 "The hardcoded regex should match with dynamic, please correct harcoded value")
     }
