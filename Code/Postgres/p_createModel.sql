@@ -144,7 +144,7 @@ BEGIN
 	);
 
 	CREATE TABLE questionnaire_answer (
-		questionnaireanswer_id INT GENERATED ALWAYS AS IDENTITY,
+		questionnaire_answer_id INT GENERATED ALWAYS AS IDENTITY,
 		answer_id INT UNIQUE NOT NULL,
 		questionnaire_id INT NOT NULL,
 		qc_id INT UNIQUE NOT NULL,
