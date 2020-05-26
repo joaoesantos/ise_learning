@@ -52,7 +52,6 @@ let executableHandler = () => {
         }
         res.json(new ExecutionResult(rawResult, wasError).toJson())
         } catch (error) {
-            console.log(error)
             res.json(new ExecutionResult("Error running:" + error, true).toJson())
         }
         

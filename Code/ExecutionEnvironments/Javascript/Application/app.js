@@ -21,6 +21,7 @@ app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log('body:', req.body)
   next(createError(404));
 });
 
@@ -32,7 +33,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({message:"grave error"})
+  res.json({message:err})
 });
 
 app.listen(3500,()=> {console.log("Listening....")})

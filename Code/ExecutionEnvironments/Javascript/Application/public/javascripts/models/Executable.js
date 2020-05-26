@@ -10,7 +10,7 @@ class Executable {
         this.#unitTests = unitTests;
         this.#executeTests = executeTests
     }
-    
+
     get code() {
         return this.#code;
     }
@@ -46,7 +46,7 @@ class Executable {
                         .exists()
                         .not()
                         .isEmpty()
-                        .isString()                
+                        .isString()
                 ],
                 "Unit tests must be provided"
                 )

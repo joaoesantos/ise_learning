@@ -12,8 +12,6 @@ router.post('/', Executable.validate(), function(req, res, next) {
     executableHandler.runCode(req, res)
     res.status(200)
   }catch(err){
-    console.log("error caught")
-    console.log(err)
     res.status(422).json({
       message: err
     })
