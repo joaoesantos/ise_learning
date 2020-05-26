@@ -66,7 +66,7 @@ let executableHandler = () => {
                 res = error;
                 err = true;
             }
-            else if(stderr || stderr !== ""){
+            else if(stderr){
                 res = stderr;
                 err = true;
             }
