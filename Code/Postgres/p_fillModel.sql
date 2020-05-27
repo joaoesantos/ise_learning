@@ -44,50 +44,6 @@ BEGIN
 	INSERT INTO tag (tag) VALUES
 	('Array'),('Divide and Conquer'),('Hash Table'),('Recursion');
 
-	INSERT INTO runcode(code_language,code,output) VALUES
-	-- JAVA
-	(
-		'Java',
-		'public class Main {
-			public static void main(String[] args) {
-				System.out.println("Hello World!");
-			}
-		}',
-		'Hello World!'
-	),
-	-- KOTLIN
-	(
-		'Kotlin',
-		'fun main(args: Array<String>) {
-			println("Hello, World!")
-		}',
-		'Hello World!'
-	),
-	-- JAVASCRIPT
-	(
-		'JavaScript',
-		'function main() {
-			console.log("Hello World!");
-		}());',
-		'Hello World!'
-	),
-	-- C#
-	(
-		'C#',
-		'class HelloWorld {
-			static void Main() {
-				System.Console.WriteLine("Hello World!");
-			}
-		}',
-		'Hello World!'
-	),
-	-- PYTHON
-	(
-		'Python',
-		'print("Hello World!")',
-		'Hello World!'
-	);
-
 	INSERT INTO challenge(creator_id,challenge_text,is_private) VALUES
 	-- CHALLENGE 1
 	(
@@ -120,11 +76,11 @@ BEGIN
 		FALSE
 	);
 
-	INSERT INTO ct(challenge_id,tag) VALUES
-	(1,'Array'),(1,'Divide and Conquer'),(1,'Recursion'),
-	(2,'Divide and Conquer'),
-	(3,'Array'),
-	(4,'Divide and Conquer'),
+	INSERT INTO ct(challenge_id,tag_id) VALUES
+	(1,1),(1,2),(1,4),
+	(2,2),
+	(3,1),
+	(4,2),
 	(5,NULL);
 	
 	INSERT INTO challenge_solution(challenge_id,code_language,challenge_code,solution_code,unit_tests) VALUES

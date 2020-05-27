@@ -28,17 +28,6 @@ BEGIN
 		PRIMARY KEY (code_language_id)
 	);
 
-	CREATE TABLE runcode (
-		run_code_id INT GENERATED ALWAYS AS IDENTITY,
-		code_language VARCHAR(20),
-		code TEXT,
-		output TEXT,
-		--
-		PRIMARY KEY (run_code_id),
-		FOREIGN KEY (code_language) 
-			REFERENCES code_language (code_language)
-	);
-
 	CREATE TABLE tag (
 		tag_id INT GENERATED ALWAYS AS IDENTITY,
 		tag VARCHAR(20) UNIQUE NOT NULL,
@@ -73,13 +62,14 @@ BEGIN
 	CREATE TABLE ct(
 		id INT GENERATED ALWAYS AS IDENTITY,
 		challenge_id INT,
-		tag VARCHAR(20),
+		tag_id INT,
 		--
-		PRIMARY KEY(id,challenge_id),
+		PRIMARY KEY(id),
 		FOREIGN KEY (challenge_id) 
 			REFERENCES CHALLENGE (challenge_id) ON DELETE CASCADE,
-		FOREIGN KEY (tag) 
-			REFERENCES tag (tag) ON DELETE CASCADE
+		FOREIGN KEY (tag_id) 
+			REFERENCES tag (tag_id) ON DELETE CASCADE,
+		UNIQUE(challenge_id, tag_id)
 	);
 	
 	CREATE TABLE challenge_solution (
@@ -140,7 +130,7 @@ BEGIN
 		FOREIGN KEY (challenge_id) 
 			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
 		--
-		UNIQUE(questionnaire_id,challenge_id)
+		UNIQUE(questionnaire_id,challenge_id,lang_filter)
 	);
 
 	CREATE TABLE questionnaire_answer (
@@ -149,6 +139,8 @@ BEGIN
 		questionnaire_id INT NOT NULL,
 		qc_id INT UNIQUE NOT NULL,
 		label VARCHAR(20) NOT NULL,
+		start_date TIMESTAMP,
+		end_date TIMESTAMP,
 		--
 		PRIMARY KEY (questionnaireanswer_id),
 		FOREIGN KEY (answer_id) 

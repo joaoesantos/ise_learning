@@ -6,7 +6,7 @@ import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.ChallengeTagRepository
-import pt.iselearning.services.repository.TagRepository
+//import pt.iselearning.services.repository.TagRepository
 import java.lang.String
 import java.util.*
 
