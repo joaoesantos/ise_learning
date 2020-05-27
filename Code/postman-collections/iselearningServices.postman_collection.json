@@ -176,7 +176,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -203,7 +203,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"creatorId\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -258,6 +258,136 @@
 										{
 											"key": "challengeAnswerId",
 											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "tags",
+					"item": [
+						{
+							"name": "getChallengeTagByChallengeId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/tags",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"tags"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getChallengeTagByChallengeIdAndTagText",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/tags/:tagid",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"tags",
+										":tagid"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "1"
+										},
+										{
+											"key": "tagid",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createChallengeTag",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tag\": \"Arrays\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/tags",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"tags"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteChallengeTagByChallengeIdAndTagText",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/tags/:tagId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"challenges",
+										":challengeId",
+										"tags",
+										":tagId"
+									],
+									"variable": [
+										{
+											"key": "challengeId",
+											"value": "3"
+										},
+										{
+											"key": "tagId",
+											"value": "5"
 										}
 									]
 								}
@@ -476,6 +606,30 @@
 							"path": [
 								"v0",
 								"execute"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "tags",
+			"item": [
+				{
+					"name": "getAllTags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/tags",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"tags"
 							]
 						}
 					},

@@ -15,6 +15,10 @@ tags:
     description: Operations for managing the challenges.
   - name: Challenge Answer
     description: Operations for managing the challenge answers.
+  - name: Challenge Tags
+    description: Operations for managing the challenge tags.
+  - name: Tags
+    description: Operations for managing the tags.
 paths:
   /:
     post:
@@ -403,6 +407,149 @@ paths:
             application/json:
               schema:
                 type: object
+  /v0/challenges/{challengeId}/tags:
+    get:
+      tags:
+        - Challenge Tags
+      summary: Retreives all challenge tags from a challenge
+      operationId: getAllChallengeTagsByChallengeId
+      description: |
+        Retrieves every challenge tag associated to a specific challenge.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      responses:
+        '200':
+          description: List of tags.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    description: List of challenges.
+                    items:
+                      $ref: '#/components/schemas/challengeTag'
+    post:
+      tags:
+        - Challenge Tags
+      summary: Associates a tag with a Challenge
+      operationId: createsChallengeTag
+      description: |
+        Associates a tag with a specific challenge.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+      requestBody:
+        description: Challenge tag to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/challengeTagInputModel'
+      responses:
+        '201':
+          description: Successful challenge tag created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challengeTag'
+  /v0/challenges/{challengeId}/tags/{tagId}:
+    get:
+      tags:
+        - Challenge Tags
+      summary: Retreives specific challenge tag from a challenge
+      operationId: getAllChallengeTagsByChallengeIdAnTagText
+      description: |
+        Retrieves challenge tag associated to a specific challenge with a specific tag id.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+        - in: path
+          name: tagId
+          schema:
+            type: integer
+          required: true
+          description: Tag unique id.
+      responses:
+        '200':
+          description: Specific challenge tag.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    description: Challenge tag.
+                    items:
+                      $ref: '#/components/schemas/challengeTag'
+    delete:
+      tags:
+        - Challenge Tags
+      summary: Delete specific challenge tag from a challenge
+      operationId: deleteAllChallengeTagsByChallengeIdAnTagText
+      description: |
+        Delete challenge tag associated to a specific challenge with a specific tag id.
+      parameters:
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge unique id.
+        - in: path
+          name: tagId
+          schema:
+            type: integer
+          required: true
+          description: Tag unique id.
+      responses:
+        '204':
+          description: Successful deleted challenge tag.
+          content:
+            application/json:
+              schema:
+                type: object
+  /v0/tags:
+    get:
+      tags:
+        - Tags
+      summary: Retreives all tags
+      operationId: getAllTags
+      description: |
+        Retrieves every tag.
+      responses:
+        '200':
+          description: Tag list.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: array
+                    description: Tag list.
+                    items:
+                      $ref: '#/components/schemas/tag'
 components:
   schemas:
     executable:
@@ -617,7 +764,7 @@ components:
         challengeId:
           type: integer
           example: 55874
-          description: Unique challend id to which the aswer belongs to.
+          description: Unique challenge id to which the aswer belongs to.
         userID:
           type: integer
           example: 54954
@@ -638,5 +785,45 @@ components:
           type: boolean
           example: true
           description: Boolean indicating if this answer is correct or not.
-
-
+    challengeTag:
+      type: object
+      required:
+        - challengeTagId
+        - challengeId
+        - tag
+      properties:
+        challengeTagId:
+          type: integer
+          example: 55874
+          description: Unique challenge tag id.
+        challengeId:
+          type: integer
+          example: 55874
+          description: Unique challenge id to which the tag belongs to.
+        tag:
+          type: object
+          description: Unique challenge id to which the aswer belongs to.
+          $ref: '#/components/schemas/tag'
+    tag:
+      type: object
+      required:
+        - tagId
+        - tag
+      properties:
+        tagId:
+          type: integer
+          example: 55874
+          description: Unique tag id.
+        tag:
+          type: string
+          example: 'Array'
+          description: Unique tag text.
+    challengeTagInputModel:
+      type: object
+      required:
+        - tag
+      properties:
+        tag:
+          type: string
+          example: 'Array'
+          description: Unique tag text.
