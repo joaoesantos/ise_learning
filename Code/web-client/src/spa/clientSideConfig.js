@@ -1,6 +1,6 @@
 //export const apiBaseUrl = "http://localhost:3000";
 export const apiBaseUrl = "http://localhost:8080";
-export const codeMirrorDefault = 'java';
+export const defaultLanguage = 'java';
 export const CodeMirrorOptions = new Map();
 
 // JAVA
@@ -45,5 +45,3 @@ CodeMirrorOptions.set('python',{
 mode:'python',
 value:`print "Hello World!"`
 });
-
-export default { apiBaseUrl, codeMirrorDefault, CodeMirrorOptions }
