@@ -10,7 +10,7 @@ import pt.iselearning.services.service.ChallengeService
 import java.lang.String
 
 /**
- * Handler responsible to respond to requests regard User entity
+ * Handler responsible to respond to requests regard Challenge entity
  */
 @RestController
 @RequestMapping("/v0/challenges")
@@ -96,7 +96,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     @DeleteMapping("/{challengeId}")
     fun deleteChallenge(@PathVariable challengeId : Int): ResponseEntity<Void> {
         challengeService.deleteChallenge(challengeId)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.noContent().build()
     }
 }
 
