@@ -13,13 +13,13 @@ import pt.iselearning.services.service.ExecutionService
 @RequestMapping("/v0/execute")
 class ExecutionController (private val executionService: ExecutionService) {
     /**
-     * Method to create an user.
-     * A json object that represents a object of the type User must be present in the body
+     * Method to execute code.
+     *
      * @param Executable represents code to be executed
      * @return ResponseEntity<ExecutableResult> represents the result
      */
     @PostMapping
-    fun createChallenge(@RequestBody executable: Executable): ResponseEntity<ExecutableResult> {
+    fun execute(@RequestBody executable: Executable): ResponseEntity<ExecutableResult> {
         return ResponseEntity.ok().body(executionService.execute(executable))
     }
 }

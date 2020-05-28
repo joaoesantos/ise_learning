@@ -16,17 +16,17 @@ data class Tag (
     @Column(name="tag")
     var tag : String?
 
-    /*
-    @OneToMany
-    @JoinColumn(name="tag", nullable=false, updatable=true, insertable=true)
-    var challengeTag: List<ChallengeTag>?*/
+        /*
+        @OneToMany
+        @JoinColumn(name="tag_id", nullable=false, updatable=false, insertable=false)
+        var challengeTag: List<ChallengeTag>?
 
-    /*@ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "tags")
-    @JoinTable(
-        name = "ct",
-        joinColumns = [JoinColumn(name = "tag")],
-        inverseJoinColumns =[JoinColumn(name = "challenge_id")]
-    )*/
+            @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], mappedBy = "tags")
+            @JoinTable(
+                name = "ct",
+                joinColumns = [JoinColumn(name = "tag")],
+                inverseJoinColumns =[JoinColumn(name = "challenge_id")]
+            )*/
     /*@OneToMany(mappedBy = "challenge")
     var challenges : List<ChallengeTag>?*/
 ) {
