@@ -16,13 +16,6 @@ data class ChallengeTag (
     @Column(name="challenge_id")
     var challengeId : Int? =  null,
 
-    /*
-    @Column(name="tag")
-    var tag : String? =  null
-    @ManyToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name="challenge_id", nullable=false, updatable=false, insertable=false)
-    var challenge : Challenge?,*/
-
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name="tag_id", nullable=false, updatable=false, insertable=true)
     var tag : Tag?
