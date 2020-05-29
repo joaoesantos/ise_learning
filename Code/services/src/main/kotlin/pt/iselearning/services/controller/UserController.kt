@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.repository.UserRepository
+import pt.iselearning.services.transfer.UpdateProfileModel
 import java.lang.String
 
 /**
@@ -103,10 +104,20 @@ class UserController {
         return userRepository.findById(id)
                 .map { u ->
                     userRepository.delete(u)
-                    val resp : ResponseEntity<Void> = ResponseEntity.ok().build()
+                    val resp : ResponseEntity<Void> = ResponseEntity.noContent().build()
                     resp
                 }
                 .orElse(notFound)
+    }
+
+    @PostMapping("/me")
+    fun updateProfile(@RequestBody profileUpdateModel : UpdateProfileModel) : ResponseEntity<User> {
+        
+    }
+
+    @PostMapping("/me/password")
+    fun updatePassword(@RequestBody passwordUpdateModel) : ResponseEntity<User> {
+
     }
 
 }
