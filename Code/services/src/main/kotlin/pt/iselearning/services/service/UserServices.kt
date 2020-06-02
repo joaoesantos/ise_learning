@@ -1,10 +1,12 @@
 package pt.iselearning.services.service
 
+import org.springframework.stereotype.Service
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import java.util.*
 
+@Service
 class UserServices {
     fun checkIfUserExists(user: Optional<User>, userId: Int) {
         if (user.isEmpty) {

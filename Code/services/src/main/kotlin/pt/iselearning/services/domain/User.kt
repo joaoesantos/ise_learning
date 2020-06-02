@@ -10,9 +10,9 @@ import javax.persistence.*
 @Table(name="user_app")
 data class User (
     @Id
-    @Column(name="id")
+    @Column(name="user_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    val id : Int? =  null,
+    val userId : Int? =  null,
 
     @Column(name="username")
     val username : String?,

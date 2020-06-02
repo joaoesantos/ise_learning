@@ -15,7 +15,7 @@ import java.lang.String
  * Handler responsible to respond to requests regard User entity
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v0/users")
 class UserController {
 
     @Autowired
@@ -43,6 +43,8 @@ class UserController {
     fun getUserById(@PathVariable id : Int): ResponseEntity<User> {
         val notFound : ResponseEntity<User> = ResponseEntity.notFound().build()
 
+        var user = userRepository.findById(id)
+
         return try {
             userRepository.findById(id)
                     .map { t: User ->
@@ -65,7 +67,7 @@ class UserController {
     fun createUser(@RequestBody user: User, ucb : UriComponentsBuilder): ResponseEntity<User> {
         val badRequest : ResponseEntity<User> = ResponseEntity.badRequest().build()
         val location = ucb.path("/users/")
-                .path(String.valueOf(user.id))
+                .path(String.valueOf(user.userId))
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(userRepository.save(user))
@@ -81,7 +83,7 @@ class UserController {
     fun updateUser(@RequestBody user: User): ResponseEntity<User> {
         val notFound : ResponseEntity<User> = ResponseEntity.notFound().build()
 
-        return userRepository.findById(user.id!!)
+        return userRepository.findById(user.userId!!)
                 .map {
                     ResponseEntity.ok().contentType(APPLICATION_JSON).body(userRepository.save(user))
                 }

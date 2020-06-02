@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import Link from '@material-ui/core/Link';
@@ -20,13 +21,11 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { makeStyles } from '@material-ui/core/styles';
 // pallete color
-import {palleteColor, apiUrlTemplates} from '../clientSideConfig'
+import {apiUrlTemplates} from '../clientSideConfig'
 
 //controllers
-import UseFetch, { FetchStates } from '../controllers/UseFetch'
-import {addSirenActionFetchOptions} from '../controllers/sirenParser'
-// custom components
-import RedirectToAuthentication from './RedirectToAuthentication'
+import UseAction, { ActionStates } from '../controllers/UseAction'
+import {UserController} from '../controllers/UserController'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: palleteColor.color4,
+    //backgroundColor: palleteColor.color4,
   },
   centerItems: {
     textAlign: 'center'
@@ -48,17 +47,17 @@ const useStyles = makeStyles((theme) => ({
   save25: {
     width: '25%',
     margin: theme.spacing(1, 0, 2),
-    backgroundColor: palleteColor.color4,
+    /*backgroundColor: palleteColor.color4,
     '&:hover': {
       backgroundColor: palleteColor.color3,
-    },
+    },*/
   },
   save: {
     margin: theme.spacing(1, 0, 2),
-    backgroundColor: palleteColor.color4,
+    /*backgroundColor: palleteColor.color4,
     '&:hover': {
       backgroundColor: palleteColor.color3,
-    },
+    },*/
   },
 }));
 
@@ -70,42 +69,51 @@ export default function UserProfile(props) {
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
   // fetch props & data
-  const [url, setUrl] = React.useState()
-  const [options, setOptions] = React.useState({ credentials: props.credentials })
-  const [fetchState, response, json] = UseFetch(url,options)
-  const [user, setUser] = React.useState(props.loggedUser.properties)
+  const [action, setAction] = React.useState()
+  const [actionState, response] = UseAction(action)
+  const [user, setUser] = React.useState()
 
   React.useEffect(() => {
-    if (json) {
-      setUser(json.properties)
-      props.setLoggedUser(json)
+    console.log("----------------------------------")
+    console.log(response)
+    console.log(actionState)
+    console.log("||||||||||||||||||||||||||||||||||")
+    if (response && actionState === ActionStates.done &&
+      action.render && action.render === true) {
+      setUser(response)
+    } else if (!response) {
+      setAction({
+        function: UserController.getUserMe,
+        args: [],
+        render: true
+      })
     } else {
-      setUrl(apiUrlTemplates.userOperationsById(props.match.params.id))
+        //TODO
     }
-  },[json]);
+  },[actionState]);
 
-  const handleSaveName = async () => {
-    let newOptions = addSirenActionFetchOptions(json, 'edit-user-name', options)
-    newOptions.body.name = user.name
-    setOptions(newOptions)
+  const handleSaveName = async (e) => {
+    e.preventDefault()
   }
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = async (e) => {
+    e.preventDefault()
     if(newPassword !== repeatNewPassword){
       alert("The passwords must match!")
     } else {
-      let newOptions = addSirenActionFetchOptions(json, 'edit-user-password', options)
-      newOptions.body.password = newPassword
-      setOptions(newOptions)
-      setNewPassword("")
-      setRepeatNewPassword("")
-      props.setCredentials(btoa(`${user.username}:${user.password}`))
+
     }
   }
 
   const handleNameChange = (name) => {
     let userTemp = Object.assign({}, user)
     userTemp.name = name
+    setUser(userTemp)
+  }
+
+  const handleEmailChange = (email) => {
+    let userTemp = Object.assign({}, user)
+    userTemp.email = email
     setUser(userTemp)
   }
 
@@ -129,15 +137,14 @@ export default function UserProfile(props) {
       event.preventDefault();
   };
 
-  if (fetchState === FetchStates.clear) {
+  if (actionState === ActionStates.clear) {
     return <p>insert URL</p>
-  } else if (fetchState === FetchStates.fetching) {
+  } else if (actionState === ActionStates.fetching) {
     return <p>fetching...</p>
-  } else if (fetchState === FetchStates.done) {
+  } else if (actionState === ActionStates.done) {
     return (
     < Container component = "main" maxWidth = "md" >
-      <RedirectToAuthentication credentials={props.credentials} loggedUser={props.loggedUser} url={props.match.url}/>
-      {props.loggedUser && props.credentials &&
+      {user &&
         < div className = {classes.paper} >
           < Avatar className = {classes.avatar} >
             < AccountCircle />
@@ -161,30 +168,63 @@ export default function UserProfile(props) {
               value = {user.username}
               />
             </ Grid >
-            < Grid item xs = {10} >
-              < TextField
-              variant = "outlined"
-              required
-              fullWidth
-              id = "name"
-              label = "Name"
-              name = "name"
-              autoComplete = "name"
-              value = {user.name}
-              onChange={e => handleNameChange(e.target.value)}
-              />
-            </ Grid >
-            < Grid item xs = {2} className = {classes.centerItems} >
-              < Button
-              type = "submit"
-              fullWidth
-              variant = "contained"
-              color = "primary"
-              className = {classes.save}
-              onClick = {() => handleSaveName()}
-              >
-                Save Name
-              </ Button >
+            < Grid item xs = {12} >
+              <FormControl className={clsx(classes.margin, classes.textField, classes.fullWidth)} variant="outlined">
+                < Grid item xs = {12} >
+                  {/*<InputLabel htmlFor="outlined-adornment-password">Name</InputLabel>
+                  <OutlinedInput
+                    id="name"
+                    name = "name"
+                    label = "Name"
+                    required
+                    fullWidth
+                    type="text"
+                    autoComplete = "name"
+                    defaultValue={user.name}
+                    value={user.name}
+                    onChange={e => handleNameChange(e.target.value)}
+                    labelWidth={110}
+                  />*/}
+                  < TextField
+                  variant = "outlined"
+                  required
+                  fullWidth
+                  id = "name"
+                  label = "Name"
+                  name = "name"
+                  autoComplete = "name"
+                  type = "text"
+                  value = {user.name}
+                  onChange={e => handleNameChange(e.target.value)}
+                  />
+                </ Grid >
+                < Grid item xs = {12} >
+                  < TextField
+                  variant = "outlined"
+                  required
+                  fullWidth
+                  id = "email"
+                  label = "Email"
+                  name = "email"
+                  autoComplete = "email"
+                  type = "email"
+                  value = {user.email}
+                  onChange={e => handleEmailChange(e.target.value)}
+                  />
+                </ Grid >
+                < Grid item xs = {3} className = {classes.centerItems} >
+                  < Input
+                  type = "submit"
+                  fullWidth
+                  variant = "contained"
+                  color = "primary"
+                  className = {classes.save}
+                  onClick = {e => handleSaveName(e)}
+                  >
+                    Save Name
+                  </ Input >
+                </ Grid >
+              </FormControl>
             </ Grid >
           </ Grid >
           < Typography component = "h1" variant = "h5" >
@@ -247,7 +287,7 @@ export default function UserProfile(props) {
               fullWidth variant = "contained"
               color = "primary"
               className = {classes.save25}
-              onClick = {() => handleChangePassword()}
+              onClick = {e => handleChangePassword(e)}
               >
                 Change Password
               </ Button >
