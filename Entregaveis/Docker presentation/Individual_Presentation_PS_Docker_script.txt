@@ -1,12 +1,12 @@
 What is Docker?
-	1.1 - Docker is a tool designed to make it easier to create, deploy, and run applications by using containers.
-	2.1 - Docker created the industry standard for containers, so they could be portable anywhere
-	2.2 - Running a virtual instance of a computer system in a layer abstracted from the actual hardware, so there can be more than one virtual computer in one physical computer
-	2.3 - Containers are a standardized unit of software that allows developers to isolate their app from its environment, solving the “it works on my machine” Includes everything needed to run an application: code, runtime, system tools, system libraries and settings.
-	Any docker client will be able to run the container in any machine
-	For developers, it means that they can focus on writing code without worrying about the system that it will ultimately be running on.
-	2.4 - Require fewer resources and have very quick start up times
-	2.5 - The security comes mostly due to the isolation of each container
+	1.1 - Docker é uma ferramenta feita para facilitar a criação, lançamento e execução de aplicações através da utilização de contentores
+	2.1 - Docker criou um standard na industria para os contentores, para que estes tivessem alta portabilidade em qualquer sítio
+	2.2 - Executar uma instância virtual de um sistema computacional  numa camada de abstração em relação ao hardware propriamente dito, para que possa existir mais que um computador virtual num computador físico
+	2.3 - Os contentores são uma unidade de software standardizada que permite os desenvolvedores isolar a sua app do seu ambiente, resolvendo o paradigma de "funcionar em qualquer máquina", incluem tudo o que é necessário para executar a aplicação: codigo fonte, runtime, ferramentas de sistema, bibliotecas e configurações
+	Qualquer cliente Docker consegue executar o contentor em qualquer máquina de modo consistente
+	Para os desenvolvedores isto quer dizer que se podem focar no desenvolvimento de software sem terem de se preocupar com o sistema em que vao ser executado
+	2.4 - Requer menos recursos and tem velocidades de arranque mais rapidas
+	2.5 - A maior segurança advem sobretudo devido ao isolamento que vem quando são utilizados contentores, sendo que a aplicação esta isolada no contentor
 	- isto soa parecido a uma VM, qual é a diferença?
 Container VS Virtual Machine
 	1 - Os vantagens a nivel de isolamento da aplicação e de alocação de recursos é semelhante quer na VM quer no container
@@ -24,12 +24,12 @@ Under the Hood
 	serviços é por exemplo escalar contentores por varios Docker daemons, cujo resultado é uma docker swarm, rede entre os diferentes contentores, e os volumes de persistência de cada contentor
 	- conseguimos ver aqui na imagem uma coisas que se chamam imagens e outr que é o registry, o que é isto?
 Docker Image
-	1.1 - is an immutable (unchangeable) file. Due to their read-only quality, these images are sometimes referred to as snapshots.
-	1.2 - They represent an application and its virtual environment at a specific point in time.
-	a template which contains the source code, libraries, dependencies, tools, and other files needed for an application to run
-	1.3 - images become containers when they run on Docker Engine, at runtime
-	A container is, ultimately, just a running image.
-	Once you create a container, it adds a writable layer on top of the immutable image, meaning you can now modify it.
+	1.1 - uma imagem é um ficheiro imutavel, devido a sua natureza apenas de leitura sao referidas as vezes como snapshots
+	1.2 - Representam uma aplicação e o seu ambiente virtual a um dado ponto no tempo
+	um template que contem o codigo fonte,bibliotecas, outras dependencias, ferramentas, e outros ficheiros necessarios para a aplicação ser executada
+	1.3 - as imagens transformam se em contentores quando são executadas no Docker Engine, em runtime
+	um contentor é em ultima analise uma imagem em execução
+	uma vez criado o contentor, é adicionada uma camada na qual se pode escrever em cima da imagem imutavel, podendoo assim ser "alterada"
 	- e de onde vêm estas imagens? uma das origens pode ser um docker registry
 	2.1 - Docker registries contêm imagens de docker já construidas
 	2.2 - Podem ser publicos, acessiveis por toda a gente como o Docker Hub
@@ -38,7 +38,7 @@ Docker Image
 	- Mas frequentemente há a nessecidade de construir imagens costumizadas, por especificidades de cada applicação. Por isso existe a capacidade dos desenvolvedores construirem imagens, e é aqui que entra o Dockerfile
 	também se pode usar o dockercompose mas não vou abordar essa tema nesta apresentção
 Docker File
-	1 - A Dockerfile is a text file written in an easy-to-understand syntax that includes the instructions to build a Docker image
+	1 - Um Dockerfile é um ficheiro de texto,escrito em script numa sintaxe fácil de entender que inclui instruções para construir uma imagem Docker
 	1.1 - A instrução FROM inicializa a fase de contrução e configura a imagem base para as restantes instruções, como tal todos os ficheiros Docker têm de começar com uma destas instruções. Apenas a instrução ARG pode preceder o FROM
 	1.2 - A instrução ARG permite aos utilizadores passar argumentos em build-time
 	1.3 - A instrução RUN executa commandos na imagem 
