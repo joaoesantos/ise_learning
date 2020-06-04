@@ -7,7 +7,7 @@ import javax.persistence.*
  * data class that represents user entity
  */
 @Entity
-@Table(name="user_app")
+@Table(name="app_user")
 data class User (
     @Id
     @Column(name="user_id")
@@ -18,12 +18,13 @@ data class User (
     val username : String?,
 
     @Column(name="email")
-    val email : String?,
+    var email : String?,
 
     @Column(name="name")
-    //@JsonProperty("name")
-    val name : String?,
+    var name : String?,
 
     @Column(name="password")
-    val password : String?
-)
+    var password : String?
+) {
+    constructor() : this(null, null, null, null, null)
+}

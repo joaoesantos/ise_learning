@@ -17,7 +17,7 @@ import javax.validation.constraints.Positive
 class ChallengeAnswerService (private val challengeAnswerRepository: ChallengeAnswerRepository,
                               private val challengeRepository: ChallengeRepository,
                               private val challengeService: ChallengeService,
-                              private val userServices: UserServices,
+                              private val userServices: UserService,
                               private val userRepository: UserRepository) {
     @Validated
     fun createChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer): ChallengeAnswer? {

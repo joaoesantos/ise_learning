@@ -142,7 +142,7 @@ BEGIN
 		start_date TIMESTAMP,
 		end_date TIMESTAMP,
 		--
-		PRIMARY KEY (questionnaireanswer_id),
+		PRIMARY KEY (questionnaire_answer_id),
 		FOREIGN KEY (answer_id) 
 			REFERENCES answer (answer_id) ON DELETE CASCADE,
 		FOREIGN KEY (questionnaire_id) 
