@@ -20,6 +20,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.mindrot:jbcrypt:0.4")
+	implementation("org.modelmapper:modelmapper:2.3.7")
 	//implementation("org.springframework.boot:spring-data-jpa")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -27,6 +29,8 @@ dependencies {
 	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.projectreactor:reactor-spring:1.0.1.RELEASE")
+	//testImplementation ("org.mockito:mockito-core:3.3.3")
+	testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

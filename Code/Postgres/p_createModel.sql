@@ -150,7 +150,7 @@ BEGIN
 		qc_id INT UNIQUE NOT NULL,
 		label VARCHAR(20) NOT NULL,
 		--
-		PRIMARY KEY (questionnaireanswer_id),
+		PRIMARY KEY (questionnaire_answer_id),
 		FOREIGN KEY (answer_id) 
 			REFERENCES answer (answer_id) ON DELETE CASCADE,
 		FOREIGN KEY (questionnaire_id) 

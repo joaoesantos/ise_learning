@@ -29,7 +29,7 @@ data class Challenge (
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
-    var solutions : List<Solution>?
+    var solutions : MutableList<Solution>?
 
     /*@ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinTable(
