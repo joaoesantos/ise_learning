@@ -45,3 +45,11 @@ CodeMirrorOptions.set('python',{
 mode:'python',
 value:`print "Hello World!"`
 });
+
+export const apiVersion = "v0";
+
+export const apiUrlTemplates = {
+    login: () => `/${apiVersion}/login`,
+    logout: () => `/${apiVersion}/logout`,
+    profile: () => `/${apiVersion}/users/me`
+}
