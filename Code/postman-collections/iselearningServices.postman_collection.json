@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7aefa9b0-6c47-492e-8ae2-817cb796605d",
+		"_postman_id": "c476d3d8-1804-4983-900b-ba4bca3063e5",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,14 +21,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\"\n}"
+							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\",\n\t\"password\": \"xpto1\"\n}"
 						},
 						"url": {
-							"raw": "{{hostServices}}/users",
+							"raw": "{{hostServices}}/v0/users",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
+								"v0",
 								"users"
 							]
 						}
@@ -41,11 +42,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/users/:id",
+							"raw": "{{hostServices}}/v0/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
+								"v0",
 								"users",
 								":id"
 							],
@@ -65,46 +67,20 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/users/:id",
+							"raw": "{{hostServices}}/v0/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
+								"v0",
 								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "7"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Updates an User",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Sergio\",\n\t\"id\":1,\n\t\"username\":\"sergionNew\",\n\t\"email\":\"sergio@email.com\"\n}"
-						},
-						"url": {
-							"raw": "{{hostServices}}/users",
-							"host": [
-								"{{hostServices}}"
-							],
-							"path": [
-								"users"
 							]
 						}
 					},

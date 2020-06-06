@@ -19,7 +19,7 @@ class ControllerAdvice(private val responseHeaders: HttpHeaders = HttpHeaders())
     }
 
     @ExceptionHandler(value = [IselearningException::class])
-    fun iselearningExceptionHandler(servlet: HttpServletRequest, ex : IselearningException) : ResponseEntity<ServiceError> {
+    fun iseLearningExceptionHandler(servlet: HttpServletRequest, ex : IselearningException) : ResponseEntity<ServiceError> {
         return createResponseEntity(
                 ServiceError(
                         servlet.servletPath,
