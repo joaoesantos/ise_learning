@@ -52,7 +52,7 @@ class UserController(
     @PostMapping
     fun createUser(@RequestBody createUserModel: CreateUserModel, ucb : UriComponentsBuilder): ResponseEntity<UserModel> {
         val user = userService.createUser(createUserModel)
-        val location = ucb.cloneBuilder().path("/${user.id}")
+        val location = ucb.cloneBuilder().path("/${user.userId}")
         return ResponseEntity.created(location.build().toUri()).body(user)
     }
 

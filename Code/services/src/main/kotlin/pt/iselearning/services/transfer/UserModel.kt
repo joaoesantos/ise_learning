@@ -1,7 +1,7 @@
 package pt.iselearning.services.transfer
 
 class UserModel (
-        val id : Int? =  null,
+        val userId : Int? =  null,
 
         val username : String?,
 

@@ -801,7 +801,7 @@ components:
     user:
       type: object
       properties:
-        id: 
+        userId: 
           type: integer
           example: 523
           description: Unique id which uniquely identifies the user
