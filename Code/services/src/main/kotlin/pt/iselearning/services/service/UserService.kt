@@ -11,6 +11,7 @@ import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.UserRepository
 import pt.iselearning.services.transfer.CreateUserModel
 import pt.iselearning.services.transfer.UpdateProfileModel
+import pt.iselearning.services.transfer.UserModel
 import java.lang.Exception
 import java.util.*
 
@@ -20,6 +21,7 @@ class UserService(
         private val userRepository: UserRepository,
         private val emailValidator: EmailValidator
         ) {
+
     fun checkIfUserExists(user : Optional<User>, userId: Int) {
         if (user.isEmpty) {
             throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode, "This user does not exist.", // dar fix quando houver refactoring
@@ -28,15 +30,11 @@ class UserService(
     }
 
     @Transactional
-    fun createUser(createUserModel : CreateUserModel) : User {
+    fun createUser(createUserModel : CreateUserModel) : UserModel {
         val encryptedPassword = BCrypt.hashpw(createUserModel.password, BCrypt.gensalt())
         createUserModel.password = encryptedPassword
         val user = modelMapper.map(createUserModel, User::class.java)
-        println(user.username)
-        println(user.name)
-        println(user.email)
-        println(user.password)
-        return userRepository.save(user)
+        return modelMapper.map(userRepository.save(user), UserModel::class.java)
     }
 
     @Transactional
@@ -52,21 +50,21 @@ class UserService(
 
     fun getUserInformation(username : String) : User = verifyUser(username)
 
-    fun getAllUsers() : Iterable<User> = userRepository.findAll()
+    fun getAllUsers() : Iterable<UserModel> = userRepository.findAll().map { user -> modelMapper.map(user, UserModel::class.java )  }
 
-    fun getUserById(userId: Int) : User = verifyUser(userId = userId)
+    fun getUserById(userId: Int) : UserModel = modelMapper.map(verifyUser(userId = userId), UserModel::class.java)
 
     @Transactional
-    fun updatePassword(password : String, userId : Int): User {
+    fun updatePassword(password : String, userId : Int): UserModel {
         val user = verifyUser(userId = userId)
         val encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
         user.password = encryptedPassword
 
-        return userRepository.save(user)
+        return modelMapper.map(userRepository.save(user), UserModel::class.java)
     }
 
     @Transactional
-    fun updateUserInformation(updateProfileModel: UpdateProfileModel, userId: Int) : User {
+    fun updateUserInformation(updateProfileModel: UpdateProfileModel, userId: Int) : UserModel {
         if(!emailValidator.isValid(updateProfileModel.email, null)){
             throw IselearningException(
                     ErrorCode.VALIDATION_ERROR.httpCode,
@@ -78,7 +76,7 @@ class UserService(
         user.email = updateProfileModel.email
         user.name = updateProfileModel.name
 
-        return userRepository.save(user)
+        return modelMapper.map(userRepository.save(user), UserModel::class.java)
     }
 
     private fun verifyUser(username : String? = null, userId : Int? = null) : User {
