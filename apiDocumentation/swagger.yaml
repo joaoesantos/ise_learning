@@ -19,6 +19,8 @@ tags:
     description: Operations for managing the challenge tags.
   - name: Tags
     description: Operations for managing the tags.
+  - name: Users
+    description: Operations for managing user's profile
 paths:
   /:
     post:
@@ -425,16 +427,6 @@ paths:
       responses:
         '200':
           description: List of tags.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payload:
-                    type: array
-                    description: List of challenges.
-                    items:
-                      $ref: '#/components/schemas/challengeTag'
     post:
       tags:
         - Challenge Tags
@@ -460,10 +452,8 @@ paths:
       responses:
         '201':
           description: Successful challenge tag created.
-          content:
-            application/json:
-              schema:
-                type: object
+                    type: object
+                    $ref: '#/components/schemas/tag'
                 properties:
                   payload:
                     type: object
@@ -550,6 +540,46 @@ paths:
                     description: Tag list.
                     items:
                       $ref: '#/components/schemas/tag'
+  /v0/users/{userId}:  
+    get:
+      tags:
+        - User
+      summary: Retreives an user
+      operationId: getUser
+      description: |
+        Retrive an user's information.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User's unique id.
+      responses:
+        '200':
+          description: User
+                    $ref: '#/components/schemas/user'
+    delete:
+      tags:
+        - User
+      summary: Deletes an user
+      operationId: deleteUser
+      description: |
+        Delete an user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User's unique id.
+      responses:
+        '204':
+          description: Successful deleted user.
+          content:
+            application/json:
+              schema:
+                type: object      
 components:
   schemas:
     executable:
@@ -827,3 +857,71 @@ components:
           type: string
           example: 'Array'
           description: Unique tag text.
+    createUser:
+      type: object
+      required:
+       - name
+       - username
+       - email
+       - password
+      properties:
+       name:
+          type: string
+          example: "John Doe"
+          description: User's given name
+        username:
+          type: string
+          example: "userOne"
+          description: Unique string used to identify an user
+        email:
+          type: string
+          example: "userOne@example.com"
+          description: Email address which can be used to contact user
+        password:
+          type: string
+          example: "password12345"
+          description: string used for User's authentication
+    user:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 523
+          description: Unique id which uniquely identifies the user
+        username:
+          type: string
+          example: "userOne"
+          description: Unique string used to identify an user
+        email:
+          type: string
+          example: "userOne@example.com"
+          description: Email address which can be used to contact user
+        name:
+          type: string
+          example: "John Doe"
+          description: User's given name
+    updatePassword:
+      type: object
+        required:
+          - password
+        properties:
+          password:
+            type: string
+            example: "password12345"
+            description: string used for User's authentication
+    updateProfile:
+      type: object
+      required:
+         - name
+         - email
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+          description: User's given name
+        email:
+          type: string
+          example: "userOne@example.com"
+          description: Email address which can be used to contact user  
+
+
