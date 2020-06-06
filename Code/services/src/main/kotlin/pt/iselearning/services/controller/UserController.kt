@@ -1,16 +1,14 @@
 package pt.iselearning.services.controller
 
 
-import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.domain.User
 import pt.iselearning.services.service.UserService
-import pt.iselearning.services.transfer.CreateUserModel
-import pt.iselearning.services.transfer.UpdatePasswordModel
-import pt.iselearning.services.transfer.UpdateProfileModel
-import pt.iselearning.services.transfer.UserModel
+import pt.iselearning.services.models.user.CreateUserModel
+import pt.iselearning.services.models.user.UpdatePasswordModel
+import pt.iselearning.services.models.user.UpdateProfileModel
+import pt.iselearning.services.models.user.UserModel
 
 /**
  * Handler responsible to respond to requests regard User entity

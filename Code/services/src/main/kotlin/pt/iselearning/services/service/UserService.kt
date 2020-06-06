@@ -9,9 +9,9 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.UserRepository
-import pt.iselearning.services.transfer.CreateUserModel
-import pt.iselearning.services.transfer.UpdateProfileModel
-import pt.iselearning.services.transfer.UserModel
+import pt.iselearning.services.models.user.CreateUserModel
+import pt.iselearning.services.models.user.UpdateProfileModel
+import pt.iselearning.services.models.user.UserModel
 import java.lang.Exception
 import java.util.*
 

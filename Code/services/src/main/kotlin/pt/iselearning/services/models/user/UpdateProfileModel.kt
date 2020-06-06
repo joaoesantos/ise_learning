@@ -1,4 +1,4 @@
-package pt.iselearning.services.transfer
+package pt.iselearning.services.models.user
 
 import org.springframework.web.multipart.MultipartFile
 
