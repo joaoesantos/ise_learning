@@ -5,7 +5,8 @@ package pt.iselearning.services.util
  */
 class Constants private constructor() {
     companion object {
-        private const val VERSION = "v0"
+        const val VERSION = "v0"
+        const val SCHEMA = "ise_learning"
 
         //region QUESTIONNAIRE PATH CONSTANTS
         const val QUESTIONNAIRE_PATH: String = "/$VERSION/questionnaires"
