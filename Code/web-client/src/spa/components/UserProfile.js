@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
 export default function UserProfile(props) {
   const classes = useStyles()
   const [newPassword, setNewPassword] = React.useState("")
-  const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [repeatNewPassword, setRepeatNewPassword] = React.useState("")
+  const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
   // fetch props & data
@@ -199,7 +199,7 @@ export default function UserProfile(props) {
                   />
                 </ Grid >
                 < Grid item xs = {12} >
-                  < TextField
+                  < Input
                   variant = "outlined"
                   required
                   fullWidth

@@ -13,6 +13,7 @@ import Questionnaire from './spa/components/questionnaire/QuestionnairePage.js';
 import RunCode from './spa/components/runCode/RunCodePage.js';
 import Footer from './spa/components/footer/Footer.js';
 import UserProfile from './spa/components/UserProfile';
+import UserProfileTest from './spa/components/UserProfileTest';
 // css normalization
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -39,7 +40,8 @@ function App() {
           <Route path="/challenges" render={() => <Challenge isAuthed={isAuthed} />} />
           <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
           <Route path="/runCode" component={RunCode} />
-          <Route path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
+          <Route exact path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
+          <Route exact path="/profileTest" render={() => <UserProfileTest isAuthed={isAuthed} />} />
         </Switch>
         <Footer />
       </div>
