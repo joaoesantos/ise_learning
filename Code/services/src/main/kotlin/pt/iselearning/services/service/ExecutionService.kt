@@ -22,7 +22,7 @@ class ExecutionService {
         this.languageUrlMap.put("java", remoteExecUrls.javaExecutionEnvironment)
         this.languageUrlMap.put("kotlin", remoteExecUrls.kotlinExecutionEnvironment)
         this.languageUrlMap.put("javascript", remoteExecUrls.javascriptExecutionEnvironment)
-        this.languageUrlMap.put("c#", remoteExecUrls.cSharpExecutionEnvironment)
+        this.languageUrlMap.put("csharp", remoteExecUrls.cSharpExecutionEnvironment)
         this.languageUrlMap.put("python", remoteExecUrls.pythonExecutionEnvironment)
     }
 
