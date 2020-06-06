@@ -7,9 +7,7 @@ class UserModel (
 
         var email : String?,
 
-        var name : String?,
-
-        var password : String?
+        var name : String?
 ) {
-    constructor() : this(null, null, null, null, null)
+    constructor() : this(null, null, null, null)
 }
