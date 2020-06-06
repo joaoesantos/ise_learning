@@ -4,3 +4,5 @@ node_modules/
 npm-debug.log
 package-lock.json
 test/*.log
+public/javascripts/templates
+!public/javascripts/templates/testTemplate.js
