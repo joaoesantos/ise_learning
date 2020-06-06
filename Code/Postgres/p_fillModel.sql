@@ -44,7 +44,7 @@ BEGIN
 	-- | C5 |    | X  |	   |
 
 	INSERT INTO code_language (code_language) VALUES
-	('Java'),('Kotlin'),('JavaScript'),('C#'),('Python');
+	('java'),('kotlin'),('javascript'),('csharp'),('python');
 
 	INSERT INTO tag (tag) VALUES
 	('Array'),('Divide and Conquer'),('Hash Table'),('Recursion');
@@ -92,7 +92,7 @@ BEGIN
 	-- CHALLENGE 1 EM JAVA
 	(
 		1,
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				// WRITE YOUR CODE HERE
@@ -108,7 +108,7 @@ BEGIN
 	-- CHALLENGE 1 EM KOTLIN
 	(
 		1,
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			// WRITE YOUR CODE HERE
 		}',
@@ -120,7 +120,7 @@ BEGIN
 	-- CHALLENGE 1 EM JAVASCRIPT
 	(
 		1,
-		'JavaScript',
+		'javascript',
 		'function main() {
 			// WRITE YOUR CODE HERE
 		}());',
@@ -132,7 +132,7 @@ BEGIN
 	-- CHALLENGE 1 EM C#
 	(
 		1,
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				// WRITE YOUR CODE HERE;
@@ -148,7 +148,7 @@ BEGIN
 	-- CHALLENGE 1 EM PYTHON
 	(
 		1,
-		'Python',
+		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_1!")',
 		TRUE
@@ -156,7 +156,7 @@ BEGIN
 	-- CHALLENGE 2 EM JAVA
 	(
 		2,
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				// WRITE YOUR CODE HERE
@@ -172,7 +172,7 @@ BEGIN
 	-- CHALLENGE 2 EM KOTLIN
 	(
 		2,
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			// WRITE YOUR CODE HERE
 		}',
@@ -184,7 +184,7 @@ BEGIN
 	-- CHALLENGE 2 EM JAVASCRIPT
 	(
 		2,
-		'JavaScript',
+		'javascript',
 		'function main() {
 			// WRITE YOUR CODE HERE
 		}());',
@@ -196,7 +196,7 @@ BEGIN
 	-- CHALLENGE 2 EM C#
 	(
 		2,
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				// WRITE YOUR CODE HERE;
@@ -212,7 +212,7 @@ BEGIN
 	-- CHALLENGE 2 EM PYTHON
 	(
 		2,
-		'Python',
+		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_2!")',
 		TRUE
@@ -220,7 +220,7 @@ BEGIN
 	-- CHALLENGE 3 EM JAVA
 	(
 		3,
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				// WRITE YOUR CODE HERE
@@ -236,7 +236,7 @@ BEGIN
 	-- CHALLENGE 3 EM KOTLIN
 	(
 		3,
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			// WRITE YOUR CODE HERE
 		}',
@@ -248,7 +248,7 @@ BEGIN
 	-- CHALLENGE 3 EM JAVASCRIPT
 	(
 		3,
-		'JavaScript',
+		'javascript',
 		'function main() {
 			// WRITE YOUR CODE HERE
 		}());',
@@ -260,7 +260,7 @@ BEGIN
 	-- CHALLENGE 3 EM C#
 	(
 		3,
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				// WRITE YOUR CODE HERE;
@@ -276,7 +276,7 @@ BEGIN
 	-- CHALLENGE 3 EM PYTHON
 	(
 		3,
-		'Python',
+		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_3!")',
 		TRUE
@@ -284,7 +284,7 @@ BEGIN
 	-- CHALLENGE 4 EM JAVA
 	(
 		4,
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				// WRITE YOUR CODE HERE
@@ -300,7 +300,7 @@ BEGIN
 	-- CHALLENGE 4 EM KOTLIN
 	(
 		4,
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			// WRITE YOUR CODE HERE
 		}',
@@ -312,7 +312,7 @@ BEGIN
 	-- CHALLENGE 5 EM JAVASCRIPT
 	(
 		5,
-		'JavaScript',
+		'javascript',
 		'function main() {
 			// WRITE YOUR CODE HERE
 		}());',
@@ -324,7 +324,7 @@ BEGIN
 	-- CHALLENGE 1 EM C#
 	(
 		5,
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				// WRITE YOUR CODE HERE;
@@ -340,7 +340,7 @@ BEGIN
 	-- CHALLENGE 5 EM PYTHON
 	(
 		5,
-		'Python',
+		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_5!")',
 		TRUE
@@ -351,7 +351,7 @@ BEGIN
 	(
 		2, -- user
 		1, -- challenge
-		'Python',
+		'python',
 		'print("Hello World!")',
 		'TRUE'
 	);
@@ -360,7 +360,7 @@ BEGIN
 	(
 		2, -- user
 		2, -- challenge
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
@@ -373,7 +373,7 @@ BEGIN
 	(
 		4, -- user
 		1, -- challenge
-		'Python',
+		'python',
 		'print("Hello World!")',
 		'TRUE'
 	);
@@ -382,7 +382,7 @@ BEGIN
 	(
 		4, -- user
 		2, -- challenge
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
@@ -395,7 +395,7 @@ BEGIN
 	(
 		4, -- user
 		3, -- challenge
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
@@ -406,7 +406,7 @@ BEGIN
 	(
 		5, -- user
 		1, -- challenge
-		'Python',
+		'python',
 		'print("Hello World!")',
 		'TRUE'
 	);
@@ -415,7 +415,7 @@ BEGIN
 	(
 		5, -- user
 		2, -- challenge
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
@@ -428,7 +428,7 @@ BEGIN
 	(
 		5, -- user
 		3, -- challenge
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
@@ -439,7 +439,7 @@ BEGIN
 	(
 		5, -- user
 		4, -- challenge
-		'JavaScript',
+		'javascript',
 		'function main() {
 			console.log("Hello World!");
 		}());',
@@ -450,7 +450,7 @@ BEGIN
 	(
 		5, -- user
 		5, -- challenge
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				System.Console.WriteLine("Hello World!");
@@ -460,95 +460,102 @@ BEGIN
 	);
 
 
-	INSERT INTO questionnaire(creator_id,timer) VALUES
-	(1,3600000),
-	(3,3600000),
-	(3,0);
+	INSERT INTO questionnaire(description,timer,creator_id) VALUES
+	('questionnaire 1',3600000,1),
+	('questionnaire 2',3600000,3),
+	('questionnaire 3',0,3);
+	
+	INSERT INTO questionnaire_instance(questionnaire_id,description,timer,start_timestamp,end_timestamp) VALUES
+	(1,'quest1 instance1',3600000,NULL,NULL),
+	(1,'quest1 instance2',3600000,NULL,NULL),
+	(1,'quest1 instance2',3600000,NULL,NULL),
+	(2,'quest2 instance1',3600000,NULL,NULL),
+	(2,'quest2 instance2',3600000,NULL,NULL),
+	(2,'quest2 instance3',3600000,NULL,NULL),
+	(2,'quest2 instance4',3600000,NULL,NULL);
 
-	INSERT INTO qc(questionnaire_id,challenge_id,lang_filter) VALUES
-	(1,1,'Python'),(1,2,'Java'),(1,3,'Kotlin'),
-	(2,2,'Java'),(2,3,'Kotlin'),(2,4,'JavaScript'),(2,5,'C#');
+	INSERT INTO qc(questionnaire_id,challenge_id,language_filter) VALUES
+	(1,1,'python'),
+	(1,2,'java'),
+	(1,3,'kotlin'),
+	(2,2,'java,kotlin'),
+	(2,3,'kotlin,javascript'),
+	(2,4,'javascript'),
+	(2,5,'csharp,java');
 	
 	-- INSERT INTO QUESTIONNAIRE_ANSWER
 	CALL p_insertquestionnaireanswer(
-		1, -- questionnaire
+		1, -- questionnaire_instance
 		1, -- qc_id 1 -> challenge 1
-		'Python',
+		'python',
 		'print("Hello World!")',
-		'TRUE',
-		'label1'
+		TRUE
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		1, -- questionnaire
+		2, -- questionnaire_instance
 		2, -- qc_id 2 -> challenge 2
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
 			}
 		}',
-		'TRUE',
-		'label1'
+		'TRUE'
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		1, -- questionnaire
+		3, -- questionnaire_instance
 		3, -- qc_id 3 -> challenge 3
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
-		'TRUE',
-		'label1'
+		TRUE
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		2, -- questionnaire
+		4, -- questionnaire_instance
 		4, -- qc_id 4 -> challenge 2
-		'Java',
+		'java',
 		'public class Main {
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
 			}
 		}',
-		'TRUE',
-		'label2'
+		TRUE
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		2, -- questionnaire
+		5, -- questionnaire_instance
 		5, -- qc_id 5 -> challenge 3
-		'Kotlin',
+		'kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
-		'TRUE',
-		'label2'
+		'TRUE'
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		2, -- questionnaire
+		6, -- questionnaire_instance
 		6, -- qc_id 6 -> challenge 4
-		'JavaScript',
+		'javascript',
 		'function main() {
 			console.log("Hello World!");
 		}());',
-		'TRUE',
-		'label2'
+		TRUE
 	);
 	
 	CALL p_insertquestionnaireanswer(
-		2, -- questionnaire
+		7, -- questionnaire_instance
 		7, -- qc_id 7 -> challenge 5
-		'C#',
+		'csharp',
 		'class HelloWorld {
 			static void Main() {
 				System.Console.WriteLine("Hello World!");
 			}
 		}',
-		'TRUE',
-		'label2'
+		TRUE
 	);
 
     COMMIT;

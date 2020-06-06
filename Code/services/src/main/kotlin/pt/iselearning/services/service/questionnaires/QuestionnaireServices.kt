@@ -39,7 +39,10 @@ class QuestionnaireServices(
     @Validated
     fun getUserAllQuestionnaires(@Positive userId: Int) : List<Questionnaire> {
         val questionnaires = questionnaireRepository.findAllByCreatorId(userId)
-        //checkIfQuestionnaireExists(questionnaire, questionnaireId)
+        if (questionnaires.isEmpty()) {
+            throw ServerException("Questionnaires not found.",
+                    "There are no questionnaires created by user $userId", ErrorCode.ITEM_NOT_FOUND)
+        }
         return questionnaires
     }
 
@@ -60,8 +63,8 @@ class QuestionnaireServices(
      */
     @Validated
     fun updateQuestionnaire(@Valid questionnaire: Questionnaire): Questionnaire {
-        val challengeFromDb = questionnaireRepository.findById(questionnaire.questionnaireId)
-        checkIfQuestionnaireExists(challengeFromDb, questionnaire.questionnaireId)
+        val questionnaireFromDB = questionnaireRepository.findById(questionnaire.questionnaireId!!)
+        checkIfQuestionnaireExists(questionnaireFromDB, questionnaire.questionnaireId!!)
         return questionnaireRepository.save(questionnaire)
     }
 
@@ -70,7 +73,7 @@ class QuestionnaireServices(
      * @param questionnaireId identifier of domain
      */
     @Validated
-    fun deleteQuestionnaire(@Positive questionnaireId: Int) {
+    fun deleteQuestionnaireById(@Positive questionnaireId: Int) {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
         checkIfQuestionnaireExists(questionnaire, questionnaireId)
         questionnaireRepository.deleteById(questionnaireId)
