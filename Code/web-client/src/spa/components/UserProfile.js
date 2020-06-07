@@ -1,39 +1,27 @@
 // react
-import React from 'react';
-import clsx from 'clsx';
-import { Link as RouterLink } from 'react-router-dom';
-// material-ui components
+import * as React from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+
+// material-ui/Formik components
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import { Button, LinearProgress } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import Link from '@material-ui/core/Link';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import { TextField } from 'formik-material-ui';
 import Typography from '@material-ui/core/Typography';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { makeStyles } from '@material-ui/core/styles';
-// pallete color
-import {apiUrlTemplates} from '../clientSideConfig'
 
 //controllers
 import UseAction, { ActionStates } from '../controllers/UseAction'
 import {UserController} from '../controllers/UserController'
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   avatar: {
     margin: theme.spacing(1),
     //backgroundColor: palleteColor.color4,
@@ -44,86 +32,42 @@ const useStyles = makeStyles((theme) => ({
   fullWidth: {
     width: '100%'
   },
-  save25: {
-    width: '25%',
-    margin: theme.spacing(1, 0, 2),
-    /*backgroundColor: palleteColor.color4,
-    '&:hover': {
-      backgroundColor: palleteColor.color3,
-    },*/
-  },
-  save: {
-    margin: theme.spacing(1, 0, 2),
-    /*backgroundColor: palleteColor.color4,
-    '&:hover': {
-      backgroundColor: palleteColor.color3,
-    },*/
-  },
-}));
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
+}))
 
-export default function UserProfile(props) {
+export default function App() {
   const classes = useStyles()
-  const [newPassword, setNewPassword] = React.useState("")
-  const [repeatNewPassword, setRepeatNewPassword] = React.useState("")
-  const [showNewPassword, setShowNewPassword] = React.useState(false)
-  const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
-  // fetch props & data
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [user, setUser] = React.useState()
 
+  const [showNewPassword, setShowNewPassword] = React.useState(false)
+  const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
+
   React.useEffect(() => {
-    if (response && actionState === ActionStates.done &&
-      action.render && action.render === true) {
-      setUser(response)
-    } else if (!response) {
+    if (response === undefined && actionState === ActionStates.clear) {
       setAction({
         function: UserController.getUserMe,
         args: [],
         render: true
       })
+    } else if (actionState === ActionStates.done &&
+      action.render && action.render === true) {
+      setUser(response)
     } else {
-        //TODO
+      //not Done || done but not rendering
     }
   },[actionState]);
-
-  const handleSaveName = async (e) => {
-    e.preventDefault()
-  }
-
-  const handleChangePassword = async (e) => {
-    e.preventDefault()
-    if(newPassword !== repeatNewPassword){
-      alert("The passwords must match!")
-    } else {
-
-    }
-  }
-
-  const handleNameChange = (name) => {
-    let userTemp = Object.assign({}, user)
-    userTemp.name = name
-    setUser(userTemp)
-  }
-
-  const handleEmailChange = (email) => {
-    let userTemp = Object.assign({}, user)
-    userTemp.email = email
-    setUser(userTemp)
-  }
-
-  const handleNewPasswordChange = (password) => {
-    setNewPassword(password)
-  }
 
   const handleClickShowNewPassword = () => {
     setShowNewPassword(!showNewPassword)
   };
-
-  const handleRepeatNewPasswordChange = (password) => {
-    setRepeatNewPassword(password)
-  }
 
   const handleClickShowRepeatNewPassword = () => {
     setShowRepeatNewPassword(!showRepeatNewPassword)
@@ -135,108 +79,145 @@ export default function UserProfile(props) {
 
   if (actionState === ActionStates.clear) {
     return <p>insert URL</p>
-  } else if (actionState === ActionStates.fetching) {
+  } else if (actionState === ActionStates.inProgress) {
     return <p>fetching...</p>
-  } else if (actionState === ActionStates.done) {
+  } else if (actionState === ActionStates.done && user) {
     return (
-    < Container component = "main" maxWidth = "md" >
-      {user &&
-        < div className = {classes.paper} >
-          < Avatar className = {classes.avatar} >
-            < AccountCircle />
-          </ Avatar >
-          < Typography component = "h1" variant = "h3" >
-            User Profile
-          </ Typography >
-          < Typography component = "h1" variant = "h5" >
-            User Data
-          </ Typography >
-          < Grid container spacing = {2} >
-            < Grid item xs = {12} >
-              < TextField
-              variant = "outlined"
-              required
-              fullWidth
-              disabled = {true}
-              id = "username"
-              label = "Username"
-              name = "username"
-              value = {user.username}
-              />
-            </ Grid >
-            < Grid item xs = {12} >
-              <FormControl className={clsx(classes.margin, classes.textField, classes.fullWidth)} variant="outlined">
-                < Grid item xs = {12} >
-                  {/*<InputLabel htmlFor="outlined-adornment-password">Name</InputLabel>
-                  <OutlinedInput
-                    id="name"
-                    name = "name"
-                    label = "Name"
-                    required
-                    fullWidth
-                    type="text"
-                    autoComplete = "name"
-                    defaultValue={user.name}
-                    value={user.name}
-                    onChange={e => handleNameChange(e.target.value)}
-                    labelWidth={110}
-                  />*/}
-                  < TextField
-                  variant = "outlined"
-                  required
-                  fullWidth
-                  id = "name"
-                  label = "Name"
-                  name = "name"
-                  autoComplete = "name"
-                  type = "text"
-                  value = {user.name}
-                  onChange={e => handleNameChange(e.target.value)}
+      < Container component = "main" maxWidth = "md" className = {classes.paper} >
+        < Avatar className = {classes.avatar} >
+          < AccountCircle />
+        </ Avatar >
+        < Typography component = "h1" variant = "h3" >
+          User Profile
+        </ Typography >
+        < Typography component = "h1" variant = "h5" >
+          User Data
+        </ Typography >
+        {/*User Data Form*/}
+        <Formik
+          initialValues={{
+            username: user.username,
+            name: user.name,
+            email: user.email,
+          }}
+          validationSchema={Yup.object({
+            username: Yup.string()
+              .required('Required'),
+            name: Yup.string()
+              .required('Required'),
+            email: Yup.string()
+              .email('Invalid email address')
+              .required('Required')
+          })}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(false);
+            //let args = Object.assign({}, values)//Object.keys(values).map((k) => values[k])
+            setAction({
+              function: UserController.updateUserData,
+              args: [values],
+              render: true
+            })
+          }}
+        >
+          {({ submitForm, isSubmitting }) => (
+            < Grid container spacing = {2} >
+              <Form className={classes.fullWidth}>
+              < Grid item xs = {12} >
+                  <Field
+                    className={classes.fullWidth}
+                    component={TextField}
+                    type="username"
+                    label="Username"
+                    name="username"
+                    disabled={true}
                   />
-                </ Grid >
+                </Grid>
+                <br />
                 < Grid item xs = {12} >
-                  < Input
-                  variant = "outlined"
-                  required
-                  fullWidth
-                  id = "email"
-                  label = "Email"
-                  name = "email"
-                  autoComplete = "email"
-                  type = "email"
-                  value = {user.email}
-                  onChange={e => handleEmailChange(e.target.value)}
+                  <Field
+                    className={classes.fullWidth}
+                    component={TextField}
+                    type="name"
+                    label="Name"
+                    name="name"
                   />
-                </ Grid >
-                < Grid item xs = {3} className = {classes.centerItems} >
-                  < Input
-                  type = "submit"
-                  fullWidth
-                  variant = "contained"
-                  color = "primary"
-                  className = {classes.save}
-                  onClick = {e => handleSaveName(e)}
+                </Grid>
+                <br />
+                < Grid item xs = {12} >
+                  <Field
+                    className={classes.fullWidth}
+                    component={TextField}
+                    name="email"
+                    type="email"
+                    label="Email"
+                  />
+                </Grid>
+                {isSubmitting && <LinearProgress />}
+                <br />
+                < Grid item xs = {12} className = {classes.centerItems}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
                   >
-                    Save Name
-                  </ Input >
-                </ Grid >
-              </FormControl>
-            </ Grid >
-          </ Grid >
-          < Typography component = "h1" variant = "h5" >
-            Credentials
-          </ Typography >
+                    Save User Data
+                  </Button>
+                </Grid>
+              </Form>
+            </Grid>
+          )}
+        </Formik>
+        <br />
+        <br />
+        < Typography component = "h1" variant = "h5" >
+          Credentials
+        </ Typography >
+        {/*Credentials Form*/}
+        <Formik
+        initialValues={{
+          newPassword: '',
+          repeatNewPassword: ''
+        }}
+        validationSchema={Yup.object({
+          newPassword: Yup.string()
+            .min(8, 'Must be at least 8 characters')
+            .required('Required')
+            .test({
+              name: "match-new-password-to-repeat-new-password",
+              test: function(pw) {
+                return pw === this.parent.repeatNewPassword
+              },
+              message: "The passwords don't match.",
+              params: {},
+              exclusive: false
+            }),
+          repeatNewPassword: Yup.string()
+            .min(8, 'Must be at least 8 characters')
+            .required('Required')
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(false);
+          //let args = Object.assign({}, values)//Object.keys(values).map((k) => values[k])
+          setAction({
+            function: UserController.changeCredentials,
+            args: [values],
+            render: true
+          })
+        }}
+      >
+        {({ submitForm, isSubmitting }) => (
           < Grid container spacing = {2} >
-            < Grid item xs = {12} >
-              <FormControl className={clsx(classes.margin, classes.textField, classes.fullWidth)} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">New Password</InputLabel>
-                <OutlinedInput
-                  id="newPassword1"
-                  name = "newPassword1"
+            <Form className={classes.fullWidth} >
+              < Grid item xs = {12} >
+                <Field
+                  className={classes.fullWidth}
+                  component={TextField}
+                  name="newPassword"
                   type={showNewPassword ? 'text' : 'password'}
-                  value={newPassword}
-                  onChange={e => handleNewPasswordChange(e.target.value)}
-                  endAdornment={
+                  label="New Password"
+                  InputProps={{
+                    endAdornment:(
                       <InputAdornment position="end">
                         <IconButton
                             aria-label="toggle password visibility"
@@ -247,21 +228,20 @@ export default function UserProfile(props) {
                           {showNewPassword ? <Visibility /> : <VisibilityOff/>}
                         </IconButton>
                       </InputAdornment>
-                  }
-                  labelWidth={110}
+                    )
+                  }}
                 />
-              </FormControl>
-            </ Grid >
-            < Grid item xs = {12} >
-              <FormControl className={clsx(classes.margin, classes.textField, classes.fullWidth)} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Repeat New Password</InputLabel>
-                <OutlinedInput
-                  id="newPassword2"
-                  name = "newPassword2"
+              </Grid>
+              <br />
+              < Grid item xs = {12} >
+                <Field
+                  className={classes.fullWidth}
+                  component={TextField}
                   type={showRepeatNewPassword ? 'text' : 'password'}
-                  value={repeatNewPassword}
-                  onChange={e => handleRepeatNewPasswordChange(e.target.value)}
-                  endAdornment={
+                  label="New Password"
+                  name="repeatNewPassword"
+                  InputProps={{
+                    endAdornment:(
                       <InputAdornment position="end">
                         <IconButton
                             aria-label="toggle password visibility"
@@ -269,34 +249,32 @@ export default function UserProfile(props) {
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                         >
-                          {showRepeatNewPassword ? <Visibility /> : <VisibilityOff/>}
+                          {showNewPassword ? <Visibility /> : <VisibilityOff/>}
                         </IconButton>
                       </InputAdornment>
-                  }
-                  labelWidth={165}
+                    )
+                  }}
                 />
-              </FormControl>
-            </ Grid >
-            < Grid item xs = {12} className = {classes.centerItems} >
-              < Button
-              type = "submit"
-              fullWidth variant = "contained"
-              color = "primary"
-              className = {classes.save25}
-              onClick = {e => handleChangePassword(e)}
-              >
-                Change Password
-              </ Button >
-            </ Grid >
-          </ Grid >
-          <Link className={classes.link} component={RouterLink} to={`/users/${user.id}/projects`}>
-            My projects
-          </Link>
-        </ div >
-      }
-    </ Container >
-    );
+              </Grid>
+              {isSubmitting && <LinearProgress />}
+              <br />
+              < Grid item xs = {12} className = {classes.centerItems}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                  onClick={submitForm}
+                >
+                  Change Password
+                </Button>
+              </Grid>
+            </Form>
+          </Grid>
+        )}
+      </Formik>
+    </Container>
+    )
   } else {
-      return <p>error...</p>
+    return <p>error...</p>
   }
 }
