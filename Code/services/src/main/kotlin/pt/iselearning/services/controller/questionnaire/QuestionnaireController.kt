@@ -7,10 +7,9 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.Questionnaire;
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
 import pt.iselearning.services.util.Constants
-import java.lang.String
 
 /**
- * Handler responsible to respond to requests regard Questionnaire entity
+ * Handler responsible to respond to requests regard Questionnaire domain
  */
 @RestController
 @RequestMapping(Constants.QUESTIONNAIRE_PATH, produces = ["application/json"])
@@ -22,7 +21,7 @@ public class QuestionnaireController(
      * Method to create an questionnaire.
      * A json object that represents a object of the type Questionnaire must be present in the body
      * @param ucb helps build URLs
-     * @param questionnaire represents a Questionnaire
+     * @param questionnaire represents a Questionnaire object
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping
@@ -32,7 +31,7 @@ public class QuestionnaireController(
     ): ResponseEntity<Questionnaire> {
         val createdQuestionnaire = questionnaireServices.createQuestionnaire(questionnaire)
         val location = ucb.path("/${Constants.VERSION}/questionnaire")
-                .path(String.valueOf(createdQuestionnaire!!.questionnaireId))
+                .path((createdQuestionnaire!!.questionnaireId).toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(createdQuestionnaire)
@@ -41,7 +40,7 @@ public class QuestionnaireController(
     /**
      * Method to get a single questionnaire.
      * Path variable "questionnaireId" must be present
-     * @param questionnaireId represents questionnaire id
+     * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<Questionnaire>
      */
     @GetMapping("/{questionnaireId}")
@@ -55,7 +54,7 @@ public class QuestionnaireController(
     /**
      * Method to get all user questionnaires.
      * Path variable "userId" must be present
-     * @param userId represents an questionnaire creator
+     * @param userId represents the Questionnaire creator
      * @return ResponseEntity<List<Questionnaire>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @GetMapping("/users/{userId}") //TODO change to logged in user
@@ -69,7 +68,7 @@ public class QuestionnaireController(
     /**
      * Method to update an questionnaire.
      * A json object that represents a object of the type Questionnaire must be present in the body
-     * @param questionnaireId represents a questionnaire Id
+     * @param questionnaireId represents a Questionnaire unique identifier
      * @param questionnaire represents a Questionnaire
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
@@ -78,6 +77,7 @@ public class QuestionnaireController(
             @PathVariable questionnaireId : Int,
             @RequestBody questionnaire: Questionnaire
     ): ResponseEntity<Questionnaire> {
+        questionnaire.questionnaireId = questionnaireId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireServices.updateQuestionnaire(questionnaire))
     }
@@ -85,8 +85,8 @@ public class QuestionnaireController(
     /**
      * Method to delete a single questionnaire.
      * Path variable "questionnaireId" must be present
-     * @param questionnaireId represents questionnaire id
-     * @return ResponseEntity<Questionnaire>
+     * @param questionnaireId represents Questionnaire unique identifier
+     * @return No Content
      */
     @DeleteMapping("/{questionnaireId}")
     fun deleteQuestionnaireById(

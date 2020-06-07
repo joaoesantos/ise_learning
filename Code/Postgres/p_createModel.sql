@@ -108,9 +108,9 @@ BEGIN
 	CREATE TABLE questionnaire (
 		questionnaire_id INT GENERATED ALWAYS AS IDENTITY,
 		description VARCHAR(50),
-		timer INT DEFAULT 0,
+		timer INT,
 		creator_id INT NOT NULL,
-		creation_date DATE DEFAULT CURRENT_DATE,
+		creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
 		--
 		PRIMARY KEY (questionnaire_id),
 		FOREIGN KEY (creator_id) 
@@ -122,7 +122,7 @@ BEGIN
 		questionnaire_instance_id INT GENERATED ALWAYS AS IDENTITY,
 		questionnaire_id INT NOT NULL,
 		description VARCHAR(50),
-		timer INT DEFAULT 0,
+		timer INT,
 		start_timestamp TIMESTAMP,
 		end_timestamp TIMESTAMP,
 		--

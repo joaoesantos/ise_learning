@@ -1,5 +1,8 @@
 package pt.iselearning.services.domain.questionnaires
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import org.hibernate.annotations.Generated
+import org.hibernate.annotations.GenerationTime
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.util.Constants
 import java.util.*
@@ -27,16 +30,16 @@ data class Questionnaire (
         var description: String?,
 
         @field:PositiveOrZero(message = "Timer must be positive or zero")
-        @Column(name = "timer")
+        @Column(name = "timer", insertable = false, updatable = true)
         var timer: Int?,
 
-        @Column(name = "creation_date")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @Generated(GenerationTime.INSERT)
+        @Column(name = "creation_date", insertable = false, updatable = false)
         var creationDate: Date?,
 
         @field:Positive(message = "Creator id must be positive")
         @Column(name = "creator_id")
         var creatorId: Int?
 
-) {
-        constructor() : this(null, null, null, null, null)
-}
+) { constructor() : this(null, null, null, null, null) }

@@ -17,10 +17,13 @@ data class QuestionnaireAnswer (
         @Column(name="questionnaire_answer_id")
         @GeneratedValue(strategy= GenerationType.IDENTITY)
         @field:Positive(message = "Questionnaire Answer id must be positive")
-        var questionnaireAnswerId : Int? = null,
+        var questionnaireAnswerId : Int?,
+
+        @Column(name = "questionnaire_id")
+        var questionnaireInstanceId : Int?,
 
         @OneToOne(cascade = [CascadeType.ALL])
         @JoinColumn(name="answer_id")
-        var answer : Answer? = null
+        var answer : Answer?
 
-)
+) { constructor() : this(null, null, null) }
