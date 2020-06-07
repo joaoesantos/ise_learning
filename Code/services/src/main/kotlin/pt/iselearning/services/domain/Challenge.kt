@@ -29,7 +29,7 @@ data class Challenge (
 
     @OneToMany(cascade = [CascadeType.ALL], targetEntity=Solution::class)
     @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
-    var solutions : List<Solution>?
+    var solutions : MutableList<Solution>?
 ) {
     constructor() : this(null, null, null, null, null)
 }
