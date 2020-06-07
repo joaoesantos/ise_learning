@@ -1,7 +1,6 @@
 package pt.iselearning.services.repository.questionnaire
 
 import org.springframework.data.repository.CrudRepository
-import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 
 /**
