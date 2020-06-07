@@ -111,7 +111,6 @@ export default function App() {
           })}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
-            //let args = Object.assign({}, values)//Object.keys(values).map((k) => values[k])
             setAction({
               function: UserController.updateUserData,
               args: [values],
@@ -198,7 +197,6 @@ export default function App() {
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
-          //let args = Object.assign({}, values)//Object.keys(values).map((k) => values[k])
           setAction({
             function: UserController.changeCredentials,
             args: [values],
