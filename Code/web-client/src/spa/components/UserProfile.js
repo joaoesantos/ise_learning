@@ -74,10 +74,6 @@ export default function UserProfile(props) {
   const [user, setUser] = React.useState()
 
   React.useEffect(() => {
-    console.log("----------------------------------")
-    console.log(response)
-    console.log(actionState)
-    console.log("||||||||||||||||||||||||||||||||||")
     if (response && actionState === ActionStates.done &&
       action.render && action.render === true) {
       setUser(response)
