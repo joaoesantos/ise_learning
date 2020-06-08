@@ -10,7 +10,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function ChallengePage(props) {
     const classes = useStyles();
-    return(
+    const id = props.match.params.id
+
+    return (
         <div className={classes.layout}>
             <h1>Challenges</h1>
         </div>

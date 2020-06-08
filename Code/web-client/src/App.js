@@ -33,13 +33,13 @@ function App() {
         <CssBaseline />
         <Navbar isAuthed={isAuthed} setAuth={setAuth}/>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route exact path="/" component={Home} />
           <Route path="/login" render={() => <Login isAuthed={isAuthed} setAuth={setAuth} />} />
           <Route path="/signIn" render={() => <SignIn isAuthed={isAuthed} setAuth={setAuth} />} />
-          <Route path="/challenges" render={() => <Challenge isAuthed={isAuthed} />} />
+          <Route exact path="/challenges/:id" render={({match}) => <Challenge isAuthed={isAuthed} match={match}/>} />
           <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
           <Route path="/runCode" component={RunCode} />
-          <Route path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
+          <Route exact path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
         </Switch>
         <Footer />
       </div>
