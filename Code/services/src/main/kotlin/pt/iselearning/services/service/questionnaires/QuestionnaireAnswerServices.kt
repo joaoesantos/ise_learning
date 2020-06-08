@@ -52,7 +52,7 @@ class QuestionnaireAnswerServices(
      */
     @Validated
     fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int) : List<QuestionnaireAnswer> {
-        val questionnaireAnswers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
+        val questionnaireAnswers = questionnaireAnswerRepository.getAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId)
         if (questionnaireAnswers.isEmpty()) {
             throw ServerException("Questionnaire instances not found.",
                     "There are no questionnaire instances for selected questionnaire $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
@@ -71,7 +71,7 @@ class QuestionnaireAnswerServices(
         CustomValidators.checkIfQuestionnaireAnswerExists(questionnaireAnswerFromDB, questionnaireAnswer.questionnaireAnswerId!!)
 
         //region data for update operation
-        val updatedQuestionnaireAnswer= questionnaireAnswerFromDB.get()
+        val updatedQuestionnaireAnswer = questionnaireAnswerFromDB.get()
         //endregion
 
         return questionnaireAnswerRepository.save(updatedQuestionnaireAnswer)
