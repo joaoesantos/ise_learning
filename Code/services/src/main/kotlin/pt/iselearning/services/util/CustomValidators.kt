@@ -1,5 +1,6 @@
 package pt.iselearning.services.util
 
+import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
@@ -20,6 +21,23 @@ class CustomValidators {
         const val PRIVACY_REGEX_STRING = "\\b(private)\\b|\\b(public)\\b"
         const val TAGS_REGEX_STRING = "\\b([^,]+)([,][^,]+)*\\b"
 
+        //region CHALLENGES
+
+        /**
+         * Validates if chalenge is empty
+         * @param challenge to be validated
+         * @param challengeId identifier of object
+         * @throws ServerException when on failure to find questionnaire
+         */
+        fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) {
+            if (challenge.isEmpty) {
+                throw ServerException("Challenge not found.",
+                        "There is no challenge with id $challengeId", ErrorCode.ITEM_NOT_FOUND)
+            }
+        }
+
+        //endregion
+
         //region QUESTIONNAIRES
 
         /**
@@ -29,7 +47,7 @@ class CustomValidators {
          * @throws ServerException when on failure to find questionnaire
          */
         fun checkIfQuestionnaireExists(questionnaireRepository: QuestionnaireRepository, questionnaireId: Int) {
-            if (questionnaireRepository.existsById(questionnaireId)) {
+            if (!questionnaireRepository.existsById(questionnaireId)) {
                 throw ServerException("Questionnaire not found.",
                         "There is no questionnaire with id $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
             }
@@ -59,7 +77,7 @@ class CustomValidators {
          * @throws ServerException when on failure to find questionnaire instance
          */
         fun checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository: QuestionnaireInstanceRepository, questionnaireInstanceId: Int) {
-            if (questionnaireInstanceRepository.existsById(questionnaireInstanceId)) {
+            if (!questionnaireInstanceRepository.existsById(questionnaireInstanceId)) {
                 throw ServerException("Questionnaire instance not found.",
                         "There is no questionnaire instance with id $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
             }
@@ -89,7 +107,7 @@ class CustomValidators {
          * @throws ServerException when on failure to find questionnaire answer
          */
         fun checkIfQuestionnaireAnswerExists(questionnaireAnswerRepository: QuestionnaireAnswerRepository, questionnaireAnswerId: Int) {
-            if (questionnaireAnswerRepository.existsById(questionnaireAnswerId)) {
+            if (!questionnaireAnswerRepository.existsById(questionnaireAnswerId)) {
                 throw ServerException("Questionnaire not found.",
                         "There is no questionnaire instance with id $questionnaireAnswerId", ErrorCode.ITEM_NOT_FOUND)
             }

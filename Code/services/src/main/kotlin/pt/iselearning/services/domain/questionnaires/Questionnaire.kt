@@ -8,7 +8,6 @@ import pt.iselearning.services.util.Constants
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.Positive
-import javax.validation.constraints.PositiveOrZero
 import javax.validation.constraints.Size
 
 /**
@@ -29,7 +28,7 @@ data class Questionnaire (
         @Column(name = "description")
         var description: String?,
 
-        @field:PositiveOrZero(message = "Timer must be positive or zero")
+        @field:Positive(message = "Timer value must be positive")
         @Column(name = "timer", insertable = false, updatable = true)
         var timer: Int?,
 

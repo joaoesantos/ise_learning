@@ -69,12 +69,19 @@ class QuestionnaireInstanceServices(
      */
     @Validated
     fun updateQuestionnaireInstanceById(@Valid questionnaireInstance: QuestionnaireInstance): QuestionnaireInstance {
-        val questionnaireInstanceFromDB = questionnaireInstanceRepository.findById(questionnaireInstance.questionnaireId!!)
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstance.questionnaireId!!)
+        val questionnaireInstanceFromDB = questionnaireInstanceRepository.findById(questionnaireInstance.questionnaireInstanceId!!)
+        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstance.questionnaireInstanceId!!)
 
         //region data for update operation
         val updatedQuestionnaireInstance = questionnaireInstanceFromDB.get()
-        updatedQuestionnaireInstance.description = questionnaireInstance.description
+        if(questionnaireInstance.description != null)
+            updatedQuestionnaireInstance.description = questionnaireInstance.description
+        if(questionnaireInstance.timer != null)
+            updatedQuestionnaireInstance.timer = questionnaireInstance.timer
+        if(questionnaireInstance.startTimestamp != null)
+            updatedQuestionnaireInstance.startTimestamp = questionnaireInstance.startTimestamp
+        if(questionnaireInstance.endTimestamp != null)
+            updatedQuestionnaireInstance.endTimestamp = questionnaireInstance.endTimestamp
         //endregion
 
         return questionnaireInstanceRepository.save(updatedQuestionnaireInstance)
@@ -87,9 +94,7 @@ class QuestionnaireInstanceServices(
     @Validated
     fun deleteQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int) {
         CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceId)
-        questionnaireRepository.deleteById(questionnaireInstanceId)
+        questionnaireInstanceRepository.deleteById(questionnaireInstanceId)
     }
-
-    //uapuemonarox
 
 }

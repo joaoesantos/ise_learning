@@ -70,8 +70,10 @@ class QuestionnaireServices(
 
         //region data for update operation
         val updatedQuestionnaire = questionnaireFromDB.get()
-        updatedQuestionnaire.description = questionnaire.description
-        updatedQuestionnaire.timer = questionnaire.timer
+        if(questionnaire.description != null)
+            updatedQuestionnaire.description = questionnaire.description
+        if(questionnaire.timer != null)
+            updatedQuestionnaire.timer = questionnaire.timer
         //endregion
 
         return questionnaireRepository.save(updatedQuestionnaire)
