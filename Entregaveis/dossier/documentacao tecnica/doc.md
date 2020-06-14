@@ -3,13 +3,15 @@ Welcome to the ise_learning wiki!
 # Web-client Application
 The web-client application can be run using two modes. One as a totally different application from the services application or can be ran as single application with the services application.
 For the former the following commands need to be ran when in the folder containing the package.json file, i.e, Code\web-client:
-* npm install
-* npm start
+* `npm install`
+* `npm start`
+
 The last command will start the web application in the predefined port, i.e, 3000.
 
 To run the web-client and services applications as a single artifact, the following commands need to be ran:
-* npm install
-* npm run-script build
+* `npm install`
+* `npm run-script build`
+
 The last command will copy production ready files into the resource folder of the services application and then once this application is running, it will be available in the predefined port.
 
 
@@ -61,16 +63,17 @@ To store the platform data we're relying in [PostgreSQL](https://www.postgresql.
 
 ## PostgreSQL set up
 To configure the database on a PostgreSQL database a single master script was create, and can be found on the following link:
-* [Create DB](..\Code\Postgres\createDB.sql)
+* [Script to create DataBase](..\codigo%20fonte\Code\PostgreSQL\createDB.sql)
 
 This scrip includes not only the creation of the model with all its tables and dependencies, but also all the triggers and store procedures that allow a robust consistency of the database.
 
 The single master script was created through the merge of several individual ones used on the development. The other scrips can be found as store procedures on the links bellows:
-* [Store procedure to create the model](..\Code\Postgres\p_createTodel.sql)
-* [Store procedure to drop the model](..\Code\Postgres\p_dropModel.sql)
-* [Store procedure to delete the model](..\Code\Postgres\p_deleteModel.sql)
-* [Store procedure to fill the model](..\Code\Postgres\p_fillModel.sql)
-* [Store procedure to rebuild the model](..\Code\Postgres\p_rebuildModel.sql)
-* [Store procedure to insert a challenge answer](..\Code\Postgres\p_insertChallengeAnswer.sql)
-* [Store procedure to insert a questionnaire answer](..\Code\Postgres\p_insertQuestionnaireAnswer.sql)
-* [Store procedure to create model triggers](..\Code\Postgres\DBtriggers.sql)
+* [Store procedure to create the model](..\codigo%20fonte\Code\PostgreSQL\p_createModel.sql)
+* [Store procedure to drop the model](..\codigo%20fonte\Code\PostgreSQL\p_dropModel.sql)
+* [Store procedure to delete the model](..\codigo%20fonte\Code\PostgreSQL\p_deleteModel.sql)
+* [Store procedure to fill the model](..\codigo%20fonte\Code\PostgreSQL\p_fillModel.sql)
+* [Store procedure to rebuild the model](..\codigo%20fonte\Code\PostgreSQL\p_rebuildModel.sql)
+* [Store procedure to insert a challenge answer](..\codigo%20fonte\Code\PostgreSQL\p_insertChallengeAnswer.sql)
+* [Store procedure to insert a questionnaire answer](..\codigo%20fonte\Code\PostgreSQL\p_insertQuestionnaireAnswer.sql)
+* [Store procedure to create model triggers](..\codigo%20fonte\Code\PostgreSQL\DBtriggers.sql)
+* [Script to test the data base model](..\codigo%20fonte\Code\PostgreSQL\DBtests.sql)
