@@ -13,7 +13,7 @@ import org.springframework.http.MediaType
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
-class ControllerAdvice(private val responseHeaders: HttpHeaders = HttpHeaders()) : ResponseEntityExceptionHandler() {
+class ControllerAdviceHandler(private val responseHeaders: HttpHeaders = HttpHeaders()) : ResponseEntityExceptionHandler() {
     init {
         responseHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PROBLEM_JSON_VALUE)
     }
