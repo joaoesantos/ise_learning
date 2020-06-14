@@ -1,0 +1,12 @@
+# Outputs
+**\target
+**\codeOutput
+CMD_Output.txt
+
+# Build
+*-spring-boot.jar
+
+# InteliJ
+**\.DS_Store
+**\.idea
+*.iml

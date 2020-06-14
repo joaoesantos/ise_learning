@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "21973be1-2b3c-4dfe-8f99-3027bdab44b1",
+		"name": "Execution Enviroments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Java",
+			"item": [
+				{
+					"name": "Execute Java Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostJavaExec}}",
+							"host": [
+								"{{hostJavaExec}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Kotlin",
+			"item": [
+				{
+					"name": "Execute Kotlin Code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"fun main(args : Array<String>) {println(\\\"Hello World!\\\")}fun cenas() {println(\\\"<<Test>>\\\")}\",\n    \"unitTests\": \"import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {cenas(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostKotlinExec}}",
+							"host": [
+								"{{hostKotlinExec}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "nodeJs",
+			"item": [
+				{
+					"name": "Execute NodeJs Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"code\":\"function getNthFib(n) {return n};exports.getNthFib = getNthFib;\",\n\t\"executeTests\": \"true\",\n\t\"unitTests\": \"var assert = require('assert');describe('Teste1', function() {describe('#getNthFib()', function() {it('should return 1 when the value is not present', function() {assert.equal(getNthFib(1), 1);});});});\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostJavascriptExec}}",
+							"host": [
+								"{{hostJavascriptExec}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
