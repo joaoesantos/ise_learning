@@ -1,31 +1,28 @@
 // client side configurations
-import { apiBaseUrl } from '../clientSideConfig';
+import { apiVersion } from '../clientSideConfig';
 
-export function runCodeModel(codeLanguage, code) {
-    // const options = {
-    //     method: "POST",
-    //     headers : {
-    //         "Content-Type" : "application/json",
-    //         "Accept" : "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //         environment: codeLanguage,
-    //         code: code,
-    //         unitTests:'',
-    //         executeTests: false
-    //     })
-    // };
-    // fetch(`${apiBaseUrl}/runCode`, options)
-    // .then((res)=> {
-    //     if (res.ok)
-    //         return res.json();
-    //     else 
-    //         return res.status;
-    // }).catch((err) => { throw err });
+export async function runCodeModel(codeLanguage, code) {
+    const options = {
+        method: "POST",
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json"
+        },
+        body: JSON.stringify({
+            language: codeLanguage,
+            code: code,
+            unitTests:'',
+            executeTests: false
+        })
+    };
+    let response = await fetch(`${apiVersion}/execute`, options)
+        .then((res)=> res.json()).catch((err) => { throw err });
+
+    console.log(response)
     return({
         environment: codeLanguage,
         executionTime : 15,
-        result : code
+        result : response.rawResult
     })
 }
 
