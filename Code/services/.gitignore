@@ -34,3 +34,5 @@ out/
 ### Configuration Files ###
 *.properties
 
+### Node run script ###
+src/main/resources/static

@@ -7,8 +7,7 @@ export const CodeMirrorOptions = new Map();
 CodeMirrorOptions.set('java',{
 mode:'text/x-java',
 value:
-`// "static void main" must be defined in a public class.
-public class Main {
+`public class Main {
     public static void main(String[] args) {
         System.out.println("Hello World!");
     }
@@ -51,5 +50,6 @@ export const apiVersion = "v0";
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
-    profile: () => `/${apiVersion}/users/me`
+    myUserOperations: () => `/${apiVersion}/users/me`,
+    myCredentials: () => `/${apiVersion}/users/me/password`,
 }
