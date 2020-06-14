@@ -39,7 +39,7 @@ function App() {
           <Route path="/challenges" render={() => <Challenge isAuthed={isAuthed} />} />
           <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
           <Route path="/runCode" component={RunCode} />
-          <Route path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
+          <Route exact path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
         </Switch>
         <Footer />
       </div>

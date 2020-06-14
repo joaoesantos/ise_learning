@@ -3,7 +3,7 @@ import { useEffect, useReducer } from 'react'
 
 export const ActionStates = {
   clear: 'clear',
-  fetching: 'fetching',
+  inProgress: 'inProgress',
   done: 'done',
   error: 'error'
 }
@@ -33,41 +33,26 @@ export default function UseFetch(actionPayload) {
   const [{actionState, response}, disp] = useReducer(reducer, { actionState: ActionStates.clear })
 
   useEffect(() => {
-    const abortController = new AbortController()
-    let cancel = false
-    const dispatch = (action) => {
-      if (!cancel) {
-        disp(action)
-      }
-    }
     async function performAction () {
       try {
         if (!actionPayload || !actionPayload.function) {
-          dispatch({ type: ActionsTypes.clear })
+          disp({ type: ActionsTypes.clear })
           return
         }
-        if(!actionPayload.arguments) {
-          actionPayload.arguments = []
+        if(!actionPayload.args) {
+          actionPayload.args = []
         }
-        dispatch({ type: ActionsTypes.start })
-        console.log("cernas a fazer")
-        let res = actionPayload.function.apply(undefined, actionPayload.arguments)
-        console.log(res)
+        disp({ type: ActionsTypes.start })
+        let res = actionPayload.function.apply(undefined, actionPayload.args)
         if(res instanceof Promise) {
           res = await res;
         }
-        console.log(res)
-        console.log("///////////////////////////////////////")
-        dispatch({ type: ActionsTypes.response, response: res })
+        disp({ type: ActionsTypes.response, response: res })
       } catch (e) {
-        dispatch({ type: ActionsTypes.error, response: e })
+        disp({ type: ActionsTypes.error, response: e })
       }
     }
     performAction()
-    return () => {
-      cancel = true
-      abortController.abort()
-    }
   }, [actionPayload,disp])
 
   return [actionState, response]
