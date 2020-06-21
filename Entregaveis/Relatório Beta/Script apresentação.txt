@@ -18,8 +18,11 @@ Slide 2 (1:30) - Services - Santos
 		Execute Code (serve de ponte para ultimo slide)
 Slide 3 (1:30) - Execution Environments - Rodrigo
 	5 Linguagens, 1 contentor por linguagem
+		Como podem ver na imagem estam previstos ambientes de execução para 5 linguagens diferentes: Java, Kotlin, JavaScript, C# e Python
 	Falar do docker e containers
+		Cada um destes ambientes de execução será um conjunto de contentores capazes de executar codigo numda dada linguagem. Se não houvesse escalabilidade seria apenas 1 contentor por linguagem, mas ter em conta a escalabilidade da solução poderam haver vários. Isto é separado por ambiente de execução para manter a infraestrutura mais leve no contentor, deste modo o contentos so precisa de ter o absolutamente necessário para executar uma dada linguagem.
 	Falar de como instanciamos a cena, aplicação que executa cenas no ambiente
+		Como é que isto será gerido? Para cada ambiente de execução haverá uma aplicação desenvolvida na linguagem que se pretende executar, e.g. no ambiente de execução de java a aplicação será em Java. E esta aplicação expõe um endpoint HTTP que respeitará um contrato comum entres todos os ambientes de execução em que recebe código a ser executado, compila o codigo se necessário e devolve o resultado da execução ou o erro que ocorreu se for o caso.
 -----------------------------------------------------------------------------------
 FAQ
 1 - Razão de termos ambientes de execução cada aplicação na sua linguagem?
