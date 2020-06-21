@@ -1,0 +1,42 @@
+Slide 1 (1:30) - functionalities & web client - Quintela
+	Motivation
+	Functionalities
+		Execute Multilanguage coding challenges
+		User account
+		Questionnaires
+	User Friendly
+	3 Modules
+	React + Material UI
+Slide 2 (1:30) - Services - Santos
+	Serviços - Kotlin + Gradle + Spring
+	DB - Postgres
+	Modulos
+		Challenges
+		Questionnaires
+		User
+		Authentication
+		Execute Code (serve de ponte para ultimo slide)
+Slide 3 (1:30) - Execution Environments - Rodrigo
+	5 Linguagens, 1 contentor por linguagem
+	Falar do docker e containers
+	Falar de como instanciamos a cena, aplicação que executa cenas no ambiente
+-----------------------------------------------------------------------------------
+FAQ
+1 - Razão de termos ambientes de execução cada aplicação na sua linguagem?
+R: Contentores mais leves, sendo que tem contentor com 1 ambiente da linageum a executar que é o mesmo da aplicação. e porque de um ponto de vista pedagogico queriamos trabalhar com mais tecnologias diferentes/novas
+2 - Como vamos gerir a escalabilidade? 
+R: ainda não decidimos a solução, mas algumas das hipóteses são:
+- Cloud Run, solução serveless da GCP autoescalavel
+- Filas de espera que permitem um buffer em resposta de picos de pedidos
+- Kubernetes cluster
+3 - Porque uma relacional?
+R: Decidimos optar por uma solução que garantisse mais fácilmente a normalização e consistência dos dados, por oposição a bases de dados não relacionais.
+4 - Como proteger contra ciclos infinitos?
+R: Ter timer para controlar tempo máximo de execução.
+5 - Como implementar autenticação?
+R: Autenticação básica, não implementada.
+6 - Segurança do contentor face a ataque?
+R: Bloqueamos a nível de rede chamadas para fora do contentor.
+7 - Porque é que não há testes unitários?
+R: Devido a constrangimentos de gestão de tempo para desenvolvimento, face ao semestre atípico no qual estamos com trabalhos para outras cadeiras e a trabalhar ao mesmo tempo deixamos o desenolvimento de testes unitários para uma fase mais tardia.
+Porém existem scripts de teste de DB, e coleções de postman que permitem testar partes da aplicação com alguma facilidade.
