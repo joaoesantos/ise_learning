@@ -108,5 +108,28 @@ Demo
 	ChallengeAnswer
 		getChallengesAnswersByUser: challengeId: 2, userId: 2
 		createChallengesAnswers: challengeId: 3, userId: 2 -> getChallengesAnswersByUser: challengeId: 3, userId: 2
+ Front end
+        pagina: profile
+        pagina: login
+
+--- Tempos Demo
+
+introdução - 46s
+
+set up - 4min28s
+
+e2e - 2min17s
+
+Execução testes unitários -------> 3min23s
+User Service -------------^ 
+
+challenges -10 - 4min:32
+
+challengesAnswer +10 - 1min
+
+challengesTag - 2min:21
+
+FrontEnd- 38s
+
 ---------------------------BUGS
 No delete do um challenge tag ele apaga o registo do ct e da tag, nao devia a apagar o da tag
