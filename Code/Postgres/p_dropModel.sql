@@ -14,7 +14,6 @@ BEGIN
 	DROP TABLE challenge, questionnaire;
 	DROP TABLE app_user;
 	DROP TABLE tag;
-	DROP TABLE runcode;
 	DROP TABLE code_language;
     COMMIT;
 END;

@@ -59,7 +59,7 @@ Set Up
 			(mostrar DockerFile)
 			(aplicação em Java, Spring)
 			build imagem: docker build -t kotlin-execution-environment .
-			run imagem: docker run -p 8082:8080 koltin-execution-environment
+			run imagem: docker run -p 8082:8080 kotlin-execution-environment
 		Java
 			(aplicação em Java, Spring)
 			build imagem: docker build -t java-execution-environment .
@@ -69,10 +69,10 @@ Set Up
 			build imagem: docker build -t nodejs-execution-environment .
 			run imagem: docker run -p 8083:3500 nodejs-execution-environment
 	Serviços
-		(aplicação em Kotlin, Gradle, Spring)
-		Correr aplicação
 		Iniciar PGAdmin
 		(Falar da BD em Postgres)
+		(aplicação em Kotlin, Gradle, Spring)
+		Correr aplicação
 	Web Client
 		(React, Material UI, Formik)
 		npm start
@@ -93,11 +93,6 @@ Demo
 		Get
 		Delete
 		GetAll
-	Challenges Tag Service
-		getTagsFromChallengeId: 1 - tem 3 tags
-		getTagsFromChallengeIdAndTagId:1,2,4 tem tags; 3 nao tem
-		CreateTag: challenge id 1 -> getTagsFromChallengeId: 1
-		DeletTag: tag criada -> getTagsFromChallengeId: 1
 	Challenges
 		getAllChallenges
 		getAllChallenges -> ?privacy=private
@@ -108,5 +103,13 @@ Demo
 	ChallengeAnswer
 		getChallengesAnswersByUser: challengeId: 2, userId: 2
 		createChallengesAnswers: challengeId: 3, userId: 2 -> getChallengesAnswersByUser: challengeId: 3, userId: 2
+	Challenges Tag Service
+		getTagsFromChallengeId: 1 - tem 3 tags
+		getTagsFromChallengeIdAndTagId:1,2,4 tem tags; 3 nao tem
+		CreateTag: challenge id 1 -> getTagsFromChallengeId: 1
+		DeletTag: tag criada -> getTagsFromChallengeId: 1
+	Front end
+		pagina: profile
+		pagina: login
 ---------------------------BUGS
 No delete do um challenge tag ele apaga o registo do ct e da tag, nao devia a apagar o da tag
