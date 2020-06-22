@@ -11,6 +11,6 @@ import java.util.*
 @Repository
 interface ChallengeTagRepository : CrudRepository<ChallengeTag, Int> {
     fun findAllByChallengeId(challengeId: Int): List<ChallengeTag>
-    fun findAllByTag(tag: String): List<ChallengeTag>
+    fun findAllByTagTag(tag: String): List<ChallengeTag>
     fun findByChallengeIdAndTagTagId(challengeId: Int, tagText: Int): Optional<ChallengeTag>
 }

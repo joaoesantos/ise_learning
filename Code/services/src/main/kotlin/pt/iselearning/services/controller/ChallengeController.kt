@@ -7,7 +7,6 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.service.ChallengeAnswerService
 import pt.iselearning.services.service.ChallengeService
-import java.lang.String
 
 /**
  * Handler responsible to respond to requests regard Challenge entity
@@ -68,7 +67,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     fun createChallenge(@RequestBody challenge: Challenge, ucb : UriComponentsBuilder): ResponseEntity<Challenge> {
         val savedChallenge = challengeService.createChallenge(challenge)
         val location = ucb.path("/v0/challenges")
-                .path(String.valueOf(savedChallenge!!.challengeId))
+                .path(savedChallenge!!.challengeId.toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(savedChallenge)

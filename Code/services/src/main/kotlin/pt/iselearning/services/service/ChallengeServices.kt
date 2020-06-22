@@ -6,7 +6,6 @@ import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.ChallengeTagRepository
-import java.lang.String
 import java.util.*
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.util.CustomValidators
@@ -22,11 +21,11 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
     fun getAllChallenges(tags: String?,
                          @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
         if(tags != null) {
-            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTag(tag) }
+            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
                     .distinct().asIterable()
             return if(privacy != null) {
-                val isPrivate = privacy==String("private")
+                val isPrivate = privacy=="private"
                 challengeRepository.findAllById(challengeIdList).filter { c -> c.isPrivate == isPrivate }
             } else {
                 challengeRepository.findAllById(challengeIdList).toList()
@@ -35,7 +34,7 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
             return if(privacy == null) {
                 challengeRepository.findAll().toList()
             } else {
-                val isPrivate = privacy==String("private")
+                val isPrivate = privacy=="private"
                 challengeRepository.findAllByIsPrivate(isPrivate)
             }
         }
@@ -52,11 +51,11 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
     fun getUserChallenges(@Positive userId: Int, tags: String?,
                           @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge>? {
         if(tags != null) {
-            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTag(tag) }
+            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
                     .distinct().asIterable()
             return if(privacy != null) {
-                val isPrivate = privacy==String("private")
+                val isPrivate = privacy=="private"
                 challengeRepository.findAllById(challengeIdList).filter{c -> c.creatorId == userId }
                         .filter { c -> c.isPrivate == isPrivate }
             } else {
@@ -66,7 +65,7 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
             return if(privacy == null) {
                 challengeRepository.findAllByCreatorId(userId)
             } else {
-                val isPrivate = privacy==String("private")
+                val isPrivate = privacy=="private"
                 challengeRepository.findAllByCreatorIdAndIsPrivate(userId, isPrivate)
             }
         }

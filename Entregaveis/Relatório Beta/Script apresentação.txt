@@ -18,11 +18,18 @@ Slide 2 (1:30) - Services - Santos
 		Execute Code (serve de ponte para ultimo slide)
 Slide 3 (1:30) - Execution Environments - Rodrigo
 	5 Linguagens, 1 contentor por linguagem
-		Como podem ver na imagem estam previstos ambientes de execução para 5 linguagens diferentes: Java, Kotlin, JavaScript, C# e Python
+		Como podem ver na imagem estam previstos ambientes de execução para 5 linguagens diferentes: Java, Kotlin, JavaScript, C# e Python.
 	Falar do docker e containers
 		Cada um destes ambientes de execução será um conjunto de contentores capazes de executar codigo numda dada linguagem. Se não houvesse escalabilidade seria apenas 1 contentor por linguagem, mas ter em conta a escalabilidade da solução poderam haver vários. Isto é separado por ambiente de execução para manter a infraestrutura mais leve no contentor, deste modo o contentos so precisa de ter o absolutamente necessário para executar uma dada linguagem.
 	Falar de como instanciamos a cena, aplicação que executa cenas no ambiente
 		Como é que isto será gerido? Para cada ambiente de execução haverá uma aplicação desenvolvida na linguagem que se pretende executar, e.g. no ambiente de execução de java a aplicação será em Java. E esta aplicação expõe um endpoint HTTP que respeitará um contrato comum entres todos os ambientes de execução em que recebe código a ser executado, compila o codigo se necessário e devolve o resultado da execução ou o erro que ocorreu se for o caso.
+DEMO? (30s - 60s)
+	Ter tudo ligado
+	mostrar janela do execute code
+	executar "hello world" para Java
+	executar "hello world" com texto alterado para Java
+	executar "hello world" para JavaScript
+	executar "hello world" com erro de compilaçãopara Java
 -----------------------------------------------------------------------------------
 FAQ
 1 - Razão de termos ambientes de execução cada aplicação na sua linguagem?
@@ -43,3 +50,63 @@ R: Bloqueamos a nível de rede chamadas para fora do contentor.
 7 - Porque é que não há testes unitários?
 R: Devido a constrangimentos de gestão de tempo para desenvolvimento, face ao semestre atípico no qual estamos com trabalhos para outras cadeiras e a trabalhar ao mesmo tempo deixamos o desenolvimento de testes unitários para uma fase mais tardia.
 Porém existem scripts de teste de DB, e coleções de postman que permitem testar partes da aplicação com alguma facilidade.
+-----------------------------------------------------------------------------------DEMO (20m)
+(pequena introdução)???
+Set Up
+	Execution environments
+		(mostrar na wiki as configs dos Execution Environments)
+		Kotlin
+			(mostrar DockerFile)
+			(aplicação em Java, Spring)
+			build imagem: docker build -t kotlin-execution-environment .
+			run imagem: docker run -p 8082:8080 koltin-execution-environment
+		Java
+			(aplicação em Java, Spring)
+			build imagem: docker build -t java-execution-environment .
+			run imagem: docker run -p 8081:8080 java-execution-environment
+		JavaScript
+			(aplicação em NodeJS, Express)
+			build imagem: docker build -t nodejs-execution-environment .
+			run imagem: docker run -p 8083:3500 nodejs-execution-environment
+	Serviços
+		(aplicação em Kotlin, Gradle, Spring)
+		Correr aplicação
+		Iniciar PGAdmin
+		(Falar da BD em Postgres)
+	Web Client
+		(React, Material UI, Formik)
+		npm start
+Demo
+	E2E
+		Abrir browser
+		clicar na opção "Run Code"
+		executar "hello world" para Java
+		executar "hello world" com texto alterado para Java
+		executar "hello world" com texto alterado para Kotlin
+		executar "hello world" para JavaScript
+		executar "hello world" com erro de compilação para Java
+		(falar que C# e Python ainda não estão desenvolvidos)
+	Execução testes unitários
+		Postman collection examples: Kotlin; Java; JavaScript
+	User Service
+		Create
+		Get
+		Delete
+		GetAll
+	Challenges Tag Service
+		getTagsFromChallengeId: 1 - tem 3 tags
+		getTagsFromChallengeIdAndTagId:1,2,4 tem tags; 3 nao tem
+		CreateTag: challenge id 1 -> getTagsFromChallengeId: 1
+		DeletTag: tag criada -> getTagsFromChallengeId: 1
+	Challenges
+		getAllChallenges
+		getAllChallenges -> ?privacy=private
+		getAllChallenges -> ?tags=Divide%20and%20Conquer
+		createChallenge
+		getChallengeById: new id
+		getChallengesByUserId: 1
+	ChallengeAnswer
+		getChallengesAnswersByUser: challengeId: 2, userId: 2
+		createChallengesAnswers: challengeId: 3, userId: 2 -> getChallengesAnswersByUser: challengeId: 3, userId: 2
+---------------------------BUGS
+No delete do um challenge tag ele apaga o registo do ct e da tag, nao devia a apagar o da tag
