@@ -111,5 +111,28 @@ Demo
 	Front end
 		pagina: profile
 		pagina: login
+
+--- Tempos Demo
+
+introdução - 46s
+
+set up - 4min28s
+
+e2e - 2min17s
+
+Execução testes unitários -------> 3min23s
+User Service -------------^ 
+
+challenges -10 - 4min:32
+
+challengesAnswer +10 - 1min
+
+challengesTag - 2min:21
+
+FrontEnd- 38s
+
+~19mins
+
+>>>>>>> 9b980e09676ed9cc7c24576ad624487b1bf57682
 ---------------------------BUGS
 No delete do um challenge tag ele apaga o registo do ct e da tag, nao devia a apagar o da tag
