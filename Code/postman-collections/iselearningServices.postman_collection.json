@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c476d3d8-1804-4983-900b-ba4bca3063e5",
+		"_postman_id": "868b58a6-b9cc-484d-9ce5-a512d3959107",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,7 +21,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\",\n\t\"password\": \"xpto1\"\n}"
+							"raw": "{\n\t\"name\":\"Seixo\",\n\t\"username\":\"lp\",\n\t\"email\":\"SeixoPaulo@email.com\",\n\t\"password\": \"xpto1\"\n}",
+							"options": {
+								"raw": {}
+							}
 						},
 						"url": {
 							"raw": "{{hostServices}}/v0/users",
@@ -54,7 +57,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "7",
+									"type": "string"
 								}
 							]
 						}
@@ -119,13 +123,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
+									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeId/answers/users/:userId",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
-										"challenges",
+										"challengeAnswers",
 										":challengeId",
 										"answers",
 										"users",
@@ -134,11 +138,13 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "2"
+											"value": "4",
+											"type": "string"
 										},
 										{
 											"key": "userId",
-											"value": "2"
+											"value": "2",
+											"type": "string"
 										}
 									]
 								}
@@ -152,7 +158,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 4,\r\n    \"userId\": 2,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -173,7 +179,7 @@
 							"response": []
 						},
 						{
-							"name": "updateChallengesAnswers Copy",
+							"name": "updateChallengesAnswers",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -198,8 +204,10 @@
 									],
 									"variable": [
 										{
+											"id": "c86203bf-602c-4b2d-a2c2-aef8873c1684",
 											"key": "challengeAnswerId",
-											"value": "14"
+											"value": "14",
+											"type": "string"
 										}
 									]
 								}
@@ -207,7 +215,7 @@
 							"response": []
 						},
 						{
-							"name": "deleteChallengesAnswers Copy Copy",
+							"name": "deleteChallengesAnswers",
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -232,8 +240,10 @@
 									],
 									"variable": [
 										{
+											"id": "c1762bfc-e7fa-4f24-a6ef-60da19266bde",
 											"key": "challengeAnswerId",
-											"value": "14"
+											"value": "14",
+											"type": "string"
 										}
 									]
 								}
@@ -266,7 +276,8 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "3"
+											"value": "1",
+											"type": "string"
 										}
 									]
 								}
@@ -274,7 +285,7 @@
 							"response": []
 						},
 						{
-							"name": "getChallengeTagByChallengeIdAndTagText",
+							"name": "getChallengeTagByChallengeIdAndTagId",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -293,11 +304,13 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "1"
+											"value": "1",
+											"type": "string"
 										},
 										{
 											"key": "tagid",
-											"value": "4"
+											"value": "4",
+											"type": "string"
 										}
 									]
 								}
@@ -311,7 +324,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"tag\": \"Arrays\"\r\n}",
+									"raw": "{\r\n    \"tag\": \"demo\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -332,7 +345,8 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "3"
+											"value": "1",
+											"type": "string"
 										}
 									]
 								}
@@ -359,11 +373,13 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "3"
+											"value": "1",
+											"type": "string"
 										},
 										{
 											"key": "tagId",
-											"value": "5"
+											"value": "8",
+											"type": "string"
 										}
 									]
 								}
@@ -380,7 +396,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/challenges?privacy=private",
+							"raw": "{{hostServices}}/v0/challenges",
 							"host": [
 								"{{hostServices}}"
 							],
@@ -390,8 +406,14 @@
 							],
 							"query": [
 								{
+									"key": "tags",
+									"value": "Divide%20and%20Conquer",
+									"disabled": true
+								},
+								{
 									"key": "privacy",
-									"value": "private"
+									"value": "private",
+									"disabled": true
 								}
 							]
 						}
@@ -456,7 +478,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/challenges/users/:userId?tags=Array,Divide and Conquer",
+							"raw": "{{hostServices}}/v0/challenges/users/:userId",
 							"host": [
 								"{{hostServices}}"
 							],
@@ -469,13 +491,15 @@
 							"query": [
 								{
 									"key": "tags",
-									"value": "Array,Divide and Conquer"
+									"value": "Array,Divide and Conquer",
+									"disabled": true
 								}
 							],
 							"variable": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "1",
+									"type": "string"
 								}
 							]
 						}
@@ -569,7 +593,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}",
 							"options": {
 								"raw": {}
 							}
