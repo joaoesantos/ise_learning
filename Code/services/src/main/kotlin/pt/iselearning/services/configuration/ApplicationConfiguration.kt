@@ -1,16 +1,23 @@
 package pt.iselearning.services.configuration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.modelmapper.ModelMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.modelmapper.config.Configuration.*
 import org.modelmapper.convention.MatchingStrategies
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import pt.iselearning.services.filter.AuthenticationFilter
+import pt.iselearning.services.resolver.UserArgumentResolver
+import pt.iselearning.services.service.AuthenticationService
 
 @Configuration
-class ApplicationConfiguration {
+class ApplicationConfiguration : WebMvcConfigurer {
 
     @Bean
     fun createModelMapper() : ModelMapper {
@@ -26,5 +33,22 @@ class ApplicationConfiguration {
 
     @Bean
     fun createEmailValidator() : EmailValidator = EmailValidator()
+
+    @Bean
+    fun authenticationFilterRegistration(authenticationService: AuthenticationService, objectMapper: ObjectMapper): FilterRegistrationBean<AuthenticationFilter>? {
+        val registrationBean: FilterRegistrationBean<AuthenticationFilter>
+                = FilterRegistrationBean()
+
+        registrationBean.initParameters
+        registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
+        registrationBean.addUrlPatterns("/v0/login","/v0/challenges/*" )
+
+        return registrationBean
+    }
+
+    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+        resolvers.add(UserArgumentResolver())
+        super.addArgumentResolvers(resolvers)
+    }
 
 }

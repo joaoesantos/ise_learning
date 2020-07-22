@@ -7,6 +7,7 @@ enum class ErrorCode(val httpCode : Int) {
     VALIDATION_ERROR(400),
     ITEM_NOT_FOUND(404),
     UNEXPECTED_ERROR(500),
+    UNAUTHORIZED(401),
     MANDATORY_VALUE(400);
 
     companion object {
