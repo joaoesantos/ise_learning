@@ -34,7 +34,7 @@ class AuthenticationService (private val userRepository: UserRepository) {
             throw IselearningException(ErrorCode.UNAUTHORIZED.httpCode, "Invalid authentication schema", "Authentication Schema: $authenticationSchema is not supported")
         }
         val base64Credentials = authenticationHeaderSplit[1]
-        val byteContent = Base64.getDecoder().decode(base64Credentials);
+        val byteContent = Base64.getDecoder().decode(base64Credentials)
         val credentials = String(byteContent)
 
         val credentialsSplit = credentials.split(":")
@@ -43,8 +43,8 @@ class AuthenticationService (private val userRepository: UserRepository) {
             throw IselearningException(ErrorCode.UNAUTHORIZED.httpCode, "Invalid credentials inserted", "Must provide username and password")
         }
 
-        var username = credentialsSplit[0]
-        var password = credentialsSplit[1]
+        val username = credentialsSplit[0]
+        val password = credentialsSplit[1]
 
         val optionalUser = userRepository.findByUsername(username)
 
@@ -58,7 +58,7 @@ class AuthenticationService (private val userRepository: UserRepository) {
             throw IselearningException(ErrorCode.UNAUTHORIZED.httpCode, "Invalid credentials inserted", "Username and/or password don't match our records")
         }
 
-        return user;
+        return user
     }
 
 }
