@@ -9,7 +9,7 @@ import pt.iselearning.services.repository.UserRepository
 import java.util.*
 
 /**
- *
+ * Class responsible to maintain and validate business logic regarding authentication
  */
 @Service
 class AuthenticationService (private val userRepository: UserRepository) {

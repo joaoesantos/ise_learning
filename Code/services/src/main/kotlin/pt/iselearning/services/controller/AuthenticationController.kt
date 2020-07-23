@@ -8,12 +8,14 @@ import pt.iselearning.services.service.UserService
 import java.util.*
 
 /**
- *
+ * Handler responsible to respond to requests regarding authentication
  */
 @Controller
 class AuthenticationController(private val userService: UserService) {
     /**
+     * Login action
      *
+     * @param authorizationHeader http header with key equals to Authorization
      */
     @PostMapping("/login")
     fun login(@RequestHeader("Authorization") authorizationHeader : String) : ResponseEntity<Unit> {
