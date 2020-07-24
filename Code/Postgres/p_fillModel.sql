@@ -11,11 +11,16 @@ BEGIN
 	SET search_path TO ise_learning,public;
 
 	INSERT INTO app_user(username,password,name,email) VALUES
-	('user1','user1','User One','user1@example.com'),	-- created challenge 1,2 & questionnaire 1
-	('user2','user2','User Two','user2@example.com'),	-- created challenge 3,4 & answered challenge 1,2
-	('user3','user3','User Three','user3@example.com'),	-- created challenge 5 & questionnaire 2,3
-	('user4','user4','User Four','user4@example.com'),	-- answered challenge 1,2 & answered questionnaire 1,2
-	('user5','user5','User Five','user5@example.com');	-- answered challenge 1,2,3,4,5 & answered questionnaire 1,2,3
+	--pass:user1
+	('user1','$2a$10$BgowVRiHeJaoV5kOoBgsZebOUgvdgbF97/9etCKlMqZqIEhg1GgZu','User One','user1@example.com'),	-- created challenge 1,2 & questionnaire 1
+	--pass:user2
+	('user2','$2a$10$B72054TXKodEi.QdGF9HTOoWxO9f//tzz6QU.xplQMx4l.SXSDaSK','User Two','user2@example.com'),	-- created challenge 3,4 & answered challenge 1,2
+	--pass:user3
+	('user3','$2a$10$UDUU1KqrjclkUGF9MegNbOGbNeyIezZWw93cTrwcZSWCKR5UkZRka','User Three','user3@example.com'),	-- created challenge 5 & questionnaire 2,3
+	--pass:user4
+	('user4','$2a$10$FnkxyonQk/iGxAb/alhcauKvgkAT9d6tmhfKg105a3N1z8FxbGq.e','User Four','user4@example.com'),	-- answered challenge 1,2 & answered questionnaire 1,2
+	--pass:user5
+	('user5','$2a$10$ZaGvwc4pJM9Me2csCcCVZ.BwndB4vuJbrUNzqkywyP8klV9gxAk0O','User Five','user5@example.com');	-- answered challenge 1,2,3,4,5 & answered questionnaire 1,2,3
 	
 	-- USER ACTIONS
 	-- ------------------------------------------------------------------------------
