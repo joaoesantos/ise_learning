@@ -8,7 +8,7 @@ import javax.validation.constraints.Positive
 import javax.validation.constraints.Size
 
 /**
- * data class that represents questionnaire instance entity
+ * Data class that represents questionnaire instance entity
  */
 @Validated
 @Entity
@@ -20,6 +20,10 @@ data class QuestionnaireInstance (
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @field:Positive(message = "Questionnaire Instance id must be positive")
         var questionnaireInstanceId: Int?,
+
+        @Id
+        @Column(name = "questionnaire_instance_uuid")
+        var questionnaireInstanceUuid: String?,
 
         @Column(name = "description")
         @field:Size(min = 1, max = 50, message = "Questionnaire Instance description must be between 1 and 50 characters")
@@ -39,4 +43,4 @@ data class QuestionnaireInstance (
         @field:Positive(message = "Questionnaire id must be positive")
         var questionnaireId : Int?
 
-) { constructor() : this(null, null, null, null, null, null) }
+) { constructor() : this(null, null, null, null, null, null, null) }

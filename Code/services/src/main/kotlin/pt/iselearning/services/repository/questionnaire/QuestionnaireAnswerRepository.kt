@@ -4,8 +4,8 @@ import org.springframework.data.repository.CrudRepository
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 
 /**
- * Interface that represents a repository for the questionnaire domain
+ * Interface that represents a repository for the questionnaire answer domain
  */
 interface QuestionnaireAnswerRepository : CrudRepository<QuestionnaireAnswer, Int> {
-    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId: Int): List<QuestionnaireAnswer>
+    fun findAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId: Int): List<QuestionnaireAnswer>
 }

@@ -52,6 +52,20 @@ class QuestionnaireInstanceController(
     }
 
     /**
+     * Method to get a single questionnaire instance.
+     * Path variable "questionnaireInstanceUuid" must be present
+     * @param questionnaireInstanceUuid represents QuestionnaireInstance UUID
+     * @return ResponseEntity<QuestionnaireInstance>
+     */
+    @GetMapping("/Uuid/{questionnaireInstanceUuid}")
+    fun getQuestionnaireInstanceById(
+            @PathVariable questionnaireInstanceUuid: String
+    ): ResponseEntity<QuestionnaireInstance> {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireInstanceServices.getQuestionnaireInstanceByUuid(questionnaireInstanceUuid))
+    }
+
+    /**
      * Method to get all questionnaire instances from a questionnaire.
      * Path variable "questionnaireId" must be present
      * @param questionnaireId represents the Questionnaire parent object

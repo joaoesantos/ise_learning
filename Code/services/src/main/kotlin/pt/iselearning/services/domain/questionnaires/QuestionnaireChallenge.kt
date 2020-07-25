@@ -7,7 +7,7 @@ import javax.persistence.*
 import javax.validation.constraints.Positive
 
 /**
- * data class that represents questionnaire-challenge entity
+ * Data class that represents questionnaire-challenge entity
  */
 @Validated
 @Entity

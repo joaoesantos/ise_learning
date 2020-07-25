@@ -8,8 +8,10 @@ import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
+import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
+
 
 /**
  * This class contains the business logic associated with the actions on the questionnaire instance object
@@ -22,7 +24,8 @@ class QuestionnaireInstanceServices(
 ) {
 
     /**
-     * Create a questionnaire instance
+     * Create a questionnaire instance.
+     *
      * @param questionnaireInstance object information
      * @return created questionnaire instance
      */
@@ -30,25 +33,49 @@ class QuestionnaireInstanceServices(
     fun createQuestionnaireInstance(@Valid questionnaireInstance: QuestionnaireInstance): QuestionnaireInstance {
         val questionnaireInstanceParent = questionnaireRepository.findById(questionnaireInstance.questionnaireId!!)
         CustomValidators.checkIfQuestionnaireExists(questionnaireInstanceParent, questionnaireInstance.questionnaireId!!)
+
         questionnaireInstance.timer = if(questionnaireInstance.timer == null) questionnaireInstanceParent.get().timer else questionnaireInstance.timer
+        questionnaireInstance.questionnaireInstanceUuid = UUID.randomUUID().toString()
         return questionnaireInstanceRepository.save(questionnaireInstance)
     }
 
     /**
-     * Get questionnaire by its unique identifier
+     * Get questionnaire by its unique identifier.
+     *
      * @param questionnaireInstanceId identifier of questionnaire object
      * @return questionnaire instance object
      */
     @Validated
     fun getQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int) : QuestionnaireInstance {
-        //TODO quando o tempo terminar é necessário que validar que apenas o criador do questionnaire instance pode aceder ao recurso
+        //TODO quando o tempo terminar é necessário que validar que apenas o criador do questionnaire instance pode aceder ao
         val questionnaireInstance = questionnaireInstanceRepository.findById(questionnaireInstanceId)
         CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstance, questionnaireInstanceId)
+
         return questionnaireInstance.get()
     }
 
     /**
-     * Get all questionnaires instances of questionnaire
+     * Get questionnaire by its unique UUID.
+     *
+     * @param questionnaireInstanceUuid identifier of questionnaire object
+     * @return questionnaire instance object
+     */
+    @Validated
+    fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstance {
+        //TODO quando o tempo terminar é necessário que validar que apenas o criador do questionnaire instance pode aceder ao
+        val questionnaireInstance = questionnaireInstanceRepository.findQuestionnaireByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
+
+        if(questionnaireInstance.isEmpty){
+            throw ServerException("Questionnaire instances not found.",
+                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceUuid", ErrorCode.ITEM_NOT_FOUND)
+        }
+
+        return questionnaireInstance.get()
+    }
+
+    /**
+     * Get all questionnaires instances of questionnaire.
+     *
      * @param questionnaireId unique identifier of questionnaire object
      * @return List of questionnaire instance objects
      */
@@ -59,11 +86,14 @@ class QuestionnaireInstanceServices(
             throw ServerException("Questionnaire instances not found.",
                     "There are no questionnaire instances for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
         }
+
         return questionnaireInstances
     }
 
+
     /**
-     * Update a questionnaire instance
+     * Update a questionnaire instance.
+     *
      * @param questionnaireInstance information to be updated
      * @return updated questionnaire instance
      */
@@ -88,12 +118,14 @@ class QuestionnaireInstanceServices(
     }
 
     /**
-     * Delete a questionnaire instance by its unique identifier
+     * Delete a questionnaire instance by its unique identifier.
+     *
      * @param questionnaireInstanceId identifier of object
      */
     @Validated
     fun deleteQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int) {
         CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceId)
+
         questionnaireInstanceRepository.deleteById(questionnaireInstanceId)
     }
 
