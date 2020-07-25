@@ -8,5 +8,6 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
  * Interface that represents a repository for the questionnaire-challenge domain
  */
 interface QuestionnaireChallengeRepository : CrudRepository<QuestionnaireChallenge, Int> {
-    fun getAllChallengesByQuestionnaireId(questionnaireId: Int): List<Challenge>
+    fun findByQuestionnaireIdAndChallengeId(questionnaireId: Int, challengeId: Int) : QuestionnaireChallenge
+    fun findAllChallengesByQuestionnaireId(questionnaireId: Int): List<Challenge>
 }

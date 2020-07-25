@@ -12,13 +12,14 @@ import pt.iselearning.services.util.Constants
  * Handler responsible to respond to requests regard QuestionnaireAnswer domain
  */
 @RestController
-@RequestMapping(Constants.QUESTIONNAIRE_ANSWER, produces = ["application/json"])
+@RequestMapping(Constants.QUESTIONNAIRE_ANSWER_PATH, produces = ["application/json"])
 class QuestionnaireAnswerController(
         private val questionnaireAnswerServices: QuestionnaireAnswerServices
 ) {
 
     /**
      * Method to create an questionnaire answer.
+     *
      * A json object that represents a object of the type QuestionnaireAnswer must be present in the body
      * @param ucb helps build URLs
      * @param questionnaireAnswer represents a QuestionnaireAnswer
@@ -39,6 +40,7 @@ class QuestionnaireAnswerController(
 
     /**
      * Method to get a single questionnaire answer.
+     *
      * Path variable "questionnaireAnswerId" must be present
      * @param questionnaireAnswerId represents QuestionnaireAnswer unique identifier
      * @return ResponseEntity<QuestionnaireAnswer>
@@ -53,6 +55,7 @@ class QuestionnaireAnswerController(
 
     /**
      * Method to get all questionnaire answers from questionnaire instance.
+     *
      * Path variable "questionnaireInstanceId" must be present
      * @param questionnaireInstanceId represents the QuestionnaireInstance unique identifier
      * @return ResponseEntity<List<QuestionnaireAnswer>> represents a data stream that can hold zero or one elements of the type ServerResponse
@@ -67,6 +70,7 @@ class QuestionnaireAnswerController(
 
     /**
      * Method to update an questionnaire answer.
+     *
      * A json object that represents a object of the type QuestionnaireAnswer must be present in the body
      * @param questionnaireAnswerId represents a Questionnaire unique identifier
      * @param questionnaireAnswer represents a QuestionnaireAnswer object
@@ -84,6 +88,7 @@ class QuestionnaireAnswerController(
 
     /**
      * Method to delete a single questionnaire answer.
+     *
      * Path variable "questionnaireAnswerId" must be present
      * @param questionnaireAnswerId represents QuestionnaireAnswer unique identifier
      * @return No Content

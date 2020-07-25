@@ -22,7 +22,8 @@ class QuestionnaireAnswerServices(
 ) {
 
     /**
-     * Create a questionnaire answer
+     * Create a questionnaire answer.
+     *
      * @param questionnaireAnswer object information
      * @return created questionnaire answer
      */
@@ -34,7 +35,8 @@ class QuestionnaireAnswerServices(
     }
 
     /**
-     * Get questionnaire answer by its unique identifier
+     * Get questionnaire answer by its unique identifier.
+     *
      * @param questionnaireAnswerId identifier of questionnaire answer object
      * @return questionnaire answer object
      */
@@ -46,13 +48,14 @@ class QuestionnaireAnswerServices(
     }
 
     /**
-     * Get all questionnaires answers of questionnaire instance
+     * Get all questionnaires answers of questionnaire instance.
+     *
      * @param questionnaireInstanceId unique identifier of questionnaire instance object
      * @return List of questionnaire answer objects
      */
     @Validated
     fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int) : List<QuestionnaireAnswer> {
-        val questionnaireAnswers = questionnaireAnswerRepository.getAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId)
+        val questionnaireAnswers = questionnaireAnswerRepository.findAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId)
         if (questionnaireAnswers.isEmpty()) {
             throw ServerException("Questionnaire instances not found.",
                     "There are no questionnaire instances for selected questionnaire $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
@@ -61,7 +64,8 @@ class QuestionnaireAnswerServices(
     }
 
     /**
-     * Update a questionnaire answer
+     * Update a questionnaire answer.
+     *
      * @param questionnaireAnswer information to be updated
      * @return updated questionnaire answer
      */
@@ -78,7 +82,8 @@ class QuestionnaireAnswerServices(
     }
 
     /**
-     * Delete a questionnaire answer by its unique identifier
+     * Delete a questionnaire answer by its unique identifier.
+     *
      * @param questionnaireAnswerId identifier of object
      */
     @Validated

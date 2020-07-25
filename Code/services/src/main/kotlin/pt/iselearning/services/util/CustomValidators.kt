@@ -3,12 +3,14 @@ package pt.iselearning.services.util
 import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
+import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
+import java.time.Instant
 import java.util.*
 
 /**
@@ -24,7 +26,8 @@ class CustomValidators {
         //region CHALLENGES
 
         /**
-         * Validates if chalenge is empty
+         * Validates if challenge is empty.
+         *
          * @param challenge to be validated
          * @param challengeId identifier of object
          * @throws ServerException when on failure to find questionnaire
@@ -41,7 +44,8 @@ class CustomValidators {
         //region QUESTIONNAIRES
 
         /**
-         * Validates if questionnaire is empty
+         * Validates if questionnaire is empty.
+         *
          * @param questionnaireRepository interface of repository for the questionnaire class
          * @param questionnaireId identifier of object
          * @throws ServerException when on failure to find questionnaire
@@ -54,7 +58,8 @@ class CustomValidators {
         }
 
         /**
-         * Validates if questionnaire is empty
+         * Validates if questionnaire is empty.
+         *
          * @param questionnaire to be validated
          * @param questionnaireId identifier of object
          * @throws ServerException when on failure to find questionnaire
@@ -71,7 +76,21 @@ class CustomValidators {
         //region QUESTIONNAIRE INSTANCE
 
         /**
-         * Validates if questionnaire instance is empty
+         * Validates if questionnaire instance access time is timeout.
+         *
+         * @param questionnaireInstance interface of repository for the questionnaire class
+         * @throws ServerException when on failure to find questionnaire instance
+         */
+        fun checkIfTimeout(questionnaireInstance: QuestionnaireInstance) {
+            if (Instant.now().isAfter(questionnaireInstance.endTimestamp?.toInstant()!!)) {
+                throw ServerException("TIMEOUT.",
+                        "Time to complete questionnaire is over", ErrorCode.FORBIDDEN)
+            }
+        }
+
+        /**
+         * Validates if questionnaire instance is empty.
+         *
          * @param questionnaireInstanceRepository interface of repository for the questionnaire class
          * @param questionnaireInstanceId identifier of object
          * @throws ServerException when on failure to find questionnaire instance
@@ -84,7 +103,8 @@ class CustomValidators {
         }
 
         /**
-         * Validates if questionnaire instance is empty
+         * Validates if questionnaire instance is empty.
+         *
          * @param questionnaireInstance to be validated
          * @param questionnaireInstanceId identifier of domain
          * @throws ServerException when on failure to find questionnaire instance
@@ -101,7 +121,8 @@ class CustomValidators {
         //region QUESTIONNAIRE ANSWER
 
         /**
-         * Validates if questionnaire answer is empty
+         * Validates if questionnaire answer is empty.
+         *
          * @param questionnaireAnswerRepository interface of repository for the questionnaire answer class
          * @param questionnaireAnswerId identifier of object
          * @throws ServerException when on failure to find questionnaire answer
@@ -114,7 +135,8 @@ class CustomValidators {
         }
 
         /**
-         * Validates if questionnaire answer is empty
+         * Validates if questionnaire answer is empty.
+         *
          * @param questionnaireAnswer to be validated
          * @param questionnaireAnswerId identifier of domain
          * @throws ServerException when on failure to find questionnaire answer
@@ -123,6 +145,26 @@ class CustomValidators {
             if (questionnaireAnswer.isEmpty) {
                 throw ServerException("Questionnaire answer not found.",
                         "There is no questionnaire answer with id $questionnaireAnswerId", ErrorCode.ITEM_NOT_FOUND)
+            }
+        }
+
+        //endregion
+
+        //region QUESTIONNAIRE-CHALLENGE
+
+        /**
+         * Validates if all QuestionnaireChallenge's share the same questionnaire unique identifier.
+         *
+         * @param listOfQuestionnaireChallenge to be validated
+         * @throws ServerException when on failure to find questionnaire answer
+         */
+        fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: List<QuestionnaireChallenge>) {
+            val qcId = listOfQuestionnaireChallenge.first().qcId
+            listOfQuestionnaireChallenge.iterator().forEach {
+                if(!it.qcId?.equals(qcId)!!) {
+                    throw ServerException("All challenges must be from the same questionnaire.",
+                            "All challenges must be from the same questionnaire.", ErrorCode.BAD_REQUEST)
+                }
             }
         }
 

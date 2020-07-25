@@ -7,7 +7,7 @@ import javax.persistence.*
 import javax.validation.constraints.Positive
 
 /**
- * data class that represents questionnaire answer entity
+ * Data class that represents questionnaire answer entity.
  */
 @Validated
 @Entity
@@ -24,8 +24,8 @@ data class QuestionnaireAnswer (
         @field:Positive(message = "Questionnaire Instance id must be positive")
         var questionnaireInstanceId : Int?,
 
-        @OneToOne(cascade = [CascadeType.ALL])
+        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
         @JoinColumn(name = "answer_id")
-        var answer : Answer?
+        var answer : MutableList<Answer>?
 
 ) { constructor() : this(null, null, null) }

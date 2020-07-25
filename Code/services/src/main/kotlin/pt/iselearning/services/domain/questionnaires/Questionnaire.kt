@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive
 import javax.validation.constraints.Size
 
 /**
- * data class that represents questionnaire entity
+ * Data class that represents questionnaire entity
  */
 @Validated
 @Entity
@@ -39,6 +39,10 @@ data class Questionnaire (
 
         @field:Positive(message = "Creator id must be positive")
         @Column(name = "creator_id")
-        var creatorId: Int?
+        var creatorId: Int?,
 
-) { constructor() : this(null, null, null, null, null) }
+        @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        @JoinTable(name = "questionnaire_challenge")
+        var questionnaireChallenge: QuestionnaireChallenge?
+
+) { constructor() : this(null, null, null, null, null, null) }

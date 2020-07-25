@@ -21,7 +21,8 @@ class QuestionnaireServices(
 ) {
 
     /**
-     * Get questionnaire by its unique identifier
+     * Get questionnaire by its unique identifier.
+     *
      * @param questionnaireId identifier of questionnaire object
      * @return questionnaire object
      */
@@ -33,7 +34,8 @@ class QuestionnaireServices(
     }
 
     /**
-     * Get all user questionnaires
+     * Get all user questionnaires.
+     *
      * @param userId unique identifier of user object
      * @return List of questionnaires objects
      */
@@ -48,7 +50,8 @@ class QuestionnaireServices(
     }
 
     /**
-     * Create a questionnaire
+     * Create a questionnaire.
+     *
      * @param questionnaire object information
      * @return created questionnaire
      */
@@ -59,7 +62,8 @@ class QuestionnaireServices(
     }
 
     /**
-     * Update a questionnaire
+     * Update a questionnaire.
+     *
      * @param questionnaire information to be updated
      * @return updated questionnaire
      */
@@ -80,7 +84,8 @@ class QuestionnaireServices(
     }
 
     /**
-     * Delete a questionnaire by its unique identifier
+     * Delete a questionnaire by its unique identifier.
+     *
      * @param questionnaireId identifier of object
      */
     @Validated

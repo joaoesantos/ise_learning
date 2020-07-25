@@ -10,8 +10,9 @@ class Constants private constructor() {
 
         //region QUESTIONNAIRE PATH CONSTANTS
         const val QUESTIONNAIRE_PATH: String = "/$VERSION/questionnaires"
+        const val QUESTIONNAIRE_CHALLENGE_PATH: String = "/$VERSION/questionnaireChallenges"
         const val QUESTIONNAIRE_INSTANCE_PATH: String = "/$VERSION/questionnaireInstances"
-        const val QUESTIONNAIRE_ANSWER: String = "/$VERSION/questionnaireAnswers"
+        const val QUESTIONNAIRE_ANSWER_PATH: String = "/$VERSION/questionnaireAnswers"
         //endregion
 
     }

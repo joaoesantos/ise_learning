@@ -56,6 +56,18 @@ class ChallengeController (private val challengeService: ChallengeService, priva
                 .body(challengeService.getUserChallenges(userId, tags, privacy))
     }
 
+    /**
+     * Method to get all challenges from a questionnaire.
+     * Path variable "questionnaireId" must be present
+     * @param questionnaireId represents Questionnaire unique identifier
+     * @return ResponseEntity<List<Challenge>>
+     */
+    @GetMapping("/questionnaire/{questionnaireId}")
+    fun getAllChallengesByQuestionnaireId(@PathVariable questionnaireId : Int) : ResponseEntity<List<Challenge>> {
+        return ResponseEntity.ok().contentType(APPLICATION_JSON)
+                .body(challengeService.getAllChallengesByQuestionnaireId(questionnaireId))
+    }
+
 
     /**
      * Method to create an challenge.

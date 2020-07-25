@@ -9,6 +9,9 @@ import pt.iselearning.services.repository.ChallengeTagRepository
 import java.lang.String
 import java.util.*
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
 import javax.validation.Valid
 import javax.validation.constraints.Pattern
@@ -16,8 +19,12 @@ import javax.validation.constraints.Positive
 
 @Validated
 @Service
-class ChallengeService (private val challengeRepository: ChallengeRepository,
-                        private val challengeTagRepository: ChallengeTagRepository) {
+class ChallengeService (
+        private val challengeRepository: ChallengeRepository,
+        private val challengeTagRepository: ChallengeTagRepository,
+        private val questionnaireRepository: QuestionnaireRepository,
+        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository
+) {
     @Validated
     fun getAllChallenges(tags: String?,
                          @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
@@ -70,6 +77,25 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
                 challengeRepository.findAllByCreatorIdAndIsPrivate(userId, isPrivate)
             }
         }
+    }
+
+    /**
+     * Get all challenges from an questionnaire by its unique identifier.
+     *
+     * @param questionnaireId identifier of questionnaire object
+     * @return List of challenge objects
+     */
+    @Validated
+    fun getAllChallengesByQuestionnaireId(@Positive questionnaireId: Int) : List<Challenge> {
+        val questionnaire = questionnaireRepository.findById(questionnaireId)
+        CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireId)
+
+        val challenges = questionnaireChallengeRepository.findAllChallengesByQuestionnaireId(questionnaireId)
+        if (challenges.isEmpty()) {
+            throw ServerException("Challenges not found.",
+                    "There are no challenges for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
+        }
+        return challenges
     }
 
     @Validated
