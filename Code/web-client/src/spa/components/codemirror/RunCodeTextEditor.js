@@ -64,8 +64,11 @@ const styles = theme => ({
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
         if(prevProps !== this.props) {
-            if(prevProps.codeLanguage !== this.props.codeLanguage) {
+            if(prevProps.codeLanguage !== this.props.codeLanguage ) {
                 this.editor.setValue(CodeMirrorOptions.get(this.props.codeLanguage).value);
+            }
+            if(this.props.value && this.props.value != prevProps.value){
+                this.editor.setValue(this.props.value);
             }
         }
     }

@@ -21,11 +21,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
 import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
-
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
-import { defaultLanguage } from '../../clientSideConfig';
+import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -121,12 +120,12 @@ export default function QuestionnairePage() {
     const [timer, setTimer] = React.useState(5000)
     const [runState, setRunState] = React.useState('notRunning');
     const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage);
-    //const [textEditorData, setTextEditorData] = React.useState([]);
-    //const [unitTestsData, setUnitTestsData] = React.useState([])
-    const [textEditorData, setTextEditorData] = React.useState();
+    const [textEditorData, setTextEditorData] = React.useState([]);
+    const [unitTestsData, setUnitTestsData] = React.useState([])
+    const [textEditorArea, setTextEditorArea] = React.useState();
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
-    const [unitTests, setUnitTests] = React.useState({ value: '', toUpdate: true });
-
+    const [unitTests, setUnitTests] = React.useState('uijrsfuiowrniofwejoi');
+    
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
@@ -184,18 +183,56 @@ export default function QuestionnairePage() {
         setCompleted(newCompleted);
     };
 
-    // const setTestsArea = (text) => {
-    //     const newTests = [...unitTestsData]
-    //     newTests[activeStep] = text
-    //     setUnitTestsData(newTests)
-    //     setUnitTests(text)
-    // }
+    const setTestArea = (text) => {
+        const newTests = [...unitTestsData]
+        newTests[activeStep] = text
+        setUnitTestsData(newTests)
+        setUnitTests(text)
+    }
 
-    // const setCodeArea = (text) => {
-    //     const newCodes = [...textEditorData]
-    //     newCodes[activeStep] = text
-    //     setTextEditorData(newCodes)
-    // }
+    const setCodeArea = (text) => {
+        const newCodes = [...textEditorData]
+        newCodes[activeStep] = text
+        setTextEditorData(newCodes)
+    }
+
+    const getCodeArea = (idx) => {
+        let codeText = textEditorData[idx];
+
+        if(!codeText){
+            codeText = CodeMirrorOptions.get(codeLanguage).value
+        }
+        return codeText
+    }
+
+    
+    const handleNext = () => {
+        handleStepChange(activeStep + 1)
+    };
+
+    const handleBack = () => {
+        handleStepChange(activeStep - 1)
+    };
+
+    const handleStepChange = (nextStep) => {
+        setTextEditorArea(getCodeArea(nextStep))
+        setTextArea({ value: '', toUpdate: false })
+        setActiveStep(nextStep);
+    }
+
+    const handleSubmitChallenge = () => {
+        handleComplete();
+    }
+
+    const handleSubmitQuestionnaire = () => {
+        setAction({
+            function: QuestionnairePageController.submitQuestionnaire,
+            args: [],
+            render: false
+        })
+    }
+
+    const isStepCompleted = (idx) => completed.has(idx)
 
     const renderTimer = () => {
         return (
@@ -207,7 +244,7 @@ export default function QuestionnairePage() {
                         color="primary"
                         onClick={handleSubmitQuestionnaire}>
                         Complete
-                                </Button>
+                    </Button>
                 </div>
 
                 <div className={classes.timerElement}>
@@ -273,7 +310,7 @@ export default function QuestionnairePage() {
                                     </Button>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
+                            <RunCodeTextEditor value={textEditorArea} codeLanguage={codeLanguage} setTextEditorData={setCodeArea} />
                         </Grid>
                         <Grid item xs={5}>
                             <Grid style={{ paddingTop: 50 }}>
@@ -300,7 +337,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <OutputTextEditor textArea={textArea} setTextArea={setTextArea} editorHeigth='300'/>
+                            <OutputTextEditor textArea={textArea} setTextArea={setTestArea} editorHeigth='300'/>
                             <Grid>
                                 <Toolbar className={classes.outputToolbar} variant="dense">
                                     <Box display="flex">
@@ -311,8 +348,7 @@ export default function QuestionnairePage() {
 
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} editorHeigth='300'/>
-                            {/* <OutputTextEditor textArea={unitTests} setTextArea={setUnitTests} editorHeigth='300' /> */}
+                            <RunCodeTextEditor value={unitTests} codeLanguage={codeLanguage} setTextEditorData={setUnitTests} editorHeigth='300'/>
                         </Grid>
                     </Grid>
                 </Container>
@@ -320,30 +356,6 @@ export default function QuestionnairePage() {
             </React.Fragment>
         )
     }
-
-    const handleNext = () => {
-        setTextArea({ value: '', toUpdate: false })
-        setActiveStep(activeStep + 1);
-    };
-
-    const handleBack = () => {
-        setTextArea({ value: '', toUpdate: false })
-        setActiveStep(activeStep - 1);
-    };
-
-    const handleSubmitChallenge = () => {
-        handleComplete();
-    }
-
-    const handleSubmitQuestionnaire = () => {
-        setAction({
-            function: QuestionnairePageController.submitQuestionnaire,
-            args: [],
-            render: true
-        })
-    }
-
-    const isStepCompleted = (idx) => completed.has(idx)
 
     if (actionState === ActionStates.clear) {
         return <p>insert URL</p>
