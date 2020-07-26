@@ -53,7 +53,9 @@ const styles = theme => ({
             }
         );
         this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
-        this.editor.setSize("100%", 700);
+        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
+        const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
+        this.editor.setSize(`${editorWidth}%`, editorHeigth);
         this.editor.on('change', () => {
             this.props.setTextEditorData(this.editor.doc.getValue())
         })
