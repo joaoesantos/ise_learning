@@ -44,7 +44,7 @@ const styles = theme => ({
             {
                 lineNumbers: true,
                 matchBrackets: true,
-                value:CodeMirrorOptions.get(this.props.codeLanguage).value, 
+                value:this.props.value ?  this.props.value : CodeMirrorOptions.get(this.props.codeLanguage).value, 
                 mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
                 theme:"neat",
                 smartIndent: true,

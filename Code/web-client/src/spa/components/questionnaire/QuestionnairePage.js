@@ -15,6 +15,8 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
@@ -23,7 +25,7 @@ import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
-import { codeMirrorDefault } from '../../clientSideConfig';
+import { defaultLanguage } from '../../clientSideConfig';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -34,17 +36,17 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-            width: 600,
+            width: '80%',
             marginLeft: 'auto',
             marginRight: 'auto',
         },
     },
     paper: {
         marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
+        marginBottom: theme.spacing(1),
         padding: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            marginTop: theme.spacing(6),
+            //marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
             padding: theme.spacing(3),
         },
@@ -73,19 +75,28 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         textTransform: "none",
     },
-    timer: {
+    questionnaireToolbar: {
         fontFamily: 'sans-serif',
         color: '#fff',
         display: 'inline-block',
+        display: 'flex',
+        justifyContent: 'flex-end',
         textAlign: 'center',
         fontSize: '12px',
+    },
+    questionnaireToolbarElement: {
+        padding: '5px',
+        borderRadius: '3px',
+        display: 'inline-block',
+        marginRight: theme.spacing(2)
     },
     timerElement: {
         padding: '5px',
         borderRadius: '3px',
-        background: blue[600],
         display: 'inline-block',
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
+        marginTop: theme.spacing(3),
+        background: blue[600],
     },
     timerValue: {
         padding: '2px',
@@ -94,7 +105,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline-block'
     },
     timerText: {
-        paddingTop: '5px',
         fontSize: '10px'
     }
 }));
@@ -104,14 +114,18 @@ const useStyles = makeStyles((theme) => ({
 export default function QuestionnairePage() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const [completed, setCompleted] = React.useState(new Set());
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
     const [questionnaire, setQuestionnaire] = React.useState()
     const [timer, setTimer] = React.useState(5000)
     const [runState, setRunState] = React.useState('notRunning');
-    const [codeLanguage, setCodeLanguage] = React.useState(codeMirrorDefault);
+    const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage);
+    //const [textEditorData, setTextEditorData] = React.useState([]);
+    //const [unitTestsData, setUnitTestsData] = React.useState([])
     const [textEditorData, setTextEditorData] = React.useState();
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
+    const [unitTests, setUnitTests] = React.useState({ value: '', toUpdate: true });
 
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
@@ -133,7 +147,7 @@ export default function QuestionnairePage() {
 
     React.useEffect(() => {
         let intervalId = null
-        if(timer > 0) {
+        if (timer > 0) {
             intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
         }
 
@@ -148,26 +162,54 @@ export default function QuestionnairePage() {
         setCodeLanguage(event.target.value);
     }
 
-    const onRunCode = async ()  => {
-        if(runState !== 'running') {
-          setRunState('running');
-          let result = await runCodeCtrl(codeLanguage, textEditorData);
-          setRunState('finished');
-          setTextArea({ ...textArea, value: result, toUpdate: true });
-        }
-      }
-
-    const onClearConsole = () => {
-        if(runState !== 'notRunning') {
-          setRunState('notRunning');
-          setTextArea('cls')
+    const onRunCode = async () => {
+        if (runState !== 'running') {
+            setRunState('running');
+            let result = await runCodeCtrl(codeLanguage, textEditorData);
+            setRunState('finished');
+            setTextArea({ ...textArea, value: result, toUpdate: true });
         }
     }
 
+    const onClearConsole = () => {
+        if (runState !== 'notRunning') {
+            setRunState('notRunning');
+            setTextArea('cls')
+        }
+    }
+
+    const handleComplete = () => {
+        const newCompleted = new Set(completed);
+        newCompleted.add(activeStep);
+        setCompleted(newCompleted);
+    };
+
+    // const setTestsArea = (text) => {
+    //     const newTests = [...unitTestsData]
+    //     newTests[activeStep] = text
+    //     setUnitTestsData(newTests)
+    //     setUnitTests(text)
+    // }
+
+    // const setCodeArea = (text) => {
+    //     const newCodes = [...textEditorData]
+    //     newCodes[activeStep] = text
+    //     setTextEditorData(newCodes)
+    // }
+
     const renderTimer = () => {
         return (
-            <div className={classes.timer}>
-                <h6>Time Left</h6>
+            <div className={classes.questionnaireToolbar}>
+                <div className={classes.questionnaireToolbarElement}>
+                    <Button className={classes.button}
+                        id="completeQuestionnaire"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmitQuestionnaire}>
+                        Complete
+                                </Button>
+                </div>
+
                 <div className={classes.timerElement}>
                     <span className={classes.timerValue}>{hours}</span>
                     <div className={classes.timerText}>Hours</div>
@@ -180,7 +222,6 @@ export default function QuestionnairePage() {
                     <span className={classes.timerValue}>{seconds}</span>
                     <div className={classes.timerText}>seconds</div>
                 </div>
-                {/* Time Left {hours} H : {minutes} min : {seconds} s */}
             </div>
         )
 
@@ -188,92 +229,110 @@ export default function QuestionnairePage() {
 
     const getChallengeContent = (step) => {
         const challenge = questionnaire.challenges[step]
-        return(
-        <React.Fragment>
-            <Container className={classes.container} maxWidth={false}>
-        <Grid container>
-          <Grid item xs={7}>
-            <Grid>
-              <Toolbar className={classes.runCodetoolbar} variant="dense">
-                <Button className={classes.runButton}
-                  id="runCodeButton"
-                  variant="contained"
-                  onClick={onRunCode}
-                >
-                  Run Code
-                </Button>
-                <FormControl variant="standard" className={classes.form}>
-                  <Select
-                  id="languageSelect"
-                  native
-                  onChange={onLanguageChange}
-                  >
-                    <option value={'java'}>Java</option>
-                    <option value={'kotlin'}>Kotlin</option>
-                    <option value={'javascript'}>JavaScript</option>
-                    <option value={'csharp'}>C#</option>
-                    <option value={'python'}>Python</option>
-                  </Select>
-                </FormControl>
-              </Toolbar>
-            </Grid>
-            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
-          </Grid>
-          <Grid item xs={5}>
-                <Grid>
-                <Toolbar className={classes.outputToolbar} variant="dense">
-                    <Box display="flex">
-                    <Typography style={{paddingRight:5}}>
-                        Output:
-                    </Typography>
-                    {runState === 'running' && (
-                        <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
-                        Running...
-                        </Paper>
-                    )}
-                    {runState === 'finished' && (
-                        <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
-                        Finished
-                        </Paper>
-                    )}
-                    {runState === 'compileError' && (
-                        <Paper className={classes.runStatePaper} style={{color:'#d9534f',backgroundColor:'#17b033'}}>
-                        Compile Error
-                        </Paper>
-                    )}
-                    </Box>
-                    <Button className={classes.submitButton}
-                    id="submitAnswer"
-                    variant="contained"
-                    onClick={handleSubmitChallenge}
-                    >
-                    Submit answer
-                    </Button>
-                </Toolbar>
-                </Grid>
-                <OutputTextEditor textArea={textArea} setTextArea={setTextArea} />
-            </Grid>
-        </Grid>
-      </Container>
-            
-        </React.Fragment>
+        return (
+            <React.Fragment>
+                <Container className={classes.container} maxWidth={false}>
+                    <Grid container spacing={2}>
+                        <Grid container spacing={2} >
+                            <Grid container spacing={4}>
+                                <Grid item xs={9}>
+                                    <TextField
+                                        fullWidth
+                                        size='medium'
+                                        multiline
+                                        id="challenge-description"
+                                        defaultValue={challenge.description}
+                                        variant='outlined'
+                                        InputProps={{ readOnly: true, }} />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <FormControl variant="standard" className={classes.form} fullWidth>
+                                        <Select
+                                            id="languageSelect"
+                                            native
+                                            onChange={onLanguageChange}>
+                                            <option value={'java'}>Java</option>
+                                            <option value={'kotlin'}>Kotlin</option>
+                                            <option value={'javascript'}>JavaScript</option>
+                                            <option value={'csharp'}>C#</option>
+                                            <option value={'python'}>Python</option>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={7} style={{ paddingTop: 20 }}>
+                            <Grid>
+                                <Toolbar className={classes.runCodetoolbar} variant="dense">
+                                    <Button className={classes.runButton}
+                                        id="runCodeButton"
+                                        variant="contained"
+                                        onClick={onRunCode}>
+                                        Run Code
+                                    </Button>
+                                </Toolbar>
+                            </Grid>
+                            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Grid style={{ paddingTop: 50 }}>
+                                <Toolbar className={classes.outputToolbar} variant="dense">
+                                    <Box display="flex">
+                                        <Typography style={{ paddingRight: 5 }}>
+                                            Output:
+                                        </Typography>
+                                        {runState === 'running' && (
+                                            <Paper className={classes.runStatePaper} style={{ color: '#ffffff', backgroundColor: '#0082C4' }}>
+                                                Running...
+                                            </Paper>
+                                        )}
+                                        {runState === 'finished' && (
+                                            <Paper className={classes.runStatePaper} style={{ color: '#ffffff', backgroundColor: '#5cb85c' }}>
+                                                Finished
+                                            </Paper>
+                                        )}
+                                        {runState === 'compileError' && (
+                                            <Paper className={classes.runStatePaper} style={{ color: '#d9534f', backgroundColor: '#17b033' }}>
+                                                Compile Error
+                                            </Paper>
+                                        )}
+                                    </Box>
+                                </Toolbar>
+                            </Grid>
+                            <OutputTextEditor textArea={textArea} setTextArea={setTextArea} editorHeigth='300'/>
+                            <Grid>
+                                <Toolbar className={classes.outputToolbar} variant="dense">
+                                    <Box display="flex">
+                                        <Typography style={{ paddingRight: 5 }}>
+                                            Tests:
+                                        </Typography>
+                                    </Box>
+
+                                </Toolbar>
+                            </Grid>
+                            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} editorHeigth='300'/>
+                            {/* <OutputTextEditor textArea={unitTests} setTextArea={setUnitTests} editorHeigth='300' /> */}
+                        </Grid>
+                    </Grid>
+                </Container>
+
+            </React.Fragment>
         )
     }
 
     const handleNext = () => {
+        setTextArea({ value: '', toUpdate: false })
         setActiveStep(activeStep + 1);
     };
 
     const handleBack = () => {
+        setTextArea({ value: '', toUpdate: false })
         setActiveStep(activeStep - 1);
     };
 
     const handleSubmitChallenge = () => {
-        setAction({
-            function: QuestionnairePageController.submitChallenge,
-            args: [],
-            render: true
-        })
+        handleComplete();
     }
 
     const handleSubmitQuestionnaire = () => {
@@ -283,6 +342,8 @@ export default function QuestionnairePage() {
             render: true
         })
     }
+
+    const isStepCompleted = (idx) => completed.has(idx)
 
     if (actionState === ActionStates.clear) {
         return <p>insert URL</p>
@@ -294,18 +355,17 @@ export default function QuestionnairePage() {
                 <CssBaseline />
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
-                        <Typography component="h1" variant="h4" align="center">
-                            {questionnaire.description}
-                        </Typography>
-                        <Stepper activeStep={activeStep} className={classes.stepper}>
+                        <React.Fragment>
+                            {renderTimer()}
+                        </React.Fragment>
+                        <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
                             {questionnaire.challenges.map((c, idx) => (
-                                <Step key={idx}>
-                                    <StepLabel>{idx}</StepLabel>
+                                <Step key={idx} completed={isStepCompleted(idx)}>
+                                    <StepLabel>Challenge #{idx + 1}</StepLabel>
                                 </Step>
                             ))}
                         </Stepper>
                         <React.Fragment>
-                            {renderTimer()}
                             {getChallengeContent(activeStep)}
                             <div className={classes.buttons}>
                                 {activeStep !== 0 && (
@@ -319,13 +379,18 @@ export default function QuestionnairePage() {
                                             variant="contained" A
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}
-                                        >
-                                        Next
-                                </Button>
+                                            className={classes.button}>
+                                            Next
+                                        </Button>
                                     )
                                 }
-
+                                <Button className={classes.button}
+                                    id="submitAnswer"
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleSubmitChallenge}>
+                                    Submit answer
+                                </Button>
                             </div>
                         </React.Fragment>
                     </Paper>
