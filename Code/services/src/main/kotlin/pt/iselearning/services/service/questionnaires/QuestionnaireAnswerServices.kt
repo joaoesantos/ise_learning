@@ -55,7 +55,7 @@ class QuestionnaireAnswerServices(
      */
     @Validated
     fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int) : List<QuestionnaireAnswer> {
-        val questionnaireAnswers = questionnaireAnswerRepository.findAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId)
+        val questionnaireAnswers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
         if (questionnaireAnswers.isEmpty()) {
             throw ServerException("Questionnaire instances not found.",
                     "There are no questionnaire instances for selected questionnaire $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)

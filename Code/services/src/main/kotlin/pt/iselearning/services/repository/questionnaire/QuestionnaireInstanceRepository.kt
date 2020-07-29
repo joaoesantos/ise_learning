@@ -9,5 +9,5 @@ import java.util.*
  */
 interface QuestionnaireInstanceRepository : CrudRepository<QuestionnaireInstance, Int> {
     fun findAllByQuestionnaireId(questionnaireId: Int): List<QuestionnaireInstance>
-    fun findQuestionnaireByQuestionnaireInstanceUuid(questionnaireInstanceUuid: String): Optional<QuestionnaireInstance>
+    fun findByQuestionnaireInstanceUuid(questionnaireInstanceUuid: String): Optional<QuestionnaireInstance>
 }

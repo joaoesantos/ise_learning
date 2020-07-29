@@ -57,8 +57,8 @@ class QuestionnaireInstanceController(
      * @param questionnaireInstanceUuid represents QuestionnaireInstance UUID
      * @return ResponseEntity<QuestionnaireInstance>
      */
-    @GetMapping("/Uuid/{questionnaireInstanceUuid}")
-    fun getQuestionnaireInstanceById(
+    @GetMapping("/uuid/{questionnaireInstanceUuid}")
+    fun getQuestionnaireInstanceByUuid(
             @PathVariable questionnaireInstanceUuid: String
     ): ResponseEntity<QuestionnaireInstance> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)

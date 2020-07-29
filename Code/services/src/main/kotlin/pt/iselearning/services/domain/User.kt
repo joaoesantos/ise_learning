@@ -1,5 +1,6 @@
 package pt.iselearning.services.domain
 
+import pt.iselearning.services.util.Constants
 import javax.persistence.Entity
 import javax.persistence.*
 
@@ -7,7 +8,7 @@ import javax.persistence.*
  * data class that represents user entity
  */
 @Entity
-@Table(name="user_app")
+@Table(name="user_app", schema = Constants.SCHEMA)
 data class User (
     @Id
     @Column(name="user_id")

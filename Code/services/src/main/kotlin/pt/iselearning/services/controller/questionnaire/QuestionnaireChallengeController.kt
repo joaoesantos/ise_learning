@@ -1,5 +1,6 @@
 package pt.iselearning.services.controller.questionnaire
 
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
@@ -38,6 +39,26 @@ class QuestionnaireChallengeController(
                 .toUri()
         return ResponseEntity.created(location).body(addedQuestionnaireChallenge)
     }
+
+
+    /**
+     * Method to get a single questionnaire-challenge.
+     *
+     * A json object that represents a object of the type LQuestionnaireChallenge> must be present in the body
+     * Path variables "questionnaireId" and "challengeId" must be present
+     * @param questionnaireId represents Questionnaire unique identifier
+     * @param challengeId represents Challenge unique identifier
+     * @return ResponseEntity<QuestionnaireChallenge> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @GetMapping("/{questionnaireId}/{challengeId}")
+    fun getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(
+            @PathVariable questionnaireId: Int,
+            @PathVariable challengeId: Int
+    ): ResponseEntity<QuestionnaireChallenge> {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireChallengeServices.getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(questionnaireId,challengeId))
+    }
+
 
     /**
      * Method to delete one or multiple challenge from a single questionnaire answer.

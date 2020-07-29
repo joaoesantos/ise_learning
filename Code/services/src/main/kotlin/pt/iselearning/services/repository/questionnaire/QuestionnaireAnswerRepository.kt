@@ -7,5 +7,5 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
  * Interface that represents a repository for the questionnaire answer domain
  */
 interface QuestionnaireAnswerRepository : CrudRepository<QuestionnaireAnswer, Int> {
-    fun findAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId: Int): List<QuestionnaireAnswer>
+    fun findAllByQuestionnaireInstanceId(questionnaireInstanceId: Int): List<QuestionnaireAnswer>
 }
