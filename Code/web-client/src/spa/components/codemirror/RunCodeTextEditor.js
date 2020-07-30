@@ -40,16 +40,18 @@ const styles = theme => ({
   
     // is invoked immediately after a component is mounted (inserted into the tree)
     componentDidMount = () => {
+        
         this.editor = codemirror(this.instance, 
             {
                 lineNumbers: true,
                 matchBrackets: true,
-                value:CodeMirrorOptions.get(this.props.codeLanguage).value, 
+                value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
                 mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
                 theme:"neat",
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
+                readOnly: (this.props.readOnly === true) ? true: false
             }
         );
         this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
