@@ -71,7 +71,7 @@ class QuestionnaireInstanceController(
      * @param questionnaireId represents the Questionnaire parent object
      * @return ResponseEntity<List<QuestionnaireInstance>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/questionnaire/{questionnaireId}")
+    @GetMapping("/questionnaires/{questionnaireId}")
     fun getAllQuestionnaireInstancesByQuestionnaireId(
             @PathVariable questionnaireId: Int
     ): ResponseEntity<List<QuestionnaireInstance>> {

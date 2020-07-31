@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
-import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeIdListModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireChallengeServices
 import pt.iselearning.services.util.Constants
 
@@ -24,15 +24,15 @@ class QuestionnaireChallengeController(
      *
      * A json object that represents a object of the type List<QuestionnaireChallenge> must be present in the body
      * @param ucb helps build URLs
-     * @param questionnaireChallenges represents a collection of QuestionnaireChallenge
+     * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
      * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping
     fun addChallengesByIdToQuestionnaire(
-            @RequestBody questionnaireChallenges: List<QuestionnaireChallenge>,
+            @RequestBody listOfQuestionnaireChallenge: List<QuestionnaireChallenge>,
             ucb : UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
-        val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(questionnaireChallenges)
+        val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
         val location = ucb.path("/${Constants.VERSION}/questionnaireChallenges")
                 .path((addedQuestionnaireChallenge!!.first().qcId).toString())
                 .build()
@@ -69,7 +69,7 @@ class QuestionnaireChallengeController(
      */
     @DeleteMapping
     fun removeChallengesByIdFromQuestionnaire(
-            @RequestBody questionnaireChallengeIdListModel: QuestionnaireChallengeIdListModel
+            @RequestBody questionnaireChallengeIdListModel: QuestionnaireChallengeCollectionModel
     ): ResponseEntity<QuestionnaireAnswer> {
         questionnaireChallengeServices.removeChallengesByIdFromQuestionnaire(questionnaireChallengeIdListModel)
         return ResponseEntity.noContent().build()
