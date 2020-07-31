@@ -17,18 +17,20 @@ data class Questionnaire (
         @Column(name="questionnaire_id")
         @GeneratedValue(strategy= GenerationType.IDENTITY)
         @field:Positive(message = "Questionnaire id must be positive")
-        var questionnaireId : Int? =  null,
+        var questionnaireId: Int,
+
+        @Column(name="description")
+        var description: String? = null,
+
+        @Column(name="timer")
+        @field:Positive(message = "timer must be positive")
+        var timer: Int,
+
+        @Column(name="creationDate")
+        var creationDate: Date,
 
         @Column(name="creator_id")
         @field:Positive(message = "Creator id must be positive")
-        var creatorId : Int?,
+        var creatorId: Int
 
-        @Column(name="description")
-        var description : String?,
-
-        @Column(name="creationDate")
-        var creationDate : Date?
-
-) {
-    constructor() : this(null, null, null, null)
-}
+)

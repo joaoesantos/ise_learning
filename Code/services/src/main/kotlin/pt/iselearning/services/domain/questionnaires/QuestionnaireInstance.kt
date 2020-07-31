@@ -17,21 +17,23 @@ data class QuestionnaireInstance (
         @Column(name="questionnaire_instance_id")
         @GeneratedValue(strategy= GenerationType.IDENTITY)
         @field:Positive(message = "Questionnaire Instance id must be positive")
-        var questionnaireInstanceId : Int? =  null,
+        var questionnaireInstanceId: Int,
 
         @Column(name="description")
-        var description : String?,
+        var description: String? = null,
+
+        @Column(name = "timer")
+        @field:Positive(message = "timer must be positive")
+        var timer : Timestamp? = null,
 
         @Column(name = "start_timestamp")
-        var startTimestamp : Timestamp?,
+        var startTimestamp : Timestamp? = null,
 
         @Column(name = "end_timestamp")
-        var endTimestamp : Timestamp?,
+        var endTimestamp : Timestamp? = null,
 
         @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
         @JoinColumn(name = "questionnaire_id")
-        var questionnaire : Questionnaire?
+        var questionnaire : Questionnaire
 
-) {
-    constructor() : this(null, null, null, null, null)
-}
+)

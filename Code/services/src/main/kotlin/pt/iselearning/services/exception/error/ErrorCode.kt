@@ -5,10 +5,12 @@ import java.lang.Exception
 
 enum class ErrorCode(val httpCode : Int) {
     VALIDATION_ERROR(400),
-    ITEM_NOT_FOUND(404),
-    UNEXPECTED_ERROR(500),
     UNAUTHORIZED(401),
-    MANDATORY_VALUE(400);
+    FORBIDDEN(403),
+    ITEM_NOT_FOUND(404),
+    MANDATORY_VALUE(400),
+    CONFLICT(409),
+    UNEXPECTED_ERROR(500);
 
     companion object {
         fun convertToHttpStatus(errorCode : Int) : HttpStatus{

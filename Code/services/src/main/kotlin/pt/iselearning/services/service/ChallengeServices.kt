@@ -87,7 +87,7 @@ class ChallengeService (private val challengeRepository: ChallengeRepository,
     fun deleteChallenge(@Positive challengeId: Int) {
         val challengeFromDb = challengeRepository.findById(challengeId)
         checkIfChallengeExists(challengeFromDb, challengeId)
-        challengeRepository.findById(challengeId)
+        challengeRepository.deleteById(challengeId)
     }
 
     fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) {
