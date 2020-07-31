@@ -44,7 +44,7 @@ const styles = theme => ({
             {
                 lineNumbers: true,
                 matchBrackets: true,
-                value:CodeMirrorOptions.get(this.props.codeLanguage).value, 
+                value:this.props.value ?  this.props.value : CodeMirrorOptions.get(this.props.codeLanguage).value, 
                 mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
                 theme:"neat",
                 smartIndent: true,
@@ -53,7 +53,9 @@ const styles = theme => ({
             }
         );
         this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
-        this.editor.setSize("100%", 700);
+        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
+        const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
+        this.editor.setSize(`${editorWidth}%`, editorHeigth);
         this.editor.on('change', () => {
             this.props.setTextEditorData(this.editor.doc.getValue())
         })
@@ -62,8 +64,11 @@ const styles = theme => ({
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
         if(prevProps !== this.props) {
-            if(prevProps.codeLanguage !== this.props.codeLanguage) {
+            if(prevProps.codeLanguage !== this.props.codeLanguage ) {
                 this.editor.setValue(CodeMirrorOptions.get(this.props.codeLanguage).value);
+            }
+            if(this.props.value && this.props.value != prevProps.value){
+                this.editor.setValue(this.props.value);
             }
         }
     }

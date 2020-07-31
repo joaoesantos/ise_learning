@@ -40,7 +40,9 @@ class OutputTextEditor extends Component {
         //theme:"neat"
       }
     );
-    this.editor.setSize("100%", 700);
+    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
+    const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
+    this.editor.setSize(`${editorWidth}%`, editorHeigth);
   };
 
   // is invoked immediately after props change
