@@ -5,9 +5,10 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaire
+import pt.iselearning.services.models.questionnaire.UpdateQuestionnaire
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
-import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -52,11 +53,12 @@ class QuestionnaireServices(
     /**
      * Create a questionnaire.
      *
-     * @param questionnaire object information
+     * @param questionnaireInput object information
      * @return created questionnaire
      */
     @Validated
-    fun createQuestionnaire(@Valid questionnaire: Questionnaire): Questionnaire {
+    fun createQuestionnaire(@Valid questionnaireInput: CreateQuestionnaire): Questionnaire {
+        val questionnaire = convertToEntity(questionnaireInput)
         questionnaire.timer = if(questionnaire.timer == null) 0 else questionnaire.timer
         return questionnaireRepository.save(questionnaire);
     }
@@ -64,11 +66,12 @@ class QuestionnaireServices(
     /**
      * Update a questionnaire.
      *
-     * @param questionnaire information to be updated
+     * @param questionnaireInput information to be updated
      * @return updated questionnaire
      */
     @Validated
-    fun updateQuestionnaire(@Valid questionnaire: Questionnaire): Questionnaire {
+    fun updateQuestionnaire(@Valid questionnaireInput: UpdateQuestionnaire): Questionnaire {
+        val questionnaire = convertToEntity(questionnaireInput)
         val questionnaireFromDB = questionnaireRepository.findById(questionnaire.questionnaireId!!)
         CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaire.questionnaireId!!)
 
@@ -93,5 +96,7 @@ class QuestionnaireServices(
         CustomValidators.checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
         questionnaireRepository.deleteById(questionnaireId)
     }
+
+    private fun convertToEntity(input : Any) = mapper.map(input, Questionnaire::class.java)
 
 }

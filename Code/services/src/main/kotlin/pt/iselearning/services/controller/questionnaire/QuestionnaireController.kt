@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.Questionnaire;
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaire
+import pt.iselearning.services.models.questionnaire.UpdateQuestionnaire
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
 import pt.iselearning.services.util.Constants
 
@@ -26,7 +28,7 @@ public class QuestionnaireController(
      */
     @PostMapping
     fun createQuestionnaire(
-            @RequestBody questionnaire: Questionnaire,
+            @RequestBody questionnaire: CreateQuestionnaire,
             ucb : UriComponentsBuilder
     ): ResponseEntity<Questionnaire> {
         val createdQuestionnaire = questionnaireServices.createQuestionnaire(questionnaire)
@@ -75,7 +77,7 @@ public class QuestionnaireController(
     @PutMapping("/{questionnaireId}")
     fun updateQuestionnaire(
             @PathVariable questionnaireId : Int,
-            @RequestBody questionnaire: Questionnaire
+            @RequestBody questionnaire: UpdateQuestionnaire
     ): ResponseEntity<Questionnaire> {
         questionnaire.questionnaireId = questionnaireId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)

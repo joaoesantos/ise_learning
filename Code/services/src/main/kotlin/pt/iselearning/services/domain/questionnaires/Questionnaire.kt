@@ -21,18 +21,14 @@ data class Questionnaire(
         @Id
         @Column(name = "questionnaire_id")
         @GeneratedValue(strategy= GenerationType.IDENTITY)
-        @field:Positive(message = "Questionnaire id must be positive")
         var questionnaireId: Int?,
 
-        @field:Size(min = 1, max = 50, message = "Questionnaire description must be between 1 and 50 characters")
         @Column(name = "description")
         var description: String?,
 
-        @field:Positive(message = "Timer value must be positive")
         @Column(name = "timer", insertable = false, updatable = true)
         var timer: Int?,
 
-        @field:Positive(message = "Creator id must be positive")
         @Column(name = "creator_id")
         var creatorId: Int?,
 
