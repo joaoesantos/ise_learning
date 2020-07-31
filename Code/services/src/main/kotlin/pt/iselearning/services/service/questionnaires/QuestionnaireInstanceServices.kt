@@ -63,7 +63,7 @@ class QuestionnaireInstanceServices(
     @Validated
     fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstance {
         //TODO quando o tempo terminar é necessário que validar que apenas o criador do questionnaire instance pode aceder ao
-        val questionnaireInstance = questionnaireInstanceRepository.findQuestionnaireByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
+        val questionnaireInstance = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
 
         if(questionnaireInstance.isEmpty){
             throw ServerException("Questionnaire instances not found.",

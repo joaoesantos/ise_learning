@@ -21,7 +21,10 @@ data class QuestionnaireInstance (
         @field:Positive(message = "Questionnaire Instance id must be positive")
         var questionnaireInstanceId: Int?,
 
-        @Id
+        @Column(name = "questionnaire_id")
+        @field:Positive(message = "Questionnaire id must be positive")
+        var questionnaireId : Int?,
+
         @Column(name = "questionnaire_instance_uuid")
         var questionnaireInstanceUuid: String?,
 
@@ -37,10 +40,6 @@ data class QuestionnaireInstance (
         var startTimestamp : Timestamp?,
 
         @Column(name = "end_timestamp")
-        var endTimestamp : Timestamp?,
-
-        @Column(name = "questionnaire_id")
-        @field:Positive(message = "Questionnaire id must be positive")
-        var questionnaireId : Int?
+        var endTimestamp : Timestamp?
 
 ) { constructor() : this(null, null, null, null, null, null, null) }

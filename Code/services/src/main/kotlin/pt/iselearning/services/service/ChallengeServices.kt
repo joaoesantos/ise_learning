@@ -8,6 +8,7 @@ import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.ChallengeTagRepository
 import java.util.*
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
@@ -89,12 +90,15 @@ class ChallengeService (
         val questionnaire = questionnaireRepository.findById(questionnaireId)
         CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireId)
 
-        val challenges = questionnaireChallengeRepository.findAllChallengesByQuestionnaireId(questionnaireId)
+        val challenges = questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireId)
+                .map { questionnaireChallenge -> questionnaireChallenge.challenge }
         if (challenges.isEmpty()) {
             throw ServerException("Challenges not found.",
                     "There are no challenges for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
         }
-        return challenges
+
+        return challenges as List<Challenge>
+
     }
 
     @Validated

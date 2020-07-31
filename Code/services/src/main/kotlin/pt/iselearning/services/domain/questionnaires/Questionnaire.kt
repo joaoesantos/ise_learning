@@ -16,7 +16,7 @@ import javax.validation.constraints.Size
 @Validated
 @Entity
 @Table(name = "questionnaire", schema = Constants.SCHEMA)
-data class Questionnaire (
+data class Questionnaire(
 
         @Id
         @Column(name = "questionnaire_id")
@@ -32,17 +32,13 @@ data class Questionnaire (
         @Column(name = "timer", insertable = false, updatable = true)
         var timer: Int?,
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        @Generated(GenerationTime.INSERT)
-        @Column(name = "creation_date", insertable = false, updatable = false)
-        var creationDate: Date?,
-
         @field:Positive(message = "Creator id must be positive")
         @Column(name = "creator_id")
         var creatorId: Int?,
 
-        @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        @JoinTable(name = "questionnaire_challenge")
-        var questionnaireChallenge: QuestionnaireChallenge?
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @Generated(GenerationTime.INSERT)
+        @Column(name = "creation_date", insertable = false, updatable = false)
+        var creationDate: Date?
 
-) { constructor() : this(null, null, null, null, null, null) }
+) { constructor() : this(null, null, null, null, null) }

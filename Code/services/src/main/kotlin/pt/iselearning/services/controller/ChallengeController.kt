@@ -61,7 +61,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<List<Challenge>>
      */
-    @GetMapping("/questionnaire/{questionnaireId}")
+    @GetMapping("/questionnaires/{questionnaireId}")
     fun getAllChallengesByQuestionnaireId(@PathVariable questionnaireId : Int) : ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getAllChallengesByQuestionnaireId(questionnaireId))

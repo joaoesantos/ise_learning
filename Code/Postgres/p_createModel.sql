@@ -111,18 +111,16 @@ BEGIN
 		timer INT,
 		creator_id INT NOT NULL,
 		creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
-		qc_id INT UNIQUE,
 		--
 		PRIMARY KEY (questionnaire_id),
 		FOREIGN KEY (creator_id) 
-			REFERENCES app_user (user_id) ON DELETE CASCADE,
-		CHECK(timer >= 0)
+			REFERENCES app_user (user_id) ON DELETE CASCADE
 	);
 	
 	CREATE TABLE questionnaire_instance (
 		questionnaire_instance_id INT GENERATED ALWAYS AS IDENTITY,
 		questionnaire_id INT NOT NULL,
-		questionnaire_uuid TEXT NOT NULL,
+		questionnaire_instance_uuid TEXT NOT NULL,
 		description VARCHAR(50),
 		timer INT,
 		start_timestamp TIMESTAMP,
@@ -130,11 +128,7 @@ BEGIN
 		--
 		PRIMARY KEY (questionnaire_instance_id),
 		FOREIGN KEY (questionnaire_id) 
-			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE,
-		FOREIGN KEY (qc_id) 
-			REFERENCES qc (id) ON DELETE CASCADE,
-		CHECK(timer >= 0),
-		CHECK(end_timestamp > start_timestamp)
+			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE
 	);
 	
 	-- MANY TO MANY (QUESTIONNAIRE-CHALLENGE)
