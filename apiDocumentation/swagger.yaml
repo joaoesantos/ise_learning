@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: This is the ISE-Learning REST API
-  version: "0.0.0"
+  version: 0.0.0
   title: ISE-Learning REST API
   license:
     name: Apache 2.0
@@ -19,17 +19,24 @@ tags:
     description: Operations for managing the challenge tags.
   - name: Tags
     description: Operations for managing the tags.
-  - name: Users
-    description: Operations for managing user's profile
+  - name: Questionnaires
+    description: Operations for managing the questionnaires.
+  - name: Questionnaire Instances
+    description: Operations for managing the questionnaire instances.
+  - name: Questionnaire Answers
+    description: Operations for managing the questionnaire answers.
+  - name: Questionnaire-Challenges
+    description: Operations for managing the questionnaire-challenges.
 paths:
-  /:
+  '/':
     post:
       tags:
         - Execution Environments
       summary: Execute code or unit tests sent
       operationId: execute
-      description: |
-        Executes code or unit tests sent, depending on the value of "executeTests" field.
+      description: >
+        Executes code or unit tests sent, depending on the value of
+        "executeTests" field.
       requestBody:
         description: Code and unit tests to be executed.
         required: true
@@ -48,7 +55,7 @@ paths:
                   rawResult:
                     type: string
                     description: Result or execution of compilation.
-                    example: "Hello World"
+                    example: Hello World
         '400':
           description: Bad Request
           content:
@@ -56,10 +63,10 @@ paths:
               schema:
                 type: object
                 properties:
-                    errorMessage:
-                      type: string
-                      description: Technical error message.
-                      example: "Cannot parse public class name from code."
+                  errorMessage:
+                    type: string
+                    description: Technical error message.
+                    example: Cannot parse public class name from code.
         '404':
           description: Not Found
           content:
@@ -67,10 +74,10 @@ paths:
               schema:
                 type: object
                 properties:
-                    errorMessage:
-                      type: string
-                      description: Technical error message.
-                      example: "Method not supported"
+                  errorMessage:
+                    type: string
+                    description: Technical error message.
+                    example: Method not supported
         '500':
           description: Server error
           content:
@@ -79,10 +86,10 @@ paths:
                 type: object
                 properties:
                   errorMessage:
-                      type: string
-                      description: Technical error message.
-                      example: "Internal Server Error"
-  /v0/execute:
+                    type: string
+                    description: Technical error message.
+                    example: Internal Server Error
+  '/v0/execute':
     post:
       tags:
         - Execute
@@ -108,8 +115,8 @@ paths:
                   rawResult:
                     type: string
                     description: Result or execution of compilation.
-                    example: "Hello World"
-  /v0/challenges:
+                    example: Hello World
+  '/v0/challenges':
     get:
       tags:
         - Challenges
@@ -122,9 +129,13 @@ paths:
           name: privacy
           schema:
             type: string
-            enum: [private, public]
+            enum:
+              - private
+              - public
           required: false
-          description: Optional filtering condition determining whether public or private challenges will be returned.
+          description: >-
+            Optional filtering condition determining whether public or private
+            challenges will be returned.
         - in: query
           name: tags
           schema:
@@ -172,7 +183,7 @@ paths:
                   payload:
                     type: object
                     $ref: '#/components/schemas/challenge'
-  /v0/challenges/{challengeId}:
+  '/v0/challenges/{challengeId}':
     get:
       tags:
         - Challenges
@@ -252,7 +263,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /v0/challenges/users/{userId}:
+  '/v0/challenges/users/{userId}':
     get:
       tags:
         - Challenges
@@ -271,9 +282,13 @@ paths:
           name: privacy
           schema:
             type: string
-            enum: [private, public]
+            enum:
+              - private
+              - public
           required: false
-          description: Optional filtering condition determining whether public or private challenges will be returned.
+          description: >-
+            Optional filtering condition determining whether public or private
+            challenges will be returned.
         - in: query
           name: tags
           schema:
@@ -295,7 +310,33 @@ paths:
                     description: List of challenges from a given user.
                     items:
                       $ref: '#/components/schemas/challenge'
-  /v0/challenges/{challengeId}/answers/{userId}:
+  '/v0/challenges/questionnaires/{questionnaireId}':
+    get:
+      tags:
+        - Challenges
+      summary: Retreives all challenges from a given questionnaire
+      operationId: getAllChallengesByQuestionnaireId
+      description: |
+        Retrieves every challenge from a questionnaire by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique id.
+      responses:
+        '200':
+          description: Challenge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/challenge'
+  '/v0/challenges/{challengeId}/answers/{userId}':
     get:
       tags:
         - Challenges
@@ -327,7 +368,7 @@ paths:
                   payload:
                     type: object
                     $ref: '#/components/schemas/challengeAnswer'
-  /v0/challengeAnswers:
+  '/v0/challengeAnswers':
     post:
       tags:
         - Challenge Answer
@@ -354,7 +395,7 @@ paths:
                   payload:
                     type: object
                     $ref: '#/components/schemas/challengeAnswer'
-  /v0/challengeAnswers/{challengeAnswerId}:
+  '/v0/challengeAnswers/{challengeAnswerId}':
     put:
       tags:
         - Challenge Answer
@@ -409,7 +450,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /v0/challenges/{challengeId}/tags:
+  '/v0/challenges/{challengeId}/tags':
     get:
       tags:
         - Challenge Tags
@@ -470,14 +511,15 @@ paths:
                   payload:
                     type: object
                     $ref: '#/components/schemas/challengeTag'
-  /v0/challenges/{challengeId}/tags/{tagId}:
+  '/v0/challenges/{challengeId}/tags/{tagId}':
     get:
       tags:
         - Challenge Tags
       summary: Retreives specific challenge tag from a challenge
       operationId: getAllChallengeTagsByChallengeIdAnTagText
-      description: |
-        Retrieves challenge tag associated to a specific challenge with a specific tag id.
+      description: >
+        Retrieves challenge tag associated to a specific challenge with a
+        specific tag id.
       parameters:
         - in: path
           name: challengeId
@@ -509,8 +551,9 @@ paths:
         - Challenge Tags
       summary: Delete specific challenge tag from a challenge
       operationId: deleteAllChallengeTagsByChallengeIdAnTagText
-      description: |
-        Delete challenge tag associated to a specific challenge with a specific tag id.
+      description: >
+        Delete challenge tag associated to a specific challenge with a specific
+        tag id.
       parameters:
         - in: path
           name: challengeId
@@ -531,7 +574,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /v0/tags:
+  '/v0/tags':
     get:
       tags:
         - Tags
@@ -552,65 +595,25 @@ paths:
                     description: Tag list.
                     items:
                       $ref: '#/components/schemas/tag'
-  /v0/users:
-    get:
-      tags:
-        - Users
-      summary: Gets all users information
-      operationId: getUsers
-      description: |
-        Gets all users information.
-      responses:
-        '200':
-          description: Retrieves all users
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payload:
-                    type: object
-                    $ref: '#/components/schemas/user'
+  '/v0/questionnaires':
     post:
       tags:
-        - Users
-      summary: Creates an user
-      operationId: createUser
-      description: Creates an user based on payload content
+        - Questionnaires
+      summary: Creates a questionnaire
+      operationId: createQuestionnaire
+      description: |
+        Creates a questionnaire based on payload content.
       requestBody:
-            required: true
-            description: User's information
-            content:
-              application/json:
-                schema:
-                  type: object
-                  $ref: '#/components/schemas/createUser'
+        description: Questionnaire to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/questionnaireNoId'
       responses:
         '201':
-          description: User created successfuly
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: '#/components/schemas/user'
-  /v0/users/{userId}:  
-    get:
-      tags:
-        - Users
-      summary: Retreives an user
-      operationId: getUser
-      description: |
-        Retrive an user's information.
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: integer
-          required: true
-          description: User's unique id.
-      responses:
-        '200':
-          description: User
+          description: Successful questionnaire created.
           content:
             application/json:
               schema:
@@ -618,28 +621,427 @@ paths:
                 properties:
                   payload:
                     type: object
-                    $ref: '#/components/schemas/user'
+                    $ref: '#/components/schemas/questionnaire'
+  '/v0/questionnaires/{questionnaireId}':
+    get:
+      tags:
+        - Questionnaires
+      summary: Retrieves a questionnaire
+      operationId: getQuestionnaireById
+      description: |
+        Retrieves a single questionnaire by its unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+      responses:
+        '200':
+          description: Questionnaire
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaire'
+    put:
+      tags:
+        - Questionnaires
+      summary: Updates a questionnaire
+      operationId: updateQuestionnaireById
+      description: |
+        Updates a questionnaire by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+      requestBody:
+        description: Questionnaire to be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/questionnaireNoId'
+      responses:
+        '200':
+          description: Successful updated questionnaire.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaire'
     delete:
       tags:
-        - Users
-      summary: Deletes an user
-      operationId: deleteUser
+        - Questionnaires
+      summary: Deletes a questionnaire
+      operationId: deleteQuestionnaireById
       description: |
-        Delete an user.
+        Delete a questionnaire by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+      responses:
+        '204':
+          description: Successful deleted questionnaire.
+          content:
+            application/json:
+              schema:
+                type: object
+  '/v0/questionnaires/users/{userId}':
+    get:
+      tags:
+        - Questionnaires
+      summary: Retrieves all questionnaires of specified user
+      operationId: getAllUserQuestionnaires
+      description: |
+        Retrieves a collection of questionnaires by its creator unique identifer.
       parameters:
         - in: path
           name: userId
           schema:
             type: integer
           required: true
-          description: User's unique id.
+          description: User unique identifer.
       responses:
-        '204':
-          description: Successful deleted user.
+        '200':
+          description: User's questionnaire collection.
           content:
             application/json:
               schema:
-                type: object   
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaire'
+  '/v0/questionnaireAnswer':
+    post:
+      tags:
+        - Questionnaire Answers
+      summary: Creates a questionnaire answer
+      operationId: createQuestionnaireAnswer
+      description: |
+        Creates a questionnaire answer based on payload content.
+      requestBody:
+        description: Questionnaire answer to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/questionnaireAnswerNoId'
+      responses:
+        '201':
+          description: Successful questionnaire answer created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireAnswer'
+  '/v0/questionnaireInstances/{questionnaireInstanceId}':
+    get:
+      tags:
+        - Questionnaire Instances
+      summary: Retrieves a questionnaire instance
+      operationId: getQuestionnaireInstanceById
+      description: |
+        Retrieves a single questionnaire instance by its unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireInstanceId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire instance unique identifer.
+      responses:
+        '200':
+          description: Questionnaire instance.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireInstance'
+    put:
+      tags:
+        - Questionnaire Instances
+      summary: Updates a questionnaire instance
+      operationId: updateQuestionnaireInstanceById
+      description: |
+        Updates a questionnaire instance by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireInstanceId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire instance unique identifer.
+      requestBody:
+        description: Questionnaire instance to be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/questionnaireInstanceNoId'
+      responses:
+        '200':
+          description: Successful updated questionnaire instance.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireInstance'
+    delete:
+      tags:
+        - Questionnaire Instances
+      summary: Deletes a questionnaire instance
+      operationId: deleteQuestionnaireInstanceById
+      description: |
+        Delete a questionnaire instance by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireInstanceId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire instance unique identifer.
+      responses:
+        '204':
+          description: Successful deleted questionnaire instance.
+          content:
+            application/json:
+              schema:
+                type: object
+  '/v0/questionnaireInstances/uuid/{questionnaireInstanceUuid}':
+    get:
+      tags:
+        - Questionnaire Instances
+      summary: Retrieves a questionnaire instance
+      operationId: getQuestionnaireInstanceByUuid
+      description: |
+        Retrieves a single questionnaire instance by its universal unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireInstanceUuid
+          schema:
+            type: string
+          required: true
+          description: Questionnaire instance universal unique identifer.
+      responses:
+        '200':
+          description: Questionnaire instance.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireInstance'
+  '/v0/questionnaireInstances/questionnaires/{questionnaireId}':
+    get:
+      tags:
+        - Questionnaire Instances
+      summary: Retrieves a all of questionnaire instances from a questionnaire
+      operationId: getAllQuestionnaireInstancesByQuestionnaireId
+      description: |
+        Retrieves a collection of questionnaire instances from a questionnaire by its universal unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+      responses:
+        '200':
+          description: Questionnaire's questionnaire instance collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireInstance'
+  '/v0/questionnaireAnswer/{questionnaireAnswerId}':
+    get:
+      tags:
+        - Questionnaire Answers
+      summary: Retrieves a questionnaire answer
+      operationId: getQuestionnaireAnswerById
+      description: |
+        Retrieves a single questionnaire answer by its unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireAnswerId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire answer unique identifer.
+      responses:
+        '200':
+          description: Questionnaire answer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireAnswer'
+    put:
+      tags:
+        - Questionnaire Answers
+      summary: Updates a questionnaire answer
+      operationId: updateQuestionnaireAnswerById
+      description: |
+        Updates a questionnaire answer by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireAnswerId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire answer unique identifer.
+      requestBody:
+        description: Questionnaire answer to be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/questionnaireAnswerNoId'
+      responses:
+        '200':
+          description: Successful updated questionnaire answer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireAnswer'
+    delete:
+      tags:
+        - Questionnaire Answers
+      summary: Deletes a questionnaire answer
+      operationId: deleteQuestionnaireAnswerById
+      description: |
+        Delete a questionnaire answer by its unique identifier.
+      parameters:
+        - in: path
+          name: questionnaireAnswerId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire answer unique identifer.
+      responses:
+        '204':
+          description: Successful deleted questionnaire instance.
+          content:
+            application/json:
+              schema:
+                type: object
+  '/v0/questionnaireAnswer/questionnaireInstances/{questionnaireInstanceId}':
+    get:
+      tags:
+        - Questionnaire Answers
+      summary: Retrieves all questionnaire answers from a questionnaire instance
+      operationId: getAllQuestionnaireAnswersFromQuestionnaireInstanceById
+      description: |
+        Retrieves a collection of questionnaire answers from a questionnaire instance by its universal unique identifer.
+      parameters:
+        - in: path
+          name: questionnaireInstanceId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire instance unique identifer.
+      responses:
+        '200':
+          description: Questionnaire answer.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireAnswer'
+  '/v0/questionnaireChallenges':
+    post:
+      tags:
+        - Questionnaire-Challenges
+      summary: Add one or multiple challenges to a questionnaire
+      operationId: addChallengesByIdToQuestionnaire
+      description: |
+        Add one or multiple challenges to a single questionnaire by theirs unique identifiers.
+      requestBody:
+        description: sdfsdfsdfsdf
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/QuestionnaireChallengeNoId'
+      responses:
+        '201':
+          description: Successfully added challenges to questionnaire.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/questionnaireChallenge'
+    delete:
+      tags:
+        - Questionnaire-Challenges
+      summary: Remove one or multiple challenges from a questionnaire
+      operationId: removeChallengesByIdFromQuestionnaire
+      description: |
+        Remove one or multiple challenges to a single questionnaire by theirs unique identifiers.
+      requestBody:
+        description: sdfsdfsdfsdf
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/QuestionnaireChallengeIdListModel'
+      responses:
+        '204':
+          description: Successful removed challenges from questionnaire.
+          content:
+            application/json:
+              schema:
+                type: object
 components:
   schemas:
     executable:
@@ -650,16 +1052,27 @@ components:
       properties:
         code:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
-          description: Code must be ready to execute in typical execution format depending on language
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
+          description: >-
+            Code must be ready to execute in typical execution format depending
+            on language
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
-          description: Unit Tests must be ready to execute in typical execution format depending on language
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
+          description: >-
+            Unit Tests must be ready to execute in typical execution format
+            depending on language
         executeTests:
           type: boolean
           example: true
-          description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
+          description: >-
+            If the value is true unit tests will be executed and its result will
+            be returned, for false values the code will be executed without the
+            unit tests.
     executableWithLanguage:
       type: object
       required:
@@ -669,21 +1082,37 @@ components:
       properties:
         language:
           type: string
-          enum: [java, kotlin, javascript, csharp, python]
-          example: 'java'
-          description: Text representing one of the supported languages, must be lowercase
+          enum:
+            - java
+            - kotlin
+            - javascript
+            - csharp
+            - python
+          example: java
+          description: 'Text representing one of the supported languages, must be lowercase'
         code:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
-          description: Code must be ready to execute in typical execution format depending on language
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
+          description: >-
+            Code must be ready to execute in typical execution format depending
+            on language
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
-          description: Unit Tests must be ready to execute in typical execution format depending on language
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
+          description: >-
+            Unit Tests must be ready to execute in typical execution format
+            depending on language
         executeTests:
           type: boolean
           example: true
-          description: If the value is true unit tests will be executed and its result will be returned, for false values the code will be executed without the unit tests.
+          description: >-
+            If the value is true unit tests will be executed and its result will
+            be returned, for false values the code will be executed without the
+            unit tests.
     challenge:
       type: object
       required:
@@ -703,7 +1132,9 @@ components:
         isPrivate:
           type: boolean
           example: true
-          description: Boolean value indicating whether the challenge can only be seen by its creator
+          description: >-
+            Boolean value indicating whether the challenge can only be seen by
+            its creator
         solutions:
           type: array
           description: List of challenges.
@@ -723,7 +1154,9 @@ components:
         isPrivate:
           type: boolean
           example: true
-          description: Boolean value indicating whether the challenge can only be seen by its creator
+          description: >-
+            Boolean value indicating whether the challenge can only be seen by
+            its creator
         solutions:
           type: array
           description: List of challenges.
@@ -743,7 +1176,9 @@ components:
         isPrivate:
           type: boolean
           example: true
-          description: Boolean value indicating whether the challenge can only be seen by its creator
+          description: >-
+            Boolean value indicating whether the challenge can only be seen by
+            its creator
         solutions:
           type: array
           description: List of challenges.
@@ -764,7 +1199,7 @@ components:
           description: Unique id to which uniquely identifies the solution.
         codeLanguage:
           type: string
-          example: 'java'
+          example: java
           description: Text specifying in which language the solution is.
         challengeCode:
           type: string
@@ -772,11 +1207,15 @@ components:
           description: Default code of the code presented to user.
         solutionCode:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
           description: Solution of the challenge.
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
           description: Unit tests to which the the user submitted will be tested against.
     solutionNoID:
       type: object
@@ -788,7 +1227,7 @@ components:
       properties:
         codeLanguage:
           type: string
-          example: 'java'
+          example: java
           description: Text specifying in which language the solution is.
         challengeCode:
           type: string
@@ -796,11 +1235,15 @@ components:
           description: Default code of the code presented to user.
         solutionCode:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
           description: Solution of the challenge.
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
           description: Unit tests to which the the user submitted will be tested against.
     challengeAnswer:
       type: object
@@ -827,15 +1270,19 @@ components:
           description: Unique user id of user to which the answer belongs to.
         codeLanguage:
           type: string
-          example: "Java"
+          example: Java
           description: Text identifying the programming language of the answer.
         answerCode:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
           description: Solution of the challenge submitted.
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
           description: Unit tests developed by the user.
         isCorrect:
           type: boolean
@@ -861,15 +1308,19 @@ components:
           description: Unique user id of user to which the aswer belongs to.
         codeLanguage:
           type: string
-          example: "Java"
+          example: Java
           description: Text identifying the programming language of the answer.
         answerCode:
           type: string
-          example: 'public class code { public static void main(String[] args) { System.out.println(\"Hello World\");}}'
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
           description: Solution of the challenge submitted.
         unitTests:
           type: string
-          example: 'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
           description: Unit tests developed by the user.
         isCorrect:
           type: boolean
@@ -906,7 +1357,7 @@ components:
           description: Unique tag id.
         tag:
           type: string
-          example: 'Array'
+          example: Array
           description: Unique tag text.
     challengeTagInputModel:
       type: object
@@ -915,71 +1366,264 @@ components:
       properties:
         tag:
           type: string
-          example: 'Array'
+          example: Array
           description: Unique tag text.
-    createUser:
+    questionnaire:
       type: object
       required:
-       - name
-       - username
-       - email
-       - password
+        - questionnaireId
+        - description
+        - timer
+        - creatorId
+        - creationDate
       properties:
-       name:
-          type: string
-          example: "John Doe"
-          description: User's given name
-       username:
-          type: string
-          example: "userOne"
-          description: Unique string used to identify an user
-       email:
-          type: string
-          example: "userOne@example.com"
-          description: Email address which can be used to contact user
-       password:
-          type: string
-          example: "password12345"
-          description: string used for User's authentication
-    user:
-      type: object
-      properties:
-        userId: 
+        questionnaireId:
           type: integer
-          example: 523
-          description: Unique id which uniquely identifies the user
-        username:
+          example: 21313
+          description: questionnaire unique identifier.
+        description:
           type: string
-          example: "userOne"
-          description: Unique string used to identify an user
-        email:
+          example: Questionnaire for course PS-1920SV
+          description: Text describing the questionnaire.
+        timer:
+          type: integer
+          example: 360000
+          description: >-
+            Time in milliseconds which an user has to solve the questionnaire.
+            If value is NULL has no time limite.
+        creatorId:
+          type: integer
+          example: 44598
+          description: Unique user identifier of user who created the questionnaire.
+        creationDate:
           type: string
-          example: "userOne@example.com"
-          description: Email address which can be used to contact user
-        name:
-          type: string
-          example: "John Doe"
-          description: User's given name
-    updatePassword:
+          example: '2020/05/12'
+          description: questionnaire's creation date in yyyy-MM-dd format
+    questionnaireNoId:
       type: object
       required:
-        - password
+        - description
+        - timer
+        - creatorId
+        - creationDate
       properties:
-          password:
-            type: string
-            example: "password12345"
-            description: string used for User's authentication
-    updateProfile:
+        description:
+          type: string
+          example: Questionnaire for course PS-1920SV
+          description: Text describing the questionnaire.
+        timer:
+          type: integer
+          example: 360000
+          description: >-
+            Time in milliseconds which an user has to solve the questionnaire.
+            If value is NULL has no time limite.
+        creatorId:
+          type: integer
+          example: 44598
+          description: Unique user identifier of user who created the questionnaire.
+        creationDate:
+          type: string
+          example: '2020/05/12'
+          description: questionnaire's creation date in yyyy-MM-dd format
+    questionnaireInstance:
       type: object
       required:
-         - name
-         - email
+        - questionnaireInstanceId
+        - questionnaireId
+        - questionnaireInstanceUuid
+        - description
+        - timer
+        - startTimestamp
+        - endTimestamp
       properties:
-        name:
+        questionnaireInstanceId:
+          type: integer
+          example: 85674
+          description: Questionnaire instance unique identifier.
+        questionnaireId:
+          type: integer
+          example: 2213
+          description: Questionnaire unique identifier.
+        questionnaireInstanceUuid:
           type: string
-          example: "John Doe"
-          description: User's given name
-        email:
+          example: 'c2c19e60-c32c-4413-84fc-369d6603d5be'
+          description: Questionnaire universal unique identifier.
+        description:
           type: string
-          example: "userOne@example.com"
-          description: Email address which can be used to contact user  
+          example: Questionnaire for course PS-1920SV and class LI61N 
+          description: Text describing the questionnaire instance.
+        timer:
+          type: integer
+          example: 1800000
+          description: >-
+            Time in milliseconds which an user has to solve the questionnaire instance.
+            If value is NULL has no time limite.
+        startTimestamp:
+          type: string
+          example: '2020-05-12 08:07:16-08'
+          description: Timestamp that user started solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+        endTimestamp:
+          type: string
+          example: '2020-05-12 08:37:16-08'
+          description: Timestamp that user ended solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+    questionnaireInstanceNoId:
+      type: object
+      required:
+        - questionnaireId
+        - questionnaireInstanceUuid
+        - description
+        - timer
+        - startTimestamp
+        - endTimestamp
+      properties:
+        questionnaireId:
+          type: integer
+          example: 2213
+          description: Questionnaire unique identifier.
+        questionnaireInstanceUuid:
+          type: string
+          example: 'c2c19e60-c32c-4413-84fc-369d6603d5be'
+          description: Questionnaire universal unique identifier.
+        description:
+          type: string
+          example: Questionnaire for course PS-1920SV and class LI61N 
+          description: Text describing the questionnaire instance.
+        timer:
+          type: integer
+          example: 1800000
+          description: >-
+            Time in milliseconds which an user has to solve the questionnaire instance.
+            If value is NULL has no time limite.
+        startTimestamp:
+          type: string
+          example: '2020-05-12 08:07:16-08'
+          description: Timestamp that user started solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+        endTimestamp:
+          type: string
+          example: '2020-05-12 08:37:16-08'
+          description: Timestamp that user ended solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+    questionnaireAnswer:
+      type: object
+      required:
+        - questionnaireAnswerId
+        - questionnaireInstanceId
+        - answerId
+        - codeLanguage
+        - answerCode
+        - unitTests
+        - isCorrect
+      properties:
+        questionnaireAnswerId:
+          type: integer
+          example: 6546
+          description: Unique identifier of questionnaire answer.
+        questionnaireInstanceId:
+          type: integer
+          example: 55874
+          description: Unique identifier of questionnaire instance.
+        answerId:
+          type: integer
+          example: 54954
+          description: Unique identifier of answer.
+        codeLanguage:
+          type: string
+          example: Java
+          description: Text identifying the programming language of the answer.
+        answerCode:
+          type: string
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
+          description: Solution of the challenge submitted.
+        unitTests:
+          type: string
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
+          description: Unit tests developed by the user.
+        isCorrect:
+          type: boolean
+          example: true
+          description: Boolean indicating if this answer is correct or not.
+    questionnaireAnswerNoId:
+      type: object
+      required:
+        - questionnaireInstanceId
+        - answerId
+        - codeLanguage
+        - answerCode
+        - unitTests
+        - isCorrect
+      properties:
+        questionnaireInstanceId:
+          type: integer
+          example: 55874
+          description: Unique identifier of questionnaire instance.
+        answerId:
+          type: integer
+          example: 54954
+          description: Unique identifier of answer.
+        codeLanguage:
+          type: string
+          example: 'java'
+          description: Text identifying the programming language of the answer.
+        answerCode:
+          type: string
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
+          description: Solution of the challenge submitted.
+        unitTests:
+          type: string
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
+          description: Unit tests developed by the user.
+        isCorrect:
+          type: boolean
+          example: true
+          description: Boolean indicating if this answer is correct or not.
+    questionnaireChallenge:
+      type: object
+      required:
+        - questionnaireId
+        - challengeId
+        - languageFilter
+      properties:
+        questionnaireId:
+          type: integer
+          example: 54954
+          description: Unique identifier of questionnaire.
+        challengeId:
+          type: integer
+          example: 4235
+          description: Unique identifier of challenge.
+        languageFilter:
+          type: string
+          example: 'java,javascript,python'
+          description: Programming languages allowed to be used to solve the questionnaire, separeted by the character ",".
+    questionnaireChallengeNoId:
+      type: object
+      required:
+        - qcId
+        - questionnaireId
+        - challengeId
+        - languageFilter
+      properties:
+        qcId:
+          type: integer
+          example: 9762
+          description: Unique identifier of questionnaire-challenge.
+        questionnaireId:
+          type: integer
+          example: 54954
+          description: Unique identifier of questionnaire.
+        challengeId:
+          type: integer
+          example: 4235
+          description: Unique identifier of challenge.
+        languageFilter:
+          type: string
+          example: 'java,javascript,python'
+          description: Programming languages allowed to be used to solve the questionnaire, separeted by the character ",".
+          
