@@ -5,7 +5,7 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeIdListModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
@@ -31,7 +31,7 @@ class QuestionnaireChallengeServices(
      * @return added questionnaire challenge
      */
     @Validated
-    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<QuestionnaireChallenge>): List<QuestionnaireChallenge> {
+    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<QuestionnaireChallenge> ): List<QuestionnaireChallenge> {
         listOfQuestionnaireChallenge.iterator().forEach {
             val questionnaire = questionnaireRepository.findById(it.questionnaire?.questionnaireId!!)
             CustomValidators.checkIfQuestionnaireExists(questionnaire, it.questionnaire?.questionnaireId!!)
@@ -73,7 +73,7 @@ class QuestionnaireChallengeServices(
      * @param questionnaireChallengeIdListModel model that groups a groups a collection of challenge ids and a questionnaire id
      */
     @Validated
-    fun removeChallengesByIdFromQuestionnaire(@Valid questionnaireChallengeIdListModel: QuestionnaireChallengeIdListModel) {
+    fun removeChallengesByIdFromQuestionnaire(@Valid questionnaireChallengeIdListModel: QuestionnaireChallengeCollectionModel) {
         val questionnaire = questionnaireRepository.findById(questionnaireChallengeIdListModel.questionnaireId)
         CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireChallengeIdListModel.questionnaireId)
         questionnaireChallengeIdListModel.challengeIds.iterator().forEach {

@@ -168,6 +168,22 @@ class CustomValidators {
             }
         }
 
+        /**
+         * Validates if language filter contains supported programming languages.
+         *
+         * @param languageFilter programming languages separated by commas
+         * @throws ServerException when on failure to match a supported language
+         */
+        fun checkSupportedLanguagesForChallengeLanguageFilter(languageFilter: String) {
+            val regex = SupportedLanguages.getRegexForSupportedLanguages().toRegex()
+            val languages = languageFilter.split(",")
+            languages.forEach {
+                lang -> if(!regex.matches(lang))
+                throw ServerException("Unsupported language.",
+                    "Language $lang is not supported", ErrorCode.BAD_REQUEST)
+            }
+        }
+
         //endregion
 
     }
