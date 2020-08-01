@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.Questionnaire;
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaire
-import pt.iselearning.services.models.questionnaire.UpdateQuestionnaire
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireModel
+import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
 import pt.iselearning.services.util.Constants
 
@@ -15,7 +15,7 @@ import pt.iselearning.services.util.Constants
  */
 @RestController
 @RequestMapping(Constants.QUESTIONNAIRE_PATH, produces = ["application/json"])
-public class QuestionnaireController(
+class QuestionnaireController(
         private val questionnaireServices: QuestionnaireServices
 ) {
 
@@ -28,12 +28,12 @@ public class QuestionnaireController(
      */
     @PostMapping
     fun createQuestionnaire(
-            @RequestBody questionnaire: CreateQuestionnaire,
+            @RequestBody questionnaire: CreateQuestionnaireModel,
             ucb : UriComponentsBuilder
     ): ResponseEntity<Questionnaire> {
         val createdQuestionnaire = questionnaireServices.createQuestionnaire(questionnaire)
-        val location = ucb.path("/${Constants.VERSION}/questionnaire")
-                .path((createdQuestionnaire!!.questionnaireId).toString())
+        val location = ucb.path("${Constants.QUESTIONNAIRE_PATH}")
+                .path((createdQuestionnaire.questionnaireId).toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(createdQuestionnaire)
@@ -77,7 +77,7 @@ public class QuestionnaireController(
     @PutMapping("/{questionnaireId}")
     fun updateQuestionnaire(
             @PathVariable questionnaireId : Int,
-            @RequestBody questionnaire: UpdateQuestionnaire
+            @RequestBody questionnaire: UpdateQuestionnaireModel
     ): ResponseEntity<Questionnaire> {
         questionnaire.questionnaireId = questionnaireId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)

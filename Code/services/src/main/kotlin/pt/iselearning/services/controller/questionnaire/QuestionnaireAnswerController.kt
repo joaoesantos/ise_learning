@@ -31,8 +31,8 @@ class QuestionnaireAnswerController(
             ucb : UriComponentsBuilder
     ): ResponseEntity<QuestionnaireAnswer> {
         val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswer)
-        val location = ucb.path("/${Constants.VERSION}/questionnaireAnswers")
-                .path((createdQuestionnaireAnswer!!.questionnaireAnswerId).toString())
+        val location = ucb.path("/${Constants.QUESTIONNAIRE_ANSWER_PATH}")
+                .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(createdQuestionnaireAnswer)

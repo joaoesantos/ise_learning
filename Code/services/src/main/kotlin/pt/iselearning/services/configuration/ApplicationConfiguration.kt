@@ -8,19 +8,20 @@ import org.springframework.context.annotation.Configuration
 import org.modelmapper.config.Configuration.*
 import org.modelmapper.convention.MatchingStrategies
 import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import pt.iselearning.services.filter.AuthenticationFilter
+import pt.iselearning.services.repository.ChallengeRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.resolver.UserArgumentResolver
 import pt.iselearning.services.service.AuthenticationService
+import pt.iselearning.services.util.addQuestionnaireChallengeMappings
 
 @Configuration
-class ApplicationConfiguration : WebMvcConfigurer {
+class ApplicationConfiguration() : WebMvcConfigurer {
 
     @Bean
-    fun createModelMapper() : ModelMapper {
+    fun createModelMapper(questionnaireRepository: QuestionnaireRepository, challengeRepository: ChallengeRepository) : ModelMapper {
         val mm = ModelMapper();
 
         mm.configuration.matchingStrategy = MatchingStrategies.STRICT
@@ -28,6 +29,7 @@ class ApplicationConfiguration : WebMvcConfigurer {
         mm.configuration.isFieldMatchingEnabled = true
         mm.configuration.isSkipNullEnabled = true
 
+        addQuestionnaireChallengeMappings(mm, questionnaireRepository, challengeRepository)
         return mm
     }
 
@@ -41,7 +43,7 @@ class ApplicationConfiguration : WebMvcConfigurer {
 
         registrationBean.initParameters
         registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
-        registrationBean.addUrlPatterns("/v0/login","/v0/challenges/*" )
+        registrationBean.addUrlPatterns("/v0/login") //TODO: os gets nao precisam de autenticacao ,"/v0/challenges/*"
 
         return registrationBean
     }

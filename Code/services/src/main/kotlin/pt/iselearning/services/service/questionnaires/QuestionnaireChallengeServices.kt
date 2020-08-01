@@ -1,10 +1,12 @@
 package pt.iselearning.services.service.questionnaires
 
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.repository.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
@@ -21,7 +23,8 @@ import javax.validation.constraints.Positive
 class QuestionnaireChallengeServices(
         private val questionnaireRepository: QuestionnaireRepository,
         private val challengeRepository: ChallengeRepository,
-        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository
+        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
+        private val modelMapper: ModelMapper
 ) {
 
     /**
@@ -31,18 +34,21 @@ class QuestionnaireChallengeServices(
      * @return added questionnaire challenge
      */
     @Validated
-    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<QuestionnaireChallenge> ): List<QuestionnaireChallenge> {
+    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel> ): List<QuestionnaireChallenge> {
         listOfQuestionnaireChallenge.iterator().forEach {
-            val questionnaire = questionnaireRepository.findById(it.questionnaire?.questionnaireId!!)
-            CustomValidators.checkIfQuestionnaireExists(questionnaire, it.questionnaire?.questionnaireId!!)
-            val challenge = challengeRepository.findById(it.challenge?.challengeId!!)
-            CustomValidators.checkIfChallengeExists(challenge, it.challenge?.challengeId!!)
+            val questionnaire = questionnaireRepository.findById(it.questionnaireId)
+            CustomValidators.checkIfQuestionnaireExists(questionnaire, it.questionnaireId)
+            val challenge = challengeRepository.findById(it.challengeId)
+            CustomValidators.checkIfChallengeExists(challenge, it.challengeId)
+            CustomValidators.checkSupportedLanguagesForChallengeLanguageFilter(it.languageFilter)
         }
         CustomValidators.checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge)
 
         val createdQuestionnaireChallenge = mutableListOf<QuestionnaireChallenge>()
         listOfQuestionnaireChallenge.iterator().forEach {
-            createdQuestionnaireChallenge.add(questionnaireChallengeRepository.save(it))        }
+            val questionnaireChallenge = convertToEntity(it)
+            createdQuestionnaireChallenge.add(questionnaireChallengeRepository.save(questionnaireChallenge))
+        }
         return createdQuestionnaireChallenge
     }
 
@@ -76,7 +82,7 @@ class QuestionnaireChallengeServices(
     fun removeChallengesByIdFromQuestionnaire(@Valid questionnaireChallengeIdListModel: QuestionnaireChallengeCollectionModel) {
         val questionnaire = questionnaireRepository.findById(questionnaireChallengeIdListModel.questionnaireId)
         CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireChallengeIdListModel.questionnaireId)
-        questionnaireChallengeIdListModel.challengeIds.iterator().forEach {
+        questionnaireChallengeIdListModel.listOfChallengeIds.iterator().forEach {
             val questionnaireChallenge = questionnaireChallengeRepository
                     .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(questionnaireChallengeIdListModel.questionnaireId, it)
             if (questionnaireChallenge.isEmpty) {
@@ -85,11 +91,22 @@ class QuestionnaireChallengeServices(
             }
         }
 
-        questionnaireChallengeIdListModel.challengeIds.iterator().forEach {
+        questionnaireChallengeIdListModel.listOfChallengeIds.iterator().forEach {
             val questionnaireChallenge = questionnaireChallengeRepository
                     .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(questionnaireChallengeIdListModel.questionnaireId, it)
             questionnaireChallengeRepository.delete(questionnaireChallenge.get())
         }
+    }
+
+    //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireChallenge::class.java)
+
+    //TODO: tentar meter o mapper a funcionar em vez desta função auxiliar
+    private fun convertToEntity(input : CreateQuestionnaireChallengeModel): QuestionnaireChallenge {
+        val questionnaireChallenge = QuestionnaireChallenge()
+        questionnaireChallenge.questionnaire = questionnaireRepository.findById(input.questionnaireId).get()
+        questionnaireChallenge.challenge = challengeRepository.findById(input.challengeId).get()
+        questionnaireChallenge.languageFilter = input.languageFilter
+        return questionnaireChallenge
     }
 
 }

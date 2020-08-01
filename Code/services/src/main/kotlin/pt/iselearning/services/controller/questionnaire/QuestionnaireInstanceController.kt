@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireInstanceModel
+import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireInstanceModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireInstanceServices
 import pt.iselearning.services.util.Constants
 
@@ -26,12 +28,12 @@ class QuestionnaireInstanceController(
      */
     @PostMapping
     fun createQuestionnaireInstance(
-            @RequestBody questionnaireInstance: QuestionnaireInstance,
+            @RequestBody questionnaireInstance: CreateQuestionnaireInstanceModel,
             ucb : UriComponentsBuilder
     ): ResponseEntity<QuestionnaireInstance> {
         val createdQuestionnaireInstance = questionnaireInstanceServices.createQuestionnaireInstance(questionnaireInstance)
-        val location = ucb.path("/${Constants.VERSION}/questionnaireInstances")
-                .path((createdQuestionnaireInstance!!.questionnaireInstanceId).toString())
+        val location = ucb.path("${Constants.QUESTIONNAIRE_INSTANCE_PATH}")
+                .path((createdQuestionnaireInstance.questionnaireInstanceId).toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(createdQuestionnaireInstance)
@@ -89,7 +91,7 @@ class QuestionnaireInstanceController(
     @PutMapping("/{questionnaireInstanceId}")
     fun updateQuestionnaireInstanceById(
             @PathVariable questionnaireInstanceId : Int,
-            @RequestBody questionnaireInstance: QuestionnaireInstance
+            @RequestBody questionnaireInstance: UpdateQuestionnaireInstanceModel
     ): ResponseEntity<QuestionnaireInstance> {
         questionnaireInstance.questionnaireInstanceId = questionnaireInstanceId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)

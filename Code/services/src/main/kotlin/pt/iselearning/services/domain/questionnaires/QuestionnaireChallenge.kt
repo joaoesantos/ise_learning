@@ -20,11 +20,11 @@ class QuestionnaireChallenge (
     @field:Positive(message = "Questionnaire-Challenge id must be positive")
     var qcId: Int?,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = false, updatable = false, insertable = true)
     var questionnaire: Questionnaire?,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne
     @JoinColumn(name = "challenge_id", nullable = false, updatable = false, insertable = true)
     var challenge : Challenge?,
 

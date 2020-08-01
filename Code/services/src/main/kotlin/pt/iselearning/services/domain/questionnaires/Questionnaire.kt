@@ -3,17 +3,13 @@ package pt.iselearning.services.domain.questionnaires
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.hibernate.annotations.Generated
 import org.hibernate.annotations.GenerationTime
-import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.util.Constants
 import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.Positive
-import javax.validation.constraints.Size
 
 /**
  * Data class that represents questionnaire entity
  */
-@Validated
 @Entity
 @Table(name = "questionnaire", schema = Constants.SCHEMA)
 data class Questionnaire(

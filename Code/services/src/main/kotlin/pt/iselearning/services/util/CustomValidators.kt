@@ -3,10 +3,10 @@ package pt.iselearning.services.util
 import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
-import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
@@ -158,10 +158,10 @@ class CustomValidators {
          * @param listOfQuestionnaireChallenge to be validated
          * @throws ServerException when on failure to find questionnaire answer
          */
-        fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: List<QuestionnaireChallenge>) {
-            val qcId = listOfQuestionnaireChallenge.first().qcId
+        fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel>) {
+            val qcId = listOfQuestionnaireChallenge.first().questionnaireId
             listOfQuestionnaireChallenge.iterator().forEach {
-                if(!it.qcId?.equals(qcId)!!) {
+                if(!(it.questionnaireId == qcId)!!) {
                     throw ServerException("All challenges must be from the same questionnaire.",
                             "All challenges must be from the same questionnaire.", ErrorCode.BAD_REQUEST)
                 }
@@ -174,7 +174,8 @@ class CustomValidators {
          * @param languageFilter programming languages separated by commas
          * @throws ServerException when on failure to match a supported language
          */
-        fun checkSupportedLanguagesForChallengeLanguageFilter(languageFilter: String) {
+        fun checkSupportedLanguagesForChallengeLanguageFilter(languageFilter: String?) {
+            if(languageFilter == null) return
             val regex = SupportedLanguages.getRegexForSupportedLanguages().toRegex()
             val languages = languageFilter.split(",")
             languages.forEach {

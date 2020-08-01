@@ -1,12 +1,13 @@
 package pt.iselearning.services.service.questionnaires
 
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.exception.ServerException
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaire
-import pt.iselearning.services.models.questionnaire.UpdateQuestionnaire
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireModel
+import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
 import javax.validation.Valid
@@ -18,7 +19,8 @@ import javax.validation.constraints.Positive
 @Validated
 @Service
 class QuestionnaireServices(
-        private val questionnaireRepository: QuestionnaireRepository
+        private val questionnaireRepository: QuestionnaireRepository,
+        private val modelMapper: ModelMapper
 ) {
 
     /**
@@ -57,7 +59,7 @@ class QuestionnaireServices(
      * @return created questionnaire
      */
     @Validated
-    fun createQuestionnaire(@Valid questionnaireInput: CreateQuestionnaire): Questionnaire {
+    fun createQuestionnaire(@Valid questionnaireInput: CreateQuestionnaireModel): Questionnaire {
         val questionnaire = convertToEntity(questionnaireInput)
         questionnaire.timer = if(questionnaire.timer == null) 0 else questionnaire.timer
         return questionnaireRepository.save(questionnaire);
@@ -70,7 +72,7 @@ class QuestionnaireServices(
      * @return updated questionnaire
      */
     @Validated
-    fun updateQuestionnaire(@Valid questionnaireInput: UpdateQuestionnaire): Questionnaire {
+    fun updateQuestionnaire(@Valid questionnaireInput: UpdateQuestionnaireModel): Questionnaire {
         val questionnaire = convertToEntity(questionnaireInput)
         val questionnaireFromDB = questionnaireRepository.findById(questionnaire.questionnaireId!!)
         CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaire.questionnaireId!!)
@@ -97,6 +99,6 @@ class QuestionnaireServices(
         questionnaireRepository.deleteById(questionnaireId)
     }
 
-    private fun convertToEntity(input : Any) = mapper.map(input, Questionnaire::class.java)
+    private fun convertToEntity(input : Any) = modelMapper.map(input, Questionnaire::class.java)
 
 }

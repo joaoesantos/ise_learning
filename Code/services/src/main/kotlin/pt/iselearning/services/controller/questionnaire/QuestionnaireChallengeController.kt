@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
+import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireChallengeServices
 import pt.iselearning.services.util.Constants
@@ -29,17 +30,16 @@ class QuestionnaireChallengeController(
      */
     @PostMapping
     fun addChallengesByIdToQuestionnaire(
-            @RequestBody listOfQuestionnaireChallenge: List<QuestionnaireChallenge>,
+            @RequestBody listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel>,
             ucb : UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
         val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
-        val location = ucb.path("/${Constants.VERSION}/questionnaireChallenges")
+        val location = ucb.path("${Constants.QUESTIONNAIRE_CHALLENGE_PATH}")
                 .path((addedQuestionnaireChallenge!!.first().qcId).toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(addedQuestionnaireChallenge)
     }
-
 
     /**
      * Method to get a single questionnaire-challenge.
@@ -58,7 +58,6 @@ class QuestionnaireChallengeController(
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireChallengeServices.getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(questionnaireId,challengeId))
     }
-
 
     /**
      * Method to delete one or multiple challenge from a single questionnaire answer.

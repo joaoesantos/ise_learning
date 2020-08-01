@@ -1,13 +1,17 @@
 package pt.iselearning.services.models.questionnaire
 
+import org.springframework.validation.annotation.Validated
 import javax.validation.constraints.Positive
 
 /**
- * Represents the issue state model received by HTTP Api.
+ * Model that contains a list of challenge ids for a questionnaire and that questionnaire id
  */
+@Validated
 class QuestionnaireChallengeCollectionModel(
+
         @field:Positive(message = "Questionnaire id must be positive")
         val questionnaireId: Int,
-        @field:Positive(message = "Challenge ids must be positive")
-        val challengeIds: List<Int>
-) {}
+
+        val listOfChallengeIds: List<Int>
+
+)
