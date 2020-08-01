@@ -81,14 +81,15 @@ export default function CreateEditQuestionnaire(props) {
     }
 
     const handleCancel = function (event) {
+        toggleEdit()
         console.log('cancel')
     }
 
     const buttonToolbar = function () {
-        <div className={classes.buttons}>
+        return (<div className={classes.buttons}>
             {!editable && (
                 <Button
-                    fullWidth
+                    color="primary"
                     variant="contained"
                     className={classes.button}
                     onClick={() => toggleEdit()}
@@ -116,14 +117,8 @@ export default function CreateEditQuestionnaire(props) {
                     </React.Fragment>
                 )
             }
-            <Button className={classes.button}
-                id="submitAnswer"
-                variant="contained"
-                color="primary"
-                onClick={handleSubmitChallenge}>
-                Submit answer
-            </Button>
         </div>
+        )
     }
 
     return (
