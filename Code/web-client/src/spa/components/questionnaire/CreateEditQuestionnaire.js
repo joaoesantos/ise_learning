@@ -7,13 +7,19 @@ import UseAction, { ActionStates } from '../../controllers/UseAction'
 
 const useStyles = makeStyles(theme => ({
     layout: {},
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
     button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
         margin: theme.spacing(3, 0, 2),
         backgroundColor: "#be5041",
         '&:hover': {
-          backgroundColor: '#cf6744',
-        },
-      },
+            backgroundColor: '#cf6744',
+        }
+    }
 }));
 
 export default function CreateEditQuestionnaire(props) {
@@ -34,7 +40,7 @@ export default function CreateEditQuestionnaire(props) {
     const classes = useStyles();
     const [editable, setEditable] = React.useState(false)
     const [questionnaire, setQuestionnaire] = React.useState({
-        id:0,
+        id: 0,
         title: 'This is a title',
         selectedChallenges: []
     })
@@ -49,7 +55,7 @@ export default function CreateEditQuestionnaire(props) {
             id: 2,
             title: 'cenas2',
             tags: 'a, b, dad'
-        }, 
+        },
         {
             id: 3,
             title: 'cenas3',
@@ -70,6 +76,55 @@ export default function CreateEditQuestionnaire(props) {
         setQuestionnaire({ ...questionnaire, title: value })
     }
 
+    const handleSave = function (event) {
+        console.log('save')
+    }
+
+    const handleCancel = function (event) {
+        console.log('cancel')
+    }
+
+    const buttonToolbar = function () {
+        <div className={classes.buttons}>
+            {!editable && (
+                <Button
+                    fullWidth
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() => toggleEdit()}
+                >
+                    Edit
+                </Button>
+            )}
+            {
+                editable && (
+                    <React.Fragment>
+                        <Button
+                            variant="contained" A
+                            color="primary"
+                            onClick={handleSave}
+                            className={classes.button}>
+                            Save
+                        </Button>
+                        <Button
+                            variant="contained" A
+                            color="primary"
+                            onClick={handleCancel}
+                            className={classes.button}>
+                            Cancel
+                        </Button>
+                    </React.Fragment>
+                )
+            }
+            <Button className={classes.button}
+                id="submitAnswer"
+                variant="contained"
+                color="primary"
+                onClick={handleSubmitChallenge}>
+                Submit answer
+            </Button>
+        </div>
+    }
 
     return (
         <React.Fragment>
@@ -105,16 +160,7 @@ export default function CreateEditQuestionnaire(props) {
                         }
                     }]}
             />
-
-            <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={() => toggleEdit()}
-            >
-                Edit
-          </Button>
+            {buttonToolbar()}
         </React.Fragment>
     )
 };
