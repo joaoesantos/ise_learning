@@ -8,7 +8,7 @@ import javax.validation.constraints.Size
  * Model used for creation of questionnaire instance entity
  */
 @Validated
-class CreateQuestionnaireInstanceModel (
+class QuestionnaireInstanceModel(
 
         @field:Positive(message = "Questionnaire instance id must be positive")
         var questionnaireId: Int,
@@ -19,6 +19,8 @@ class CreateQuestionnaireInstanceModel (
         var description: String? = null,
 
         @field:Positive(message = "Timer value must be positive")
-        var timer: Int? = null
+        var timer: Long? = null,
+
+        var isFinished: Boolean? = false
 
 )

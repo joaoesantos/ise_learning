@@ -2,8 +2,8 @@ package pt.iselearning.services.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.iselearning.services.domain.Executable
-import pt.iselearning.services.domain.ExecutableResult
+import pt.iselearning.services.domain.executable.Executable
+import pt.iselearning.services.domain.executable.ExecutableResult
 import pt.iselearning.services.service.ExecutionService
 
 /**

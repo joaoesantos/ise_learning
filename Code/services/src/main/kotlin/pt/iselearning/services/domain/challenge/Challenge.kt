@@ -1,6 +1,7 @@
-package pt.iselearning.services.domain
+package pt.iselearning.services.domain.challenge
 
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.Solution
 import pt.iselearning.services.util.Constants
 import javax.persistence.*
 import javax.validation.constraints.Positive
@@ -28,7 +29,7 @@ data class Challenge (
     @Column(name="is_private")
     var isPrivate : Boolean?,
 
-    @OneToMany(cascade = [CascadeType.ALL], targetEntity=Solution::class)
+    @OneToMany(cascade = [CascadeType.ALL], targetEntity= Solution::class)
     @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
     var solutions : MutableList<Solution>?
 ) {

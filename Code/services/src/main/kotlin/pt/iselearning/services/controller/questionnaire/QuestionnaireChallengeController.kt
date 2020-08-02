@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireChallengeServices
 import pt.iselearning.services.util.Constants
@@ -30,11 +30,11 @@ class QuestionnaireChallengeController(
      */
     @PostMapping
     fun addChallengesByIdToQuestionnaire(
-            @RequestBody listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel>,
+            @RequestBody listOfQuestionnaireChallenge: List<QuestionnaireChallengeModel>,
             ucb : UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
         val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
-        val location = ucb.path("${Constants.QUESTIONNAIRE_CHALLENGE_PATH}")
+        val location = ucb.path(Constants.QUESTIONNAIRE_CHALLENGE_PATH)
                 .path((addedQuestionnaireChallenge!!.first().qcId).toString())
                 .build()
                 .toUri()

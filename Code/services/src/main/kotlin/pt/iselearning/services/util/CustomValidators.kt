@@ -1,16 +1,15 @@
 package pt.iselearning.services.util
 
-import pt.iselearning.services.domain.Challenge
+import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
-import java.time.Instant
 import java.util.*
 
 /**
@@ -82,7 +81,7 @@ class CustomValidators {
          * @throws ServerException when on failure to find questionnaire instance
          */
         fun checkIfTimeout(questionnaireInstance: QuestionnaireInstance) {
-            if (Instant.now().isAfter(questionnaireInstance.endTimestamp?.toInstant()!!)) {
+            if (System.currentTimeMillis() > questionnaireInstance.endTimestamp!!) {
                 throw ServerException("TIMEOUT.",
                         "Time to complete questionnaire is over", ErrorCode.FORBIDDEN)
             }
@@ -158,7 +157,7 @@ class CustomValidators {
          * @param listOfQuestionnaireChallenge to be validated
          * @throws ServerException when on failure to find questionnaire answer
          */
-        fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel>) {
+        fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: List<QuestionnaireChallengeModel>) {
             val qcId = listOfQuestionnaireChallenge.first().questionnaireId
             listOfQuestionnaireChallenge.iterator().forEach {
                 if(!(it.questionnaireId == qcId)!!) {

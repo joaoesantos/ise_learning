@@ -465,14 +465,14 @@ BEGIN
 	('questionnaire 2',3600000,3),
 	('questionnaire 3',0,3);
 	
-	INSERT INTO questionnaire_instance(questionnaire_id,questionnaire_instance_uuid,description,timer,start_timestamp,end_timestamp) VALUES
-	(1,'7eecc8ed-7cfb-4707-ac39-3ef02a852223','quest1 instance1',3600000,NULL,NULL),
-	(1,'07b18bb8-085e-4396-ab64-9e20d1303499','quest1 instance2',0000000,NULL,NULL),
-	(1,'259e6fe6-8b83-4c7f-b011-0727290085b7','quest1 instance3',3600000,NULL,NULL),
-	(2,'8b3c46b1-0353-409e-aae8-9d033def559e','quest2 instance4',3600000,NULL,NULL),
-	(2,'9f93f5fe-5abc-4d9f-ae26-31ebe21b3dc6','quest2 instance5',3600000,NULL,NULL),
-	(2,'ee842bf4-1c42-4ef5-a997-9eb6caece31f','quest2 instance6',3600000,NULL,NULL),
-	(2,'e1509f40-a093-41f9-bc6a-468a95165743','quest2 instance7',0000000,NULL,NULL);
+	INSERT INTO questionnaire_instance(questionnaire_id,questionnaire_instance_uuid,description,timer) VALUES
+	(1,'7eecc8ed-7cfb-4707-ac39-3ef02a852223','quest1 instance1',3600000),
+	(1,'07b18bb8-085e-4396-ab64-9e20d1303499','quest1 instance2',NULL),
+	(1,'259e6fe6-8b83-4c7f-b011-0727290085b7','quest1 instance3',3600000),
+	(2,'8b3c46b1-0353-409e-aae8-9d033def559e','quest2 instance4',3600000),
+	(2,'9f93f5fe-5abc-4d9f-ae26-31ebe21b3dc6','quest2 instance5',3600000),
+	(2,'ee842bf4-1c42-4ef5-a997-9eb6caece31f','quest2 instance6',3600000),
+	(2,'e1509f40-a093-41f9-bc6a-468a95165743','quest2 instance7',NULL);
 
 	INSERT INTO qc(questionnaire_id,challenge_id,language_filter) VALUES
 	(1,1,'python'),

@@ -18,14 +18,18 @@ data class QuestionnaireAnswer (
         @Column(name = "questionnaire_answer_id")
         @GeneratedValue(strategy= GenerationType.IDENTITY)
         @field:Positive(message = "Questionnaire Answer id must be positive")
-        var questionnaireAnswerId : Int?,
+        var questionnaireAnswerId: Int?,
 
-        @Column(name = "questionnaire_id")
+        @Column(name = "questionnaire_instance_id")
         @field:Positive(message = "Questionnaire Instance id must be positive")
-        var questionnaireInstanceId : Int?,
+        var questionnaireInstanceId: Int?,
 
-        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        @JoinColumn(name = "answer_id")
-        var answer : MutableList<Answer>?
+        @Column(name = "qc_id")
+        @field:Positive(message = "Questionnaire-Challenge id must be positive")
+        var qcId: Int?,
 
-) { constructor() : this(null, null, null) }
+        @OneToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name="answer_id", nullable=false, updatable=true, insertable=true)
+        var answer: Answer?
+
+) { constructor() : this(null, null,null, null) }

@@ -1,10 +1,8 @@
-package pt.iselearning.services.repository
+package pt.iselearning.services.repository.challenge
 
-import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import pt.iselearning.services.domain.Challenge
+import pt.iselearning.services.domain.challenge.Challenge
 
 /**
  * Interface that represents a repository for the User class

@@ -6,8 +6,7 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.exception.ServerException
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireModel
-import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
 import javax.validation.Valid
@@ -22,6 +21,19 @@ class QuestionnaireServices(
         private val questionnaireRepository: QuestionnaireRepository,
         private val modelMapper: ModelMapper
 ) {
+
+    /**
+     * Create a questionnaire.
+     *
+     * @param questionnaireModel object information
+     * @return created questionnaire
+     */
+    @Validated
+    fun createQuestionnaire(@Valid questionnaireModel: QuestionnaireModel): Questionnaire {
+        val questionnaire = convertToEntity(questionnaireModel)
+        questionnaire.timer = if(questionnaire.timer == null) 0 else questionnaire.timer
+        return questionnaireRepository.save(questionnaire);
+    }
 
     /**
      * Get questionnaire by its unique identifier.
@@ -53,36 +65,22 @@ class QuestionnaireServices(
     }
 
     /**
-     * Create a questionnaire.
-     *
-     * @param questionnaireInput object information
-     * @return created questionnaire
-     */
-    @Validated
-    fun createQuestionnaire(@Valid questionnaireInput: CreateQuestionnaireModel): Questionnaire {
-        val questionnaire = convertToEntity(questionnaireInput)
-        questionnaire.timer = if(questionnaire.timer == null) 0 else questionnaire.timer
-        return questionnaireRepository.save(questionnaire);
-    }
-
-    /**
      * Update a questionnaire.
      *
-     * @param questionnaireInput information to be updated
+     * @param questionnaireModel information to be updated
      * @return updated questionnaire
      */
     @Validated
-    fun updateQuestionnaire(@Valid questionnaireInput: UpdateQuestionnaireModel): Questionnaire {
-        val questionnaire = convertToEntity(questionnaireInput)
-        val questionnaireFromDB = questionnaireRepository.findById(questionnaire.questionnaireId!!)
-        CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaire.questionnaireId!!)
+    fun updateQuestionnaire(@Positive questionnaireId: Int, @Valid questionnaireModel: QuestionnaireModel): Questionnaire {
+        val questionnaireFromDB = questionnaireRepository.findById(questionnaireId)
+        CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaireId)
 
         //region data for update operation
         val updatedQuestionnaire = questionnaireFromDB.get()
-        if(questionnaire.description != null)
-            updatedQuestionnaire.description = questionnaire.description
-        if(questionnaire.timer != null)
-            updatedQuestionnaire.timer = questionnaire.timer
+        if(questionnaireModel.description != null)
+            updatedQuestionnaire.description = questionnaireModel.description
+        if(questionnaireModel.timer != null)
+            updatedQuestionnaire.timer = questionnaireModel.timer
         //endregion
 
         return questionnaireRepository.save(updatedQuestionnaire)
@@ -99,6 +97,9 @@ class QuestionnaireServices(
         questionnaireRepository.deleteById(questionnaireId)
     }
 
+    /**
+     * Auxiliary function that converts Questionnaire model to Questionnaire domain
+     */
     private fun convertToEntity(input : Any) = modelMapper.map(input, Questionnaire::class.java)
 
 }

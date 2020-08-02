@@ -3,8 +3,8 @@ package pt.iselearning.services.util
 import org.modelmapper.ModelMapper
 
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
-import pt.iselearning.services.repository.ChallengeRepository
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
+import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 
 /**
@@ -16,25 +16,23 @@ fun addQuestionnaireChallengeMappings(
         questionnaireRepository: QuestionnaireRepository,
         challengeRepository: ChallengeRepository
 ) {
-    mapper.typeMap(CreateQuestionnaireChallengeModel::class.java, QuestionnaireChallenge::class.java).addMappings { mapper ->
+    mapper.typeMap(QuestionnaireChallengeModel::class.java, QuestionnaireChallenge::class.java).addMappings { mapper ->
         mapper.map(
-                { source: CreateQuestionnaireChallengeModel -> source.questionnaireId },
+                { source: QuestionnaireChallengeModel -> source.questionnaireId },
                 { destination: QuestionnaireChallenge?, value: Int? -> run {
                     val temp = questionnaireRepository.findById(value?:0)
-                    println("$temp")
                     destination?.questionnaire = if(temp.isEmpty) null else temp.get()
                 } }
         )
         mapper.map(
-                { source: CreateQuestionnaireChallengeModel -> source.challengeId },
+                { source: QuestionnaireChallengeModel -> source.challengeId },
                 { destination: QuestionnaireChallenge?, value: Int? -> run {
                     val temp = challengeRepository.findById(value?:0)
-                    println("$temp")
                     destination?.challenge = if(temp.isEmpty) null else temp.get()
                 } }
         )
         mapper.map(
-                { source: CreateQuestionnaireChallengeModel -> source.languageFilter },
+                { source: QuestionnaireChallengeModel -> source.languageFilter },
                 { destination: QuestionnaireChallenge?, value: String? -> destination?.languageFilter = value }
         )
     }

@@ -11,6 +11,8 @@ tags:
     description: Operations for accessing the execution environments.
   - name: Execute
     description: Operations for executing code remotely.
+  - name: Users
+    description: Operations for managing user's profile
   - name: Challenges
     description: Operations for managing the challenges.
   - name: Challenge Answer
@@ -116,6 +118,94 @@ paths:
                     type: string
                     description: Result or execution of compilation.
                     example: Hello World
+  '/v0/users':
+    get:
+      tags:
+        - Users
+      summary: Gets all users information
+      operationId: getUsers
+      description: |
+        Gets all users information.
+      responses:
+        '200':
+          description: Retrieves all users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/user'
+    post:
+      tags:
+        - Users
+      summary: Creates an user
+      operationId: createUser
+      description: Creates an user based on payload content
+      requestBody:
+            required: true
+            description: User's information
+            content:
+              application/json:
+                schema:
+                  type: object
+                  $ref: '#/components/schemas/createUser'
+      responses:
+        '201':
+          description: User created successfuly
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/user'
+  '/v0/users/{userId}':  
+    get:
+      tags:
+        - Users
+      summary: Retreives an user
+      operationId: getUser
+      description: |
+        Retrive an user's information.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User's unique id.
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: object
+                    $ref: '#/components/schemas/user'
+    delete:
+      tags:
+        - Users
+      summary: Deletes an user
+      operationId: deleteUser
+      description: |
+        Delete an user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: User's unique id.
+      responses:
+        '204':
+          description: Successful deleted user.
+          content:
+            application/json:
+              schema:
+                type: object   
   '/v0/challenges':
     get:
       tags:
@@ -1113,6 +1203,48 @@ components:
             If the value is true unit tests will be executed and its result will
             be returned, for false values the code will be executed without the
             unit tests.
+    user:
+      type: object
+      properties:
+        userId: 
+          type: integer
+          example: 523
+          description: Unique id which uniquely identifies the user
+        username:
+          type: string
+          example: "userOne"
+          description: Unique string used to identify an user
+        email:
+          type: string
+          example: "userOne@example.com"
+          description: Email address which can be used to contact user
+        name:
+          type: string
+          example: "John Doe"
+          description: User's given name
+    updatePassword:
+      type: object
+      required:
+        - password
+      properties:
+          password:
+            type: string
+            example: "password12345"
+            description: string used for User's authentication
+    updateProfile:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+          description: User's given name
+        email:
+          type: string
+          example: "userOne@example.com"
+          description: Email address which can be used to contact user
     challenge:
       type: object
       required:

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
+import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerServices
 import pt.iselearning.services.util.Constants
 
@@ -26,12 +27,12 @@ class QuestionnaireAnswerController(
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping
-    fun createQuestionnaire(
-            @RequestBody questionnaireAnswer: QuestionnaireAnswer,
+    fun createQuestionnaireAnswer(
+            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
             ucb : UriComponentsBuilder
     ): ResponseEntity<QuestionnaireAnswer> {
-        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswer)
-        val location = ucb.path("/${Constants.QUESTIONNAIRE_ANSWER_PATH}")
+        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
+        val location = ucb.path(Constants.QUESTIONNAIRE_ANSWER_PATH)
                 .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
                 .build()
                 .toUri()
@@ -60,8 +61,8 @@ class QuestionnaireAnswerController(
      * @param questionnaireInstanceId represents the QuestionnaireInstance unique identifier
      * @return ResponseEntity<List<QuestionnaireAnswer>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/questionnaireInstance/{questionnaireInstanceId}")
-    fun getAllQuestionnaireAnswersFromQuestionnaireInstance(
+    @GetMapping("/questionnaireInstances/{questionnaireInstanceId}")
+    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(
             @PathVariable questionnaireInstanceId: Int
     ): ResponseEntity<List<QuestionnaireAnswer>> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
@@ -73,17 +74,16 @@ class QuestionnaireAnswerController(
      *
      * A json object that represents a object of the type QuestionnaireAnswer must be present in the body
      * @param questionnaireAnswerId represents a Questionnaire unique identifier
-     * @param questionnaireAnswer represents a QuestionnaireAnswer object
+     * @param questionnaireAnswerModel represents a QuestionnaireAnswer object
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{questionnaireAnswerId}")
     fun updateQuestionnaireAnswerById(
             @PathVariable questionnaireAnswerId : Int,
-            @RequestBody questionnaireAnswer: QuestionnaireAnswer
+            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel
     ): ResponseEntity<QuestionnaireAnswer> {
-        questionnaireAnswer.questionnaireAnswerId = questionnaireAnswerId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireAnswerServices.updateQuestionnaireAnswerById(questionnaireAnswer))
+                .body(questionnaireAnswerServices.updateQuestionnaireAnswerById(questionnaireAnswerId,questionnaireAnswerModel))
     }
 
     /**

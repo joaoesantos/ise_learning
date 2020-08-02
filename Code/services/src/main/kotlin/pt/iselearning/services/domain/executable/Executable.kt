@@ -1,4 +1,4 @@
-package pt.iselearning.services.domain
+package pt.iselearning.services.domain.executable
 
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.util.SupportedLanguages

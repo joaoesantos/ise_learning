@@ -7,7 +7,7 @@ import javax.validation.constraints.Positive
  * Model used for creation of questionnaire-challenge entity
  */
 @Validated
-class CreateQuestionnaireChallengeModel (
+class QuestionnaireChallengeModel (
 
         @field:Positive(message = "Questionnaire id must be positive")
         var questionnaireId: Int,

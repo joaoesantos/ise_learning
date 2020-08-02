@@ -1,4 +1,4 @@
-package pt.iselearning.services.domain
+package pt.iselearning.services.domain.executable
 
 /**
 * data class that represents the result of an execution

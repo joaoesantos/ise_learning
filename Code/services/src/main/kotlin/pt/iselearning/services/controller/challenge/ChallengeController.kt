@@ -1,12 +1,12 @@
-package pt.iselearning.services.controller
+package pt.iselearning.services.controller.challenge
 
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.domain.Challenge
-import pt.iselearning.services.service.ChallengeAnswerService
-import pt.iselearning.services.service.ChallengeService
+import pt.iselearning.services.domain.challenge.Challenge
+import pt.iselearning.services.service.challenge.ChallengeAnswerService
+import pt.iselearning.services.service.challenge.ChallengeService
 
 /**
  * Handler responsible to respond to requests regard Challenge entity

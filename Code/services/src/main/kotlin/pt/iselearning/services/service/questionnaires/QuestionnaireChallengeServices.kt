@@ -6,9 +6,9 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireChallengeModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
-import pt.iselearning.services.repository.ChallengeRepository
+import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
@@ -34,7 +34,7 @@ class QuestionnaireChallengeServices(
      * @return added questionnaire challenge
      */
     @Validated
-    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<CreateQuestionnaireChallengeModel> ): List<QuestionnaireChallenge> {
+    fun addChallengesByIdToQuestionnaire(@Valid listOfQuestionnaireChallenge: List<QuestionnaireChallengeModel> ): List<QuestionnaireChallenge> {
         listOfQuestionnaireChallenge.iterator().forEach {
             val questionnaire = questionnaireRepository.findById(it.questionnaireId)
             CustomValidators.checkIfQuestionnaireExists(questionnaire, it.questionnaireId)
@@ -98,10 +98,12 @@ class QuestionnaireChallengeServices(
         }
     }
 
+    /**
+     * Auxiliary function that converts QuestionnaireChallenge model to QuestionnaireChallenge domain
+     */
     //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireChallenge::class.java)
-
-    //TODO: tentar meter o mapper a funcionar em vez desta função auxiliar
-    private fun convertToEntity(input : CreateQuestionnaireChallengeModel): QuestionnaireChallenge {
+    //TODO: usar o mapper a funcionar em vez desta função auxiliar
+    private fun convertToEntity(input : QuestionnaireChallengeModel): QuestionnaireChallenge {
         val questionnaireChallenge = QuestionnaireChallenge()
         questionnaireChallenge.questionnaire = questionnaireRepository.findById(input.questionnaireId).get()
         questionnaireChallenge.challenge = challengeRepository.findById(input.challengeId).get()

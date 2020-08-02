@@ -1,11 +1,11 @@
-package pt.iselearning.services.controller
+package pt.iselearning.services.controller.challenge
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.domain.ChallengeTag
+import pt.iselearning.services.domain.challenge.ChallengeTag
 import pt.iselearning.services.models.tag.ChallengeTagModel
-import pt.iselearning.services.service.ChallengeTagService
+import pt.iselearning.services.service.challenge.ChallengeTagService
 
 /**
  * Handler responsible to respond to requests regard ChallengeTag entity

@@ -1,7 +1,6 @@
 package pt.iselearning.services.domain.questionnaires
 
 import pt.iselearning.services.util.Constants
-import java.sql.Timestamp
 import javax.persistence.*
 
 /**
@@ -9,15 +8,15 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "questionnaire_instance", schema = Constants.SCHEMA)
-data class QuestionnaireInstance (
+data class QuestionnaireInstance(
+
+        @Column(name = "questionnaire_id")
+        var questionnaireId: Int?,
 
         @Id
         @Column(name = "questionnaire_instance_id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var questionnaireInstanceId: Int?,
-
-        @Column(name = "questionnaire_id")
-        var questionnaireId: Int?,
 
         @Column(name = "questionnaire_instance_uuid")
         var questionnaireInstanceUuid: String?,
@@ -26,12 +25,15 @@ data class QuestionnaireInstance (
         var description: String?,
 
         @Column(name = "timer")
-        var timer: Int?,
+        var timer: Long?,
 
         @Column(name = "start_timestamp")
-        var startTimestamp: Timestamp?,
+        var startTimestamp: Long?,
 
         @Column(name = "end_timestamp")
-        var endTimestamp: Timestamp?
+        var endTimestamp: Long?,
 
-) { constructor() : this(null, null, null, null, null, null, null) }
+        @Column(name = "is_finish")
+        var isFinish: Boolean
+
+) { constructor() : this(null, null, null, null, null, null, null, false) }

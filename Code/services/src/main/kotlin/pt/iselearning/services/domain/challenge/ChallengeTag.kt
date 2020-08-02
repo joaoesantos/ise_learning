@@ -1,5 +1,6 @@
-package pt.iselearning.services.domain
+package pt.iselearning.services.domain.challenge
 
+import pt.iselearning.services.domain.Tag
 import pt.iselearning.services.util.Constants
 import javax.persistence.*
 

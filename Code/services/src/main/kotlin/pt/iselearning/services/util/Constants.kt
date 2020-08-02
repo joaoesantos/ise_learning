@@ -1,11 +1,14 @@
 package pt.iselearning.services.util
 
+import pt.iselearning.services.configuration.RemoteExecutionUrls
+
 /**
  * Class containing auxiliary constant values
  */
 class Constants private constructor() {
+
     companion object {
-        const val VERSION = "v0"
+        private const val VERSION = "v0"
         const val SCHEMA = "ise_learning"
 
         //region QUESTIONNAIRE PATH CONSTANTS

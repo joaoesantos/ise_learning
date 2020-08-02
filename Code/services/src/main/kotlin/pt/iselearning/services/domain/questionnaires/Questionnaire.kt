@@ -23,7 +23,7 @@ data class Questionnaire(
         var description: String?,
 
         @Column(name = "timer", insertable = false, updatable = true)
-        var timer: Int?,
+        var timer: Long?,
 
         @Column(name = "creator_id")
         var creatorId: Int?,

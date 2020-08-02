@@ -1,15 +1,11 @@
-package pt.iselearning.services.controller
-
+package pt.iselearning.services.controller.challenge
 
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.domain.Challenge
-import pt.iselearning.services.domain.ChallengeAnswer
-import pt.iselearning.services.repository.ChallengeAnswerRepository
-import pt.iselearning.services.service.ChallengeAnswerService
-import java.lang.String
+import pt.iselearning.services.domain.challenge.ChallengeAnswer
+import pt.iselearning.services.service.challenge.ChallengeAnswerService
 
 /**
  * Handler responsible to respond to requests regard User entity
@@ -28,7 +24,7 @@ class ChallengeAnswerController (private val challengeAnswerService: ChallengeAn
     fun createChallengeAnswer(@RequestBody challengeAnswer: ChallengeAnswer, ucb : UriComponentsBuilder): ResponseEntity<ChallengeAnswer> {
         val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswer)
         val location = ucb.path("/v0/challengeAnswers")
-                .path(String.valueOf(challengeAnswer!!.challengeAnswerId))
+                .path(challengeAnswer!!.challengeAnswerId.toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(challengeAnswer)

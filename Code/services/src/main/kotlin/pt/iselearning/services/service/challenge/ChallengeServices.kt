@@ -1,14 +1,13 @@
-package pt.iselearning.services.service
+package pt.iselearning.services.service.challenge
 
 import org.springframework.stereotype.Service
-import pt.iselearning.services.domain.Challenge
+import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.repository.ChallengeRepository
-import pt.iselearning.services.repository.ChallengeTagRepository
+import pt.iselearning.services.repository.challenge.ChallengeRepository
+import pt.iselearning.services.repository.challenge.ChallengeTagRepository
 import java.util.*
 import org.springframework.validation.annotation.Validated
-import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository

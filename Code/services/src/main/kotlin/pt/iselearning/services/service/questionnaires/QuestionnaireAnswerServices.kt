@@ -1,13 +1,18 @@
 package pt.iselearning.services.service.questionnaires
 
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.Answer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.util.CustomValidators
+import pt.iselearning.services.util.QuestionnaireTimer
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -18,19 +23,23 @@ import javax.validation.constraints.Positive
 @Service
 class QuestionnaireAnswerServices(
         private val questionnaireInstanceRepository: QuestionnaireInstanceRepository,
-        private val questionnaireAnswerRepository: QuestionnaireAnswerRepository
+        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
+        private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
+        private val modelMapper: ModelMapper
 ) {
 
     /**
      * Create a questionnaire answer.
      *
-     * @param questionnaireAnswer object information
+     * @param questionnaireAnswerModel object information
      * @return created questionnaire answer
      */
     @Validated
-    fun createQuestionnaireAnswer(@Valid questionnaireAnswer: QuestionnaireAnswer): QuestionnaireAnswer {
-        val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswer.questionnaireInstanceId!!)
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswer.questionnaireInstanceId!!)
+    fun createQuestionnaireAnswer(@Valid questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
+        val questionnaireAnswer = convertToEntity(questionnaireAnswerModel)
+        val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerModel.questionnaireInstanceId)
+        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerModel.questionnaireInstanceId)
+        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
         return questionnaireAnswerRepository.save(questionnaireAnswer)
     }
 
@@ -58,7 +67,7 @@ class QuestionnaireAnswerServices(
         val questionnaireAnswers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
         if (questionnaireAnswers.isEmpty()) {
             throw ServerException("Questionnaire instances not found.",
-                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
+                    "There are no questionnaire instances for the selected questionnaire $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
         }
         return questionnaireAnswers
     }
@@ -66,16 +75,24 @@ class QuestionnaireAnswerServices(
     /**
      * Update a questionnaire answer.
      *
-     * @param questionnaireAnswer information to be updated
+     * @param questionnaireAnswerModel information to be updated
      * @return updated questionnaire answer
      */
     @Validated
-    fun updateQuestionnaireAnswerById(@Valid questionnaireAnswer: QuestionnaireAnswer): QuestionnaireAnswer {
-        val questionnaireAnswerFromDB = questionnaireAnswerRepository.findById(questionnaireAnswer.questionnaireAnswerId!!)
-        CustomValidators.checkIfQuestionnaireAnswerExists(questionnaireAnswerFromDB, questionnaireAnswer.questionnaireAnswerId!!)
+    fun updateQuestionnaireAnswerById(@Positive questionnaireAnswerId: Int, @Valid questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
+        val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerModel.questionnaireInstanceId)
+        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerModel.questionnaireInstanceId)
+        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
+
+        val questionnaireAnswerFromDB = questionnaireAnswerRepository.findById(questionnaireAnswerId)
+        CustomValidators.checkIfQuestionnaireAnswerExists(questionnaireAnswerFromDB, questionnaireAnswerId)
 
         //region data for update operation
         val updatedQuestionnaireAnswer = questionnaireAnswerFromDB.get()
+        /*
+        if(updatedQuestionnaireAnswer.answer != null)
+            updatedQuestionnaireAnswer.answer = questionnaireAnswerModel.answerCode
+        */
         //endregion
 
         return questionnaireAnswerRepository.save(updatedQuestionnaireAnswer)
@@ -92,4 +109,20 @@ class QuestionnaireAnswerServices(
         questionnaireAnswerRepository.deleteById(questionnaireAnswerId)
     }
 
+    /**
+     * Auxiliary function that converts QuestionnaireAnswer model to QuestionnaireAnswer domain
+     */
+    //TODO: usar o mapper a funcionar em vez desta função auxiliar
+    //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireAnswer::class.java)
+    private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
+        val answer = Answer()
+        answer.codeLanguage = questionnaireAnswerModel.codeLanguage
+        answer.answerCode = questionnaireAnswerModel.answerCode
+        answer.unitTests = questionnaireAnswerModel.unitTests
+        val questionnaireAnswer = QuestionnaireAnswer()
+        questionnaireAnswer.questionnaireAnswerId = questionnaireAnswer.questionnaireAnswerId
+        questionnaireAnswer.qcId = questionnaireAnswer.qcId
+        questionnaireAnswer.answer = answer
+        return questionnaireAnswer
+    }
 }

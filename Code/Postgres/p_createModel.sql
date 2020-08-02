@@ -50,7 +50,7 @@ BEGIN
 		challenge_id INT GENERATED ALWAYS AS IDENTITY,
 		creator_id INT NOT NULL,
 		challenge_text TEXT NOT NULL,
-		is_private BOOLEAN NOT NULL,
+		is_private BOOLEAN NOT NULL DEFAULT FALSE,
 		--
 		PRIMARY KEY (challenge_id),
 		FOREIGN KEY (creator_id) 
@@ -108,7 +108,7 @@ BEGIN
 	CREATE TABLE questionnaire (
 		questionnaire_id INT GENERATED ALWAYS AS IDENTITY,
 		description VARCHAR(50),
-		timer INT,
+		timer DOUBLE PRECISION,
 		creator_id INT NOT NULL,
 		creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
 		--
@@ -122,9 +122,10 @@ BEGIN
 		questionnaire_id INT NOT NULL,
 		questionnaire_instance_uuid TEXT NOT NULL,
 		description VARCHAR(50),
-		timer INT,
-		start_timestamp TIMESTAMP,
-		end_timestamp TIMESTAMP,
+		timer DOUBLE PRECISION,
+		start_timestamp DOUBLE PRECISION,
+		end_timestamp DOUBLE PRECISION,
+		is_finish BOOLEAN NOT NULL DEFAULT FALSE,
 		--
 		PRIMARY KEY (questionnaire_instance_id),
 		FOREIGN KEY (questionnaire_id) 
@@ -144,7 +145,7 @@ BEGIN
 		FOREIGN KEY (challenge_id) 
 			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
 		--
-		UNIQUE(questionnaire_id,challenge_id,language_filter)
+		UNIQUE(questionnaire_id,challenge_id)
 	);
 	
 	CREATE TABLE questionnaire_answer (

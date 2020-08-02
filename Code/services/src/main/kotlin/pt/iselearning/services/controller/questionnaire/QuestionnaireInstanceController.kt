@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireInstanceModel
-import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireInstanceModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireInstanceServices
 import pt.iselearning.services.util.Constants
 
@@ -28,11 +27,11 @@ class QuestionnaireInstanceController(
      */
     @PostMapping
     fun createQuestionnaireInstance(
-            @RequestBody questionnaireInstance: CreateQuestionnaireInstanceModel,
+            @RequestBody questionnaireInstance: QuestionnaireInstanceModel,
             ucb : UriComponentsBuilder
     ): ResponseEntity<QuestionnaireInstance> {
         val createdQuestionnaireInstance = questionnaireInstanceServices.createQuestionnaireInstance(questionnaireInstance)
-        val location = ucb.path("${Constants.QUESTIONNAIRE_INSTANCE_PATH}")
+        val location = ucb.path(Constants.QUESTIONNAIRE_INSTANCE_PATH)
                 .path((createdQuestionnaireInstance.questionnaireInstanceId).toString())
                 .build()
                 .toUri()
@@ -85,17 +84,16 @@ class QuestionnaireInstanceController(
      * Method to update an questionnaire instance.
      * A json object that represents a object of the type Questionnaire must be present in the body
      * @param questionnaireInstanceId represents a QuestionnaireInstance unique identifier
-     * @param questionnaireInstance represents a QuestionnaireInstance object
+     * @param questionnaireModel represents a QuestionnaireInstance object
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{questionnaireInstanceId}")
     fun updateQuestionnaireInstanceById(
             @PathVariable questionnaireInstanceId : Int,
-            @RequestBody questionnaireInstance: UpdateQuestionnaireInstanceModel
+            @RequestBody questionnaireModel: QuestionnaireInstanceModel
     ): ResponseEntity<QuestionnaireInstance> {
-        questionnaireInstance.questionnaireInstanceId = questionnaireInstanceId
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireInstanceServices.updateQuestionnaireInstanceById(questionnaireInstance))
+                .body(questionnaireInstanceServices.updateQuestionnaireInstanceById(questionnaireInstanceId,questionnaireModel))
     }
 
     /**

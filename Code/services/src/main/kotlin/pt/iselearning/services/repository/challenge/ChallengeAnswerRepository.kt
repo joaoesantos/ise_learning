@@ -1,8 +1,8 @@
-package pt.iselearning.services.repository
+package pt.iselearning.services.repository.challenge
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import pt.iselearning.services.domain.ChallengeAnswer
+import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import java.util.*
 
 /**

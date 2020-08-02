@@ -3,19 +3,18 @@ package pt.iselearning.services.service.questionnaires
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.models.questionnaire.CreateQuestionnaireInstanceModel
-import pt.iselearning.services.models.questionnaire.UpdateQuestionnaireInstanceModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
-import java.sql.Timestamp
+import pt.iselearning.services.util.QuestionnaireTimer
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
-import kotlin.time.milliseconds
 
 /**
  * This class contains the business logic associated with the actions on the questionnaire instance object
@@ -31,16 +30,26 @@ class QuestionnaireInstanceServices(
     /**
      * Create a questionnaire instance.
      *
-     * @param questionnaireInstanceInput object information
+     * @param questionnaireInstanceModel object information
      * @return created questionnaire instance
      */
     @Validated
-    fun createQuestionnaireInstance(@Valid questionnaireInstanceInput: CreateQuestionnaireInstanceModel): QuestionnaireInstance {
-        val questionnaireInstance = convertToEntity(questionnaireInstanceInput)
-        val questionnaireInstanceParent = questionnaireRepository.findById(questionnaireInstance.questionnaireId!!)
-        CustomValidators.checkIfQuestionnaireExists(questionnaireInstanceParent, questionnaireInstance.questionnaireId!!)
+    fun createQuestionnaireInstance(@Valid questionnaireInstanceModel: QuestionnaireInstanceModel): QuestionnaireInstance {
+        val questionnaireInstance = convertToEntity(questionnaireInstanceModel)
+        val questionnaireInstanceParentOptional = questionnaireRepository.findById(questionnaireInstance.questionnaireId!!)
+        CustomValidators.checkIfQuestionnaireExists(questionnaireInstanceParentOptional, questionnaireInstance.questionnaireId!!)
+        val questionnaireInstanceParent = questionnaireInstanceParentOptional.get()
 
-        questionnaireInstance.timer = if(questionnaireInstance.timer == null) questionnaireInstanceParent.get().timer else questionnaireInstance.timer
+        // extends parent properties by default
+        questionnaireInstance.description = questionnaireInstanceParent.description
+        questionnaireInstance.timer = questionnaireInstanceParent.timer
+
+        // updates to model properties if they are different from parent
+        if(questionnaireInstance.description != questionnaireInstanceModel.description)
+            questionnaireInstance.description = questionnaireInstanceModel.description
+        if(questionnaireInstance.timer != questionnaireInstanceModel.timer)
+            questionnaireInstance.timer = questionnaireInstanceModel.timer
+
         questionnaireInstance.questionnaireInstanceUuid = UUID.randomUUID().toString()
         return questionnaireInstanceRepository.save(questionnaireInstance)
     }
@@ -75,28 +84,7 @@ class QuestionnaireInstanceServices(
         }
         val questionnaireInstance = questionnaireInstanceOptional.get()
 
-        //TODO: se tiver endTimestamp é porque já foi resolvido e nao pode ser acedido novamente sem ser pelo criador
-        if(questionnaireInstance.endTimestamp != null) {
-            throw ServerException("Timeout.",
-                    "Questionnaire $questionnaireInstanceUuid is closed", ErrorCode.FORBIDDEN)
-        }
-
-        //TODO: utilizador que resolve quest so acede por uuid - se estiver a null, faz update com o tempo current
-        if(questionnaireInstance.startTimestamp == null) {
-            questionnaireInstance.startTimestamp = Timestamp(System.currentTimeMillis())
-            questionnaireInstanceRepository.save(questionnaireInstance)
-        }
-
-        //TODO:
-        if(questionnaireInstance.timer != null && questionnaireInstance.startTimestamp != null) {
-            val expiresIn = questionnaireInstance.startTimestamp!!.time + questionnaireInstance.timer!!
-            if(System.currentTimeMillis() > expiresIn) {
-                questionnaireInstance.endTimestamp = Timestamp(expiresIn)
-                questionnaireInstanceRepository.save(questionnaireInstance)
-                throw ServerException("Timeout.",
-                        "Questionnaire $questionnaireInstanceUuid is closed", ErrorCode.FORBIDDEN)
-            }
-        }
+        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireInstance, questionnaireInstanceRepository)
 
         return questionnaireInstance
     }
@@ -122,25 +110,25 @@ class QuestionnaireInstanceServices(
     /**
      * Update a questionnaire instance.
      *
-     * @param questionnaireInstanceInput information to be updated
+     * @param questionnaireInstanceModel information to be updated
      * @return updated questionnaire instance
      */
     @Validated
-    fun updateQuestionnaireInstanceById(@Valid questionnaireInstanceInput: UpdateQuestionnaireInstanceModel): QuestionnaireInstance {
-        val questionnaireInstance = convertToEntity(questionnaireInstanceInput)
-        val questionnaireInstanceFromDB = questionnaireInstanceRepository.findById(questionnaireInstance.questionnaireInstanceId!!)
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstance.questionnaireInstanceId!!)
+    fun updateQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int, @Valid questionnaireInstanceModel: QuestionnaireInstanceModel): QuestionnaireInstance {
+        val questionnaireInstanceFromDB = questionnaireInstanceRepository.findById(questionnaireInstanceId)
+        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstanceId)
+        val updatedQuestionnaireInstance = questionnaireInstanceFromDB.get()
+
+        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(updatedQuestionnaireInstance, questionnaireInstanceRepository)
 
         //region data for update operation
-        val updatedQuestionnaireInstance = questionnaireInstanceFromDB.get()
-        if(questionnaireInstance.description != null)
-            updatedQuestionnaireInstance.description = questionnaireInstance.description
-        if(questionnaireInstance.timer != null)
-            updatedQuestionnaireInstance.timer = questionnaireInstance.timer
-        if(questionnaireInstance.startTimestamp != null)
-            updatedQuestionnaireInstance.startTimestamp = questionnaireInstance.startTimestamp
-        if(questionnaireInstance.endTimestamp != null)
-            updatedQuestionnaireInstance.endTimestamp = questionnaireInstance.endTimestamp
+        if(questionnaireInstanceModel.description != null)
+            updatedQuestionnaireInstance.description = questionnaireInstanceModel.description
+        if(questionnaireInstanceModel.timer != null)
+            updatedQuestionnaireInstance.timer = questionnaireInstanceModel.timer
+        if(questionnaireInstanceModel.isFinished!!) {
+            updatedQuestionnaireInstance.endTimestamp = System.currentTimeMillis()
+        }
         //endregion
 
         return questionnaireInstanceRepository.save(updatedQuestionnaireInstance)
@@ -158,6 +146,9 @@ class QuestionnaireInstanceServices(
         questionnaireInstanceRepository.deleteById(questionnaireInstanceId)
     }
 
+    /**
+     * Auxiliary function that converts QuestionnaireInstance model to QuestionnaireInstance domain
+     */
     private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireInstance::class.java)
 
 }

@@ -2,7 +2,7 @@ package pt.iselearning.services.util
 
 import org.modelmapper.AbstractConverter
 import org.modelmapper.Converter
-import pt.iselearning.services.domain.Challenge
+import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 
 /**
