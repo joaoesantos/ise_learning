@@ -74,10 +74,6 @@ export default function UserProfile(props) {
   const [user, setUser] = React.useState()
 
   React.useEffect(() => {
-    console.log("----------------------------------")
-    console.log(response)
-    console.log(actionState)
-    console.log("||||||||||||||||||||||||||||||||||")
     if (response && actionState === ActionStates.done &&
       action.render && action.render === true) {
       setUser(response)
@@ -171,20 +167,6 @@ export default function UserProfile(props) {
             < Grid item xs = {12} >
               <FormControl className={clsx(classes.margin, classes.textField, classes.fullWidth)} variant="outlined">
                 < Grid item xs = {12} >
-                  {/*<InputLabel htmlFor="outlined-adornment-password">Name</InputLabel>
-                  <OutlinedInput
-                    id="name"
-                    name = "name"
-                    label = "Name"
-                    required
-                    fullWidth
-                    type="text"
-                    autoComplete = "name"
-                    defaultValue={user.name}
-                    value={user.name}
-                    onChange={e => handleNameChange(e.target.value)}
-                    labelWidth={110}
-                  />*/}
                   < TextField
                   variant = "outlined"
                   required

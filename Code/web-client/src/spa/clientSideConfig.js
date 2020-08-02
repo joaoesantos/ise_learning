@@ -51,5 +51,7 @@ export const apiVersion = "v0";
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
-    profile: () => `/${apiVersion}/users/me`
+    profile: () => `/${apiVersion}/users/me`,
+    executeCode: () => `/${apiVersion}/execute`,
+    challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
 }
