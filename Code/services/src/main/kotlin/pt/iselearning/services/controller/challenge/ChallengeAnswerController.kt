@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
+import pt.iselearning.services.util.Constants.Companion.CHALLENGE_ANSWER_PATTERN
 
 /**
  * Handler responsible to respond to requests regard User entity
  */
 @RestController
-@RequestMapping("/v0/challengeAnswers")
-class ChallengeAnswerController (private val challengeAnswerService: ChallengeAnswerService){
+@RequestMapping(CHALLENGE_ANSWER_PATTERN, produces = ["application/json"])
+class ChallengeAnswerController(
+        private val challengeAnswerService: ChallengeAnswerService
+){
 
     /**
      * Method to create an user.
@@ -20,8 +23,11 @@ class ChallengeAnswerController (private val challengeAnswerService: ChallengeAn
      * @param ServerRequest represents an HTTP message
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping
-    fun createChallengeAnswer(@RequestBody challengeAnswer: ChallengeAnswer, ucb : UriComponentsBuilder): ResponseEntity<ChallengeAnswer> {
+    @PostMapping(name = "createChallengeAnswer")
+    fun createChallengeAnswer(
+            @RequestBody challengeAnswer: ChallengeAnswer,
+            ucb: UriComponentsBuilder
+    ): ResponseEntity<ChallengeAnswer> {
         val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswer)
         val location = ucb.path("/v0/challengeAnswers")
                 .path(challengeAnswer!!.challengeAnswerId.toString())
@@ -36,8 +42,11 @@ class ChallengeAnswerController (private val challengeAnswerService: ChallengeAn
      * @param ServerRequest represents an HTTP message
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PutMapping("/{challengeAnswerId}")
-    fun updateChallengeAnswer(@PathVariable challengeAnswerId : Int, @RequestBody challengeAnswer: ChallengeAnswer): ResponseEntity<ChallengeAnswer> {
+    @PutMapping("/{challengeAnswerId}", name = "updateChallengeAnswer")
+    fun updateChallengeAnswer(
+            @PathVariable challengeAnswerId: Int,
+            @RequestBody challengeAnswer: ChallengeAnswer
+    ): ResponseEntity<ChallengeAnswer> {
         challengeAnswer.challengeAnswerId = challengeAnswerId
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeAnswerService.updateChallengeAnswer(challengeAnswer))
@@ -49,8 +58,10 @@ class ChallengeAnswerController (private val challengeAnswerService: ChallengeAn
      * @param ServerRequest represents an HTTP message
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @DeleteMapping("/{challengeAnswerId}")
-    fun deleteChallengeAnswer(@PathVariable challengeAnswerId : Int): ResponseEntity<Void> {
+    @DeleteMapping("/{challengeAnswerId}", name = "deleteChallengeAnswer")
+    fun deleteChallengeAnswer(
+            @PathVariable challengeAnswerId: Int
+    ): ResponseEntity<Void> {
         challengeAnswerService.deleteChallengeAnswer(challengeAnswerId)
         return ResponseEntity.ok().build()
     }
@@ -61,8 +72,11 @@ class ChallengeAnswerController (private val challengeAnswerService: ChallengeAn
      * @param ServerRequest represents an HTTP message
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/{challengeId}/answers/users/{userId}")
-    fun getChallengeAnswerByUserId(@PathVariable challengeId : Int, @PathVariable userId : Int): ResponseEntity<ChallengeAnswer> {
+    @GetMapping("/{challengeId}/answers/users/{userId}", name = "getChallengeAnswerByUserId")
+    fun getChallengeAnswerByUserId(
+            @PathVariable challengeId: Int,
+            @PathVariable userId: Int
+    ): ResponseEntity<ChallengeAnswer> {
         val challengeAnswer = challengeAnswerService.getChallengeAnswerByUserId(challengeId, userId)
         return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
     }

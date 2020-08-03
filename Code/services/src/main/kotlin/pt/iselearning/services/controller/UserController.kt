@@ -1,6 +1,5 @@
 package pt.iselearning.services.controller
 
-
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
@@ -9,12 +8,13 @@ import pt.iselearning.services.models.user.CreateUserModel
 import pt.iselearning.services.models.user.UpdatePasswordModel
 import pt.iselearning.services.models.user.UpdateProfileModel
 import pt.iselearning.services.models.user.UserModel
+import pt.iselearning.services.util.Constants.Companion.VERSION
 
 /**
  * Handler responsible to respond to requests regard User entity
  */
 @RestController
-@RequestMapping("/v0/users")
+@RequestMapping("/${VERSION}/users")
 class UserController(
         private val userService: UserService
 ) {
@@ -27,7 +27,7 @@ class UserController(
      * Method to get all users
      * @return ResponseEntity<Iterable<User>> represents a a collection that can hold zero or one elements of the type User
      */
-    @GetMapping
+    @GetMapping(name = "getAllUsers")
     fun getAllUsers(): ResponseEntity<Iterable<UserModel>> = ResponseEntity.ok().body(userService.getAllUsers())
 
 
@@ -37,8 +37,10 @@ class UserController(
      * @param id represents user id
      * @return ResponseEntity<User>
      */
-    @GetMapping("/{id}")
-    fun getUserById(@PathVariable id : Int): ResponseEntity<UserModel> = ResponseEntity.ok(userService.getUserById(id))
+    @GetMapping("/{id}", name = "getUserById")
+    fun getUserById(
+            @PathVariable id: Int
+    ): ResponseEntity<UserModel> = ResponseEntity.ok(userService.getUserById(id))
 
 
     /**
@@ -47,8 +49,11 @@ class UserController(
      * @param createUserModel represents the user's information
      * @return ResponseEntity<User> represents the newly created user
      */
-    @PostMapping
-    fun createUser(@RequestBody createUserModel: CreateUserModel, ucb : UriComponentsBuilder): ResponseEntity<UserModel> {
+    @PostMapping(name = "createUser")
+    fun createUser(
+            @RequestBody createUserModel: CreateUserModel,
+            ucb: UriComponentsBuilder
+    ): ResponseEntity<UserModel> {
         val user = userService.createUser(createUserModel)
         val location = ucb.cloneBuilder().path("/${user.userId}")
         return ResponseEntity.created(location.build().toUri()).body(user)
@@ -61,16 +66,20 @@ class UserController(
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     //TODO refactor once application is tracking current logged user
-    @PatchMapping("/me")
-    fun updateUser(@RequestBody updateProfileModel: UpdateProfileModel): ResponseEntity<UserModel> {
+    @PatchMapping("/me", name = "updateUser")
+    fun updateUser(
+            @RequestBody updateProfileModel: UpdateProfileModel
+    ): ResponseEntity<UserModel> {
         val user = userService.updateUserInformation(updateProfileModel, updateProfileModel.userId)
         return ResponseEntity.ok(user)
     }
 
     //TODO does it make sense to return the user?
     //TODO refactor once application is tracking current logged user
-    @PutMapping("/me/password")
-    fun updatePassword(password: UpdatePasswordModel) : ResponseEntity<UserModel> {
+    @PutMapping("/me/password", name = "updatePassword")
+    fun updatePassword(
+            password: UpdatePasswordModel
+    ): ResponseEntity<UserModel> {
         val user = userService.updatePassword(password.password, password.userId)
         return ResponseEntity.ok(user)
     }
@@ -81,8 +90,10 @@ class UserController(
      * @param id represents user id
      * @return ResponseEntity represents the response for a http message
      */
-    @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id : Int): ResponseEntity<Unit> {
+    @DeleteMapping("/{id}", name = "deleteUser")
+    fun deleteUser(
+            @PathVariable id: Int
+    ): ResponseEntity<Unit> {
         userService.deleteUser(id)
         return ResponseEntity.noContent().build()
     }

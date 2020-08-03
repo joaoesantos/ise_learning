@@ -1,5 +1,7 @@
 package pt.iselearning.services.models.questionnaire
 
+import pt.iselearning.services.models.AnswerModel
+import javax.validation.Valid
 import javax.validation.constraints.Positive
 
 class QuestionnaireAnswerModel(
@@ -13,10 +15,6 @@ class QuestionnaireAnswerModel(
         @field:Positive(message = "Challenge id must be positive")
         var challengeId : Int,
 
-        var codeLanguage : String,
-
-        var answerCode : String,
-
-        var unitTests : String?
-
+        @field:Valid
+        var answer: AnswerModel
 )

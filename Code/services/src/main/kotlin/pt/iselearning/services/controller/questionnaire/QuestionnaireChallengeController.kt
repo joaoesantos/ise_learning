@@ -9,13 +9,13 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireChallengeServices
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_CHALLENGE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard QuestionnaireAnswer domain
  */
 @RestController
-@RequestMapping(Constants.QUESTIONNAIRE_CHALLENGE_PATH, produces = ["application/json"])
+@RequestMapping(QUESTIONNAIRE_CHALLENGE_PATTERN, produces = ["application/json"])
 class QuestionnaireChallengeController(
         private val questionnaireChallengeServices: QuestionnaireChallengeServices
 ) {
@@ -28,13 +28,13 @@ class QuestionnaireChallengeController(
      * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
      * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping
+    @PostMapping(name = "addChallengesByIdToQuestionnaire")
     fun addChallengesByIdToQuestionnaire(
             @RequestBody listOfQuestionnaireChallenge: List<QuestionnaireChallengeModel>,
-            ucb : UriComponentsBuilder
+            ucb: UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
         val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
-        val location = ucb.path(Constants.QUESTIONNAIRE_CHALLENGE_PATH)
+        val location = ucb.path(QUESTIONNAIRE_CHALLENGE_PATTERN)
                 .path((addedQuestionnaireChallenge!!.first().qcId).toString())
                 .build()
                 .toUri()
@@ -50,7 +50,7 @@ class QuestionnaireChallengeController(
      * @param challengeId represents Challenge unique identifier
      * @return ResponseEntity<QuestionnaireChallenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/{questionnaireId}/{challengeId}")
+    @GetMapping("/{questionnaireId}/{challengeId}", name = "getQuestionnaireChallengeByChallengeIdAndQuestionnaireId")
     fun getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(
             @PathVariable questionnaireId: Int,
             @PathVariable challengeId: Int
@@ -66,7 +66,7 @@ class QuestionnaireChallengeController(
      * of a single questionnaire unique identifier and list of challenges unique identifiers
      * @return No Content
      */
-    @DeleteMapping
+    @DeleteMapping(name = "removeChallengesByIdFromQuestionnaire")
     fun removeChallengesByIdFromQuestionnaire(
             @RequestBody questionnaireChallengeIdListModel: QuestionnaireChallengeCollectionModel
     ): ResponseEntity<QuestionnaireAnswer> {

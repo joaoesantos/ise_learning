@@ -7,13 +7,13 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerServices
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_ANSWER_PATTERN
 
 /**
  * Handler responsible to respond to requests regard QuestionnaireAnswer domain
  */
 @RestController
-@RequestMapping(Constants.QUESTIONNAIRE_ANSWER_PATH, produces = ["application/json"])
+@RequestMapping(QUESTIONNAIRE_ANSWER_PATTERN, produces = ["application/json"])
 class QuestionnaireAnswerController(
         private val questionnaireAnswerServices: QuestionnaireAnswerServices
 ) {
@@ -23,16 +23,16 @@ class QuestionnaireAnswerController(
      *
      * A json object that represents a object of the type QuestionnaireAnswer must be present in the body
      * @param ucb helps build URLs
-     * @param questionnaireAnswer represents a QuestionnaireAnswer
+     * @param questionnaireAnswerModel represents a QuestionnaireAnswer
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping
+    @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
             @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
-            ucb : UriComponentsBuilder
+            ucb: UriComponentsBuilder
     ): ResponseEntity<QuestionnaireAnswer> {
         val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
-        val location = ucb.path(Constants.QUESTIONNAIRE_ANSWER_PATH)
+        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
                 .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
                 .build()
                 .toUri()
@@ -46,7 +46,7 @@ class QuestionnaireAnswerController(
      * @param questionnaireAnswerId represents QuestionnaireAnswer unique identifier
      * @return ResponseEntity<QuestionnaireAnswer>
      */
-    @GetMapping("/{questionnaireAnswerId}")
+    @GetMapping("/{questionnaireAnswerId}", name = "getQuestionnaireAnswerById")
     fun getQuestionnaireAnswerById(
             @PathVariable questionnaireAnswerId: Int
     ): ResponseEntity<QuestionnaireAnswer> {
@@ -61,7 +61,7 @@ class QuestionnaireAnswerController(
      * @param questionnaireInstanceId represents the QuestionnaireInstance unique identifier
      * @return ResponseEntity<List<QuestionnaireAnswer>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/questionnaireInstances/{questionnaireInstanceId}")
+    @GetMapping("/questionnaireInstances/{questionnaireInstanceId}", name = "getAllQuestionnaireAnswersFromQuestionnaireInstanceId")
     fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(
             @PathVariable questionnaireInstanceId: Int
     ): ResponseEntity<List<QuestionnaireAnswer>> {
@@ -77,9 +77,9 @@ class QuestionnaireAnswerController(
      * @param questionnaireAnswerModel represents a QuestionnaireAnswer object
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PutMapping("/{questionnaireAnswerId}")
+    @PutMapping("/{questionnaireAnswerId}", name = "updateQuestionnaireAnswerById")
     fun updateQuestionnaireAnswerById(
-            @PathVariable questionnaireAnswerId : Int,
+            @PathVariable questionnaireAnswerId: Int,
             @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel
     ): ResponseEntity<QuestionnaireAnswer> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,7 @@ class QuestionnaireAnswerController(
      * @param questionnaireAnswerId represents QuestionnaireAnswer unique identifier
      * @return No Content
      */
-    @DeleteMapping("/{questionnaireAnswerId}")
+    @DeleteMapping("/{questionnaireAnswerId}", name = "deleteQuestionnaireAnswerById")
     fun deleteQuestionnaireAnswerById(
             @PathVariable questionnaireAnswerId: Int
     ): ResponseEntity<QuestionnaireAnswer> {

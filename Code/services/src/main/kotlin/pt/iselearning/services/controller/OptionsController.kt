@@ -1,23 +1,27 @@
 package pt.iselearning.services.controller
 
+import net.minidev.json.JSONObject
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-
+import pt.iselearning.services.util.Constants.Companion.VERSION
 
 @RestController
-@RequestMapping("/v0/options")
+@RequestMapping("/${VERSION}/options")
 class OptionsController(
         private val handlerMapping: org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 ) {
 
-    @GetMapping("/getHandlerMappingMethods")
+    @GetMapping("/getHandlerMappingMethods", name = "getHandlerMappingMethods")
     fun getHandlerMappingMethods(): ResponseEntity<Any> {
-        val handlerMappingMethods = mutableListOf<String>()
+        val handlerMappingMethods = mutableMapOf<String,JSONObject>()
         for (key in handlerMapping.handlerMethods.keys) {
-            handlerMappingMethods.add("${key.methodsCondition.methods}${key.patternsCondition.patterns}")
+            val jsonObject = JSONObject()
+            jsonObject["method"] = "${key.methodsCondition.methods}".substringAfter("[").substringBefore("]")
+            jsonObject["pattern"] = "${key.patternsCondition.patterns}".substringAfter("[").substringBefore("]")
+            handlerMappingMethods[key.name.toString()] = jsonObject
         }
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(handlerMappingMethods)
     }

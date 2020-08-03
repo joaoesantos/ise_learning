@@ -7,12 +7,13 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
 import pt.iselearning.services.service.challenge.ChallengeService
+import pt.iselearning.services.util.Constants.Companion.CHALLENGE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard Challenge entity
  */
 @RestController
-@RequestMapping("/v0/challenges")
+@RequestMapping(CHALLENGE_PATTERN)
 class ChallengeController (private val challengeService: ChallengeService, private val challengeAnswerService: ChallengeAnswerService) {
     //A usar caso estejamos a tempo de usar microservices
     /*@Autowired
@@ -22,8 +23,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * Method to get all challenges
      * @return ResponseEntity<List<Challenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping
-    fun getAllChallenges(@RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?): ResponseEntity<List<Challenge>> {
+    @GetMapping(name = "getAllChallenges")
+    fun getAllChallenges(
+            @RequestParam(required = false) tags: String?,
+            @RequestParam(required = false) privacy: String?
+    ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.getAllChallenges(tags, privacy))
     }
 
@@ -34,8 +38,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param id represens challenge id
      * @return ResponseEntity<Challenge>
      */
-    @GetMapping("/{challengeId}")
-    fun getChallengeById(@PathVariable challengeId : Int): ResponseEntity<Challenge> {
+    @GetMapping("/{challengeId}", name = "getChallengeById")
+    fun getChallengeById(
+            @PathVariable challengeId: Int
+    ): ResponseEntity<Challenge> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getChallengeById(challengeId))
     }
@@ -49,8 +55,12 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param privacy represens privacy to search for
      * @return ResponseEntity<List<Challenge>>
      */
-    @GetMapping("/users/{userId}")
-    fun getChallengeByUserId(@PathVariable userId : Int, @RequestParam(required = false) tags : String?, @RequestParam(required = false) privacy : String?) : ResponseEntity<List<Challenge>> {
+    @GetMapping("/users/{userId}", name = "getChallengeByUserId")
+    fun getChallengeByUserId(
+            @PathVariable userId: Int,
+            @RequestParam(required = false) tags: String?,
+            @RequestParam(required = false) privacy: String?
+    ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getUserChallenges(userId, tags, privacy))
     }
@@ -61,8 +71,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<List<Challenge>>
      */
-    @GetMapping("/questionnaires/{questionnaireId}")
-    fun getAllChallengesByQuestionnaireId(@PathVariable questionnaireId : Int) : ResponseEntity<List<Challenge>> {
+    @GetMapping("/questionnaires/{questionnaireId}", name = "getAllChallengesByQuestionnaireId")
+    fun getAllChallengesByQuestionnaireId(
+            @PathVariable questionnaireId: Int
+    ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getAllChallengesByQuestionnaireId(questionnaireId))
     }
@@ -75,8 +87,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param challenge represents a Challenge
      * @return ResponseEntity<Challenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping
-    fun createChallenge(@RequestBody challenge: Challenge, ucb : UriComponentsBuilder): ResponseEntity<Challenge> {
+    @PostMapping(name = "createChallenge")
+    fun createChallenge(
+            @RequestBody challenge: Challenge,
+            ucb: UriComponentsBuilder
+    ): ResponseEntity<Challenge> {
         val savedChallenge = challengeService.createChallenge(challenge)
         val location = ucb.path("/v0/challenges")
                 .path(savedChallenge!!.challengeId.toString())
@@ -92,8 +107,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param challenge represents a Challenge
      * @return ResponseEntity<Challenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PutMapping("/{challengeId}")
-    fun updateChallenge(@PathVariable challengeId : Int, @RequestBody challenge: Challenge): ResponseEntity<Challenge> {
+    @PutMapping("/{challengeId}", name = "updateChallenge")
+    fun updateChallenge(
+            @PathVariable challengeId: Int,
+            @RequestBody challenge: Challenge
+    ): ResponseEntity<Challenge> {
         challenge.challengeId = challengeId
         return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.updateChallenge(challenge))
     }
@@ -104,8 +122,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * @param challengeId represents an HTTP message
      * @return ResponseEntity<Void> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @DeleteMapping("/{challengeId}")
-    fun deleteChallenge(@PathVariable challengeId : Int): ResponseEntity<Void> {
+    @DeleteMapping("/{challengeId}", name = "deleteChallenge")
+    fun deleteChallenge(
+            @PathVariable challengeId: Int
+    ): ResponseEntity<Void> {
         challengeService.deleteChallenge(challengeId)
         return ResponseEntity.noContent().build()
     }

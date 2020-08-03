@@ -71,7 +71,7 @@ class QuestionnaireServices(
      * @return updated questionnaire
      */
     @Validated
-    fun updateQuestionnaire(@Positive questionnaireId: Int, @Valid questionnaireModel: QuestionnaireModel): Questionnaire {
+    fun updateQuestionnaireById(@Positive questionnaireId: Int, @Valid questionnaireModel: QuestionnaireModel): Questionnaire {
         val questionnaireFromDB = questionnaireRepository.findById(questionnaireId)
         CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaireId)
 

@@ -7,13 +7,13 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.Questionnaire;
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard Questionnaire domain
  */
 @RestController
-@RequestMapping(Constants.QUESTIONNAIRE_PATH, produces = ["application/json"])
+@RequestMapping(QUESTIONNAIRE_PATTERN, produces = ["application/json"])
 class QuestionnaireController(
         private val questionnaireServices: QuestionnaireServices
 ) {
@@ -25,13 +25,13 @@ class QuestionnaireController(
      * @param questionnaire represents a Questionnaire object
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping
+    @PostMapping(name = "createQuestionnaire")
     fun createQuestionnaire(
             @RequestBody questionnaire: QuestionnaireModel,
-            ucb : UriComponentsBuilder
+            ucb: UriComponentsBuilder
     ): ResponseEntity<Questionnaire> {
         val createdQuestionnaire = questionnaireServices.createQuestionnaire(questionnaire)
-        val location = ucb.path(Constants.QUESTIONNAIRE_PATH)
+        val location = ucb.path(QUESTIONNAIRE_PATTERN)
                 .path((createdQuestionnaire.questionnaireId).toString())
                 .build()
                 .toUri()
@@ -44,7 +44,7 @@ class QuestionnaireController(
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<Questionnaire>
      */
-    @GetMapping("/{questionnaireId}")
+    @GetMapping("/{questionnaireId}", name = "getQuestionnaireById")
     fun getQuestionnaireById(
             @PathVariable questionnaireId: Int
     ): ResponseEntity<Questionnaire> {
@@ -58,7 +58,7 @@ class QuestionnaireController(
      * @param userId represents the Questionnaire creator
      * @return ResponseEntity<List<Questionnaire>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/users/{userId}") //TODO change to logged in user
+    @GetMapping("/users/{userId}", name = "getAllUserQuestionnaires") //TODO change to logged in user
     fun getAllUserQuestionnaires(
             @PathVariable userId: Int
     ): ResponseEntity<List<Questionnaire>> {
@@ -73,13 +73,13 @@ class QuestionnaireController(
      * @param questionnaireModel represents a Questionnaire
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PutMapping("/{questionnaireId}")
-    fun updateQuestionnaire(
-            @PathVariable questionnaireId : Int,
+    @PutMapping("/{questionnaireId}", name = "updateQuestionnaireById")
+    fun updateQuestionnaireById(
+            @PathVariable questionnaireId: Int,
             @RequestBody questionnaireModel: QuestionnaireModel
     ): ResponseEntity<Questionnaire> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.updateQuestionnaire(questionnaireId,questionnaireModel))
+                .body(questionnaireServices.updateQuestionnaireById(questionnaireId,questionnaireModel))
     }
 
     /**
@@ -88,7 +88,7 @@ class QuestionnaireController(
      * @param questionnaireId represents Questionnaire unique identifier
      * @return No Content
      */
-    @DeleteMapping("/{questionnaireId}")
+    @DeleteMapping("/{questionnaireId}", name = "deleteQuestionnaireById")
     fun deleteQuestionnaireById(
             @PathVariable questionnaireId: Int
     ): ResponseEntity<Questionnaire> {

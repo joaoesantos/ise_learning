@@ -115,14 +115,18 @@ class QuestionnaireAnswerServices(
     //TODO: usar o mapper a funcionar em vez desta função auxiliar
     //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireAnswer::class.java)
     private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
+        // build answer from model
         val answer = Answer()
-        answer.codeLanguage = questionnaireAnswerModel.codeLanguage
-        answer.answerCode = questionnaireAnswerModel.answerCode
-        answer.unitTests = questionnaireAnswerModel.unitTests
+        answer.codeLanguage = questionnaireAnswerModel.answerModel.codeLanguage
+        answer.answerCode = questionnaireAnswerModel.answerModel.answerCode
+        answer.unitTests = questionnaireAnswerModel.answerModel.unitTests
+
+        // build questionnaireAnswer from model
         val questionnaireAnswer = QuestionnaireAnswer()
         questionnaireAnswer.questionnaireAnswerId = questionnaireAnswer.questionnaireAnswerId
         questionnaireAnswer.qcId = questionnaireAnswer.qcId
         questionnaireAnswer.answer = answer
+
         return questionnaireAnswer
     }
 }
