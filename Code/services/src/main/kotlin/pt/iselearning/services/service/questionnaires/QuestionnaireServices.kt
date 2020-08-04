@@ -6,7 +6,9 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
+import pt.iselearning.services.models.questionnaire.QuestionnaireWithChallengesModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.CustomValidators
 import javax.validation.Valid
@@ -19,6 +21,7 @@ import javax.validation.constraints.Positive
 @Service
 class QuestionnaireServices(
         private val questionnaireRepository: QuestionnaireRepository,
+        private val questionnaireChallengeServices: QuestionnaireChallengeServices,
         private val modelMapper: ModelMapper
 ) {
 
@@ -31,8 +34,29 @@ class QuestionnaireServices(
     @Validated
     fun createQuestionnaire(@Valid questionnaireModel: QuestionnaireModel): Questionnaire {
         val questionnaire = convertToEntity(questionnaireModel)
-        questionnaire.timer = if(questionnaire.timer == null) 0 else questionnaire.timer
-        return questionnaireRepository.save(questionnaire);
+        return questionnaireRepository.save(questionnaire)
+    }
+
+    /**
+     * Create a questionnaire and adds it challenges.
+     *
+     * @param questionnaireWithChallengesModel object information
+     * @return created questionnaire
+     */
+    @Validated
+    fun createQuestionnaireWithChallenges(@Valid questionnaireWithChallengesModel: QuestionnaireWithChallengesModel): Questionnaire? {
+        val questionnaire = convertToEntity(questionnaireWithChallengesModel.questionnaire)
+
+        val createdQuestionnaire = questionnaireRepository.save(questionnaire)
+        val questionnaireChallengeModel = QuestionnaireChallengeModel(
+                createdQuestionnaire.questionnaireId!!,
+                questionnaireWithChallengesModel.challenges
+        )
+
+        //TODO estudar como fazer rollback em caso daqui dar erro, tem de anular a criação do createdQuestionnaire
+        questionnaireChallengeServices.addChallengesByIdToQuestionnaire(questionnaireChallengeModel)
+
+        return createdQuestionnaire
     }
 
     /**
@@ -100,6 +124,6 @@ class QuestionnaireServices(
     /**
      * Auxiliary function that converts Questionnaire model to Questionnaire domain
      */
-    private fun convertToEntity(input : Any) = modelMapper.map(input, Questionnaire::class.java)
+    private fun convertToEntity(input: QuestionnaireModel) = modelMapper.map(input, Questionnaire::class.java)
 
 }

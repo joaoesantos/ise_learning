@@ -5,16 +5,17 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import pt.iselearning.services.util.Constants.Companion.VERSION
 
 @RestController
-@RequestMapping("/${VERSION}/options")
+@RequestMapping("/${VERSION}")
 class OptionsController(
         private val handlerMapping: org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 ) {
 
-    @GetMapping("/getHandlerMappingMethods", name = "getHandlerMappingMethods")
+    @RequestMapping(method = [RequestMethod.OPTIONS], name = "getHandlerMappingMethods")
     fun getHandlerMappingMethods(): ResponseEntity<Any> {
         val handlerMappingMethods = mutableMapOf<String,JSONObject>()
         for (key in handlerMapping.handlerMethods.keys) {

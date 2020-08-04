@@ -149,6 +149,6 @@ class QuestionnaireInstanceServices(
     /**
      * Auxiliary function that converts QuestionnaireInstance model to QuestionnaireInstance domain
      */
-    private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireInstance::class.java)
+    private fun convertToEntity(input : QuestionnaireInstanceModel) = modelMapper.map(input, QuestionnaireInstance::class.java)
 
 }

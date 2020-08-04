@@ -9,9 +9,9 @@ import javax.validation.constraints.Positive
 @Validated
 class QuestionnaireChallengeCollectionModel(
 
-        @field:Positive(message = "Questionnaire id must be positive")
-        val questionnaireId: Int,
+        @field:Positive(message = "Challenge id must be positive")
+        var challengeId: Int,
 
-        val listOfChallengeIds: List<Int>
+        var languageFilter: String?
 
 )

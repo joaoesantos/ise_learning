@@ -128,8 +128,8 @@ class CustomValidators {
          */
         fun checkIfQuestionnaireAnswerExists(questionnaireAnswerRepository: QuestionnaireAnswerRepository, questionnaireAnswerId: Int) {
             if (!questionnaireAnswerRepository.existsById(questionnaireAnswerId)) {
-                throw ServerException("Questionnaire not found.",
-                        "There is no questionnaire instance with id $questionnaireAnswerId", ErrorCode.ITEM_NOT_FOUND)
+                throw ServerException("Questionnaire answer not found.",
+                        "There is no questionnaire answer with id $questionnaireAnswerId", ErrorCode.ITEM_NOT_FOUND)
             }
         }
 

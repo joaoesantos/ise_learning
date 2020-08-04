@@ -11,11 +11,13 @@ import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
  * Method responsible to add the necessary Questionnaire-Challenge mapping to the given ModelMapper instance
  * @param mapper instance of ModelMapper
  */
+
 fun addQuestionnaireChallengeMappings(
         mapper: ModelMapper,
         questionnaireRepository: QuestionnaireRepository,
         challengeRepository: ChallengeRepository
 ) {
+/*
     mapper.typeMap(QuestionnaireChallengeModel::class.java, QuestionnaireChallenge::class.java).addMappings { mapper ->
         mapper.map(
                 { source: QuestionnaireChallengeModel -> source.questionnaireId },
@@ -36,4 +38,6 @@ fun addQuestionnaireChallengeMappings(
                 { destination: QuestionnaireChallenge?, value: String? -> destination?.languageFilter = value }
         )
     }
+
+*/
 }

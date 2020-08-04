@@ -7,7 +7,6 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
-import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireChallengeServices
 import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_CHALLENGE_PATTERN
 
@@ -30,7 +29,7 @@ class QuestionnaireChallengeController(
      */
     @PostMapping(name = "addChallengesByIdToQuestionnaire")
     fun addChallengesByIdToQuestionnaire(
-            @RequestBody listOfQuestionnaireChallenge: List<QuestionnaireChallengeModel>,
+            @RequestBody listOfQuestionnaireChallenge: QuestionnaireChallengeModel,
             ucb: UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
         val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
@@ -50,27 +49,27 @@ class QuestionnaireChallengeController(
      * @param challengeId represents Challenge unique identifier
      * @return ResponseEntity<QuestionnaireChallenge> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/{questionnaireId}/{challengeId}", name = "getQuestionnaireChallengeByChallengeIdAndQuestionnaireId")
+    @GetMapping("/{questionnaireId}/{challengeId}", name = "getQuestionnaireChallengeByQuestionnaireIdAndChallengeId")
     fun getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(
             @PathVariable questionnaireId: Int,
             @PathVariable challengeId: Int
     ): ResponseEntity<QuestionnaireChallenge> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireChallengeServices.getQuestionnaireChallengeByChallengeIdAndQuestionnaireId(questionnaireId,challengeId))
+                .body(questionnaireChallengeServices.getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(questionnaireId,challengeId))
     }
 
     /**
      * Method to delete one or multiple challenge from a single questionnaire answer.
      *
-     * @param questionnaireChallengeIdListModel represents an object with the information
+     * @param questionnaireChallengeModel represents an object with the information
      * of a single questionnaire unique identifier and list of challenges unique identifiers
      * @return No Content
      */
     @DeleteMapping(name = "removeChallengesByIdFromQuestionnaire")
     fun removeChallengesByIdFromQuestionnaire(
-            @RequestBody questionnaireChallengeIdListModel: QuestionnaireChallengeCollectionModel
+            @RequestBody questionnaireChallengeModel: QuestionnaireChallengeModel
     ): ResponseEntity<QuestionnaireAnswer> {
-        questionnaireChallengeServices.removeChallengesByIdFromQuestionnaire(questionnaireChallengeIdListModel)
+        questionnaireChallengeServices.removeChallengesByIdFromQuestionnaire(questionnaireChallengeModel)
         return ResponseEntity.noContent().build()
     }
 

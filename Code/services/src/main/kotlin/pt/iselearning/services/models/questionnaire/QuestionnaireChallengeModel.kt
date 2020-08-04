@@ -1,6 +1,7 @@
 package pt.iselearning.services.models.questionnaire
 
 import org.springframework.validation.annotation.Validated
+import javax.validation.Valid
 import javax.validation.constraints.Positive
 
 /**
@@ -12,9 +13,7 @@ class QuestionnaireChallengeModel (
         @field:Positive(message = "Questionnaire id must be positive")
         var questionnaireId: Int,
 
-        @field:Positive(message = "Challenge id must be positive")
-        var challengeId: Int,
-
-        var languageFilter: String?
+        @field:Valid
+        var challenges: List<QuestionnaireChallengeCollectionModel>
 
 )

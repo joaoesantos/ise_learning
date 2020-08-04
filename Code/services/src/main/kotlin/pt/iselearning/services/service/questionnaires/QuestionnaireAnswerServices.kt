@@ -9,7 +9,6 @@ import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
-import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.util.CustomValidators
 import pt.iselearning.services.util.QuestionnaireTimer
@@ -23,8 +22,8 @@ import javax.validation.constraints.Positive
 @Service
 class QuestionnaireAnswerServices(
         private val questionnaireInstanceRepository: QuestionnaireInstanceRepository,
-        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
         private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
+        private val questionnaireChallengeServices: QuestionnaireChallengeServices,
         private val modelMapper: ModelMapper
 ) {
 
@@ -40,6 +39,16 @@ class QuestionnaireAnswerServices(
         val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerModel.questionnaireInstanceId)
         CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerModel.questionnaireInstanceId)
         QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
+
+        val questionnaireChallenge = questionnaireChallengeServices
+                .getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(
+                        questionnaireAnswerModel.questionnaireId,
+                        questionnaireAnswerModel.challengeId
+                )
+
+        questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.get().questionnaireInstanceId
+        questionnaireAnswer.qcId = questionnaireChallenge.qcId
+
         return questionnaireAnswerRepository.save(questionnaireAnswer)
     }
 
@@ -85,14 +94,14 @@ class QuestionnaireAnswerServices(
         QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
 
         val questionnaireAnswerFromDB = questionnaireAnswerRepository.findById(questionnaireAnswerId)
-        CustomValidators.checkIfQuestionnaireAnswerExists(questionnaireAnswerFromDB, questionnaireAnswerId)
+        CustomValidators.checkIfQuestionnaireAnswerExists(questionnaireAnswerFromDB,questionnaireAnswerId)
 
         //region data for update operation
         val updatedQuestionnaireAnswer = questionnaireAnswerFromDB.get()
-        /*
-        if(updatedQuestionnaireAnswer.answer != null)
-            updatedQuestionnaireAnswer.answer = questionnaireAnswerModel.answerCode
-        */
+        if(updatedQuestionnaireAnswer.answer?.answerCode != null)
+            updatedQuestionnaireAnswer.answer?.answerCode = questionnaireAnswerModel.answer.answerCode
+        if(updatedQuestionnaireAnswer.answer?.unitTests != null)
+            updatedQuestionnaireAnswer.answer?.unitTests = questionnaireAnswerModel.answer.unitTests
         //endregion
 
         return questionnaireAnswerRepository.save(updatedQuestionnaireAnswer)
@@ -112,14 +121,14 @@ class QuestionnaireAnswerServices(
     /**
      * Auxiliary function that converts QuestionnaireAnswer model to QuestionnaireAnswer domain
      */
-    //TODO: usar o mapper a funcionar em vez desta função auxiliar
+    //TODO: usar o mapper a funcionar em vez desta função auxiliar ??
     //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireAnswer::class.java)
     private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
         // build answer from model
         val answer = Answer()
-        answer.codeLanguage = questionnaireAnswerModel.answerModel.codeLanguage
-        answer.answerCode = questionnaireAnswerModel.answerModel.answerCode
-        answer.unitTests = questionnaireAnswerModel.answerModel.unitTests
+        answer.codeLanguage = questionnaireAnswerModel.answer.codeLanguage
+        answer.answerCode = questionnaireAnswerModel.answer.answerCode
+        answer.unitTests = questionnaireAnswerModel.answer.unitTests
 
         // build questionnaireAnswer from model
         val questionnaireAnswer = QuestionnaireAnswer()
