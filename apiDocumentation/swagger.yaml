@@ -25,10 +25,10 @@ tags:
     description: Operations for managing the questionnaires.
   - name: Questionnaire Instances
     description: Operations for managing the questionnaire instances.
-  - name: Questionnaire Answers
-    description: Operations for managing the questionnaire answers.
   - name: Questionnaire-Challenges
     description: Operations for managing the questionnaire-challenges.
+  - name: Questionnaire Answers
+    description: Operations for managing the questionnaire answers.
 paths:
   '/':
     post:
@@ -135,7 +135,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/user'
     post:
       tags:
@@ -149,15 +148,13 @@ paths:
             content:
               application/json:
                 schema:
-                  type: object
-                  $ref: '#/components/schemas/createUser'
+                  $ref: '#/components/schemas/user'
       responses:
         '201':
           description: User created successfuly
           content:
             application/json:
               schema:
-                type: object
                 $ref: '#/components/schemas/user'
   '/v0/users/{userId}':  
     get:
@@ -183,7 +180,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/user'
     delete:
       tags:
@@ -260,7 +256,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/challengeNoIdNoSolutionID'
       responses:
         '201':
@@ -271,7 +266,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challenge'
   '/v0/challenges/{challengeId}':
     get:
@@ -319,7 +313,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/challengeNoId'
       responses:
         '200':
@@ -330,7 +323,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challenge'
     delete:
       tags:
@@ -424,7 +416,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challenge'
   '/v0/challenges/{challengeId}/answers/{userId}':
     get:
@@ -456,7 +447,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challengeAnswer'
   '/v0/challengeAnswers':
     post:
@@ -472,7 +462,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/challengeAnswerNoID'
       responses:
         '201':
@@ -483,7 +472,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challengeAnswer'
   '/v0/challengeAnswers/{challengeAnswerId}':
     put:
@@ -506,7 +494,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/challengeAnswerNoID'
       responses:
         '200':
@@ -517,7 +504,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challengeAnswer'
     delete:
       tags:
@@ -588,7 +574,6 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/challengeTagInputModel'
       responses:
         '201':
@@ -599,7 +584,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/challengeTag'
   '/v0/challenges/{challengeId}/tags/{tagId}':
     get:
@@ -685,6 +669,10 @@ paths:
                     description: Tag list.
                     items:
                       $ref: '#/components/schemas/tag'
+                      
+##################################
+#         QUESTIONNAIRES         #
+##################################
   '/v0/questionnaires':
     post:
       tags:
@@ -699,8 +687,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/questionnaireNoId'
+              $ref: '#/components/schemas/questionnaireModel'
       responses:
         '201':
           description: Successful questionnaire created.
@@ -710,7 +697,31 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
+                    $ref: '#/components/schemas/questionnaire'
+  '/v0/questionnaires/withChallenges':
+    post:
+      tags:
+        - Questionnaires
+      summary: Creates a questionnaire with challenges
+      operationId: createQuestionnaireWithChallenges
+      description: |
+        Creates a questionnaire based on payload content.
+      requestBody:
+        description: Questionnaire to be created, and the challenges to associate to it.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/questionnaireWithChallengesModel'
+      responses:
+        '201':
+          description: Successful questionnaire created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
                     $ref: '#/components/schemas/questionnaire'
   '/v0/questionnaires/{questionnaireId}':
     get:
@@ -736,7 +747,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaire'
     put:
       tags:
@@ -758,8 +768,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/questionnaireNoId'
+              $ref: '#/components/schemas/questionnaireModel'
       responses:
         '200':
           description: Successful updated questionnaire.
@@ -769,7 +778,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaire'
     delete:
       tags:
@@ -816,35 +824,32 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaire'
-  '/v0/questionnaireAnswer':
+  '/v0/questionnaireInstances':
     post:
       tags:
-        - Questionnaire Answers
-      summary: Creates a questionnaire answer
-      operationId: createQuestionnaireAnswer
+        - Questionnaire Instances
+      summary: Creates a questionnaire instance
+      operationId: createQuestionnaireInstance
       description: |
-        Creates a questionnaire answer based on payload content.
+        Creates a questionnaire instance based on payload content.
       requestBody:
-        description: Questionnaire answer to be created.
+        description: Questionnaire instance to be created.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/questionnaireAnswerNoId'
+              $ref: '#/components/schemas/questionnaireInstanceModel'
       responses:
         '201':
-          description: Successful questionnaire answer created.
+          description: Successful questionnaire instance created.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   payload:
-                    type: object
-                    $ref: '#/components/schemas/questionnaireAnswer'
+                    $ref: '#/components/schemas/questionnaireInstance'
   '/v0/questionnaireInstances/{questionnaireInstanceId}':
     get:
       tags:
@@ -869,7 +874,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireInstance'
     put:
       tags:
@@ -891,8 +895,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/questionnaireInstanceNoId'
+              $ref: '#/components/schemas/questionnaireInstanceModel'
       responses:
         '200':
           description: Successful updated questionnaire instance.
@@ -902,7 +905,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireInstance'
     delete:
       tags:
@@ -949,7 +951,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireInstance'
   '/v0/questionnaireInstances/questionnaires/{questionnaireId}':
     get:
@@ -975,8 +976,32 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireInstance'
+  '/v0/questionnaireAnswer':
+    post:
+      tags:
+        - Questionnaire Answers
+      summary: Creates a questionnaire answer
+      operationId: createQuestionnaireAnswer
+      description: |
+        Creates a questionnaire answer based on payload content.
+      requestBody:
+        description: Questionnaire answer to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/questionnaireAnswerModel'
+      responses:
+        '201':
+          description: Successful questionnaire answer created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    $ref: '#/components/schemas/questionnaireAnswer'
   '/v0/questionnaireAnswer/{questionnaireAnswerId}':
     get:
       tags:
@@ -1001,7 +1026,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireAnswer'
     put:
       tags:
@@ -1023,8 +1047,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/questionnaireAnswerNoId'
+              $ref: '#/components/schemas/questionnaireAnswerModel'
       responses:
         '200':
           description: Successful updated questionnaire answer.
@@ -1034,7 +1057,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireAnswer'
     delete:
       tags:
@@ -1081,7 +1103,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireAnswer'
   '/v0/questionnaireChallenges':
     post:
@@ -1092,13 +1113,12 @@ paths:
       description: |
         Add one or multiple challenges to a single questionnaire by theirs unique identifiers.
       requestBody:
-        description: sdfsdfsdfsdf
+        description: Object that groups a collection of challenge ids and a questionnaire id.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/QuestionnaireChallengeNoId'
+              $ref: '#/components/schemas/questionnaireChallengeModel'
       responses:
         '201':
           description: Successfully added challenges to questionnaire.
@@ -1108,7 +1128,6 @@ paths:
                 type: object
                 properties:
                   payload:
-                    type: object
                     $ref: '#/components/schemas/questionnaireChallenge'
     delete:
       tags:
@@ -1118,13 +1137,12 @@ paths:
       description: |
         Remove one or multiple challenges to a single questionnaire by theirs unique identifiers.
       requestBody:
-        description: sdfsdfsdfsdf
+        description: Object that groups a collection of challenge ids and a questionnaire id.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              $ref: '#/components/schemas/QuestionnaireChallengeIdListModel'
+              $ref: '#/components/schemas/questionnaireChallengeModel'
       responses:
         '204':
           description: Successful removed challenges from questionnaire.
@@ -1132,6 +1150,37 @@ paths:
             application/json:
               schema:
                 type: object
+  '/v0/questionnaireChallenges/{questionnaireId}/{challengeId}':
+    get:
+      tags:
+        - Questionnaire-Challenges
+      summary: Retrieves all questionnaire answers from a questionnaire instance
+      operationId: getQuestionnaireChallengeByChallengeIdAndQuestionnaireId
+      description: |
+        Retrieves a questionnaire-challenge by the unique combination of a questionnaire and a challenge uniques identifers.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+        - in: path
+          name: challengeId
+          schema:
+            type: integer
+          required: true
+          description: Challenge instance unique identifer.
+      responses:
+        '200':
+          description: Questionnaire-Challenge.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    $ref: '#/components/schemas/questionnaireChallenge'
 components:
   schemas:
     executable:
@@ -1245,6 +1294,10 @@ components:
           type: string
           example: "userOne@example.com"
           description: Email address which can be used to contact user
+          
+##################################
+#           CHALLENGES           #
+##################################
     challenge:
       type: object
       required:
@@ -1474,8 +1527,6 @@ components:
           example: 55874
           description: Unique challenge id to which the tag belongs to.
         tag:
-          type: object
-          description: Unique challenge id to which the aswer belongs to.
           $ref: '#/components/schemas/tag'
     tag:
       type: object
@@ -1500,6 +1551,10 @@ components:
           type: string
           example: Array
           description: Unique tag text.
+          
+##################################
+#         QUESTIONNAIRES         #
+##################################
     questionnaire:
       type: object
       required:
@@ -1518,7 +1573,7 @@ components:
           example: Questionnaire for course PS-1920SV
           description: Text describing the questionnaire.
         timer:
-          type: integer
+          type: number
           example: 360000
           description: >-
             Time in milliseconds which an user has to solve the questionnaire.
@@ -1531,20 +1586,19 @@ components:
           type: string
           example: '2020/05/12'
           description: questionnaire's creation date in yyyy-MM-dd format
-    questionnaireNoId:
+    questionnaireModel:
       type: object
       required:
         - description
         - timer
         - creatorId
-        - creationDate
       properties:
         description:
           type: string
           example: Questionnaire for course PS-1920SV
           description: Text describing the questionnaire.
         timer:
-          type: integer
+          type: number
           example: 360000
           description: >-
             Time in milliseconds which an user has to solve the questionnaire.
@@ -1553,20 +1607,29 @@ components:
           type: integer
           example: 44598
           description: Unique user identifier of user who created the questionnaire.
-        creationDate:
-          type: string
-          example: '2020/05/12'
-          description: questionnaire's creation date in yyyy-MM-dd format
+    questionnaireWithChallengesModel:
+      type: object
+      required:
+        - questionnaire
+        - challenges
+      properties:
+        questionnaire:
+          $ref: '#/components/schemas/questionnaireModel'
+        challenges:
+          type: array
+          items:
+            $ref: '#/components/schemas/questionnaireChallengeCollectionModel'
     questionnaireInstance:
       type: object
       required:
-        - questionnaireInstanceId
         - questionnaireId
+        - questionnaireInstanceId
         - questionnaireInstanceUuid
         - description
         - timer
         - startTimestamp
         - endTimestamp
+        - isFinished
       properties:
         questionnaireInstanceId:
           type: integer
@@ -1585,28 +1648,33 @@ components:
           example: Questionnaire for course PS-1920SV and class LI61N 
           description: Text describing the questionnaire instance.
         timer:
-          type: integer
+          type: number
           example: 1800000
           description: >-
             Time in milliseconds which an user has to solve the questionnaire instance.
             If value is NULL has no time limite.
         startTimestamp:
-          type: string
-          example: '2020-05-12 08:07:16-08'
-          description: Timestamp that user started solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+          type: number
+          example: 231231230000000
+          description: >- 
+            Time in milliseconds that user started solving the questionnaire instance.
         endTimestamp:
-          type: string
-          example: '2020-05-12 08:37:16-08'
-          description: Timestamp that user ended solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
-    questionnaireInstanceNoId:
+          type: number
+          example: 231231231800000
+          description: >-
+            Time in milliseconds that user finished solving the questionnaire instance.
+        isFinished:
+          type: boolean
+          example: false
+          description: Indicates if user can still access questionnaire instance.
+    questionnaireInstanceModel:
       type: object
       required:
         - questionnaireId
         - questionnaireInstanceUuid
         - description
         - timer
-        - startTimestamp
-        - endTimestamp
+        - isFinished
       properties:
         questionnaireId:
           type: integer
@@ -1621,66 +1689,118 @@ components:
           example: Questionnaire for course PS-1920SV and class LI61N 
           description: Text describing the questionnaire instance.
         timer:
-          type: integer
+          type: number
           example: 1800000
           description: >-
             Time in milliseconds which an user has to solve the questionnaire instance.
             If value is NULL has no time limite.
-        startTimestamp:
+        isFinished:
+          type: boolean
+          example: true
+          description: Indicates if user can still access questionnaire instance
+    questionnaireChallenge:
+      type: object
+      required:
+        - questionnaireChallengeId
+        - questionnaire
+        - challenge
+        - languageFilter
+      properties:
+        questionnaireChallengeId:
+          type: integer
+          example: 2342
+          description: Unique identifier of questionnaire-challenge.
+        questionnaire:
+          $ref: '#/components/schemas/questionnaire'
+        challenge:
+          $ref: '#/components/schemas/challenge'
+        languageFilter:
           type: string
-          example: '2020-05-12 08:07:16-08'
-          description: Timestamp that user started solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
-        endTimestamp:
+          example: 'java,javascript,python'
+          description: >-
+            Programming languages allowed to be used to solve the questionnaire challenge, separeted by commas.
+    questionnaireChallengeModel:
+      type: object
+      required:
+        - questionnaireId
+        - challenges
+      properties:
+        questionnaireId:
+          type: integer
+          example: 54954
+          description: Unique identifier of questionnaire.
+        challenges:
+          type: array
+          items:
+            $ref: '#/components/schemas/questionnaireChallengeCollectionModel'
+          description: Unique identifier of challenge.
+        languageFilter:
           type: string
-          example: '2020-05-12 08:37:16-08'
-          description: Timestamp that user ended solving the questionnaire instance in yyyy-MM-dd hh-mm-ss format.
+          example: 'java,javascript,python'
+          description: >-
+            Programming languages allowed to be used to solve the questionnaire challenge, separeted by commas.
+    questionnaireChallengeCollectionModel:
+      type: object
+      required:
+        - challengeId
+        - languageFilter
+      properties:
+        challengeId:
+          type: integer
+          example: 2342
+          description: Unique identifier of challenge.
+        languageFilter:
+          type: string
+          example: 'java,javascript,python'
+          description: >-
+            Programming languages allowed to be used to solve the questionnaire challenge, separeted by commas.
     questionnaireAnswer:
       type: object
       required:
         - questionnaireAnswerId
         - questionnaireInstanceId
-        - answerId
-        - codeLanguage
-        - answerCode
-        - unitTests
-        - isCorrect
+        - questionnaireChallengeId
+        - answer
       properties:
         questionnaireAnswerId:
           type: integer
-          example: 6546
+          example: 2131
           description: Unique identifier of questionnaire answer.
         questionnaireInstanceId:
           type: integer
           example: 55874
           description: Unique identifier of questionnaire instance.
-        answerId:
+        questionnaireChallengeId:
           type: integer
-          example: 54954
-          description: Unique identifier of answer.
-        codeLanguage:
-          type: string
-          example: Java
-          description: Text identifying the programming language of the answer.
-        answerCode:
-          type: string
-          example: >-
-            public class code { public static void main(String[] args) {
-            System.out.println(\"Hello World\");}}
-          description: Solution of the challenge submitted.
-        unitTests:
-          type: string
-          example: >-
-            import org.junit.Assert;import org.junit.Test;public class unitTests
-            {@Test public void TestCase1() {Assert.assertTrue(true);}}
-          description: Unit tests developed by the user.
-        isCorrect:
-          type: boolean
-          example: true
-          description: Boolean indicating if this answer is correct or not.
-    questionnaireAnswerNoId:
+          example: 4467
+          description: Unique identifier of questionnaire-challenge.
+        answer:
+          $ref: '#/components/schemas/Answer'
+    questionnaireAnswerModel:
       type: object
       required:
+        - questionnaireId
         - questionnaireInstanceId
+        - challengeId
+        - answer
+      properties:
+        questionnaireId:
+          type: integer
+          example: 2131
+          description: Unique identifier of questionnaire.
+        questionnaireInstanceId:
+          type: integer
+          example: 55874
+          description: Unique identifier of questionnaire instance.
+        challengeId:
+          type: integer
+          example: 44
+          description: Unique identifier of challenge.
+        answer:
+          $ref: '#/components/schemas/AnswerModel'
+    Answer:
+      type: object
+      required:
         - answerId
         - codeLanguage
         - answerCode
@@ -1690,21 +1810,17 @@ components:
         questionnaireInstanceId:
           type: integer
           example: 55874
-          description: Unique identifier of questionnaire instance.
-        answerId:
-          type: integer
-          example: 54954
           description: Unique identifier of answer.
         codeLanguage:
           type: string
-          example: 'java'
-          description: Text identifying the programming language of the answer.
+          example: "java"
+          description: Text identifying the programming language name.
         answerCode:
           type: string
           example: >-
             public class code { public static void main(String[] args) {
             System.out.println(\"Hello World\");}}
-          description: Solution of the challenge submitted.
+          description: Submitted answer.
         unitTests:
           type: string
           example: >-
@@ -1713,49 +1829,29 @@ components:
           description: Unit tests developed by the user.
         isCorrect:
           type: boolean
-          example: true
-          description: Boolean indicating if this answer is correct or not.
-    questionnaireChallenge:
+          example: false
+          description: Indicates if submitted answer matches the solution.
+    AnswerModel:
       type: object
       required:
-        - questionnaireId
-        - challengeId
-        - languageFilter
+        - codeLanguage
+        - answerCode
+        - unitTests
       properties:
-        questionnaireId:
-          type: integer
-          example: 54954
-          description: Unique identifier of questionnaire.
-        challengeId:
-          type: integer
-          example: 4235
-          description: Unique identifier of challenge.
-        languageFilter:
+        codeLanguage:
           type: string
-          example: 'java,javascript,python'
-          description: Programming languages allowed to be used to solve the questionnaire, separeted by the character ",".
-    questionnaireChallengeNoId:
-      type: object
-      required:
-        - qcId
-        - questionnaireId
-        - challengeId
-        - languageFilter
-      properties:
-        qcId:
-          type: integer
-          example: 9762
-          description: Unique identifier of questionnaire-challenge.
-        questionnaireId:
-          type: integer
-          example: 54954
-          description: Unique identifier of questionnaire.
-        challengeId:
-          type: integer
-          example: 4235
-          description: Unique identifier of challenge.
-        languageFilter:
+          example: "java"
+          description: Text identifying the programming language name
+        answerCode:
           type: string
-          example: 'java,javascript,python'
-          description: Programming languages allowed to be used to solve the questionnaire, separeted by the character ",".
+          example: >-
+            public class code { public static void main(String[] args) {
+            System.out.println(\"Hello World\");}}
+          description: Submited answer.
+        unitTests:
+          type: string
+          example: >-
+            import org.junit.Assert;import org.junit.Test;public class unitTests
+            {@Test public void TestCase1() {Assert.assertTrue(true);}}
+          description: Unit tests developed by the user.
           

@@ -14,24 +14,24 @@ import javax.validation.constraints.Positive
 @Entity
 @Table(name="answer", schema = Constants.SCHEMA)
 data class Answer (
-    @Id
-    @Column(name="answer_id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @field:Positive(message = "Answer id must be positive")
-    var id : Int? =  null,
+        @Id
+        @Column(name="answer_id")
+        @GeneratedValue(strategy=GenerationType.IDENTITY)
+        @field:Positive(message = "Answer id must be positive")
+        var answerId : Int? =  null,
 
-    @Column(name="code_language")
-    @Pattern(regexp = SupportedLanguages.REGEX_STRING_SUPPORTED_LANGUAGES)
-    var codeLanguage : String?,
+        @Column(name="code_language")
+        @Pattern(regexp = SupportedLanguages.REGEX_STRING_SUPPORTED_LANGUAGES)
+        var codeLanguage : String?,
 
-    @Column(name="answer_code")
-    var answerCode : String?,
+        @Column(name="answer_code")
+        var answerCode : String?,
 
-    @Column(name="unit_tests")
-    var unitTests : String?,
+        @Column(name="unit_tests")
+        var unitTests : String?,
 
-    @Column(name="is_correct")
-    var isCorrect : Boolean?
+        @Column(name="is_correct")
+        var isCorrect : Boolean?
 ) {
     constructor() : this(null, null, null, null, null)
 }

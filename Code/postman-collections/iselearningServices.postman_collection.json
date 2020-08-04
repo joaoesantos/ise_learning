@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "868b58a6-b9cc-484d-9ce5-a512d3959107",
+		"_postman_id": "404f6164-984f-4e6c-ac5c-ff0aa63f70aa",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,18 +21,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Seixo\",\n\t\"username\":\"lp\",\n\t\"email\":\"SeixoPaulo@email.com\",\n\t\"password\": \"xpto1\"\n}",
-							"options": {
-								"raw": {}
-							}
+							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\"\n}"
 						},
 						"url": {
-							"raw": "{{hostServices}}/v0/users",
+							"raw": "{{hostServices}}/users",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users"
 							]
 						}
@@ -45,20 +41,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/users/:id",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7",
-									"type": "string"
+									"value": "1"
 								}
 							]
 						}
@@ -71,20 +65,46 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/users/:id",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7"
+									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates an User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Sergio\",\n\t\"id\":1,\n\t\"username\":\"sergionNew\",\n\t\"email\":\"sergio@email.com\"\n}"
+						},
+						"url": {
+							"raw": "{{hostServices}}/users",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -123,13 +143,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/challengeAnswers/:challengeId/answers/users/:userId",
+									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
-										"challengeAnswers",
+										"challenges",
 										":challengeId",
 										"answers",
 										"users",
@@ -138,13 +158,11 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "4",
-											"type": "string"
+											"value": "2"
 										},
 										{
 											"key": "userId",
-											"value": "2",
-											"type": "string"
+											"value": "2"
 										}
 									]
 								}
@@ -158,7 +176,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 4,\r\n    \"userId\": 2,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -179,7 +197,7 @@
 							"response": []
 						},
 						{
-							"name": "updateChallengesAnswers",
+							"name": "updateChallengesAnswers Copy",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -204,10 +222,8 @@
 									],
 									"variable": [
 										{
-											"id": "c86203bf-602c-4b2d-a2c2-aef8873c1684",
 											"key": "challengeAnswerId",
-											"value": "14",
-											"type": "string"
+											"value": "14"
 										}
 									]
 								}
@@ -215,7 +231,7 @@
 							"response": []
 						},
 						{
-							"name": "deleteChallengesAnswers",
+							"name": "deleteChallengesAnswers Copy Copy",
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -240,10 +256,8 @@
 									],
 									"variable": [
 										{
-											"id": "c1762bfc-e7fa-4f24-a6ef-60da19266bde",
 											"key": "challengeAnswerId",
-											"value": "14",
-											"type": "string"
+											"value": "14"
 										}
 									]
 								}
@@ -255,7 +269,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "tags",
+					"name": "Tags",
 					"item": [
 						{
 							"name": "getChallengeTagByChallengeId",
@@ -276,8 +290,7 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "1",
-											"type": "string"
+											"value": "3"
 										}
 									]
 								}
@@ -285,7 +298,7 @@
 							"response": []
 						},
 						{
-							"name": "getChallengeTagByChallengeIdAndTagId",
+							"name": "getChallengeTagByChallengeIdAndTagText",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -304,13 +317,11 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "1",
-											"type": "string"
+											"value": "1"
 										},
 										{
 											"key": "tagid",
-											"value": "4",
-											"type": "string"
+											"value": "4"
 										}
 									]
 								}
@@ -324,7 +335,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"tag\": \"demo\"\r\n}",
+									"raw": "{\r\n    \"tag\": \"Arrays\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -345,8 +356,7 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "1",
-											"type": "string"
+											"value": "3"
 										}
 									]
 								}
@@ -373,13 +383,11 @@
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "1",
-											"type": "string"
+											"value": "3"
 										},
 										{
 											"key": "tagId",
-											"value": "8",
-											"type": "string"
+											"value": "5"
 										}
 									]
 								}
@@ -389,36 +397,6 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
-				},
-				{
-					"name": "getChallenges",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostServices}}/v0/challenges",
-							"host": [
-								"{{hostServices}}"
-							],
-							"path": [
-								"v0",
-								"challenges"
-							],
-							"query": [
-								{
-									"key": "tags",
-									"value": "Divide%20and%20Conquer",
-									"disabled": true
-								},
-								{
-									"key": "privacy",
-									"value": "private",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
 				},
 				{
 					"name": "createChallenge",
@@ -442,6 +420,30 @@
 							"path": [
 								"v0",
 								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallenges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges?privacy=private",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							],
+							"query": [
+								{
+									"key": "privacy",
+									"value": "private"
+								}
 							]
 						}
 					},
@@ -478,7 +480,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/challenges/users/:userId",
+							"raw": "{{hostServices}}/v0/challenges/users/:userId?tags=Array,Divide and Conquer",
 							"host": [
 								"{{hostServices}}"
 							],
@@ -491,15 +493,39 @@
 							"query": [
 								{
 									"key": "tags",
-									"value": "Array,Divide and Conquer",
-									"disabled": true
+									"value": "Array,Divide and Conquer"
 								}
 							],
 							"variable": [
 								{
 									"key": "userId",
-									"value": "1",
-									"type": "string"
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getChallengesByQuestionnaireId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/questionnaires/:questionnaireId",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"questionnaires",
+								":questionnaireId"
+							],
+							"variable": [
+								{
+									"key": "questionnaireId",
+									"value": "3"
 								}
 							]
 						}
@@ -578,6 +604,621 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Questionnaires",
+			"item": [
+				{
+					"name": "Questionnaire",
+					"item": [
+						{
+							"name": "createQuestionnaire",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"description\" : \"questionnaire created on postman\",\n\t\"creatorId\" : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createQuestionnaireWithChallenges",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\",\r\n        \"creatorId\" : 1\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										"withChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllUserQuestionnaires",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/users/:userId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										"users",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"description\" : \"questionnaire updated on postman\",\n\t\"timer\" : 3600000\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire Instance",
+					"item": [
+						{
+							"name": "createQuestionnaireInstance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"questionnaireId\" : 1,\n\t\"description\" : \"questionnaire instance created on postman\",\n\t\"timer\" : 1800000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireInstanceById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireInstanceByUuid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/uuid/:questionnaireInstanceUuid",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										"uuid",
+										":questionnaireInstanceUuid"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceUuid",
+											"value": "7eecc8ed-7cfb-4707-ac39-3ef02a852223"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireInstancesByQuestionnaireId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireInstance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"description\" : \"questionnaire instance updated on postman\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireInstanceById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire Answer",
+					"item": [
+						{
+							"name": "createQuestionnaireAnswer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"questionnaireId\": 1,\n    \"questionnaireInstanceId\": 1,\n    \"challengeId\": 1,\n    \"answer\": {\n        \"codeLanguage\": \"python\",\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\n        \"unitTests\": \"TRUE\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireAnswersById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireAnswersByQuestionnaireInstanceId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireAnswersByQuestionnaireInstanceUuid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/questionnaireInstances/:questionnaireInstanceUuid",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										"questionnaireInstances",
+										":questionnaireInstanceUuid"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceUuid",
+											"value": "7eecc8ed-7cfb-4707-ac39-3ef02a852223"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireAnswerById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"questionnaireId\": 1,\n    \"questionnaireInstanceId\": 1,\n    \"challengeId\": 1,\n    \"answer\": {\n        \"codeLanguage\": \"python\",\n        \"answerCode\": \"print(\\\"Updated on postman!\\\")\",\n        \"unitTests\": \"TRUE\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireAnswerById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId?=",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"query": [
+										{
+											"key": null,
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire-Challenges",
+					"item": [
+						{
+							"name": "getQuestionnaireChallengeByChallengeIdAndQuestionnaireId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges/:questionnaireId/:challengeId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges",
+										":questionnaireId",
+										":challengeId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "2"
+										},
+										{
+											"key": "challengeId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addChallengesByIdToQuestionnaire",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaireId\": 4,\r\n    \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeChallengesByIdFromQuestionnaire",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaireId\": 3,\r\n    \"challenges\": [ \r\n        {\r\n            \"challengeId\": 1\r\n        },\r\n        {\r\n            \"challengeId\": 2\r\n        },\r\n        {\r\n            \"challengeId\": 3\r\n        } \r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Execute",
 			"item": [
 				{
@@ -593,7 +1234,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": true\n}",
+							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
 							"options": {
 								"raw": {}
 							}
@@ -630,6 +1271,29 @@
 							"path": [
 								"v0",
 								"tags"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "getHandlerMappingMethods",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0"
 							]
 						}
 					},

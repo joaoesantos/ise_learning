@@ -75,7 +75,7 @@ class QuestionnaireChallengeServices(
     /**
      * Remove a collection challenges from a questionnaire by its unique identifiers
      *
-     * @param listOfQuestionnaireChallenge model that groups a groups a collection of challenge ids and a questionnaire id
+     * @param listOfQuestionnaireChallenge model that groups a collection of challenge ids and a questionnaire id
      */
     @Validated
     fun removeChallengesByIdFromQuestionnaire(@Valid listOfQuestionnaireChallenge: QuestionnaireChallengeModel) {
