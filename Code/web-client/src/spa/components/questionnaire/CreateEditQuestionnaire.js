@@ -1,9 +1,17 @@
 import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import Toolbar from '@material-ui/core/Toolbar';
+import FormControl from '@material-ui/core/FormControl';
 import MaterialTable from 'material-table';
 import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { defaultLanguage } from '../../clientSideConfig';
+import { QuestionnaireController } from '../../controllers/QuestionnaireController'
 
 const useStyles = makeStyles(theme => ({
     layout: {},
@@ -19,16 +27,22 @@ const useStyles = makeStyles(theme => ({
         '&:hover': {
             backgroundColor: '#cf6744',
         }
+    },
+    container: {
+        padding: theme.spacing(1),
+    },
+    runCodetoolbar: {
+        paddingLeft: theme.spacing(5),
     }
 }));
 
 export default function CreateEditQuestionnaire(props) {
     /*
-        Title
-        Challenge search by tag/name
-        table with search results or with selected challenges
-        link button, with box to show the created link
-        save and cancel button
+        Title ---> x
+        Challenge search by tag/name ---> x
+        table with search results or with selected challenges -> x
+        link button, with box to show the created link --> x
+        save and cancel button -> x
     
         The questionnaire can have a language associated with it, in that case the chalenge solutions can only be of that language type
     */
@@ -37,33 +51,58 @@ export default function CreateEditQuestionnaire(props) {
         { title: 'Tags', field: 'tags' }
     ]
 
+    const selectedColumns = [
+        { title: 'Title', field: 'title' },
+        { title: 'Tags', field: 'tags' },
+        { title: 'Language', field: 'selectedLanguage', render: (rowData) =>
+        <Select
+        id="languageSelect"
+        native
+        label="Language"
+        disabled={!editable}
+        value={rowData.selectedLanguages}
+    >
+        <option value={''}>Select</option>
+        <option value={'java'}>Java</option>
+        <option value={'kotlin'}>Kotlin</option>
+        <option value={'javascript'}>JavaScript</option>
+        <option value={'csharp'}>C#</option>
+        <option value={'python'}>Python</option>
+    </Select>
+    }
+    ]
     const classes = useStyles();
-    const [editable, setEditable] = React.useState(false)
+    const [action, setAction] = React.useState()
+    const [actionState, response] = UseAction(action)
+    const [editable, setEditable] = React.useState(typeof props.id == 'undefined')
     const [questionnaire, setQuestionnaire] = React.useState({
-        id: 0,
-        title: 'This is a title',
+        id: null,
+        title: '',
+        language: '',
         selectedChallenges: []
     })
 
-    const [challengesData, setChallengesData] = React.useState([
-        {
-            id: 1,
-            title: 'cenas1',
-            tags: 'a, b, c'
-        },
-        {
-            id: 2,
-            title: 'cenas2',
-            tags: 'a, b, dad'
-        },
-        {
-            id: 3,
-            title: 'cenas3',
-            tags: 'a, b, oiopq'
-        }
-    ])
+    const [savedQuestionnaire, setSavedQuestionnaire] = React.useState(questionnaire)
+    const [challengesData, setChallengesData] = React.useState([])
 
-    React.useEffect(() => { },)
+    React.useEffect(() => {
+        if (response === undefined && actionState === ActionStates.clear) {
+            setAction({
+                function: QuestionnaireController.getQuestionnaire,
+                args: [props.id],
+                render: true
+            })
+        } else if (actionState === ActionStates.done &&
+            action.render && action.render === true) {
+            setQuestionnaire(response.questionnaire)
+            setSavedQuestionnaire(response.questionnaire)
+            setChallengesData(response.challenges)
+        } else {
+            //not Done || done but not rendering
+        }
+    }, [actionState]);
+
+    const isChallengeSelected = (id) => questionnaire.selectedChallenges.find(element => element.id == id);
 
     const toggleEdit = async function () {
         setEditable((prev) => {
@@ -76,86 +115,165 @@ export default function CreateEditQuestionnaire(props) {
         setQuestionnaire({ ...questionnaire, title: value })
     }
 
-    const handleSave = function (event) {
-        console.log('save')
-    }
-
     const handleCancel = function (event) {
+        setQuestionnaire(savedQuestionnaire)
         toggleEdit()
-        console.log('cancel')
     }
 
-    const buttonToolbar = function () {
-        return (<div className={classes.buttons}>
-            {!editable && (
-                <Button
-                    color="primary"
-                    variant="contained"
-                    className={classes.button}
-                    onClick={() => toggleEdit()}
-                >
-                    Edit
-                </Button>
-            )}
-            {
-                editable && (
-                    <React.Fragment>
-                        <Button
-                            variant="contained" A
-                            color="primary"
-                            onClick={handleSave}
-                            className={classes.button}>
-                            Save
-                        </Button>
-                        <Button
-                            variant="contained" A
-                            color="primary"
-                            onClick={handleCancel}
-                            className={classes.button}>
-                            Cancel
-                        </Button>
-                    </React.Fragment>
-                )
-            }
-        </div>
+    const createLink = function (event) {
+        alert('this should be a link')
+    }
+
+    const renderQuestionnaire = function () {
+        console.log(challengesData)
+        return (
+            <Formik
+                initialValues={{
+                    title: ''
+                }}
+                // validationSchema={Yup.object({
+                //     title: Yup.string()
+                //         .required('Required')
+                // })}
+                onSubmit={async (values, {setSubmitting}) => {
+                    setSubmitting(false)
+                    const newQuestionnaire = await QuestionnaireController.saveQuestionnaire(questionnaire)
+                    setSavedQuestionnaire(newQuestionnaire)
+                    toggleEdit()
+                }}
+            >
+                {({ isSubmitting, errors }) => (
+                    <div className={classes.container}>
+                        <Form>
+                            <Toolbar variant="dense">
+                                <Grid container spacing={0}>
+                                    <Grid item xs={2}>
+                                        <Grid container spacing={2} direction="column">
+                                            <Grid item >
+                                                <Field
+                                                    component={TextField}
+                                                    name="title"
+                                                    label="Title"
+                                                    disabled={!editable}
+                                                    onChange={onTitleChangeHandler}
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <ErrorMessage name="title" />
+                                            </Grid>
+                                        </Grid>
+
+
+                                    </Grid>
+                                </Grid>
+                            </Toolbar>
+
+
+                            <Grid container spacing={2}>
+                                <Grid item xs={7}>
+                                    <MaterialTable
+                                        style={{ height: '100%' }}
+                                        columns={columns}
+                                        data={challengesData}
+                                        title="Available Challenges"
+                                        actions={[
+                                            rowData => ({
+                                                icon: 'add',
+                                                tooltip: 'Add Challenge',
+                                                onClick: (event, rowData) => {
+                                                    const newSelected = [...questionnaire.selectedChallenges]
+                                                    newSelected.push(rowData)
+                                                    newSelected.sort((a, b) => a.id - b.id)
+                                                    setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
+                                                },
+                                                disabled: !editable || isChallengeSelected(rowData.id),
+                                            })
+                                        ]}
+                                    />
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <MaterialTable
+                                        style={{ height: '100%' }}
+                                        columns={selectedColumns}
+                                        data={questionnaire.selectedChallenges}
+                                        title="Selected Challenges"
+                                        actions={[
+                                            {
+                                                icon: 'remove',
+                                                tooltip: 'Remove Challenge',
+                                                onClick: (event, rowData) => {
+                                                    let newSelected = [...questionnaire.selectedChallenges]
+                                                    newSelected = questionnaire.selectedChallenges.filter(c => c.id != rowData.id)
+                                                    setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
+                                                },
+                                                disabled: !editable
+                                            }]}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <div className={classes.buttons}>
+                                {!editable && (
+
+                                    <React.Fragment>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            className={classes.button}
+                                            onClick={() => toggleEdit()}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={createLink}
+                                            className={classes.button}
+                                        >
+                                            Create Link
+                                        </Button>
+                                    </React.Fragment>
+
+                                )}
+                                {
+                                    editable && (
+                                        <React.Fragment>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                type="submit"
+                                                className={classes.button}
+                                                disabled={isSubmitting}
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={handleCancel}
+                                                className={classes.button}>
+                                                Cancel
+                                            </Button>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </div>
+                        </Form>
+                    </div>
+                )}
+            </Formik>
+
         )
     }
 
-    return (
-        <React.Fragment>
-            <TextField required disabled={!editable} label="Title" value={questionnaire.title} onChange={onTitleChangeHandler} />
-            <MaterialTable
-                columns={columns}
-                data={challengesData}
-                title="Demo Title"
-                actions={[
-                    {
-                        icon: 'add',
-                        tooltip: 'Add Challenge',
-                        onClick: (event, rowData) => {
-                            const newSelected = [...questionnaire.selectedChallenges]
-                            newSelected.push(rowData)
-                            setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
-                        },
-                        disabled: !editable,
-                    }]}
-            />
-
-            <MaterialTable
-                columns={columns}
-                data={questionnaire.selectedChallenges}
-                title="Demo Title"
-                actions={[
-                    {
-                        icon: 'remove',
-                        tooltip: 'Remove Challenge',
-                        onClick: (event, rowData) => {
-                            const newSelected = questionnaire.selectedChallenges.filter(c => c.id != rowData.id)
-                            setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
-                        }
-                    }]}
-            />
-            {buttonToolbar()}
-        </React.Fragment>
-    )
+    if (actionState === ActionStates.clear) {
+        return <p>insert URL</p>
+    } else if (actionState === ActionStates.inProgress) {
+        return <p>fetching...</p>
+    } else if (actionState === ActionStates.done && questionnaire) {
+        return (
+            renderQuestionnaire()
+        )
+    } else {
+        return <p>error...</p>
+    }
 };
