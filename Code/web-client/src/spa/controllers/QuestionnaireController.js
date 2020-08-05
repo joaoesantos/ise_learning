@@ -8,17 +8,20 @@ export const QuestionnaireController = {
         {
             id: 1,
             title: 'cenas1',
-            tags: 'a, b, c'
+            tags: 'a, b, c',
+            languages: ['java', 'javascript']
         },
         {
             id: 2,
             title: 'cenas2',
-            tags: 'a, b, dad'
+            tags: 'a, b, dad',
+            languages: ['csharp', 'python']
         },
         {
             id: 3,
             title: 'cenas3',
-            tags: 'a, b, oiopq'
+            tags: 'a, b, oiopq',
+            languages: ['kotlin']
         }
     ]
     let questionnaire = {
@@ -45,7 +48,7 @@ export const QuestionnaireController = {
                 id: 3,
                 title: 'cenas3',
                 tags: 'a, b, oiopq',
-                selectedLanguages: 'javascript'
+                selectedLanguages: ['javascript']
             }
         ]
     }
