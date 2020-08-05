@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import Toolbar from '@material-ui/core/Toolbar';
 import FormControl from '@material-ui/core/FormControl';
+import Chip from '@material-ui/core/Chip';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
 import MaterialTable from 'material-table';
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { defaultLanguage } from '../../clientSideConfig';
@@ -33,19 +36,31 @@ const useStyles = makeStyles(theme => ({
     },
     runCodetoolbar: {
         paddingLeft: theme.spacing(5),
+    },
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        background: 'fff',
+        minWidth: 120,
+        maxWidth: 300,
     }
 }));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
 export default function CreateEditQuestionnaire(props) {
-    /*
-        Title ---> x
-        Challenge search by tag/name ---> x
-        table with search results or with selected challenges -> x
-        link button, with box to show the created link --> x
-        save and cancel button -> x
-    
-        The questionnaire can have a language associated with it, in that case the chalenge solutions can only be of that language type
-    */
     const columns = [
         { title: 'Title', field: 'title' },
         { title: 'Tags', field: 'tags' }
@@ -54,21 +69,30 @@ export default function CreateEditQuestionnaire(props) {
     const selectedColumns = [
         { title: 'Title', field: 'title' },
         { title: 'Tags', field: 'tags' },
-        { title: 'Language', field: 'selectedLanguage', render: (rowData) =>
+        { title: 'Language', field: 'selectedLanguage', render: (rowData) => 
+        <FormControl className={classes.formControl}>
         <Select
-        id="languageSelect"
-        native
-        label="Language"
-        disabled={!editable}
-        value={rowData.selectedLanguages}
-    >
-        <option value={''}>Select</option>
-        <option value={'java'}>Java</option>
-        <option value={'kotlin'}>Kotlin</option>
-        <option value={'javascript'}>JavaScript</option>
-        <option value={'csharp'}>C#</option>
-        <option value={'python'}>Python</option>
-    </Select>
+          id="select-language-multiple"
+          multiple
+          value={rowData.selectedLanguages}
+          onChange={(event) => changeSelectedLanguages(event, rowData)}
+          input={<Input id="elect-language-multiple-chip" />}
+          renderValue={(selected) => (
+            <div className={classes.chips}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} className={classes.chip} />
+              ))}
+            </div>
+          )}
+          MenuProps={MenuProps}
+        >
+          {rowData.languages.map((language) => (
+            <MenuItem key={language} value={language}>
+              {language}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     }
     ]
     const classes = useStyles();
@@ -102,12 +126,20 @@ export default function CreateEditQuestionnaire(props) {
         }
     }, [actionState]);
 
-    const isChallengeSelected = (id) => questionnaire.selectedChallenges.find(element => element.id == id);
+    const isChallengeSelected = (id) => (typeof questionnaire.selectedChallenges.find(element => element.id == id) != 'undefined');
 
     const toggleEdit = async function () {
         setEditable((prev) => {
             return !prev
         })
+    }
+
+    const changeSelectedLanguages = function(event, changedChallenge){
+        const sc = [...questionnaire.selectedChallenges]
+        const idx = questionnaire.selectedChallenges.findIndex(e => e.id === changedChallenge.id)
+        sc[idx].selectedLanguages = event.target.value
+        setQuestionnaire({ ...questionnaire, selectedChallenges: sc })
+        
     }
 
     const onTitleChangeHandler = function (event) {
@@ -125,7 +157,6 @@ export default function CreateEditQuestionnaire(props) {
     }
 
     const renderQuestionnaire = function () {
-        console.log(challengesData)
         return (
             <Formik
                 initialValues={{
@@ -182,6 +213,7 @@ export default function CreateEditQuestionnaire(props) {
                                                 tooltip: 'Add Challenge',
                                                 onClick: (event, rowData) => {
                                                     const newSelected = [...questionnaire.selectedChallenges]
+                                                    rowData["selectedLanguages"] = []
                                                     newSelected.push(rowData)
                                                     newSelected.sort((a, b) => a.id - b.id)
                                                     setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
