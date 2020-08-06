@@ -3,15 +3,15 @@ package pt.iselearning.services.service.questionnaires
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
-import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
-import pt.iselearning.services.util.CustomValidators
-import pt.iselearning.services.util.QuestionnaireTimer
+import pt.iselearning.services.util.checkIfQuestionnaireExists
+import pt.iselearning.services.util.checkIfQuestionnaireInstanceExists
+import pt.iselearning.services.util.checkQuestionnaireInstanceTimeout
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
@@ -37,7 +37,7 @@ class QuestionnaireInstanceServices(
     fun createQuestionnaireInstance(@Valid questionnaireInstanceModel: QuestionnaireInstanceModel): QuestionnaireInstance {
         val questionnaireInstance = convertToEntity(questionnaireInstanceModel)
         val questionnaireInstanceParentOptional = questionnaireRepository.findById(questionnaireInstance.questionnaireId!!)
-        CustomValidators.checkIfQuestionnaireExists(questionnaireInstanceParentOptional, questionnaireInstance.questionnaireId!!)
+        checkIfQuestionnaireExists(questionnaireInstanceParentOptional, questionnaireInstance.questionnaireId!!)
         val questionnaireInstanceParent = questionnaireInstanceParentOptional.get()
 
         // extends parent properties by default
@@ -63,7 +63,7 @@ class QuestionnaireInstanceServices(
     @Validated
     fun getQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int) : QuestionnaireInstance {
         val questionnaireInstance = questionnaireInstanceRepository.findById(questionnaireInstanceId)
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstance, questionnaireInstanceId)
+        checkIfQuestionnaireInstanceExists(questionnaireInstance, questionnaireInstanceId)
 
         return questionnaireInstance.get()
     }
@@ -84,7 +84,7 @@ class QuestionnaireInstanceServices(
         }
         val questionnaireInstance = questionnaireInstanceOptional.get()
 
-        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(questionnaireInstance, questionnaireInstanceRepository)
+        checkQuestionnaireInstanceTimeout(questionnaireInstance, questionnaireInstanceRepository)
 
         return questionnaireInstance
     }
@@ -97,13 +97,7 @@ class QuestionnaireInstanceServices(
      */
     @Validated
     fun getAllQuestionnaireInstancesByQuestionnaireId(@Positive questionnaireId: Int) : List<QuestionnaireInstance> {
-        val questionnaireInstances = questionnaireInstanceRepository.findAllByQuestionnaireId(questionnaireId)
-        if (questionnaireInstances.isEmpty()) {
-            throw ServerException("Questionnaire instances not found.",
-                    "There are no questionnaire instances for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
-        }
-
-        return questionnaireInstances
+        return questionnaireInstanceRepository.findAllByQuestionnaireId(questionnaireId)
     }
 
 
@@ -116,10 +110,10 @@ class QuestionnaireInstanceServices(
     @Validated
     fun updateQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int, @Valid questionnaireInstanceModel: QuestionnaireInstanceModel): QuestionnaireInstance {
         val questionnaireInstanceFromDB = questionnaireInstanceRepository.findById(questionnaireInstanceId)
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstanceId)
+        checkIfQuestionnaireInstanceExists(questionnaireInstanceFromDB, questionnaireInstanceId)
         val updatedQuestionnaireInstance = questionnaireInstanceFromDB.get()
 
-        QuestionnaireTimer.checkQuestionnaireInstanceTimeout(updatedQuestionnaireInstance, questionnaireInstanceRepository)
+        checkQuestionnaireInstanceTimeout(updatedQuestionnaireInstance, questionnaireInstanceRepository)
 
         //region data for update operation
         if(questionnaireInstanceModel.description != null)
@@ -141,7 +135,7 @@ class QuestionnaireInstanceServices(
      */
     @Validated
     fun deleteQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int) {
-        CustomValidators.checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceId)
+        checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceId)
 
         questionnaireInstanceRepository.deleteById(questionnaireInstanceId)
     }

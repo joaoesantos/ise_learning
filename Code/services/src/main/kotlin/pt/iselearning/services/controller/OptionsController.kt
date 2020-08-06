@@ -3,11 +3,10 @@ package pt.iselearning.services.controller
 import net.minidev.json.JSONObject
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import pt.iselearning.services.util.Constants.Companion.VERSION
+import pt.iselearning.services.util.VERSION
 
 @RestController
 @RequestMapping("/${VERSION}")

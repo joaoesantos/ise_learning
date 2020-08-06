@@ -8,7 +8,7 @@ import pt.iselearning.services.domain.questionnaires.Questionnaire;
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireWithChallengesModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
-import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard Questionnaire domain

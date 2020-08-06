@@ -11,7 +11,8 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
-import pt.iselearning.services.util.CustomValidators
+import pt.iselearning.services.util.PRIVACY_REGEX_STRING
+import pt.iselearning.services.util.checkIfQuestionnaireExists
 import javax.validation.Valid
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Positive
@@ -26,7 +27,7 @@ class ChallengeService (
 ) {
     @Validated
     fun getAllChallenges(tags: String?,
-                         @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
+                         @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -56,7 +57,7 @@ class ChallengeService (
 
     @Validated
     fun getUserChallenges(@Positive userId: Int, tags: String?,
-                          @Pattern(regexp = CustomValidators.PRIVACY_REGEX_STRING) privacy: String?): List<Challenge>? {
+                          @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?): List<Challenge>? {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -87,16 +88,17 @@ class ChallengeService (
     @Validated
     fun getAllChallengesByQuestionnaireId(@Positive questionnaireId: Int) : List<Challenge> {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, questionnaireId)
 
         val challenges = questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireId)
-                .map { questionnaireChallenge -> questionnaireChallenge.challenge }
+                .filter { qc -> qc.challenge != null }
+                .map { questionnaireChallenge -> questionnaireChallenge.challenge!! }
         if (challenges.isEmpty()) {
             throw ServerException("Challenges not found.",
                     "There are no challenges for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
         }
 
-        return challenges as List<Challenge>
+        return challenges
 
     }
 

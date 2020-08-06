@@ -2,7 +2,7 @@ package pt.iselearning.services.domain.challenge
 
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.Solution
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.SCHEMA
 import javax.persistence.*
 import javax.validation.constraints.Positive
 
@@ -11,7 +11,7 @@ import javax.validation.constraints.Positive
  */
 @Validated
 @Entity
-@Table(name="challenge", schema = Constants.SCHEMA)
+@Table(name="challenge", schema = SCHEMA)
 data class Challenge (
     @Id
     @Column(name="challenge_id")

@@ -3,7 +3,7 @@ package pt.iselearning.services.domain.questionnaires
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.hibernate.annotations.Generated
 import org.hibernate.annotations.GenerationTime
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.SCHEMA
 import java.util.*
 import javax.persistence.*
 
@@ -11,7 +11,7 @@ import javax.persistence.*
  * Data class that represents questionnaire entity
  */
 @Entity
-@Table(name = "questionnaire", schema = Constants.SCHEMA)
+@Table(name = "questionnaire", schema = SCHEMA)
 data class Questionnaire(
 
         @Id

@@ -8,7 +8,7 @@ import pt.iselearning.services.models.user.CreateUserModel
 import pt.iselearning.services.models.user.UpdatePasswordModel
 import pt.iselearning.services.models.user.UpdateProfileModel
 import pt.iselearning.services.models.user.UserModel
-import pt.iselearning.services.util.Constants.Companion.VERSION
+import pt.iselearning.services.util.VERSION
 
 /**
  * Handler responsible to respond to requests regard User entity

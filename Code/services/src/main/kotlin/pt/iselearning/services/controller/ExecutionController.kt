@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*
 import pt.iselearning.services.domain.executable.Executable
 import pt.iselearning.services.domain.executable.ExecutableResult
 import pt.iselearning.services.service.ExecutionService
-import pt.iselearning.services.util.Constants.Companion.VERSION
+import pt.iselearning.services.util.VERSION
 
 /**
  * Handler responsible to respond to requests regarding code execution

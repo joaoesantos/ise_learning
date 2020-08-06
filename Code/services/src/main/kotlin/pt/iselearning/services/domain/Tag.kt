@@ -1,13 +1,13 @@
 package pt.iselearning.services.domain
 
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.SCHEMA
 import javax.persistence.*
 
 /**
  * data class that represents the tag entity
  */
 @Entity
-@Table(name="tag", schema = Constants.SCHEMA)
+@Table(name="tag", schema = SCHEMA)
 data class Tag (
     @Id
     @Column(name="tag_id")

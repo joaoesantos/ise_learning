@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerServices
-import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_ANSWER_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
 
 /**
  * Handler responsible to respond to requests regard QuestionnaireAnswer domain

@@ -2,6 +2,8 @@ package pt.iselearning.services.service.questionnaires
 
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.exception.ServerException
@@ -11,7 +13,9 @@ import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollec
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
-import pt.iselearning.services.util.CustomValidators
+import pt.iselearning.services.util.checkIfChallengeExists
+import pt.iselearning.services.util.checkIfQuestionnaireExists
+import pt.iselearning.services.util.checkSupportedLanguagesForChallengeLanguageFilter
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -36,11 +40,11 @@ class QuestionnaireChallengeServices(
     @Validated
     fun addChallengesByIdToQuestionnaire(@Valid questionnaireChallengeModel: QuestionnaireChallengeModel): List<QuestionnaireChallenge> {
         val questionnaire = questionnaireRepository.findById(questionnaireChallengeModel.questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireChallengeModel.questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, questionnaireChallengeModel.questionnaireId)
         questionnaireChallengeModel.challenges.iterator().forEach {
             val challenge = challengeRepository.findById(it.challengeId)
-            CustomValidators.checkIfChallengeExists(challenge, it.challengeId)
-            CustomValidators.checkSupportedLanguagesForChallengeLanguageFilter(it.languageFilter)
+            checkIfChallengeExists(challenge, it.challengeId)
+            checkSupportedLanguagesForChallengeLanguageFilter(it.languageFilter)
         }
 
         val createdQuestionnaireChallenge = mutableListOf<QuestionnaireChallenge>()
@@ -60,7 +64,7 @@ class QuestionnaireChallengeServices(
     @Validated
     fun getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(@Positive questionnaireId: Int, @Positive challengeId: Int): QuestionnaireChallenge {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, questionnaireId)
         val questionnaireChallenge = questionnaireChallengeRepository
                 .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(questionnaireId, challengeId)
 
@@ -80,7 +84,7 @@ class QuestionnaireChallengeServices(
     @Validated
     fun removeChallengesByIdFromQuestionnaire(@Valid listOfQuestionnaireChallenge: QuestionnaireChallengeModel) {
         val questionnaire = questionnaireRepository.findById(listOfQuestionnaireChallenge.questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaire, listOfQuestionnaireChallenge.questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, listOfQuestionnaireChallenge.questionnaireId)
         listOfQuestionnaireChallenge.challenges.iterator().forEach {
             val questionnaireChallenge = questionnaireChallengeRepository
                     .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(listOfQuestionnaireChallenge.questionnaireId, it.challengeId)

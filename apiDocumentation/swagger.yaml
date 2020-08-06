@@ -927,7 +927,7 @@ paths:
             application/json:
               schema:
                 type: object
-  '/v0/questionnaireInstances/uuid/{questionnaireInstanceUuid}':
+  '/v0/questionnaireInstances/solve/{questionnaireInstanceUuid}':
     get:
       tags:
         - Questionnaire Instances

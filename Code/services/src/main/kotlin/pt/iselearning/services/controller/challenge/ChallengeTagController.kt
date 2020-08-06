@@ -6,7 +6,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.challenge.ChallengeTag
 import pt.iselearning.services.models.tag.ChallengeTagModel
 import pt.iselearning.services.service.challenge.ChallengeTagService
-import pt.iselearning.services.util.Constants.Companion.CHALLENGE_TAG_PATTERN
+import pt.iselearning.services.util.CHALLENGE_TAG_PATTERN
 
 /**
  * Handler responsible to respond to requests regard ChallengeTag entity

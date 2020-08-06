@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
-import pt.iselearning.services.util.Constants.Companion.CHALLENGE_ANSWER_PATTERN
+import pt.iselearning.services.util.CHALLENGE_ANSWER_PATTERN
 
 /**
  * Handler responsible to respond to requests regard User entity

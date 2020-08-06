@@ -50,7 +50,7 @@ class ApplicationConfiguration() : WebMvcConfigurer {
 
         registrationBean.initParameters
         registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
-        registrationBean.addUrlPatterns("/v0/login") //TODO: os gets nao precisam de autenticacao ,"/v0/challenges/*"
+        registrationBean.addUrlPatterns("/v0/login","/v0/challenges/*")
 
         return registrationBean
     }

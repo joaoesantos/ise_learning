@@ -1,13 +1,13 @@
 package pt.iselearning.services.domain.questionnaires
 
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.SCHEMA
 import javax.persistence.*
 
 /**
  * Data class that represents questionnaire instance entity
  */
 @Entity
-@Table(name = "questionnaire_instance", schema = Constants.SCHEMA)
+@Table(name = "questionnaire_instance", schema = SCHEMA)
 data class QuestionnaireInstance(
 
         @Column(name = "questionnaire_id")

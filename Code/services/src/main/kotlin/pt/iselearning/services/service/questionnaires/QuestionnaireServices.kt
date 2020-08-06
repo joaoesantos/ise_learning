@@ -2,15 +2,14 @@ package pt.iselearning.services.service.questionnaires
 
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
-import pt.iselearning.services.exception.error.ErrorCode
-import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireWithChallengesModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
-import pt.iselearning.services.util.CustomValidators
+import pt.iselearning.services.util.checkIfQuestionnaireExists
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -44,6 +43,7 @@ class QuestionnaireServices(
      * @return created questionnaire
      */
     @Validated
+    @Transactional
     fun createQuestionnaireWithChallenges(@Valid questionnaireWithChallengesModel: QuestionnaireWithChallengesModel): Questionnaire? {
         val questionnaire = convertToEntity(questionnaireWithChallengesModel.questionnaire)
 
@@ -53,7 +53,6 @@ class QuestionnaireServices(
                 questionnaireWithChallengesModel.challenges
         )
 
-        //TODO estudar como fazer rollback em caso daqui dar erro, tem de anular a criação do createdQuestionnaire
         questionnaireChallengeServices.addChallengesByIdToQuestionnaire(questionnaireChallengeModel)
 
         return createdQuestionnaire
@@ -68,7 +67,7 @@ class QuestionnaireServices(
     @Validated
     fun getQuestionnaireById(@Positive questionnaireId: Int) : Questionnaire {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaire, questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, questionnaireId)
         return questionnaire.get()
     }
 
@@ -80,12 +79,7 @@ class QuestionnaireServices(
      */
     @Validated
     fun getUserAllQuestionnaires(@Positive userId: Int) : List<Questionnaire> {
-        val questionnaires = questionnaireRepository.findAllByCreatorId(userId)
-        if (questionnaires.isEmpty()) {
-            throw ServerException("Questionnaires not found.",
-                    "There are no questionnaires created by user $userId", ErrorCode.ITEM_NOT_FOUND)
-        }
-        return questionnaires
+        return questionnaireRepository.findAllByCreatorId(userId)
     }
 
     /**
@@ -97,7 +91,7 @@ class QuestionnaireServices(
     @Validated
     fun updateQuestionnaireById(@Positive questionnaireId: Int, @Valid questionnaireModel: QuestionnaireModel): Questionnaire {
         val questionnaireFromDB = questionnaireRepository.findById(questionnaireId)
-        CustomValidators.checkIfQuestionnaireExists(questionnaireFromDB, questionnaireId)
+        checkIfQuestionnaireExists(questionnaireFromDB, questionnaireId)
 
         //region data for update operation
         val updatedQuestionnaire = questionnaireFromDB.get()
@@ -117,7 +111,7 @@ class QuestionnaireServices(
      */
     @Validated
     fun deleteQuestionnaireById(@Positive questionnaireId: Int) {
-        CustomValidators.checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
+        checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
         questionnaireRepository.deleteById(questionnaireId)
     }
 

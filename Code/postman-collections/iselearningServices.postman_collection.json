@@ -708,7 +708,7 @@
 									"variable": [
 										{
 											"key": "userId",
-											"value": "3"
+											"value": "2"
 										}
 									]
 								}
@@ -839,14 +839,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/questionnaireInstances/uuid/:questionnaireInstanceUuid",
+									"raw": "{{hostServices}}/v0/questionnaireInstances/solve/:questionnaireInstanceUuid",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
 										"questionnaireInstances",
-										"uuid",
+										"solve",
 										":questionnaireInstanceUuid"
 									],
 									"variable": [

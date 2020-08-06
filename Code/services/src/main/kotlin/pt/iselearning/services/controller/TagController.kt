@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.iselearning.services.domain.Tag
 import pt.iselearning.services.service.TagService
-import pt.iselearning.services.util.Constants.Companion.VERSION
+import pt.iselearning.services.util.VERSION
 
 /**
  * Handler responsible to respond to requests regard Tag entity

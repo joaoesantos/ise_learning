@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireInstanceServices
-import pt.iselearning.services.util.Constants.Companion.QUESTIONNAIRE_INSTANCE_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_INSTANCE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard QuestionnaireInstance domain
@@ -58,7 +58,7 @@ class QuestionnaireInstanceController(
      * @param questionnaireInstanceUuid represents QuestionnaireInstance UUID
      * @return ResponseEntity<QuestionnaireInstance>
      */
-    @GetMapping("/uuid/{questionnaireInstanceUuid}", name = "getQuestionnaireInstanceByUuid")
+    @GetMapping("/solve/{questionnaireInstanceUuid}", name = "getQuestionnaireInstanceByUuid")
     fun getQuestionnaireInstanceByUuid(
             @PathVariable questionnaireInstanceUuid: String
     ): ResponseEntity<QuestionnaireInstance> {

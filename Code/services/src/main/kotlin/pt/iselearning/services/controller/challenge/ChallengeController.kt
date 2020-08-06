@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
 import pt.iselearning.services.service.challenge.ChallengeService
-import pt.iselearning.services.util.Constants.Companion.CHALLENGE_PATTERN
+import pt.iselearning.services.util.CHALLENGE_PATTERN
 
 /**
  * Handler responsible to respond to requests regard Challenge entity

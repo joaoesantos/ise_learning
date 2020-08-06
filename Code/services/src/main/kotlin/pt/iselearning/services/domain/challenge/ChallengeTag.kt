@@ -1,14 +1,14 @@
 package pt.iselearning.services.domain.challenge
 
 import pt.iselearning.services.domain.Tag
-import pt.iselearning.services.util.Constants
+import pt.iselearning.services.util.SCHEMA
 import javax.persistence.*
 
 /**
  * data class that represents the tag entity
  */
 @Entity
-@Table(name="ct", schema = Constants.SCHEMA)
+@Table(name="ct", schema = SCHEMA)
 data class ChallengeTag (
     @Id
     @Column(name="id")
