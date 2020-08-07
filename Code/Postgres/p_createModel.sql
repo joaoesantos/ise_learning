@@ -16,7 +16,6 @@ BEGIN
 		password VARCHAR(255) NOT NULL,
 		email VARCHAR(50) UNIQUE NOT NULL,
 		name VARCHAR(50) NOT NULL,
-		image BYTEA,
 		--
 		PRIMARY KEY (user_id)
 	);
@@ -51,7 +50,7 @@ BEGIN
 		challenge_id INT GENERATED ALWAYS AS IDENTITY,
 		creator_id INT NOT NULL,
 		challenge_text TEXT NOT NULL,
-		is_private BOOLEAN NOT NULL,
+		is_private BOOLEAN NOT NULL DEFAULT FALSE,
 		--
 		PRIMARY KEY (challenge_id),
 		FOREIGN KEY (creator_id) 
@@ -108,13 +107,29 @@ BEGIN
 
 	CREATE TABLE questionnaire (
 		questionnaire_id INT GENERATED ALWAYS AS IDENTITY,
+		description VARCHAR(50),
+		timer DOUBLE PRECISION,
 		creator_id INT NOT NULL,
-		timer INT DEFAULT 0,
+		creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
 		--
 		PRIMARY KEY (questionnaire_id),
 		FOREIGN KEY (creator_id) 
-			REFERENCES app_user (user_id) ON DELETE CASCADE,
-		CHECK(timer >= 0)
+			REFERENCES app_user (user_id) ON DELETE CASCADE
+	);
+	
+	CREATE TABLE questionnaire_instance (
+		questionnaire_instance_id INT GENERATED ALWAYS AS IDENTITY,
+		questionnaire_id INT NOT NULL,
+		questionnaire_instance_uuid TEXT NOT NULL,
+		description VARCHAR(50),
+		timer DOUBLE PRECISION,
+		start_timestamp DOUBLE PRECISION,
+		end_timestamp DOUBLE PRECISION,
+		is_finish BOOLEAN NOT NULL DEFAULT FALSE,
+		--
+		PRIMARY KEY (questionnaire_instance_id),
+		FOREIGN KEY (questionnaire_id) 
+			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE
 	);
 	
 	-- MANY TO MANY (QUESTIONNAIRE-CHALLENGE)
@@ -122,7 +137,7 @@ BEGIN
 		id INT GENERATED ALWAYS AS IDENTITY,
 		questionnaire_id INT NOT NULL,
 		challenge_id INT NOT NULL,
-		lang_filter VARCHAR(20) NOT NULL,
+		language_filter TEXT,
 		--
 		PRIMARY KEY(id),
 		FOREIGN KEY (questionnaire_id) 
@@ -130,26 +145,25 @@ BEGIN
 		FOREIGN KEY (challenge_id) 
 			REFERENCES challenge (challenge_id) ON DELETE CASCADE,
 		--
-		UNIQUE(questionnaire_id,challenge_id,lang_filter)
+		UNIQUE(questionnaire_id,challenge_id)
 	);
-
+	
 	CREATE TABLE questionnaire_answer (
 		questionnaire_answer_id INT GENERATED ALWAYS AS IDENTITY,
 		answer_id INT UNIQUE NOT NULL,
-		questionnaire_id INT NOT NULL,
+		questionnaire_instance_id INT NOT NULL,
 		qc_id INT UNIQUE NOT NULL,
-		label VARCHAR(20) NOT NULL,
-		start_date TIMESTAMP,
-		end_date TIMESTAMP,
 		--
 		PRIMARY KEY (questionnaire_answer_id),
 		FOREIGN KEY (answer_id) 
 			REFERENCES answer (answer_id) ON DELETE CASCADE,
-		FOREIGN KEY (questionnaire_id) 
-			REFERENCES questionnaire (questionnaire_id) ON DELETE CASCADE,
+		FOREIGN KEY (questionnaire_instance_id) 
+			REFERENCES questionnaire_instance (questionnaire_instance_id) ON DELETE CASCADE,
 		FOREIGN KEY (qc_id) 
 			REFERENCES qc (id) ON DELETE CASCADE
 	);
+	
+
 
     COMMIT;
 END;

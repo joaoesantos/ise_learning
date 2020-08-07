@@ -5,9 +5,9 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import pt.iselearning.services.configuration.RemoteExecutionUrls
-import pt.iselearning.services.domain.Executable
-import pt.iselearning.services.domain.ExecutableResult
-import pt.iselearning.services.domain.ExecutableWithNoLanguage
+import pt.iselearning.services.domain.executable.Executable
+import pt.iselearning.services.domain.executable.ExecutableResult
+import pt.iselearning.services.domain.executable.ExecutableWithNoLanguage
 import javax.validation.Valid
 
 @Validated

@@ -7,7 +7,6 @@ import org.springframework.web.filter.OncePerRequestFilter
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.ServiceError
 import pt.iselearning.services.service.AuthenticationService
-import java.util.function.Function
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
