@@ -3,10 +3,12 @@ package pt.iselearning.services.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.ServiceError
 import pt.iselearning.services.service.AuthenticationService
+import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -17,7 +19,8 @@ import kotlin.reflect.KFunction2
  */
 class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper) : OncePerRequestFilter() {
     private val validateFilters : HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
-            "/v0/challenges/**" to AuthenticationFilter::shouldNotFilterChallengeRequest
+            "/v0/challenges/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
     )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
@@ -47,6 +50,12 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
 
     private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean {
         return request.method == HttpMethod.GET.name
+    }
+
+    private fun shouldNotFilterQuestionnaireAnswerRequest(request: HttpServletRequest) : Boolean {
+        return request.method != HttpMethod.GET.name
+                ||
+                !AntPathMatcher().match(QUESTIONNAIRE_ANSWER_PATTERN, request.servletPath)
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

@@ -119,9 +119,8 @@ class QuestionnaireAnswerServices(
     /**
      *
      */
-    //fun getAllQuestionnaireAnswersFromCreator(loggedUser: User): List<QuestionnaireInstanceQuestionnaireView> {
-    fun getAllQuestionnaireAnswersFromCreator(): List<QuestionnaireInstanceQuestionnaireView> {
-        return questionnaireInstanceQuestionnaireViewRepository.findAll().toList()
+    fun getAllQuestionnaireAnswersFromCreator(user: User): List<QuestionnaireInstanceQuestionnaireView> {
+        return questionnaireInstanceQuestionnaireViewRepository.findAllByCreatorId(user.userId!!)
     }
     /**
      * Auxiliary function that converts QuestionnaireAnswer model to QuestionnaireAnswer domain

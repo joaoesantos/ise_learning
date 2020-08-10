@@ -4,4 +4,5 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuesti
 import pt.iselearning.services.repository.ViewRepository
 
 interface QuestionnaireInstanceQuestionnaireViewRepository : ViewRepository<QuestionnaireInstanceQuestionnaireView, Int>{
+    fun findAllByCreatorId(userId : Int) : List<QuestionnaireInstanceQuestionnaireView>
 }

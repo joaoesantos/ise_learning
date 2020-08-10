@@ -107,10 +107,10 @@ class QuestionnaireAnswerController(
      *
      */
     @GetMapping(name="getQuestionnaireAnswerList")
-    fun getQuestionnaireAnswerList(
-    ) : ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
+    fun getQuestionnaireAnswerList( loggedUser: User)
+            : ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
 
-        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromCreator())
+        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromCreator(loggedUser))
     }
 
 }
