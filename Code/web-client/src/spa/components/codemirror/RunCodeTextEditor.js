@@ -50,6 +50,7 @@ const styles = theme => ({
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
+                readOnly: this.props.readOnly
             }
         );
         this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor

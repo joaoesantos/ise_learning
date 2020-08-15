@@ -18,7 +18,7 @@ export default function QuestionnaireAnswerListPage(props) {
     if (response === undefined && actionState === ActionStates.clear) {
       setAction({
         function: questionnaireCtrl.getQuestionnaireInstances,
-        args: [],
+        args: [props.credentials],
         render: true
       })
     } else if (actionState === ActionStates.done &&
@@ -35,7 +35,7 @@ export default function QuestionnaireAnswerListPage(props) {
       { title: 'Instance', field: 'questionnaireInstanceDescription' },
       { 
         field: 'url', 
-        render: rowData => <Link className={classes.link} component={RouterLink} to={`/questionnaire/${rowData.questionnaireInstanceId}`}>Show</Link>
+        render: rowData => <Link className={classes.link} component={RouterLink} to={`/questionnaireAnswer/${rowData.questionnaireInstanceId}`}>Show</Link>
       }
     ],
     data: [
