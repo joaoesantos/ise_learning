@@ -124,7 +124,7 @@ export default function QuestionnairePage() {
     const [unitTestsData, setUnitTestsData] = React.useState([])
     const [textEditorArea, setTextEditorArea] = React.useState();
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
-    const [unitTests, setUnitTests] = React.useState('uijrsfuiowrniofwejoi');
+    const [unitTests, setUnitTests] = React.useState('');
     
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {

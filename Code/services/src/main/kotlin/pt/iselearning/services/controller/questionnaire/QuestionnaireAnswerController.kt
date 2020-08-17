@@ -4,7 +4,9 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
+import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerServices
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
@@ -99,6 +101,16 @@ class QuestionnaireAnswerController(
     ): ResponseEntity<QuestionnaireAnswer> {
         questionnaireAnswerServices.deleteQuestionnaireAnswerById(questionnaireAnswerId)
         return ResponseEntity.noContent().build()
+    }
+
+    /**
+     *
+     */
+    @GetMapping(name="getQuestionnaireAnswerList")
+    fun getQuestionnaireAnswerList( loggedUser: User)
+            : ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
+
+        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromCreator(loggedUser))
     }
 
 }

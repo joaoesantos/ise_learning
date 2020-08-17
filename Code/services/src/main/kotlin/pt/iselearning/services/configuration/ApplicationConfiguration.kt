@@ -16,6 +16,7 @@ import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.resolver.UserArgumentResolver
 import pt.iselearning.services.service.AuthenticationService
+import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
 import pt.iselearning.services.util.addQuestionnaireChallengeMappings
 
 @Configuration
@@ -50,7 +51,7 @@ class ApplicationConfiguration() : WebMvcConfigurer {
 
         registrationBean.initParameters
         registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
-        registrationBean.addUrlPatterns("/v0/login","/v0/challenges/*")
+        registrationBean.addUrlPatterns("/v0/login", QUESTIONNAIRE_ANSWER_PATTERN)
 
         return registrationBean
     }
