@@ -21,6 +21,8 @@ class Executable:
 
     @unitTests.setter
     def unitTests(self, unitTests):
+        if unitTests is None:
+            raise TypeError("Value unitTests must be provided.")
         self.__unitTests = unitTests
 
     @property

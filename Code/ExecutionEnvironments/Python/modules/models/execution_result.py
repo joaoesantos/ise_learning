@@ -13,7 +13,7 @@ class ExecutionResult:
     def rawResult(self, rawResult):
         if rawResult is None:
             raise TypeError("Value code must be provided.")
-        self.rawResult = rawResult
+        self.__rawResult = rawResult
 
     @property
     def wasError(self):
@@ -23,7 +23,7 @@ class ExecutionResult:
     def wasError(self, wasError):
         if not isinstance(wasError, bool):
             raise TypeError("Value wasError must be a bool.")
-        self.__unitTests = unitTests
+        self.__wasError = wasError
 
     @property
     def executionTime(self):
@@ -31,6 +31,6 @@ class ExecutionResult:
 
     @executionTime.setter
     def executionTime(self, executionTime):
-        if not isinstance(executeTests, long):
-            raise TypeError("Value executeTests must be a long.")
-        self.__executeTests = executeTests
+        if not isinstance(executionTime, float):
+            raise TypeError("Value executionTime must be a float.")
+        self.__executionTime = executionTime

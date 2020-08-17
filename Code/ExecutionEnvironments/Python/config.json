@@ -1,0 +1,9 @@
+{
+    "server":{
+        "host":"localhost",
+        "port":8085
+    },
+    "execution_parameters":{
+        "timeout":5
+    }
+}
