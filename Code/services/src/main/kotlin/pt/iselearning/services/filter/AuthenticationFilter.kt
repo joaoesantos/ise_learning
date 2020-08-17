@@ -49,6 +49,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
     }
 
     private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean {
+        val test = request.method == HttpMethod.GET.name
         return request.method == HttpMethod.GET.name
     }
 
@@ -59,9 +60,15 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        val method = validateFilters[request.servletPath] ?: return false
-
-        return method(this, request)
+        val pathMatcher = AntPathMatcher()
+        for (key in validateFilters.keys){
+            val testB = pathMatcher.match(key, request.servletPath)
+            if(pathMatcher.match(key, request.servletPath)){
+                val method = validateFilters[key] ?: return false
+                return method(this, request)
+            }
+        }
+        return false
     }
 
 }

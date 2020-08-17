@@ -55,6 +55,7 @@ export const apiUrlTemplates = {
     getQuestionnaireInstances: () => `/${apiVersion}/questionnaireAnswers`,
     getQuestionnaireAnswers: (id) => `/${apiVersion}/questionnaireAnswers/questionnaireInstances/${id}`,
     getChallenges: () => `/${apiVersion}/challenges`,
-    getQuestionnaire: () => `/${apiVersion}/questionnaire/{id}`,
-    saveQuestionnaire: () => `/${apiVersion}/questionnaire/{id}`
+    getQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
+    saveQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
+    getQuestionnaireChallenges: () => `/${apiVersion}/challenges/questionnaires/{questionnaireId}`
 }
