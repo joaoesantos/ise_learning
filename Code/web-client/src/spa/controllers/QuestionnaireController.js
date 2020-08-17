@@ -32,7 +32,7 @@ export const QuestionnaireController = {
     }
     if(id){
         let url = apiUrlTemplates.getQuestionnaire()
-        url = url.replace(":id", id)
+        url = url.replace("{id}", id)
         let options = {
           method: HttpMethods.get,
           headers: defaultHeaders(),

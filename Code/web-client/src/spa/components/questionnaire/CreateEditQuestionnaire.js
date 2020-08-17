@@ -162,10 +162,6 @@ export default function CreateEditQuestionnaire(props) {
                 initialValues={{
                     title: ''
                 }}
-                // validationSchema={Yup.object({
-                //     title: Yup.string()
-                //         .required('Required')
-                // })}
                 onSubmit={async (values, {setSubmitting}) => {
                     setSubmitting(false)
                     const newQuestionnaire = await QuestionnaireController.saveQuestionnaire(questionnaire)
