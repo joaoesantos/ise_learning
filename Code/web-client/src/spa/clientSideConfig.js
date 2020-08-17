@@ -53,6 +53,6 @@ export const apiUrlTemplates = {
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
     getChallenges: () => `/${apiVersion}/challenges`,
-    getQuestionnaire: () => `/${apiVersion}/questionnaire/:id`,
-    saveQuestionnaire: () => `/${apiVersion}/questionnaire/:id`
+    getQuestionnaire: () => `/${apiVersion}/questionnaire/{id}`,
+    saveQuestionnaire: () => `/${apiVersion}/questionnaire/{id}`
 }
