@@ -62,12 +62,12 @@ const MenuProps = {
 
 export default function CreateEditQuestionnaire(props) {
     const columns = [
-        { title: 'Title', field: 'title' },
+        { title: 'Description', field: 'challengeText' },
         { title: 'Tags', field: 'tags' }
     ]
 
     const selectedColumns = [
-        { title: 'Title', field: 'title' },
+        { title: 'Description', field: 'challengeText' },
         { title: 'Tags', field: 'tags' },
         { title: 'Language', field: 'selectedLanguage', render: (rowData) => 
         <FormControl className={classes.formControl}>
@@ -103,11 +103,15 @@ export default function CreateEditQuestionnaire(props) {
         id: null,
         title: '',
         language: '',
+        timer: '',
         selectedChallenges: []
     })
 
+
+
     const [savedQuestionnaire, setSavedQuestionnaire] = React.useState(questionnaire)
     const [challengesData, setChallengesData] = React.useState([])
+    const [testTimer, setTestTimer] = React.useState('')
 
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
@@ -147,6 +151,13 @@ export default function CreateEditQuestionnaire(props) {
         setQuestionnaire({ ...questionnaire, title: value })
     }
 
+    const onTimerChangeHandler = function (event) {
+        const { value } = event.target
+        if (!isNaN(value)) {
+            setQuestionnaire({ ...questionnaire, timer: value })
+          }
+    }
+
     const handleCancel = function (event) {
         setQuestionnaire(savedQuestionnaire)
         toggleEdit()
@@ -160,12 +171,9 @@ export default function CreateEditQuestionnaire(props) {
         return (
             <Formik
                 initialValues={{
-                    title: ''
+                    title: questionnaire.title,
+                    timer:questionnaire.timer
                 }}
-                // validationSchema={Yup.object({
-                //     title: Yup.string()
-                //         .required('Required')
-                // })}
                 onSubmit={async (values, {setSubmitting}) => {
                     setSubmitting(false)
                     const newQuestionnaire = await QuestionnaireController.saveQuestionnaire(questionnaire)
@@ -186,15 +194,30 @@ export default function CreateEditQuestionnaire(props) {
                                                     name="title"
                                                     label="Title"
                                                     disabled={!editable}
-                                                    onChange={onTitleChangeHandler}
+                                                    InputProps={{onChange:onTitleChangeHandler, value:questionnaire.title}}
                                                 />
                                             </Grid>
                                             <Grid item>
                                                 <ErrorMessage name="title" />
                                             </Grid>
                                         </Grid>
-
-
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Grid container spacing={2} direction="column">
+                                            <Grid item >
+                                                <Field
+                                                    component={TextField}
+                                                    name="timer"
+                                                    label="Timer (minutes)"
+                                                    value={questionnaire.timer}
+                                                    disabled={!editable}
+                                                    InputProps={{onChange:onTimerChangeHandler, value:questionnaire.timer}}
+                                                />
+                                            </Grid>
+                                            <Grid item>
+                                                <ErrorMessage name="title" />
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Toolbar>

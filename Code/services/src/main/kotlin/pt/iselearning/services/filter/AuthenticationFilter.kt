@@ -3,11 +3,11 @@ package pt.iselearning.services.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.ServiceError
 import pt.iselearning.services.service.AuthenticationService
-import java.util.function.Function
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -47,13 +47,20 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
     }
 
     private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean {
+        val test = request.method == HttpMethod.GET.name
         return request.method == HttpMethod.GET.name
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        val method = validateFilters[request.servletPath] ?: return false
-
-        return method(this, request)
+        val pathMatcher = AntPathMatcher()
+        for (key in validateFilters.keys){
+            val testB = pathMatcher.match(key, request.servletPath)
+            if(pathMatcher.match(key, request.servletPath)){
+                val method = validateFilters[key] ?: return false
+                return method(this, request)
+            }
+        }
+        return false
     }
 
 }
