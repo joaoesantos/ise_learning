@@ -104,7 +104,8 @@ export default function CreateEditQuestionnaire(props) {
         title: '',
         language: '',
         timer: '123',
-        selectedChallenges: []
+        selectedChallenges: [],
+        creatorId : ''
     })
 
 
@@ -176,8 +177,11 @@ export default function CreateEditQuestionnaire(props) {
                 }}
                 onSubmit={async (values, {setSubmitting}) => {
                     setSubmitting(false)
-                    const newQuestionnaire = await QuestionnaireController.saveQuestionnaire(questionnaire)
-                    setSavedQuestionnaire(newQuestionnaire)
+                    setAction({
+                        function: QuestionnaireController.saveQuestionnaire,
+                        args: [questionnaire, props.credentials],
+                        render: true
+                    })
                     toggleEdit()
                 }}
             >
@@ -194,7 +198,7 @@ export default function CreateEditQuestionnaire(props) {
                                                     name="title"
                                                     label="Title"
                                                     disabled={!editable}
-                                                    InputProps={{onChange:onTitleChangeHandler, value:questionnaire.title}}
+                                                    InputProps={{onChange:onTitleChangeHandler, value:questionnaire.title || ''}}
                                                 />
                                             </Grid>
                                             <Grid item>
@@ -211,7 +215,7 @@ export default function CreateEditQuestionnaire(props) {
                                                     label="Timer (minutes)"
                                                     value={questionnaire.timer}
                                                     disabled={!editable}
-                                                    InputProps={{onChange:onTimerChangeHandler, value:questionnaire.timer}}
+                                                    InputProps={{onChange:onTimerChangeHandler, value:questionnaire.timer || ''}}
                                                 />
                                             </Grid>
                                             <Grid item>

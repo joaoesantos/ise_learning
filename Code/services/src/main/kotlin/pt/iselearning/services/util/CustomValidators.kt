@@ -43,11 +43,18 @@ fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) {
  * @param questionnaireId identifier of object
  * @throws ServerException when on failure to find questionnaire
  */
-fun checkIfQuestionnaireExists(questionnaireRepository: QuestionnaireRepository, questionnaireId: Int) {
-    if (!questionnaireRepository.existsById(questionnaireId)) {
+fun checkIfQuestionnaireExists(
+        questionnaireRepository: QuestionnaireRepository,
+        questionnaireId: Int
+) : Questionnaire
+{
+    val questionnaire = questionnaireRepository.findById(questionnaireId)
+    if (questionnaire.isEmpty) {
         throw ServerException("Questionnaire not found.",
                 "There is no questionnaire with id $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
     }
+
+    return questionnaire.get()
 }
 
 /**
@@ -88,11 +95,16 @@ fun checkIfTimeout(questionnaireInstance: QuestionnaireInstance) {
  * @param questionnaireInstanceId identifier of object
  * @throws ServerException when on failure to find questionnaire instance
  */
-fun checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository: QuestionnaireInstanceRepository, questionnaireInstanceId: Int) {
-    if (!questionnaireInstanceRepository.existsById(questionnaireInstanceId)) {
+fun checkIfQuestionnaireInstanceExists(
+        questionnaireInstanceRepository: QuestionnaireInstanceRepository, questionnaireInstanceId: Int
+) : QuestionnaireInstance
+{
+    val questionnaireInstance = questionnaireInstanceRepository.findById(questionnaireInstanceId)
+    if (questionnaireInstance.isEmpty) {
         throw ServerException("Questionnaire instance not found.",
                 "There is no questionnaire instance with id $questionnaireInstanceId", ErrorCode.ITEM_NOT_FOUND)
     }
+    return questionnaireInstance.get()
 }
 
 /**

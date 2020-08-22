@@ -9,6 +9,7 @@ import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.ServiceError
 import pt.iselearning.services.service.AuthenticationService
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_PATTERN
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -20,10 +21,12 @@ import kotlin.reflect.KFunction2
 class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper) : OncePerRequestFilter() {
     private val validateFilters : HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
             "/v0/challenges/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
-            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
+            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest,
+            "/v0/questionnaires/**" to AuthenticationFilter::shouldNotFilterQuestionnairePattern
     )
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        val header = request.headerNames
         val authenticationHeader = request.getHeader("Authorization")
         try {
             val user = authenticationService.validateAuthenticationHeader(authenticationHeader);
@@ -48,16 +51,18 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
 
     }
 
-    private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean {
-        val test = request.method == HttpMethod.GET.name
-        return request.method == HttpMethod.GET.name
-    }
+    private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean =
+            request.method == HttpMethod.GET.name
 
-    private fun shouldNotFilterQuestionnaireAnswerRequest(request: HttpServletRequest) : Boolean {
-        return request.method != HttpMethod.GET.name
+    private fun shouldNotFilterQuestionnaireAnswerRequest(request: HttpServletRequest) : Boolean =
+            request.method != HttpMethod.GET.name
                 ||
                 !AntPathMatcher().match(QUESTIONNAIRE_ANSWER_PATTERN, request.servletPath)
-    }
+
+
+    private fun shouldNotFilterQuestionnairePattern(request: HttpServletRequest) : Boolean =
+            request.method == HttpMethod.GET.name
+
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val pathMatcher = AntPathMatcher()

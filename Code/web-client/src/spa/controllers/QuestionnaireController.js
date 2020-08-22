@@ -1,101 +1,97 @@
 import { apiUrlTemplates } from '../clientSideConfig'
 import { HttpMethods, defaultHeaders } from '../components/fetchUtils'
 
-export const QuestionnaireController = {
-  getQuestionnaire: async (id) => {
-    //get challenges
-    let challengesUrl = apiUrlTemplates.getChallenges()
-    let options = {
-      method: HttpMethods.get,
-      headers: defaultHeaders(),
+const getQuestionnaire = async function(id, credentials) {
+  //get challenges
+  let challengesUrl = apiUrlTemplates.getChallenges()
+  let headers = defaultHeaders()
+  headers.append('Authorization', `Basic ${credentials}`)
+  let options = {
+    method: HttpMethods.get,
+    headers: headers,
+  }
+  let challengesResponse = await fetch(challengesUrl, options)
+  let challenges = await challengesResponse.json()
+  const availableLanguage = challenges.map(s => s.codeLanguage)
+  challenges = challenges.map(c => {
+    return {
+      id: c.challengeId,
+      challengeText: c.challengeText,
+      languages: c.solutions.map(s => s.codeLanguage)
     }
-    let challengesResponse = await fetch(challengesUrl, options)
-    let challenges = await challengesResponse.json()
-    const availableLanguage = challenges.map(s => s.codeLanguage)
-    challenges = challenges.map(c => {
+  })
+  let questionnaire = {
+    id: null,
+    title: '',
+    selectedChallenges: []
+  }
+  if (id) {
+    let url = apiUrlTemplates.getQuestionnaireWithChallenges()
+    url = url.replace("{questionnaireId}", id)
+    let response = await fetch(url, options)
+    let json = await response.json()
+    questionnaire.id = json.questionnaireId
+    questionnaire.title = json.description
+    questionnaire.timer = json.timer
+    questionnaire.creatorId = json.creatorId
+    questionnaire.selectedChallenges = json.challenges.map(element => {
       return {
-        id: c.challengeId,
-        challengeText: c.challengeText,
-        languages: c.solutions.map(s => s.codeLanguage)
+        id: element.challenge.challengeId,
+        challengeText: element.challenge.challengeText,
+        languages: element.challenge.solutions.map(s => s.codeLanguage),
+        selectedLanguages: element.languageFilter.split(',')
       }
     })
-    console.log('challenges:', challenges)
-    // const challenges = [
-    //   {
-    //     id: 1,
-    //     title: 'cenas1',
-    //     tags: 'a, b, c',
-    //     languages: ['java', 'javascript']
-    //   },
-    //   {
-    //     id: 2,
-    //     title: 'cenas2',
-    //     tags: 'a, b, dad',
-    //     languages: ['csharp', 'python']
-    //   },
-    //   {
-    //     id: 3,
-    //     title: 'cenas3',
-    //     tags: 'a, b, oiopq',
-    //     languages: ['kotlin']
-    //   }
-    // ]
-    let questionnaire = {
-      id: null,
-      title: '',
-      selectedChallenges: []
-    }
-    if (id) {
-      let url = apiUrlTemplates.getQuestionnaire()
-      url = url.replace("{id}", id)
-
-      let response = await fetch(url, options)
-      let json = response.json()
-      console.log('json:', json)
-      questionnaire.title = json.description
-      questionnaire.id = json.questionnaireId
-      questionnaire.timer = json.timer
-
-      let selectedChallengesUrl = apiUrlTemplates.getQuestionnaireChallenges()
-      selectedChallengesUrl = selectedChallengesUrl.replace('{questionnaireId}', id)
-      console.log('selectedChallengesUrl:', selectedChallengesUrl)
-      let selectedChallengesResponse = await fetch(selectedChallengesUrl, options)
-      let selectedChallengesJson = await selectedChallengesResponse.json()
-      // questionnaire.id = id
-      // questionnaire.title = 'This is a title'
-      // questionnaire.selectedChallenges = [
-      //   {
-      //     id: 3,
-      //     title: 'cenas3',
-      //     tags: 'a, b, oiopq',
-      //     selectedLanguages: ['javascript']
-      //   }
-      // ]
-      questionnaire.selectedChallenges = selectedChallengesJson
-      console.log('selectedChallenges:', selectedChallengesJson)
-    }
-
-    return {
-      questionnaire: questionnaire,
-      challenges: challenges
-    }
-  },
-
-  saveQuestionnaire: async (questionnaire) => {
-    // let url = apiUrlTemplates.saveQuestionnaire()
-    // let options = {
-    //   method: HttpMethods.post,
-    //   headers: defaultHeaders(),
-    //   body: JSON.stringify(questionnaire)//corrigir body depois de fazer eebase com serviços
-    // }
-    // let response = await fetch(url, options)
-    // return response.json()
-    return Promise.resolve({
-      id: 2,
-      title: questionnaire.title,
-      language: questionnaire.language,
-      selectedChallenges: questionnaire.challenges
-    })
   }
+  return {
+    questionnaire: questionnaire,
+    challenges: challenges
+  }
+}
+
+const saveQuestionnaire = async function(questionnaire, credentials) {
+  let url = apiUrlTemplates.saveQuestionnaire()
+  let headers = defaultHeaders()
+  headers.append('Authorization', `Basic ${credentials}`)
+  let body = {}
+  let options = {
+    headers: headers,
+  }
+
+  if(questionnaire.id){
+    options.method = HttpMethods.put
+    body = {
+      questionnaireId: questionnaire.id,
+      questionnaireModel: {
+        description: questionnaire.title,
+        timer: Number(questionnaire.timer),
+        creatorId: questionnaire.creatorId
+      }
+    }
+  }else{
+    options.method = HttpMethods.post
+    url = apiUrlTemplates.createQuestionnaire()
+    body = {
+      questionnaire: {
+        description: questionnaire.title,
+        timer: Number(questionnaire.timer)
+      },
+      challenges:questionnaire.selectedChallenges.map(c => {
+        return {
+          challengeId: c.id,
+          languageFilter: c.selectedLanguages.join()
+        }
+      })
+    }
+  }
+  options.body = JSON.stringify(body)
+  let response = await fetch(url, options)
+  let json = await response.json()
+  return await getQuestionnaire(json.questionnaireId, credentials)
+}
+
+export const QuestionnaireController = {
+  getQuestionnaire: getQuestionnaire ,
+  saveQuestionnaire: saveQuestionnaire
 }
 
