@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "21973be1-2b3c-4dfe-8f99-3027bdab44b1",
+		"_postman_id": "91a174b2-4931-4478-ad9d-aee629d10d10",
 		"name": "Execution Enviroments",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -72,16 +72,49 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "nodeJs",
+			"name": "Python",
 			"item": [
 				{
-					"name": "Execute NodeJs Code",
+					"name": "Python code < print Hello World! > without unitTests",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"code\":\"function getNthFib(n) {return n};exports.getNthFib = getNthFib;\",\n\t\"executeTests\": \"true\",\n\t\"unitTests\": \"var assert = require('assert');describe('Teste1', function() {describe('#getNthFib()', function() {it('should return 1 when the value is not present', function() {assert.equal(getNthFib(1), 1);});});});\"\n}",
+							"raw": "{\n    \"code\": \"print(\\\"Hello World!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python code < print Hello World!> with infinite cycle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"while True:\\r\\n    print(\\\"Hello Worlds!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,9 +122,36 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostJavascriptExec}}",
+							"raw": "{{hostPythonExec}}",
 							"host": [
-								"{{hostJavascriptExec}}"
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python isNumberPalindrome with unitTests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"def isNumberPalindrome(number: int) -> bool:\\r\\n    if number < 0: \\r\\n        return  False\\r\\n   \\r\\n    original = number\\r\\n    revertedNumber = 0\\r\\n\\r\\n    while number != 0:\\r\\n        remainder = number % 10\\r\\n        revertedNumber = revertedNumber * 10 + remainder\\r\\n        number //= 10\\r\\n\\r\\n    return original == revertedNumber\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef isNumberPalindrome(number: int) -> bool:\\r\\n    if number < 0: \\r\\n        return  False\\r\\n   \\r\\n    original = number\\r\\n    revertedNumber = 0\\r\\n\\r\\n    while number != 0:\\r\\n        remainder = number % 10\\r\\n        revertedNumber = revertedNumber * 10 + remainder\\r\\n        number //= 10\\r\\n\\r\\n    return original == revertedNumber\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(isNumberPalindrome(121), True)\\r\\n        self.assertEqual(isNumberPalindrome(10), False)\\r\\n        self.assertEqual(isNumberPalindrome(44), True)\\r\\n        self.assertEqual(isNumberPalindrome(107), False)\\r\\n\\r\\nif __name__ == \\'__main__\\':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
 							]
 						}
 					},

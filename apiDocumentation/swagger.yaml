@@ -112,12 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  rawResult:
-                    type: string
-                    description: Result or execution of compilation.
-                    example: Hello World
+                $ref: '#/components/schemas/executionResult'
   '/v0/users':
     get:
       tags:
@@ -1109,7 +1104,7 @@ paths:
       tags:
         - Questionnaire-Challenges
       summary: Add one or multiple challenges to a questionnaire
-      operationId: addChallengesByIdToQuestionnaire
+      operationId: addChallengesToQuestionnaire
       description: |
         Add one or multiple challenges to a single questionnaire by theirs unique identifiers.
       requestBody:
@@ -1129,13 +1124,13 @@ paths:
                 properties:
                   payload:
                     $ref: '#/components/schemas/questionnaireChallenge'
-    delete:
+    put:
       tags:
         - Questionnaire-Challenges
-      summary: Remove one or multiple challenges from a questionnaire
-      operationId: removeChallengesByIdFromQuestionnaire
+      summary: Update challenges on a questionnaire
+      operationId: updateChallengesOnQuestionnaire
       description: |
-        Remove one or multiple challenges to a single questionnaire by theirs unique identifiers.
+        Update the list of challenges on a single questionnaire.
       requestBody:
         description: Object that groups a collection of challenge ids and a questionnaire id.
         required: true
@@ -1144,12 +1139,15 @@ paths:
             schema:
               $ref: '#/components/schemas/questionnaireChallengeModel'
       responses:
-        '204':
-          description: Successful removed challenges from questionnaire.
+        '201':
+          description: Successfully updated challenges on questionnaire.
           content:
             application/json:
               schema:
                 type: object
+                properties:
+                  payload:
+                    $ref: '#/components/schemas/questionnaireChallenge'
   '/v0/questionnaireChallenges/{questionnaireId}/{challengeId}':
     get:
       tags:
@@ -1181,6 +1179,28 @@ paths:
                 properties:
                   payload:
                     $ref: '#/components/schemas/questionnaireChallenge'
+  '/v0/questionnaireChallenges/{questionnaireId}':
+    delete:
+      tags:
+        - Questionnaire-Challenges
+      summary: Remove all challenges from a questionnaire
+      operationId: removeAllChallengesFromQuestionnaire
+      description: |
+        Remove one or multiple challenges to a single questionnaire by theirs unique identifiers.
+      parameters:
+        - in: path
+          name: questionnaireId
+          schema:
+            type: integer
+          required: true
+          description: Questionnaire unique identifer.
+      responses:
+        '204':
+          description: Successful removed challenges from questionnaire.
+          content:
+            application/json:
+              schema:
+                type: object
 components:
   schemas:
     executable:
@@ -1252,6 +1272,29 @@ components:
             If the value is true unit tests will be executed and its result will
             be returned, for false values the code will be executed without the
             unit tests.
+    executionResult:
+      type: object
+      required:
+        - rawResult
+        - wasError
+        - executionTime
+      properties:
+        rawResult:
+          type: string
+          example: >- 
+            Hello World
+          description: >-
+            raw result of executed code
+        wasError:
+          type: boolean
+          example: true
+          description: >-
+            Boolean value indicating whether the code was executed successfully or with error.
+        executionTime:
+          type: number
+          example: 89
+          description: >-
+            Time elapsed during execution of code in millisencods.
     user:
       type: object
       properties:
@@ -1319,7 +1362,7 @@ components:
           example: true
           description: >-
             Boolean value indicating whether the challenge can only be seen by
-            its creator
+            its creator.
         solutions:
           type: array
           description: List of challenges.

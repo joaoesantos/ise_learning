@@ -1158,7 +1158,7 @@
 							"response": []
 						},
 						{
-							"name": "addChallengesByIdToQuestionnaire",
+							"name": "addChallengesToQuestionnaire",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -1185,13 +1185,13 @@
 							"response": []
 						},
 						{
-							"name": "removeChallengesByIdFromQuestionnaire",
+							"name": "updateChallengesOnQuestionnaire",
 							"request": {
-								"method": "DELETE",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"questionnaireId\": 3,\r\n    \"challenges\": [ \r\n        {\r\n            \"challengeId\": 1\r\n        },\r\n        {\r\n            \"challengeId\": 2\r\n        },\r\n        {\r\n            \"challengeId\": 3\r\n        } \r\n    ]\r\n}\r\n",
+									"raw": "{\r\n    \"questionnaireId\": 4,\r\n    \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        }\r\n    ]\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1206,6 +1206,31 @@
 									"path": [
 										"v0",
 										"questionnaireChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeAllChallengesFromQuestionnaire",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "4"
+										}
 									]
 								}
 							},

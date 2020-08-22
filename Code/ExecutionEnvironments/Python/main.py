@@ -1,7 +1,7 @@
 import subprocess
 import os, time, datetime, json
 
-from modules.codeExecution.execution_handler import ExecutionHandler
+from src.modules.codeExecution.execution_handler import ExecutionHandler
 
 # # without unit tests
 # request = {
