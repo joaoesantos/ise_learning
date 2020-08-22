@@ -86,7 +86,7 @@ class ChallengeService (
      * @return List of challenge objects
      */
     @Validated
-    fun getAllChallengesByQuestionnaireId(@Positive questionnaireId: Int) : List<Challenge> {
+    fun getAllChallengesByQuestionnaireId(@Positive questionnaireId: Int): List<Challenge> {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
         checkIfQuestionnaireExists(questionnaire, questionnaireId)
 
@@ -99,7 +99,20 @@ class ChallengeService (
         }
 
         return challenges
+    }
 
+    /**
+     * Get one random challenge.
+     *
+     * @return challenge object
+     */
+    fun getRandomChallenge(): Challenge {
+
+        val challengeId = challengeRepository.findAllChallengeIds().random()
+        val challenge = challengeRepository.findById(challengeId)
+        checkIfChallengeExists(challenge, challengeId)
+
+        return challenge.get()
     }
 
     @Validated

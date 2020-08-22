@@ -35,7 +35,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     /**
      * Method to get a single challenge.
      * Path variable "id" must be present
-     * @param id represens challenge id
+     * @param challengeId represens challenge id
      * @return ResponseEntity<Challenge>
      */
     @GetMapping("/{challengeId}", name = "getChallengeById")
@@ -77,6 +77,16 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getAllChallengesByQuestionnaireId(questionnaireId))
+    }
+
+    /**
+     * Method to get one random challenge.
+     * @return ResponseEntity<Challenge>
+     */
+    @GetMapping("/random", name = "getRandomChallenge")
+    fun getRandomChallenge(): ResponseEntity<Challenge> {
+        return ResponseEntity.ok().contentType(APPLICATION_JSON)
+                .body(challengeService.getRandomChallenge())
     }
 
 
