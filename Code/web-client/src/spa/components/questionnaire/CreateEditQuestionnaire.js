@@ -103,7 +103,7 @@ export default function CreateEditQuestionnaire(props) {
         id: null,
         title: '',
         language: '',
-        timer: '123',
+        timer: '',
         selectedChallenges: [],
         creatorId : ''
     })
