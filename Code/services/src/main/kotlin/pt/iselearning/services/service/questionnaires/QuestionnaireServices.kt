@@ -7,7 +7,9 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireOutputModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireWithChallengesModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireChallengeOutputModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.checkIfQuestionnaireExists
 import javax.validation.Valid
@@ -113,6 +115,18 @@ class QuestionnaireServices(
     fun deleteQuestionnaireById(@Positive questionnaireId: Int) {
         checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
         questionnaireRepository.deleteById(questionnaireId)
+    }
+
+    fun getQuestionnaireInstanceByIdWithChallenge(questionnaireId: Int): QuestionnaireOutputModel? {
+        val questionnaire = checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
+        val challenges = questionnaireChallengeServices.getQuestionnaireChallengeByQuestionnaireId(questionnaireId)
+
+        return QuestionnaireOutputModel(
+                questionnaireId,
+                questionnaire.description,
+                questionnaire.timer,
+                challenges.map { QuestionnaireChallengeOutputModel(it.challenge, it.languageFilter) }
+        )
     }
 
     /**
