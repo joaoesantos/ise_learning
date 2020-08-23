@@ -38,16 +38,21 @@ class QuestionnaireAnswerServices(
      */
     @Validated
     fun createQuestionnaireAnswer(@Valid questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
-        val questionnaireAnswer = convertToEntity(questionnaireAnswerModel)
+        //val questionnaireAnswer = convertToEntity(questionnaireAnswerModel)
         val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerModel.questionnaireInstanceId)
         checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerModel.questionnaireInstanceId)
         checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
 
-        val questionnaireChallenge = questionnaireChallengeServices
-                .getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(
-                        questionnaireAnswerModel.questionnaireId,
-                        questionnaireAnswerModel.challengeId
-                )
+        val questionnaireChallenge = questionnaireAnswerModel
+                .challengeAnswers.
+                map {
+                    questionnaireChallengeServices
+                            .getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(
+                                    questionnaireAnswerModel.questionnaireId,
+                                    it.challengeId
+                            )
+                }
+
 
         questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.get().questionnaireInstanceId
         questionnaireAnswer.qcId = questionnaireChallenge.qcId
