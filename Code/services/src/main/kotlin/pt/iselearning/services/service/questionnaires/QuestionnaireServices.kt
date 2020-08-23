@@ -119,7 +119,7 @@ class QuestionnaireServices(
 
     fun getQuestionnaireInstanceByIdWithChallenge(questionnaireId: Int): QuestionnaireOutputModel? {
         val questionnaire = checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
-        val challenges = questionnaireChallengeServices.getQuestionnaireChallengeByQuestionnaireId(questionnaireId)
+        val challenges = questionnaireChallengeServices.getAllQuestionnaireChallengeByQuestionnaireId(questionnaireId)
 
         return QuestionnaireOutputModel(
                 questionnaireId,
