@@ -48,10 +48,20 @@ value:`print "Hello World!"`
 
 export const apiVersion = "v0";
 
+export const languageLabelMappings = {
+    java: "Java",
+    kotlin: "Kotlin",
+    javascript: "JavaScript",
+    csharp: "C#",
+    python: "Python"
+}
+
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
     profile: () => `/${apiVersion}/users/me`,
     executeCode: () => `/${apiVersion}/execute`,
     challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
+    challenges: () => `/${apiVersion}/challenges`,
+    languages: () => `/${apiVersion}/codeLanguages`,
 }

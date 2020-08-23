@@ -36,7 +36,9 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/login" render={() => <Login isAuthed={isAuthed} setAuth={setAuth} />} />
           <Route path="/signIn" render={() => <SignIn isAuthed={isAuthed} setAuth={setAuth} />} />
-          <Route exact path="/challenges/:id" render={({match}) => <Challenge isAuthed={isAuthed} match={match}/>} />
+          <Route exact path="/newChallenge" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"newChallenge"}/>} />
+          <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"challenge"}/>} />
+          <Route exact path="/challenges/:challengeId/answers/users/:userId" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"challengeAnswer"}/>} />
           <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
           <Route path="/runCode" component={RunCode} />
           <Route exact path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
