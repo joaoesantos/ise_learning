@@ -52,13 +52,12 @@ class RunCodeTextEditor extends Component {
   
     // is invoked immediately after a component is mounted (inserted into the tree)
     componentDidMount = () => {
-        
         this.editor = codemirror(this.instance, 
             {
                 lineNumbers: true,
                 matchBrackets: true,
                 value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
-                mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
+                mode:CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
                 theme:"neat",
                 smartIndent: true,
                 matchClosing: true, 
@@ -75,13 +74,12 @@ class RunCodeTextEditor extends Component {
 
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props) {
-            if(prevProps.codeLanguage !== this.props.codeLanguage) {
-                this.editor.setValue(CodeMirrorOptions.get(this.props.codeLanguage).value);
-            }
+        if(prevProps !== this.props && prevProps.codeLanguage !== this.props.codeLanguage) {
+            this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
+            this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
         }
     }
-  
+
     render = () => {
         const { classes } = this.props;
         return (

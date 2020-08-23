@@ -12,11 +12,7 @@ import pt.iselearning.services.service.TagService
 @RequestMapping("/v0/tags")
 class TagController (private val tagService: TagService) {
     /**
-     * Method to get a challenge tag.
-     *
-     * @param challengeId represents the id of the challenge to which the tag is associated with
-     * @param tagText represents the text of the tag
-     * @return ResponseEntity<ChallengeTag> represents the returned challenge tag
+     * Method to get all existing tags.
      */
     @GetMapping
     fun getAllTags(): ResponseEntity<List<Tag>> {

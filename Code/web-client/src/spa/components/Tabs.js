@@ -69,6 +69,14 @@ export default function FullWidthTabs(props) {
     setValue(index);
   };
 
+  React.useEffect(() => {
+    SetState({
+      childComponents: props.childComponents,
+      tabLabels: props.tabLabels,
+      useStyles: props.useStyles
+    });
+  },[props]);
+
   const tabs = state.childComponents.map((comp, idx) => <TabPanel key={idx} value={value} index={idx}>{comp}</TabPanel>)
   const labels = state.tabLabels.map((label, idx) => <Tab key={idx} label={`${label}`} {...a11yProps(idx)} />)
   return (
@@ -87,8 +95,6 @@ export default function FullWidthTabs(props) {
         </AppBar>     
         {tabs}
       </ThemeProvider>
-
-  </div>
-    
+    </div>
   );
 }
