@@ -52,6 +52,8 @@ export const apiUrlTemplates = {
     logout: () => `/${apiVersion}/logout`,
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
+    getAllChallenges: () => `/${apiVersion}/challenges`,
+    getRandomChallenge: () => `/${apiVersion}/challenges/random`,
     getQuestionnaireInstances: () => `/${apiVersion}/questionnaireAnswers`,
     getQuestionnaireAnswers: (id) => `/${apiVersion}/questionnaireAnswers/questionnaireInstances/${id}`
 }

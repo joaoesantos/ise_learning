@@ -1,25 +1,25 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 // IS E-Learning images
-import mainImage from '../../images/ISELearning.png';
-import scriptIcon from '../../images/icons/color/scriptYlw.png'
+import mainImage from '../../images/ISELearning.png'
+import scriptIcon from '../../images/icons/services/color/scriptYlw.png'
 // cards components
-import BusinessCard from './BusinessCard.js';
-import MotivationCard from './MotivationCard.js';
-import ChallengesCard from './ChallengesCard.js';
+import BusinessCard from './BusinessCard.js'
+import MotivationCard from './MotivationCard.js'
+import ChallengesCard from './ChallengesCard.js'
 import QuestionnairesCard from './QuestionnairesCard.js'
-import CodeLanguagesCard from './CodeLanguagesCard.js';
-import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js';
+import CodeLanguagesCard from './CodeLanguagesCard.js'
+import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js'
 //import OpenSourceCard from './OpenSourceCard.js';
-import '../../images/wickedcss.min.css';
+import '../../images/wickedcss.min.css'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   mainContainer: {
     maxWidth: '95%',
   },
-  mainGridContainer: {
+  mainGridContainer: {  
     maxWidth: '75%',
     padding: theme.spacing(2),
   },
@@ -82,7 +82,7 @@ export default function HomePage() {
         justify="center"
         alignItems="center"
         >
-          <img src={mainImage} class='slideLeft'/>
+          <img src={mainImage} className='slideLeft'/>
         </Grid>
         <Container className={classes.mainContainer}>
           <Container className={classes.mainGridContainer}>
@@ -158,7 +158,7 @@ export default function HomePage() {
         <Divider variant="middle" />
         <Container ref={challQuestRef} className={classes.challQuestContainer}>
           <Typography className={classes.textTitle} variant="h4">
-              Challenges & Questionnaires
+              {"Challenges & Questionnaires"}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={6} style={{textAlign:'right'}}>
@@ -171,12 +171,12 @@ export default function HomePage() {
             <Typography className={classes.textContent} variant="h6" component="p">
                 Create problems, solve them and challenge your peers!
             </Typography>
-            <Link style={{color:"#db9e07"}} component={RouterLink} to="/challenges">
-                View Challenges >
+            <Link style={{color:"#db9e07"}} component={RouterLink} to="/listChallenges">
+                {"View Challenges >"}
             </Link>
             </Grid>
             <Grid item xs={6}>
-              <img src={scriptIcon} width={150} height={150} class='pulse'/>
+              <img src={scriptIcon} width={150} height={150} className='pulse'/>
             </Grid>
           </Grid>
         </Container>
