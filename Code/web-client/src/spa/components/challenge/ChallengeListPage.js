@@ -1,12 +1,9 @@
 // react
 import React, {useState} from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Link from '@material-ui/core/Link'
-import Paper from '@material-ui/core/Paper'
 import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles } from '@material-ui/core/styles'
 import RepeatOne from '@material-ui/icons/RepeatOne'
@@ -59,7 +56,7 @@ const ChallengeListPage = function(props){
       //not Done || done but not rendering
     } else if (actionState === ActionStates.done &&
     action.render && action.render === true) {
-      // redirect to create new challenge page
+      // redirect do Rodrigo to create new challenge page
     } else {
       //not Done || done but not rendering
     }
@@ -74,7 +71,7 @@ const ChallengeListPage = function(props){
   }
 
   const onCreateChallengeButton = () => {
-    // redirect para o create new challenge page
+    // redirect do Rodrigo to create new challenge page
   }
 
   const classes = useStyles();
@@ -88,15 +85,14 @@ const ChallengeListPage = function(props){
         alignItems="center"
         spacing={3}
         >
-          </Grid>
           <Grid item xs={12} sm={10}>
-            <Toolbar className={classes.toolbar} variant="dense">
+            <Toolbar className={classes.toolbar} variant="regular" >
               <Button className={classes.randomChallengeButton}
               id="randomChallengeButton"
               variant="contained"
               onClick={onRandomChallengeButton}
               >
-                Create challenge
+                Create new challenge
               </Button>
               <Button className={classes.randomChallengeButton}
               endIcon={<RepeatOne />}
@@ -108,13 +104,14 @@ const ChallengeListPage = function(props){
               </Button>
             </Toolbar>
             <ChallengeListTable />
-          <Grid item xs={12} sm={2}>
-            <p>SPACE FOR</p>
-            <p>RANDOM INFORMATION</p>
+          </Grid>
+          <Grid item xs={12} sm={2} style={{backgroundColor:'#db9e07'}}>
+            <p>Possible user information</p>
+            <p>Pie-chart statistics of number of challenges compelted?</p>
           </Grid>
         </Grid>
-    </Container>
-  </div>
+      </Container>
+    </div>
   )
 
 }

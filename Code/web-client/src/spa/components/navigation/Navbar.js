@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       marginLeft: theme.spacing(0),
     },
     appBar: {
-      position : 'static',
+      position : 'sticky',
       background : '#202020',
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
@@ -135,5 +135,4 @@ export default function Navbar(props) {
     </div>
   );
 }
-
 
