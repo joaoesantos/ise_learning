@@ -22,17 +22,17 @@ class QuestionnaireChallengeController(
     /**
      * Method to add one or multiple challenges to a single questionnaire.
      *
-     * A json object that represents a object of the type List<QuestionnaireChallenge> must be present in the body
+     * A json object that represents a object of the type QuestionnaireChallengeModel must be present in the body
      * @param ucb helps build URLs
      * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
      * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping(name = "addChallengesByIdToQuestionnaire")
-    fun addChallengesByIdToQuestionnaire(
+    @PostMapping(name = "addChallengesToQuestionnaire")
+    fun addChallengesToQuestionnaire(
             @RequestBody listOfQuestionnaireChallenge: QuestionnaireChallengeModel,
             ucb: UriComponentsBuilder
     ): ResponseEntity<List<QuestionnaireChallenge>> {
-        val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesByIdToQuestionnaire(listOfQuestionnaireChallenge)
+        val addedQuestionnaireChallenge = questionnaireChallengeServices.addChallengesToQuestionnaire(listOfQuestionnaireChallenge)
         val location = ucb.path(QUESTIONNAIRE_CHALLENGE_PATTERN)
                 .path((addedQuestionnaireChallenge!!.first().qcId).toString())
                 .build()
@@ -43,7 +43,6 @@ class QuestionnaireChallengeController(
     /**
      * Method to get a single questionnaire-challenge.
      *
-     * A json object that represents a object of the type LQuestionnaireChallenge> must be present in the body
      * Path variables "questionnaireId" and "challengeId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
      * @param challengeId represents Challenge unique identifier
@@ -59,17 +58,31 @@ class QuestionnaireChallengeController(
     }
 
     /**
-     * Method to delete one or multiple challenge from a single questionnaire answer.
+     * Method to update the list of challenges on a single questionnaire.
      *
-     * @param questionnaireChallengeModel represents an object with the information
-     * of a single questionnaire unique identifier and list of challenges unique identifiers
+     * A json object that represents a object of the type QuestionnaireChallengeModel must be present in the body
+     * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
+     * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @PutMapping(name = "updateChallengesOnQuestionnaire")
+    fun updateChallengesByIdOnQuestionnaire(
+            @RequestBody listOfQuestionnaireChallenge: QuestionnaireChallengeModel
+    ): ResponseEntity<List<QuestionnaireChallenge>> {
+        val addedQuestionnaireChallenge = questionnaireChallengeServices.updateChallengesOnQuestionnaire(listOfQuestionnaireChallenge)
+        return ResponseEntity.ok().body(addedQuestionnaireChallenge)
+    }
+
+    /**
+     * Method to delete all challenges from a single questionnaire.
+     *
+     * @param questionnaireId represents Questionnaire unique identifier
      * @return No Content
      */
-    @DeleteMapping(name = "removeChallengesByIdFromQuestionnaire")
-    fun removeChallengesByIdFromQuestionnaire(
-            @RequestBody questionnaireChallengeModel: QuestionnaireChallengeModel
+    @DeleteMapping("/{questionnaireId}", name = "removeAllChallengesFromQuestionnaire")
+    fun removeChallengesFromQuestionnaire(
+            @PathVariable questionnaireId: Int
     ): ResponseEntity<QuestionnaireAnswer> {
-        questionnaireChallengeServices.removeChallengesByIdFromQuestionnaire(questionnaireChallengeModel)
+        questionnaireChallengeServices.removeAllChallengesFromQuestionnaire(questionnaireId)
         return ResponseEntity.noContent().build()
     }
 

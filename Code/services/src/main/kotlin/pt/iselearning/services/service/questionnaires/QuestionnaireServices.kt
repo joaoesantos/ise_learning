@@ -53,7 +53,7 @@ class QuestionnaireServices(
                 questionnaireWithChallengesModel.challenges
         )
 
-        questionnaireChallengeServices.addChallengesByIdToQuestionnaire(questionnaireChallengeModel)
+        questionnaireChallengeServices.addChallengesToQuestionnaire(questionnaireChallengeModel)
 
         return createdQuestionnaire
     }
