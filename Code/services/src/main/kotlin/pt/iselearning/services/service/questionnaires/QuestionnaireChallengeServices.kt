@@ -131,4 +131,9 @@ class QuestionnaireChallengeServices(
         return questionnaireChallenge
     }
 
+    fun getAllQuestionnaireChallengeByQuestionnaireId(questionnaireId: Int): List<QuestionnaireChallenge> {
+        checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
+        return questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireId)
+    }
+
 }
