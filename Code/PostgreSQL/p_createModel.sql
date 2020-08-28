@@ -49,6 +49,7 @@ BEGIN
 	CREATE TABLE challenge (
 		challenge_id INT GENERATED ALWAYS AS IDENTITY,
 		creator_id INT NOT NULL,
+		challenge_title VARCHAR(50) NOT NULL,
 		challenge_text TEXT NOT NULL,
 		is_private BOOLEAN NOT NULL DEFAULT FALSE,
 		--
@@ -107,7 +108,7 @@ BEGIN
 
 	CREATE TABLE questionnaire (
 		questionnaire_id INT GENERATED ALWAYS AS IDENTITY,
-		description VARCHAR(50),
+		description VARCHAR(50) NOT NULL,
 		timer DOUBLE PRECISION,
 		creator_id INT NOT NULL,
 		creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
@@ -121,7 +122,7 @@ BEGIN
 		questionnaire_instance_id INT GENERATED ALWAYS AS IDENTITY,
 		questionnaire_id INT NOT NULL,
 		questionnaire_instance_uuid TEXT NOT NULL,
-		description VARCHAR(50),
+		description VARCHAR(50) NOT NULL,
 		timer DOUBLE PRECISION,
 		start_timestamp DOUBLE PRECISION,
 		end_timestamp DOUBLE PRECISION,

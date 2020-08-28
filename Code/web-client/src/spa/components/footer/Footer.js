@@ -24,6 +24,7 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
     footer: {
         padding: theme.spacing(2),
+        marginTop: 'auto',
         alignItems: 'center'
     },
     link: {

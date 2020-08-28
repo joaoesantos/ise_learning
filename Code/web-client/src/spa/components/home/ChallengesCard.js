@@ -1,15 +1,15 @@
 // react
-import React from 'react';
+import React from 'react'
 // material-ui components
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 
-import iconBlack from '../../images/icons/blk/challengeBlk.png';
-import iconYellow from '../../images/icons/color/challengeYlw.png';
+import iconBlack from '../../images/icons/services/blk/challengeBlk.png'
+import iconYellow from '../../images/icons/services/color/challengeYlw.png'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
