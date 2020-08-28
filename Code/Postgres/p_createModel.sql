@@ -170,7 +170,7 @@ BEGIN
     qi.description as QuestionnaireInstanceDescription,
     q.creator_id as Creator_Id
     from questionnaire q
-    inner join questionnaire_instance qi on qi.questionnaire_id = q.questionnaire_id
+    inner join questionnaire_instance qi on qi.questionnaire_id = q.questionnaire_id;
 
     COMMIT;
 END;

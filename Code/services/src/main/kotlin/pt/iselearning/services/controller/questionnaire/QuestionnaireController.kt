@@ -4,8 +4,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.Questionnaire;
 import pt.iselearning.services.models.questionnaire.QuestionnaireModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireOutputModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireWithChallengesModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireServices;
 import pt.iselearning.services.util.QUESTIONNAIRE_PATTERN
@@ -49,8 +51,10 @@ class QuestionnaireController(
     @PostMapping("/withChallenges", name = "createQuestionnaireWithChallenges")
     fun createQuestionnaireWithChallenges(
             @RequestBody questionnaireWithChallengesModel: QuestionnaireWithChallengesModel,
+            user: User,
             ucb: UriComponentsBuilder
     ): ResponseEntity<Questionnaire> {
+        questionnaireWithChallengesModel.questionnaire.creatorId = user.userId
         val createdQuestionnaire = questionnaireServices.createQuestionnaireWithChallenges(questionnaireWithChallengesModel)
         val location = ucb.path(QUESTIONNAIRE_PATTERN)
                 .path((createdQuestionnaire?.questionnaireId).toString())
@@ -117,4 +121,12 @@ class QuestionnaireController(
         return ResponseEntity.noContent().build()
     }
 
+    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
+    fun getQuestionnaireByIdWithChallenge(
+            @PathVariable questionnaireId: Int
+    ) : ResponseEntity<QuestionnaireOutputModel> {
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireServices.getQuestionnaireInstanceByIdWithChallenge(questionnaireId))
+    }
 }

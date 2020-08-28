@@ -38,7 +38,7 @@ class QuestionnaireChallengeServices(
      * @return added questionnaire challenge
      */
     @Validated
-    fun addChallengesByIdToQuestionnaire(@Valid questionnaireChallengeModel: QuestionnaireChallengeModel): List<QuestionnaireChallenge> {
+    fun addChallengesToQuestionnaire(@Valid questionnaireChallengeModel: QuestionnaireChallengeModel): List<QuestionnaireChallenge> {
         val questionnaire = questionnaireRepository.findById(questionnaireChallengeModel.questionnaireId)
         checkIfQuestionnaireExists(questionnaire, questionnaireChallengeModel.questionnaireId)
         questionnaireChallengeModel.challenges.iterator().forEach {
@@ -77,27 +77,41 @@ class QuestionnaireChallengeServices(
     }
 
     /**
-     * Remove a collection challenges from a questionnaire by its unique identifiers
+     * Update challenges on a questionnaire.
      *
-     * @param listOfQuestionnaireChallenge model that groups a collection of challenge ids and a questionnaire id
+     * @param questionnaireChallengeModel object information
+     * @return added questionnaire challenge
      */
     @Validated
-    fun removeChallengesByIdFromQuestionnaire(@Valid listOfQuestionnaireChallenge: QuestionnaireChallengeModel) {
-        val questionnaire = questionnaireRepository.findById(listOfQuestionnaireChallenge.questionnaireId)
-        checkIfQuestionnaireExists(questionnaire, listOfQuestionnaireChallenge.questionnaireId)
-        listOfQuestionnaireChallenge.challenges.iterator().forEach {
-            val questionnaireChallenge = questionnaireChallengeRepository
-                    .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(listOfQuestionnaireChallenge.questionnaireId, it.challengeId)
-            if (questionnaireChallenge.isEmpty) {
-                throw ServerException("Challenge not found.",
-                        "Challenge  $it its not on the list of challenges for questionnaire ${listOfQuestionnaireChallenge.questionnaireId}", ErrorCode.ITEM_NOT_FOUND)
-            }
+    fun updateChallengesOnQuestionnaire(@Valid questionnaireChallengeModel: QuestionnaireChallengeModel): List<QuestionnaireChallenge> {
+        removeAllChallengesFromQuestionnaire(questionnaireChallengeModel.questionnaireId)
+        questionnaireChallengeModel.challenges.iterator().forEach {
+            val challenge = challengeRepository.findById(it.challengeId)
+            checkIfChallengeExists(challenge, it.challengeId)
+            checkSupportedLanguagesForChallengeLanguageFilter(it.languageFilter)
         }
 
-        listOfQuestionnaireChallenge.challenges.iterator().forEach {
-            val questionnaireChallenge = questionnaireChallengeRepository
-                    .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(listOfQuestionnaireChallenge.questionnaireId, it.challengeId)
-            questionnaireChallengeRepository.delete(questionnaireChallenge.get())
+        val createdQuestionnaireChallenge = mutableListOf<QuestionnaireChallenge>()
+        questionnaireChallengeModel.challenges.iterator().forEach {
+            val questionnaireChallenge = convertToEntity(questionnaireChallengeModel.questionnaireId, it)
+            createdQuestionnaireChallenge.add(questionnaireChallengeRepository.save(questionnaireChallenge))
+        }
+        return createdQuestionnaireChallenge
+    }
+
+    /**
+     * Remove a collection challenges from a questionnaire by its unique identifiers
+     *
+     * @param questionnaireId questionnaire unique identifier
+     */
+    @Validated
+    fun removeAllChallengesFromQuestionnaire(@Positive questionnaireId: Int) {
+        val questionnaire = questionnaireRepository.findById(questionnaireId)
+        checkIfQuestionnaireExists(questionnaire, questionnaireId)
+
+        val questionnaireChallenges = questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireId)
+        questionnaireChallenges.iterator().forEach {
+            questionnaireChallengeRepository.delete(it)
         }
     }
 
@@ -115,6 +129,11 @@ class QuestionnaireChallengeServices(
         questionnaireChallenge.challenge = challengeRepository.findById(questionnaireChallengeCollectionModel.challengeId).get()
         questionnaireChallenge.languageFilter = questionnaireChallengeCollectionModel.languageFilter
         return questionnaireChallenge
+    }
+
+    fun getAllQuestionnaireChallengeByQuestionnaireId(questionnaireId: Int): List<QuestionnaireChallenge> {
+        checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
+        return questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireId)
     }
 
 }
