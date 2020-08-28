@@ -49,34 +49,39 @@ BEGIN
 	INSERT INTO tag (tag) VALUES
 	('Array'),('Divide and Conquer'),('Hash Table'),('Recursion');
 
-	INSERT INTO challenge(creator_id,challenge_text,is_private) VALUES
+	INSERT INTO challenge(creator_id,challenge_title,challenge_text,is_private) VALUES
 	-- CHALLENGE 1
 	(
 		1,
+		'Challenge 1',
 		'Type on the console the sentence <Hello World_1!>',
 		FALSE
 	),
 	-- CHALLENGE 2
 	(
 		1,
+		'Challenge 2',
 		'Type on the console the sentence <Hello World_2!>',
 		FALSE
 	),
 	-- CHALLENGE 3
 	(
 		2,
+		'Challenge 3',
 		'Type on the console the sentence <Hello World_3!>',
 		TRUE
 	),
 	-- CHALLENGE 4
 	(
 		2,
+		'Challenge 4',
 		'Type on the console the sentence <Hello World_4!>',
 		TRUE
 	),
 	-- CHALLENGE 5
 	(
 		3,
+		'Challenge 5',
 		'Type on the console the sentence <Hello World_5!>',
 		FALSE
 	);

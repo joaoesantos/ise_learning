@@ -23,6 +23,9 @@ data class Challenge (
     @field:Positive(message = "Creator id must be positive")
     var creatorId : Int?,
 
+    @Column(name="challenge_title")
+    var challengeTitle : String?,
+
     @Column(name="challenge_text")
     var challengeText : String?,
 
@@ -33,5 +36,5 @@ data class Challenge (
     @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
     var solutions : MutableList<Solution>?
 ) {
-    constructor() : this(null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null)
 }

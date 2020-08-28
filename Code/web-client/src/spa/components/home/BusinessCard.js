@@ -1,15 +1,15 @@
 // react
 import React from 'react';
 // material-ui components
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import Icon from '@material-ui/core/Icon'
 import Link from '@material-ui/core/Link'
-import LinkedIn  from '@material-ui/icons/LinkedIn';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import LinkedIn  from '@material-ui/icons/LinkedIn'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
