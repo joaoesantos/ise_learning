@@ -66,8 +66,11 @@ export const languageLabelMappings = {
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
+<<<<<<< HEAD
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
+=======
+>>>>>>> 6eb91f640aa7b3e37957c43e8e45cfb520a90391
     profile: () => `/${apiVersion}/users/me`,
     executeCode: () => `/${apiVersion}/execute`,
     challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,

@@ -52,8 +52,11 @@ export default function App() {
 
   React.useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (response === undefined && actionState === ActionStates.clear) {
 =======
+=======
+>>>>>>> 6eb91f640aa7b3e37957c43e8e45cfb520a90391
     if (response && actionState === ActionStates.done &&
       action.render && action.render === true) {
       setUser(response)
