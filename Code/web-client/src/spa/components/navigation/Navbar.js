@@ -1,28 +1,28 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
-import AppBar from '@material-ui/core/AppBar';
-import Badge from '@material-ui/core/Badge';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar'
+import Badge from '@material-ui/core/Badge'
+import IconButton from '@material-ui/core/IconButton'
+import Link from '@material-ui/core/Link'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles } from '@material-ui/core/styles'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import Typography from '@material-ui/core/Typography'
 // logo
-import logo from '../../images/ISELearning_logo_wht.png';
+import logo from '../../images/ISELearning_logo_wht.png'
 
 const useStyles = makeStyles(theme => ({
   layout: {
       marginLeft: theme.spacing(0),
     },
     appBar: {
-      position : 'static',
+      position : 'sticky',
       background : '#202020',
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
@@ -76,7 +76,7 @@ export default function Navbar(props) {
             </Link>
           {props.isAuthed ? 
             <Typography className={classes.title}>
-              <Link className={classes.link} component={RouterLink} to="/challenges">
+              <Link className={classes.link} component={RouterLink} to="/listChallenges">
                 Challenges
               </Link>
               <Link className={classes.link} component={RouterLink} to="/questionnaires">
@@ -135,5 +135,4 @@ export default function Navbar(props) {
     </div>
   );
 }
-
 

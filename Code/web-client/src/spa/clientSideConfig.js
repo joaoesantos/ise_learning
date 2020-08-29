@@ -66,11 +66,8 @@ export const languageLabelMappings = {
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
-<<<<<<< HEAD
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
-=======
->>>>>>> 6eb91f640aa7b3e37957c43e8e45cfb520a90391
     profile: () => `/${apiVersion}/users/me`,
     executeCode: () => `/${apiVersion}/execute`,
     challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
@@ -79,4 +76,13 @@ export const apiUrlTemplates = {
     challengeAnswer: (challengeAnswerId) => `/${apiVersion}/challengeAnswers/${challengeAnswerId}`,
     challengeAnswers: () => `/${apiVersion}/challengeAnswers`,
     languages: () => `/${apiVersion}/codeLanguages`,
+    getAllChallenges: () => `/${apiVersion}/challenges`,
+    getRandomChallenge: () => `/${apiVersion}/challenges/random`,
+    getQuestionnaireInstances: () => `/${apiVersion}/questionnaireAnswers`,
+    getQuestionnaireAnswers: (id) => `/${apiVersion}/questionnaireAnswers/questionnaireInstances/${id}`,
+    getChallenges: () => `/${apiVersion}/challenges`,
+    getQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
+    saveQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
+    createQuestionnaire: () => `/${apiVersion}/questionnaires/withChallenges`,
+    getQuestionnaireWithChallenges: () => `/${apiVersion}/questionnaires/{questionnaireId}/withChallenges`
 }

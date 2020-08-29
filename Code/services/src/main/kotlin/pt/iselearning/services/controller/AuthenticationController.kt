@@ -17,7 +17,7 @@ class AuthenticationController(private val userService: UserService) {
      *
      * @param authorizationHeader http header with key equals to Authorization
      */
-    @PostMapping("/login")
+    @PostMapping("/login", name = "login")
     fun login(@RequestHeader("Authorization") authorizationHeader : String) : ResponseEntity<Unit> {
         val base64Decoded = String(Base64.getDecoder().decode(authorizationHeader.split(" ")[1]))
         val split = base64Decoded.split(":")

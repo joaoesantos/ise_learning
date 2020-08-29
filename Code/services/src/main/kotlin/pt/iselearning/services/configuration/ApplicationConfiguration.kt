@@ -3,24 +3,35 @@ package pt.iselearning.services.configuration
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator
 import org.modelmapper.ModelMapper
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.modelmapper.config.Configuration.*
+import org.modelmapper.config.Configuration.AccessLevel
 import org.modelmapper.convention.MatchingStrategies
 import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 import pt.iselearning.services.filter.AuthenticationFilter
+import pt.iselearning.services.repository.challenge.ChallengeRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.resolver.UserArgumentResolver
 import pt.iselearning.services.service.AuthenticationService
+import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_PATTERN
+import pt.iselearning.services.util.VERSION
+import pt.iselearning.services.util.addQuestionnaireChallengeMappings
 
 @Configuration
-class ApplicationConfiguration : WebMvcConfigurer {
+class ApplicationConfiguration() : WebMvcConfigurer {
 
     @Bean
-    fun createModelMapper() : ModelMapper {
+    fun createRequestMappingHandlerMapping(): RequestMappingHandlerMapping? {
+        // add properties here
+        return RequestMappingHandlerMapping()
+    }
+
+    @Bean
+    fun createModelMapper(questionnaireRepository: QuestionnaireRepository, challengeRepository: ChallengeRepository) : ModelMapper {
         val mm = ModelMapper();
 
         mm.configuration.matchingStrategy = MatchingStrategies.STRICT
@@ -28,6 +39,7 @@ class ApplicationConfiguration : WebMvcConfigurer {
         mm.configuration.isFieldMatchingEnabled = true
         mm.configuration.isSkipNullEnabled = true
 
+        addQuestionnaireChallengeMappings(mm, questionnaireRepository, challengeRepository)
         return mm
     }
 
@@ -41,7 +53,11 @@ class ApplicationConfiguration : WebMvcConfigurer {
 
         registrationBean.initParameters
         registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
-        registrationBean.addUrlPatterns("/v0/login","/v0/challenges/*" )
+        registrationBean.addUrlPatterns(
+                "/v0/login",
+                "/v0/challenges/**",
+                QUESTIONNAIRE_ANSWER_PATTERN,
+                "/v0/questionnaires/withChallenges")
 
         return registrationBean
     }
