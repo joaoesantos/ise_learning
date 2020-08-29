@@ -52,4 +52,7 @@ export const apiUrlTemplates = {
     logout: () => `/${apiVersion}/logout`,
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
+    profile: () => `/${apiVersion}/users/me`,
+    executeCode: () => `/${apiVersion}/execute`,
+    challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
 }

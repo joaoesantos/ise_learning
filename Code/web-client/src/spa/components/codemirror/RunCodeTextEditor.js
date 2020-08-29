@@ -1,8 +1,10 @@
 // react
 import React, { Component } from 'react';
 // material-ui components
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 // codemirror
 import codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -30,10 +32,20 @@ const styles = theme => ({
         '&:hover' : {
             backgroundColor: '#17b033',
         }
+    },
+    runButton: {
+        margin: theme.spacing(1),
+        textTransform:"none",
+        color:'#ffffff',
+        backgroundColor:'#5cb85c', // cor do isel -> '#963727'
+        '&:hover' : {
+            backgroundColor: '#17b033',
+        }
     }
-  });
-  
-  class RunCodeTextEditor extends Component {
+});
+
+
+class RunCodeTextEditor extends Component {
     constructor(props) {
         super(props);
     };
@@ -74,6 +86,17 @@ const styles = theme => ({
         const { classes } = this.props;
         return (
             <Paper variant="outlined" square elevation={1} >
+                <Box>
+                    {this.props.actions && this.props.actions.map(a =>
+                        <Button className={classes.runButton}
+                            id={a.id}
+                            variant="contained"
+                            onClick={() => a.function()}
+                        >
+                            {a.title}
+                        </Button>
+                    )}
+                </Box>
                 <div ref={(ref) => this.instance = ref} />
             </Paper>
         )

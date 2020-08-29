@@ -51,7 +51,14 @@ export default function App() {
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
   React.useEffect(() => {
+<<<<<<< HEAD
     if (response === undefined && actionState === ActionStates.clear) {
+=======
+    if (response && actionState === ActionStates.done &&
+      action.render && action.render === true) {
+      setUser(response)
+    } else if (!response) {
+>>>>>>> 84b99db... challenge retrieval and execution with services, small refactoring
       setAction({
         function: UserController.getUserMe,
         args: [],

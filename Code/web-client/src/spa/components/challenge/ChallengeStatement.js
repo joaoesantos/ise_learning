@@ -14,9 +14,8 @@ export default function ChallengePage(props) {
 
     return (
         <Paper variant="outlined" square elevation={1} >
-            <h1>{props.challengeStatement.title}</h1>
             <div className={classes.layout}>
-                {props.challengeStatement.text}
+                {props.challengeStatement}
             </div>
         </Paper>
     )
