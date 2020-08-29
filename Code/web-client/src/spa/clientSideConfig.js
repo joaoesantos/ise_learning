@@ -45,6 +45,14 @@ mode:'python',
 value:`print "Hello World!"`
 });
 
+export const defaultUnitTests = {
+    java: "import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}",
+    kotlin: "import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}",
+    javascript: "should contain default test code for javascript",
+    csharp: "should contain default test code for C#",
+    python: "should contain default test code for python"
+}
+
 export const apiVersion = "v0";
 
 export const languageLabelMappings = {
@@ -64,5 +72,8 @@ export const apiUrlTemplates = {
     executeCode: () => `/${apiVersion}/execute`,
     challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
     challenges: () => `/${apiVersion}/challenges`,
+    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${apiVersion}/challengeAnswers/${challengeId}/answers/users/${userId}`,
+    challengeAnswer: (challengeAnswerId) => `/${apiVersion}/challengeAnswers/${challengeAnswerId}`,
+    challengeAnswers: () => `/${apiVersion}/challengeAnswers`,
     languages: () => `/${apiVersion}/codeLanguages`,
 }

@@ -20,8 +20,11 @@ export const genericRunCodeAction = (code, unitTests, executeTests, textSufix, s
 
 export const genericSetTextEditorData = (setter, fullValue, codeLanguage) => {
     return (newValue) => {
-        if(codeLanguage){
-            fullValue[codeLanguage] = newValue;
+        if(codeLanguage) {
+            if(!fullValue[codeLanguage]) {
+                fullValue[codeLanguage] = {};
+            }
+            fullValue[codeLanguage].value = newValue;
             setter(Object.assign({}, fullValue))
         }
     }
