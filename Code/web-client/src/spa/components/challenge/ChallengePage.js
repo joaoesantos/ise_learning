@@ -26,6 +26,9 @@ import { ChallengeController } from '../../controllers/ChallengeController'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { ChallengePageConfigs } from '../../controllers/ChallengePageConfigs'
 import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/ChallengeUtils'
+// configs
+import {CodeMirrorOptions, defaultUnitTests} from '../../clientSideConfig'
+
 
 const useStyles = makeStyles(theme => ({
     layout: { },
@@ -108,6 +111,7 @@ export default withRouter(function ChallengePage(props) {
     const [action, setAction] = React.useState({});
     const [actionState, response] = UseAction(action);
     const [challenge, setChallenge] = React.useState();
+    const [challengeAnswer, setChallengeAnswer] = React.useState();
     const [availableLanguages, setAvailableLanguages] = React.useState([]);
 
     let componentAggregateStates = {
@@ -123,6 +127,7 @@ export default withRouter(function ChallengePage(props) {
         ourTests: { state: ourTests, setter: setOurTests},
         action: { state: action, setter: setAction},
         challenge: { state: challenge, setter: setChallenge},
+        challengeAnswer: { state: challengeAnswer, setter: setChallengeAnswer},
         availableLanguages: { state: availableLanguages, setter: setAvailableLanguages}
     }
     let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates)[props.configKey]
@@ -150,18 +155,20 @@ export default withRouter(function ChallengePage(props) {
         setChallenge(newChallenge)
     }
 
-    let yourSolutionRunCodeAction = genericRunCodeAction(yourSolution, "", false, "Your Solution", setOutputText, codeLanguage);
-    let ourSolutionRunCodeAction = genericRunCodeAction(ourSolution, "", false, "Our Solution", setOutputText, codeLanguage);
-    let yourTestsRunCodeAction = genericRunCodeAction(yourSolution, yourTests, true, "Your Tests", setOutputText, codeLanguage);
-    let ourTestsRunCodeAction = genericRunCodeAction(yourSolution, ourTests, true, "Our Tests", setOutputText, codeLanguage);
+    let yourSolutionRunCodeAction = genericRunCodeAction(yourSolution.value, "", false, "Your Solution", setOutputText, codeLanguage);
+    let ourSolutionRunCodeAction = genericRunCodeAction(ourSolution.value, "", false, "Our Solution", setOutputText, codeLanguage);
+    let yourTestsRunCodeAction = genericRunCodeAction(yourSolution.value, yourTests.value, true, "Your Tests", setOutputText, codeLanguage);
+    let ourTestsRunCodeAction = genericRunCodeAction(yourSolution.value, ourTests.value, true, "Our Tests", setOutputText, codeLanguage);
 
-    let determineDefaultTextForEditableEditors = (map) => {
+    let determineDefaultTextForEditableEditors = (map, type) => {
         if(map[codeLanguage]) {
-            return map[codeLanguage];
+            return map[codeLanguage].value;
         } else if(!codeLanguage) {
             return "Please add a new language.";
-        } else {
-            return "";
+        } else if (type === "code") {
+            return CodeMirrorOptions.get(codeLanguage).value;
+        } else if(type === "test") {
+            return defaultUnitTests[codeLanguage];
         }
     }
 
@@ -169,19 +176,19 @@ export default withRouter(function ChallengePage(props) {
         tab1: {
             components: [
                 <ChallengeStatement challengeStatement={challenge ? challenge.challengeText : ""} setChallengeStatement={handleChallengeStatementChange} readOnly={!isChallengeEditable} />,
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourSolution)} setTextEditorData={genericSetTextEditorData(setOurSolution, ourSolution, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourSolutionRunCodeAction]} />
+                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourSolution, "code")} setTextEditorData={genericSetTextEditorData(setOurSolution, ourSolution, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourSolutionRunCodeAction]} />
             ],
             labels: ["Challenge Statement", "Our Solution"]
         },
         tab2: {
             components: [
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourSolution[codeLanguage] ? yourSolution[codeLanguage] : ""} setTextEditorData={genericSetTextEditorData(setYourSolution, yourSolution, codeLanguage)} actions={[yourSolutionRunCodeAction]} />
+                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourSolution, yourSolution, codeLanguage)} actions={[yourSolutionRunCodeAction]} />
             ],
             labels: ["Your Solution"]
         },
         tab3: {
             components: [
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourTests)} setTextEditorData={genericSetTextEditorData(setOurTests, ourTests, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourTestsRunCodeAction]} />
+                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourTests, "test")} setTextEditorData={genericSetTextEditorData(setOurTests, ourTests, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourTestsRunCodeAction]} />
             ],
             labels: ["Our Tests"]
         },
@@ -193,7 +200,7 @@ export default withRouter(function ChallengePage(props) {
         }
     }
     if(pageConfigs.showYourTests) {
-        tabs.tab3.components.push(<RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourTests[codeLanguage] ? yourTests[codeLanguage] : ""} setTextEditorData={genericSetTextEditorData(setYourTests, yourTests, codeLanguage)} actions={[yourTestsRunCodeAction]} />)
+        tabs.tab3.components.push(<RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourTests[codeLanguage] ? yourTests[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourTests, yourTests, codeLanguage)} actions={[yourTestsRunCodeAction]} />)
         tabs.tab3.labels.push("Your Tests");
     }
     
@@ -233,7 +240,8 @@ export default withRouter(function ChallengePage(props) {
                             } else {
                                 setChallengeLanguages(e.target.value)
                                 if(e.target.value.length == 1) {
-                                    setCodeLanguage(e.target.value[0].value)
+                                    let language = e.target.value[0].value;
+                                    setCodeLanguage(language)
                                 }
                             }
                         }}

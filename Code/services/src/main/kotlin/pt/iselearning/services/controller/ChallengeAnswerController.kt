@@ -5,9 +5,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.domain.Challenge
 import pt.iselearning.services.domain.ChallengeAnswer
-import pt.iselearning.services.repository.ChallengeAnswerRepository
 import pt.iselearning.services.service.ChallengeAnswerService
 import java.lang.String
 
