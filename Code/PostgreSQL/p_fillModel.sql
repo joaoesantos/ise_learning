@@ -108,7 +108,7 @@ BEGIN
 				System.out.println("Hello World_1!");
 			}
 		}',
-		TRUE
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 1 EM KOTLIN
 	(
@@ -120,7 +120,7 @@ BEGIN
 		'fun main(args: Array<String>) {
 			println("Hello, World_1!")
 		}',
-		TRUE
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 1 EM JAVASCRIPT
 	(
@@ -132,7 +132,7 @@ BEGIN
 		'function main() {
 			console.log("Hello World_1!");
 		}());',
-		TRUE
+		''
 	),
 	-- CHALLENGE 1 EM C#
 	(
@@ -148,7 +148,7 @@ BEGIN
 				System.Console.WriteLine("Hello World_1!");
 			}
 		}',
-		TRUE
+		''
 	),
 	-- CHALLENGE 1 EM PYTHON
 	(
@@ -156,7 +156,7 @@ BEGIN
 		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_1!")',
-		TRUE
+		''
 	),
 	-- CHALLENGE 2 EM JAVA
 	(
@@ -172,7 +172,7 @@ BEGIN
 				System.out.println("Hello World_2!");
 			}
 		}',
-		TRUE
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 2 EM KOTLIN
 	(
@@ -184,7 +184,7 @@ BEGIN
 		'fun main(args: Array<String>) {
 			println("Hello, World_2!")
 		}',
-		TRUE
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 2 EM JAVASCRIPT
 	(
@@ -196,7 +196,7 @@ BEGIN
 		'function main() {
 			console.log("Hello World_2!");
 		}());',
-		TRUE
+		''
 	),
 	-- CHALLENGE 2 EM C#
 	(
@@ -212,7 +212,7 @@ BEGIN
 				System.Console.WriteLine("Hello World_2!");
 			}
 		}',
-		TRUE
+		''
 	),
 	-- CHALLENGE 2 EM PYTHON
 	(
@@ -220,7 +220,7 @@ BEGIN
 		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_2!")',
-		TRUE
+		''
 	),
 	-- CHALLENGE 3 EM JAVA
 	(
@@ -236,7 +236,7 @@ BEGIN
 				System.out.println("Hello World_3!");
 			}
 		}',
-		TRUE
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 3 EM KOTLIN
 	(
@@ -248,7 +248,7 @@ BEGIN
 		'fun main(args: Array<String>) {
 			println("Hello, World_3!")
 		}',
-		TRUE
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 3 EM JAVASCRIPT
 	(
@@ -260,7 +260,7 @@ BEGIN
 		'function main() {
 			console.log("Hello World_3!");
 		}());',
-		TRUE
+		''
 	),
 	-- CHALLENGE 3 EM C#
 	(
@@ -276,7 +276,7 @@ BEGIN
 				System.Console.WriteLine("Hello World_3!");
 			}
 		}',
-		TRUE
+		''
 	),
 	-- CHALLENGE 3 EM PYTHON
 	(
@@ -284,7 +284,7 @@ BEGIN
 		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_3!")',
-		TRUE
+		''
 	),
 	-- CHALLENGE 4 EM JAVA
 	(
@@ -300,7 +300,7 @@ BEGIN
 				System.out.println("Hello World_4!");
 			}
 		}',
-		TRUE
+		''
 	),
 	-- CHALLENGE 4 EM KOTLIN
 	(
@@ -312,7 +312,7 @@ BEGIN
 		'fun main(args: Array<String>) {
 			println("Hello, World_4!")
 		}',
-		TRUE
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}'
 	),
 	-- CHALLENGE 5 EM JAVASCRIPT
 	(
@@ -324,7 +324,7 @@ BEGIN
 		'function main() {
 			console.log("Hello World_5!");
 		}());',
-		TRUE
+		''
 	),
 	-- CHALLENGE 1 EM C#
 	(
@@ -340,7 +340,7 @@ BEGIN
 				System.Console.WriteLine("Hello World_5!");
 			}
 		}',
-		TRUE
+		''
 	),
 	-- CHALLENGE 5 EM PYTHON
 	(
@@ -348,7 +348,7 @@ BEGIN
 		'python',
 		'#WRITE YOUR CODE HERE',
 		'print("Hello World_5!")',
-		TRUE
+		''
 	);
 
 	-- INSERT INTO CHALLENGE_ANSWER
@@ -358,7 +358,7 @@ BEGIN
 		1, -- challenge
 		'python',
 		'print("Hello World!")',
-		'TRUE'
+		''
 	);
 	
 	CALL p_insertchallengeanswer
@@ -370,8 +370,9 @@ BEGIN
 			public static void main(String[] args) {
 				System.out.println("Hello World!");
 			}
+			public static void test() {System.out.println(\"<<Test>>\");}  \r\n
 		}',
-		'TRUE'
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}'
 	);
 	
 	CALL p_insertchallengeanswer
@@ -380,7 +381,7 @@ BEGIN
 		1, -- challenge
 		'python',
 		'print("Hello World!")',
-		'TRUE'
+		''
 	);
 	
 	CALL p_insertchallengeanswer
@@ -393,7 +394,7 @@ BEGIN
 				System.out.println("Hello World!");
 			}
 		}',
-		'TRUE'
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
 	);
 	
 	CALL p_insertchallengeanswer
@@ -403,8 +404,10 @@ BEGIN
 		'kotlin',
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
-		}',
-		'TRUE'
+		}
+		fun cenas() {println(\"<<Test>>\")}
+		',
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {cenas(); Assert.assertTrue(true);}}'
 	);
 	
 	CALL p_insertchallengeanswer
@@ -413,7 +416,7 @@ BEGIN
 		1, -- challenge
 		'python',
 		'print("Hello World!")',
-		'TRUE'
+		''
 	);
 	
 	CALL p_insertchallengeanswer
@@ -426,7 +429,7 @@ BEGIN
 				System.out.println("Hello World!");
 			}
 		}',
-		'TRUE'
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
 	);
 	
 	CALL p_insertchallengeanswer
@@ -437,7 +440,7 @@ BEGIN
 		'fun main(args: Array<String>) {
 			println("Hello, World!")
 		}',
-		'TRUE'
+		'import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}"'
 	);
 	
 	CALL p_insertchallengeanswer
@@ -448,7 +451,7 @@ BEGIN
 		'function main() {
 			console.log("Hello World!");
 		}());',
-		'TRUE'
+		''
 	);
 	
 	CALL p_insertchallengeanswer
@@ -461,7 +464,7 @@ BEGIN
 				System.Console.WriteLine("Hello World!");
 			}
 		}',
-		'TRUE'
+		''
 	);
 
 

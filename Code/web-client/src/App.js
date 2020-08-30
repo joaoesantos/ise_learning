@@ -47,6 +47,9 @@ function App() {
           <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} credentials={credentials}/>} />
           <Route exact path="/questionnaireAnswer" render={() => <QuestionnaireAnswerListPage isAuthed={isAuthed} credentials={credentials}/>} />
           <Route path="/questionnaireAnswer/:id" render={() => <QuestionnaireAnswerPage isAuthed={isAuthed} credentials={credentials}/>} />
+          <Route exact path="/newChallenge" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"newChallenge"}/>} />
+          <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"challenge"}/>} />
+          <Route exact path="/challengeAnswers/:challengeId/answers/users/:userId" render={({match}) => <Challenge isAuthed={isAuthed} match={match} configKey={"challengeAnswer"}/>} />
         </Switch>
         <Footer />
       </div>

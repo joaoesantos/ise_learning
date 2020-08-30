@@ -1,8 +1,10 @@
 // react
 import React, { Component } from 'react';
 // material-ui components
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 // codemirror
 import codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -30,10 +32,20 @@ const styles = theme => ({
         '&:hover' : {
             backgroundColor: '#17b033',
         }
+    },
+    runButton: {
+        margin: theme.spacing(1),
+        textTransform:"none",
+        color:'#ffffff',
+        backgroundColor:'#5cb85c', // cor do isel -> '#963727'
+        '&:hover' : {
+            backgroundColor: '#17b033',
+        }
     }
-  });
-  
-  class RunCodeTextEditor extends Component {
+});
+
+
+class RunCodeTextEditor extends Component {
     constructor(props) {
         super(props);
     };
@@ -44,13 +56,13 @@ const styles = theme => ({
             {
                 lineNumbers: true,
                 matchBrackets: true,
-                value:this.props.value ?  this.props.value : CodeMirrorOptions.get(this.props.codeLanguage).value, 
-                mode:CodeMirrorOptions.get(this.props.codeLanguage).mode, 
+                value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
+                mode:CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
                 theme:"neat",
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
-                readOnly: this.props.readOnly
+                readOnly: (this.props.readOnly === true) ? true: false
             }
         );
         this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
@@ -64,20 +76,27 @@ const styles = theme => ({
 
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props) {
-            if(prevProps.codeLanguage !== this.props.codeLanguage ) {
-                this.editor.setValue(CodeMirrorOptions.get(this.props.codeLanguage).value);
-            }
-            if(this.props.value && this.props.value != prevProps.value){
-                this.editor.setValue(this.props.value);
-            }
+        if(prevProps !== this.props && prevProps.codeLanguage !== this.props.codeLanguage) {
+            this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
+            this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
         }
     }
-  
+
     render = () => {
         const { classes } = this.props;
         return (
             <Paper variant="outlined" square elevation={1} >
+                <Box>
+                    {this.props.actions && this.props.actions.map(a =>
+                        <Button className={classes.runButton}
+                            id={a.id}
+                            variant="contained"
+                            onClick={() => a.function()}
+                        >
+                            {a.title}
+                        </Button>
+                    )}
+                </Box>
                 <div ref={(ref) => this.instance = ref} />
             </Paper>
         )

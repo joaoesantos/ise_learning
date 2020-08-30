@@ -13,7 +13,7 @@ import pt.iselearning.services.util.VERSION
 @RequestMapping("/${VERSION}/tags")
 class TagController (private val tagService: TagService) {
     /**
-     * Method to get all tags.
+     * Method to get all existing tags.
      *
      * @return ResponseEntity<ChallengeTag> represents the returned challenge tag
      */
