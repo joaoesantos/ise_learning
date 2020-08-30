@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, defaultHeaders } from '../components/fetchUtils'
+import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 const questionnaireCtrl = {
     getQuestionnaireInstances: async (credentials) => {

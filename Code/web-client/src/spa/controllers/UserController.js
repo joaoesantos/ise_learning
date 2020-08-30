@@ -1,7 +1,19 @@
-import {apiUrlTemplates} from '../clientSideConfig'
-import {HttpMethods, defaultHeaders} from '../components/fetchUtils'
+import { apiUrlTemplates } from '../clientSideConfig'
+import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 export const UserController = {
+  
+  createMe: async ({ user }) => {
+    let url = apiUrlTemplates.createUser()
+    let options = {
+      method: HttpMethods.get,
+      headers: defaultHeaders(),
+      body: user
+    }
+    let response = await fetch(url, options)
+    return response.json()
+  },
+
   getUserMe: async () => {
     let url =apiUrlTemplates.myUserOperations()
     let options = {

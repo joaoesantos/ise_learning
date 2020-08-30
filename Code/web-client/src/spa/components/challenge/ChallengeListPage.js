@@ -1,5 +1,5 @@
 // react
-import React, {useState} from 'react'
+import React, { useContext, useState } from 'react'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -9,9 +9,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import RepeatOne from '@material-ui/icons/RepeatOne'
 // components
 import ChallengeListTable from './ChallengeListTable'
-
+// controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import challengeCtrl from '../../controllers/_challengeCtrl'
+// authentication context
+import { AuthContext } from '../../context/AuthContext'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -46,8 +48,9 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-const ChallengeListPage = function(props){
+const ChallengeListPage = function(props) {
 
+  const { isAuthed } = useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
 
@@ -64,8 +67,8 @@ const ChallengeListPage = function(props){
 
   const onRandomChallengeButton = () => {
     setAction({
-      function: challengeCtrl.getRamdomChallenge,
-      args: [props.credentials],
+      function: challengeCtrl.getRandomChallenge,
+      args: [],
       render: false
     })
   }
@@ -88,20 +91,22 @@ const ChallengeListPage = function(props){
           <Grid item xs={12} sm={10}>
             <Toolbar className={classes.toolbar} variant="regular" >
               <Button className={classes.randomChallengeButton}
-              id="randomChallengeButton"
-              variant="contained"
-              onClick={onRandomChallengeButton}
-              >
-                Create new challenge
-              </Button>
-              <Button className={classes.randomChallengeButton}
-              endIcon={<RepeatOne />}
-              id="randomChallengeButton"
-              variant="contained"
-              onClick={onRandomChallengeButton}
+                endIcon={<RepeatOne />}
+                id="randomChallengeButton"
+                variant="contained"
+                onClick={onRandomChallengeButton}
               >
                 Pick one
               </Button>
+              {isAuthed  && 
+                <Button className={classes.randomChallengeButton}
+                  id="randomChallengeButton"
+                  variant="contained"
+                  onClick={onRandomChallengeButton}
+                >
+                  Create new challenge
+                </Button>
+              }
             </Toolbar>
             <ChallengeListTable />
           </Grid>

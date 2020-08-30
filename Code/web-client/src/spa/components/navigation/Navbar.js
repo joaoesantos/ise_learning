@@ -1,5 +1,5 @@
 // react
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import AppBar from '@material-ui/core/AppBar'
@@ -15,7 +15,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 import Typography from '@material-ui/core/Typography'
 // logo
-import logo from '../../images/ISELearning_logo_wht.png'
+import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
+// authentication context
+import { AuthContext } from '../../context/AuthContext'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -50,21 +52,23 @@ const useStyles = makeStyles(theme => ({
   
 export default function Navbar(props) {
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const { isAuthed, handleLogout } = useContext(AuthContext)
 
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleOnMenu = event => {
+    setAnchorEl(event.currentTarget)
+  }
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    props.setAuth(false);
-  };
+  const handleOnClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleOnLogout = () => {
+    setAnchorEl(null)
+    handleLogout()
+  }
 
   const classes = useStyles();
   return (
@@ -72,27 +76,22 @@ export default function Navbar(props) {
       <AppBar className={classes.appBar}>
         <Toolbar variant="dense">
             <Link className={classes.link} component={RouterLink} to="/">
-              <img src={logo} height={40}/>
+              <img src={ISELearningLogo} height={40}/>
             </Link>
-          {props.isAuthed ? 
             <Typography className={classes.title}>
+              <Link className={classes.link} component={RouterLink} to="/runCode">
+                Run Code
+              </Link>
               <Link className={classes.link} component={RouterLink} to="/listChallenges">
                 Challenges
               </Link>
-              <Link className={classes.link} component={RouterLink} to="/questionnaires">
-                Questionnaires
-              </Link>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
+              {isAuthed &&
+                <Link className={classes.link} component={RouterLink} to="/questionnaires">
+                  Questionnaires
+                </Link>
+              }
             </Typography>
-            :
-            <Typography className={classes.title}>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
-            </Typography>}
-            {props.isAuthed ? 
+            {isAuthed ? 
               <div>
                 <IconButton color="inherit">
                   <Badge badgeContent={4} color="secondary">
@@ -102,7 +101,7 @@ export default function Navbar(props) {
               <IconButton
                 aria-controls="menu-user"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={handleOnMenu}
                 color="inherit"
               >
                 <PowerSettingsNewIcon />
@@ -115,10 +114,10 @@ export default function Navbar(props) {
                 keepMounted
                 transformOrigin={{vertical:'top', horizontal:'center'}}
                 open={open}
-                onClose={handleClose}
+                onClose={handleOnClose}
               >
-                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/" onClick={handleLogout}>Log out</MenuItem>
+                <MenuItem component={RouterLink} to="/profile" onClick={handleOnClose}>Profile</MenuItem>
+                <MenuItem onClick={handleOnLogout}>Log out</MenuItem>
               </Menu>
             </div>
             :
@@ -133,6 +132,6 @@ export default function Navbar(props) {
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }
 

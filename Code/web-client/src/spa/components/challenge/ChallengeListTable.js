@@ -34,7 +34,7 @@ const ChallengeListTable = function(props){
     if (response === undefined && actionState === ActionStates.clear) {
       setAction({
         function: challengeCtrl.getAllChallenges,
-        args: [props.credentials],
+        args: [],
         render: true
       })
     } else if (actionState === ActionStates.done &&

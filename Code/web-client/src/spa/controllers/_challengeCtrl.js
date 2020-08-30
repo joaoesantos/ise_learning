@@ -1,25 +1,21 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, defaultHeaders } from '../components/fetchUtils'
+import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
 
 const _challengeCtrl = {
-    getAllChallenges: async (credentials) => {
-        const headers = defaultHeaders()
-        headers.append("Authorization", `Basic ${credentials}`)
+    getAllChallenges: async () => {
         let url = apiUrlTemplates.getAllChallenges()
         let options = {
             method: HttpMethods.get,
-            headers: headers
+            headers: fetchHeaders.get()
         }
         let response = await fetch(url, options)
         return response.json()
     },
-    getRamdomChallenge: async (credentials) => {
-        const headers = defaultHeaders()
-        headers.append("Authorization", `Basic ${credentials}`)
+    getRandomChallenge: async () => {
         let url = apiUrlTemplates.getRandomChallenge()
         let options = {
             method: HttpMethods.get,
-            headers: headers
+            headers: fetchHeaders.get()
         }
         let response = await fetch(url, options)
         return response.json()

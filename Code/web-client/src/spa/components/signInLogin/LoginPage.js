@@ -1,17 +1,25 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useContext } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import InputLabel from '@material-ui/core/InputLabel'
+import Link from '@material-ui/core/Link'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import OutlinedInput from '@material-ui/core/OutlinedInput'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+// authentication context
+import { AuthContext } from '../../context/AuthContext'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,7 +61,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
 
-  const classes = useStyles();
+  const { handleLogin } = useContext(AuthContext)
+
+  const [state, setState] = React.useState({
+    username: '',
+    password: '',
+  })
+
+  const onChangeHandler = event => {
+    const {name, value} = event.target
+    setState({...state, [name]: value })
+  }
+
+  const onToggleShowPasswordHandler = () => {
+    setState({ ...state, showPassword: !state.showPassword })
+  }
+
+  const onSubmitHandler = async function(event) {
+    event.preventDefault()
+    handleLogin({ credentials: btoa(`${state.username}:${state.password}`) })
+  }
+
+  const classes = useStyles()
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -70,24 +99,38 @@ export default function SignUp(props) {
                 variant="outlined"
                 required
                 fullWidth
-                id="loginEmail"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="loginUsername"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={state.username}
+                onChange={onChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="loginPassword"
-                name="password"
-                label="Password"
-                type="password"
-                autoComplete="current-password"
-              />
-            </Grid>
+                <FormControl variant="outlined" style={{ width:'100%' }}>
+                  <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+                  <OutlinedInput
+                    id="loginPassword"
+                    name="password"
+                    label="Password"
+                    type={state.showPassword ? 'text' : 'password'}
+                    onChange={onChangeHandler}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={onToggleShowPasswordHandler}
+                          edge="end"
+                        >
+                          {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    labelWidth={70}
+                  />
+                </FormControl>
+              </Grid>
           </Grid>
           <Button
             type="submit"
@@ -95,8 +138,7 @@ export default function SignUp(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => props.setAuth(true)}
-            component={RouterLink} to="/"
+            onClick={onSubmitHandler}
           >
             Login
           </Button>

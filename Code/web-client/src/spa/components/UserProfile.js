@@ -1,25 +1,25 @@
 // react
-import * as React from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+import * as React from 'react'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
 
 // material-ui/Formik components
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Avatar from '@material-ui/core/Avatar';
-import { Button, LinearProgress } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from 'formik-material-ui';
-import Typography from '@material-ui/core/Typography';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import Avatar from '@material-ui/core/Avatar'
+import { Button, LinearProgress } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { makeStyles } from '@material-ui/core/styles'
+import { TextField } from 'formik-material-ui'
+import Typography from '@material-ui/core/Typography'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 //controllers
 import UseAction, { ActionStates } from '../controllers/UseAction'
-import {UserController} from '../controllers/UserController'
+import { UserController } from '../controllers/UserController'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
