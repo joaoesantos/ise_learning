@@ -17,10 +17,10 @@ import java.util.*
 
 @Service
 class UserService(
-        private val modelMapper: ModelMapper,
         private val userRepository: UserRepository,
-        private val emailValidator: EmailValidator
-        ) {
+        private val emailValidator: EmailValidator,
+        private val modelMapper: ModelMapper
+) {
 
     fun checkIfUserExists(user : Optional<User>, userId: Int) {
         if (user.isEmpty) {

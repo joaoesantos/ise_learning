@@ -8,16 +8,20 @@ import IconButton from '@material-ui/core/IconButton'
 import Link from '@material-ui/core/Link'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
-import { makeStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 // logo
 import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
+// controllers
+import { fetchHeaders } from '../../utils/fetchUtils'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
+// utils
+import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -48,12 +52,12 @@ const useStyles = makeStyles(theme => ({
     title: {
       flexGrow: 1, 
     },
-}));
+}))
   
-export default function Navbar(props) {
+export default function Navbar() {
 
-  const { isAuthed, handleLogout } = useContext(AuthContext)
-
+  const classes = useStyles()
+  const { isAuthed, setAuth, setUser } = useContext(AuthContext)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -67,10 +71,13 @@ export default function Navbar(props) {
 
   const handleOnLogout = () => {
     setAnchorEl(null)
-    handleLogout()
+    setAuth(false)
+    setUser(undefined)
+    localStorage.removeItem('user')
+    fetchHeaders.clear()
+    history.push("/")
   }
 
-  const classes = useStyles();
   return (
     <div className={classes.layout}>
       <AppBar className={classes.appBar}>

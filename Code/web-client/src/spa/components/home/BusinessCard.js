@@ -1,5 +1,5 @@
 // react
-import React from 'react';
+import React from 'react'
 // material-ui components
 import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
@@ -8,8 +8,8 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Icon from '@material-ui/core/Icon'
 import Link from '@material-ui/core/Link'
 import LinkedIn  from '@material-ui/icons/LinkedIn'
-import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -25,15 +25,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BussinessCard(props) {
 
-  const classes = useStyles();
-  const [onOver, setOnMouseOver] = React.useState(2);
+  const classes = useStyles()
+  const [onOver, setOnMouseOver] = React.useState(2)
 
   const handleOnMouseOver = () => {
-    setOnMouseOver(10);
-  };
+    setOnMouseOver(10)
+  }
+
   const handleOnMouseOut = () => {
-    setOnMouseOver(2);
-  };
+    setOnMouseOver(2)
+  }
 
   return (
     <Link href={props.href} style={{textDecoration:'none'}}>
@@ -60,5 +61,5 @@ export default function BussinessCard(props) {
             </CardContent>
         </Card>
     </Link>
-  );
+  )
 }

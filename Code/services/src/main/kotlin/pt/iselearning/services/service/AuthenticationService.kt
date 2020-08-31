@@ -1,10 +1,12 @@
 package pt.iselearning.services.service
 
 import org.mindrot.jbcrypt.BCrypt
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.user.UserModel
 import pt.iselearning.services.repository.UserRepository
 import java.util.*
 
@@ -12,18 +14,33 @@ import java.util.*
  * Class responsible to maintain and validate business logic regarding authentication
  */
 @Service
-class AuthenticationService (private val userRepository: UserRepository) {
+class AuthenticationService (
+        private val userRepository: UserRepository,
+        private val modelMapper: ModelMapper
+) {
+
+    /**
+     * Method responsible to get logged user
+     *
+     * @param authorizationHeader header present in an http request with AUTHENTICATION as key
+     * @return userModel that matched the username and password inserted
+     */
+    fun getLoggedInUser(authorizationHeader: String) : UserModel {
+        val user = validateAuthenticationHeader(authorizationHeader)
+        return modelMapper.map(user, UserModel::class.java)
+    }
+
     /**
      * Method responsible to validate credentials
      *
-     * @param authenticationHeader header present in an http request with AUTHENTICATION as key
+     * @param authorizationHeader header present in an http request with AUTHENTICATION as key
      * @return user that matched the username and password inserted
      */
-    fun validateAuthenticationHeader(authenticationHeader : String?) : User {
-        if(authenticationHeader == null){
+    fun validateAuthenticationHeader(authorizationHeader: String?): User {
+        if(authorizationHeader == null){
             throw IselearningException(ErrorCode.UNAUTHORIZED.httpCode, "Invalid credentials inserted", "Must provide username and password")
         }
-        val authenticationHeaderSplit = authenticationHeader.split(" ")
+        val authenticationHeaderSplit = authorizationHeader.split(" ")
 
         if(authenticationHeaderSplit.size != 2){
             throw IselearningException(ErrorCode.UNAUTHORIZED.httpCode, "Invalid authentication schema", "Invalid schema format")

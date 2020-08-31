@@ -1,5 +1,5 @@
 // react
-import React, {useState} from 'react'
+import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import Link from '@material-ui/core/Link'
@@ -25,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ChallengeListTable = function(props){
+const ChallengeListTable = function(){
 
+  const classes = useStyles()
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
 
@@ -47,9 +48,7 @@ const ChallengeListTable = function(props){
             solution: it.solutions
           }))
       setTable({...table, data:data})
-    } else {
-      //not Done || done but not rendering
-    }
+    } 
   },[actionState]);
 
   // table data
@@ -73,7 +72,6 @@ const ChallengeListTable = function(props){
       data: [],
   });
 
-  const classes = useStyles();
   return (
       <MaterialTable
       title = ""

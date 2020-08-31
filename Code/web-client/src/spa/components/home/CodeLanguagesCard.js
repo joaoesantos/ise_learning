@@ -5,8 +5,8 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 // icons
 import iconBlack from '../../images/icons/services/blk/codeLanguageBlk.png'
 import iconYellow from '../../images/icons/services/color/codeLanguageYlw.png'
@@ -26,22 +26,23 @@ const useStyles = makeStyles((theme) => ({
     width: 50,
     height: 50,
   },
-}));
+}))
 
 export default function CodeLanguagesCard(props) {
 
-  const classes = useStyles();
-  const [onOver, setOnMouseOver] = React.useState(0);
-  const [icon, setIcon] = React.useState(iconBlack);
+  const classes = useStyles()
+  const [onOver, setOnMouseOver] = React.useState(0)
+  const [icon, setIcon] = React.useState(iconBlack)
 
   const handleOnMouseOver = () => {
-    setOnMouseOver(10);
-    setIcon(iconYellow);
-  };
+    setOnMouseOver(10)
+    setIcon(iconYellow)
+  }
+
   const handleOnMouseOut = () => {
-    setOnMouseOver(0);
-    setIcon(iconBlack);
-  };
+    setOnMouseOver(0)
+    setIcon(iconBlack)
+  }
 
   return (
     <CardActionArea onClick={props.handleOnClick}>
@@ -49,7 +50,6 @@ export default function CodeLanguagesCard(props) {
         elevation={onOver}
         onMouseOver={handleOnMouseOver}
         onMouseOut={handleOnMouseOut}
-        //component={RouterLink} to="#codeLanguages"
       >
         <CardMedia
           className={classes.media}
