@@ -1,5 +1,5 @@
-import {apiUrlTemplates} from '../clientSideConfig'
-import {HttpMethods, defaultHeaders} from '../components/fetchUtils'
+import { apiUrlTemplates } from '../clientSideConfig'
+import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async () => {

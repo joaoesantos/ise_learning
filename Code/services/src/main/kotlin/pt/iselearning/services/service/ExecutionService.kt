@@ -28,7 +28,7 @@ class ExecutionService {
 
     @Validated
     fun execute(@Valid executable: Executable): ExecutableResult? {
-        val executionEnvironmentUrl = languageUrlMap.get(executable.language)
+        val executionEnvironmentUrl = languageUrlMap[executable.language]
         val response = WebClient.create(executionEnvironmentUrl!!).post().body(
                 BodyInserters.fromValue(
                         ExecutableWithNoLanguage(executable.code, executable.unitTests, executable.executeTests)))

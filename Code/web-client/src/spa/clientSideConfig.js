@@ -1,7 +1,5 @@
-//export const apiBaseUrl = "http://localhost:3000";
-export const apiBaseUrl = "http://localhost:8080";
-export const defaultLanguage = 'java';
-export const CodeMirrorOptions = new Map();
+export const defaultLanguage = 'java'
+export const CodeMirrorOptions = new Map()
 
 // JAVA
 CodeMirrorOptions.set('java',{
@@ -66,6 +64,7 @@ export const languageLabelMappings = {
 export const apiUrlTemplates = {
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
+    createUser:()=> `${apiVersion}/users`,
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
     profile: () => `/${apiVersion}/users/me`,
