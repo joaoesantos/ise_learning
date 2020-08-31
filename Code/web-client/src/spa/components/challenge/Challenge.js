@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import Paper from '@material-ui/core/Paper';
+import React from 'react'
+import Paper from '@material-ui/core/Paper'
 
 const Challenge = function(props){
 
-    const [state, setstate] = useState({
+    const [state, setstate] = React.useState({
         challengeId: props.challenge.id,
         challengeText: props.challenge.challengeText,
         unitTests: "",
@@ -17,7 +17,6 @@ const Challenge = function(props){
                 <p>{state.unitTests}</p>
                 <p>{state.code}</p>
             </Paper>
-
         </React.Fragment>
     )
 }

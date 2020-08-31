@@ -20,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function App() {
-<<<<<<< HEAD
-=======
-
->>>>>>> 634c76143c0a208c95a791282811e90d51d19867
   const classes = useStyles();
   return (
     <div className={classes.layout}>

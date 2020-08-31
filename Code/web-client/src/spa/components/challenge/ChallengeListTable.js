@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
 
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import challengeCtrl from '../../controllers/_challengeCtrl'
+import ChallengeController from '../../controllers/ChallengeController'
 
 import { importAllImagesFromFolder } from '../../utils/utils'
 const codeLanguageIcons = importAllImagesFromFolder(require.context('../../images/icons/codeLanguages', false, /\.(png|jpe?g|svg)$/))
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ChallengeListTable = function(){
+export default function ChallengeListTable(){
 
   const classes = useStyles()
   const [action, setAction] = React.useState()
@@ -34,7 +34,7 @@ const ChallengeListTable = function(){
   React.useEffect(() => {
     if (response === undefined && actionState === ActionStates.clear) {
       setAction({
-        function: challengeCtrl.getAllChallenges,
+        function: ChallengeController.getAllChallenges,
         args: [],
         render: true
       })
@@ -89,5 +89,3 @@ const ChallengeListTable = function(){
   )
 
 }
-
-export default ChallengeListTable

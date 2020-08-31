@@ -4,21 +4,18 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
 import RepeatOne from '@material-ui/icons/RepeatOne'
 // components
 import ChallengeListTable from './ChallengeListTable'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import challengeCtrl from '../../controllers/_challengeCtrl'
+import ChallengeController from '../../controllers/ChallengeController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 
 const useStyles = makeStyles((theme) => ({
-  layout: {
-
-  },
   mainContainer: {
     maxWidth: '90%',
     padding: theme.spacing(2),
@@ -48,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-const ChallengeListPage = function() {
+export default function ChallengeListPage() {
 
   const classes = useStyles()
   const { isAuthed } = React.useContext(AuthContext)
@@ -63,7 +60,7 @@ const ChallengeListPage = function() {
 
   const onRandomChallengeButton = () => {
     setAction({
-      function: challengeCtrl.getRandomChallenge,
+      function: ChallengeController.getRandomChallenge,
       args: [],
       name: 'getRandomChallenge'
     })
@@ -74,7 +71,7 @@ const ChallengeListPage = function() {
   }
 
   return (
-    <div className={classes.layout}>
+    <>
       <Container className={classes.mainContainer}>
         <Grid 
         container 
@@ -111,9 +108,7 @@ const ChallengeListPage = function() {
           </Grid>
         </Grid>
       </Container>
-    </div>
+    </>
   )
 
 }
-
-export default ChallengeListPage

@@ -1,5 +1,5 @@
 // react
-import * as React from 'react'
+import React from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 // material-ui/Formik components
@@ -22,7 +22,6 @@ import { UserController } from '../controllers/UserController'
 const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
-    //backgroundColor: palleteColor.color4,
   },
   centerItems: {
     textAlign: 'center'
@@ -48,20 +47,15 @@ export default function App() {
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
   React.useEffect(() => {
-    if (response && actionState === ActionStates.done &&
-      action.render && action.render === true) {
-      setUser(response)
-    } else if (!response) {
+    if (response === undefined && actionState === ActionStates.clear) {
       setAction({
-        function: UserController.getUserMe,
+        function: UserController.getMe,
         args: [],
         render: true
       })
-    } else if (actionState === ActionStates.done &&
-      action.render && action.render === true) {
+    } else if (response && actionState === ActionStates.done && 
+    action.render && action.render === true) {
       setUser(response)
-    } else {
-      //not Done || done but not rendering
     }
   },[actionState]);
 

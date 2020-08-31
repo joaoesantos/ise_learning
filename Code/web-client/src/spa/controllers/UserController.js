@@ -1,7 +1,7 @@
 import { apiUrlTemplates } from '../clientSideConfig'
 import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
 
-export const UserController = {
+export default UserController = {
 
   login: async () => {
     let url = apiUrlTemplates.login()
@@ -115,6 +115,4 @@ export const UserController = {
   }
   
 }
-
-export default UserController
 

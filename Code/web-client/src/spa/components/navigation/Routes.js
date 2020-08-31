@@ -10,10 +10,10 @@ import SignIn from '../signInLogin/SignInPage.js'
 import Login from '../signInLogin/LoginPage.js'
 import UserProfile from '../UserProfile'
 import Challenge from '../challenge/ChallengePage.js'
-import ChallengeListPage from '../challenge/ChallengeListPage.js'
+import ChallengeList from '../challenge/ChallengeListPage.js'
 import Questionnaire from '../questionnaire/QuestionnairePage.js'
-import QuestionnaireAnswerListPage from '../questionnaire/QuestionnaireAnswerListPage'
-import QuestionnaireAnswerPage from '../questionnaire/QuestionnaireAnswerPage'
+import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPage'
+import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
 export default function Routes() {
@@ -26,11 +26,13 @@ export default function Routes() {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signIn" component={SignIn} />
                 <Route exact path="/profile" component={UserProfile} />
-                <Route exact path="/challenges" component={Challenge} />
-                <Route exact path="/listChallenges" component={ChallengeListPage} />
+                <Route exact path="/listChallenges" component={ChallengeList} />
+                <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge match={match} configKey={"challenge"} />} />
+                <Route exact path="/newChallenge" render={({match}) => <Challenge match={match} configKey={"newChallenge"} />} />
+                <Route exact path="/challengeAnswers/:challengeId/answers/users/:userId" render={({match}) => <Challenge match={match} configKey={"challengeAnswer"} />} />
                 <Route exact path="/questionnaires" component={Questionnaire} />
-                <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerListPage} />
-                <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswerPage} />
+                <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />
+                <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
                 <Route path="*" render={() => <DefaultErrorMessage title={'Page not found'} message={'This page does not exist'}/> } />
             </Switch>
             <Footer />

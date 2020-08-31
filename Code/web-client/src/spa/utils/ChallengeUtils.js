@@ -1,4 +1,4 @@
-import {languageLabelMappings} from '../clientSideConfig'
+import { languageLabelMappings } from '../clientSideConfig'
 import { RunCodeController } from '../controllers/RunCodeController'
 
 export const genericRunCodeAction = (code, unitTests, executeTests, textSufix, setOutputText, codeLanguage) => {

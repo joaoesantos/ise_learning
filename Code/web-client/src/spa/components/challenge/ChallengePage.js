@@ -1,33 +1,33 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { Redirect, useHistory, withRouter } from 'react-router-dom'
 // material-ui components
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import ListItemText from '@material-ui/core/ListItemText'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Toolbar from '@material-ui/core/Toolbar'
 // custom components
 import Tabs from '../Tabs'
 import ChallengeStatement from './ChallengeStatement'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 // controllers
-import { ChallengeController } from '../../controllers/ChallengeController'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { ChallengePageConfigs } from '../../controllers/ChallengePageConfigs'
+import { ChallengeController } from '../../controllers/challenge/ChallengeController'
+import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
 import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/ChallengeUtils'
 // configs
-import {CodeMirrorOptions, defaultUnitTests} from '../../clientSideConfig'
+import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 
 
 const useStyles = makeStyles(theme => ({
