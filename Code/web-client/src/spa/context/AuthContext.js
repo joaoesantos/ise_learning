@@ -8,16 +8,10 @@ export { AuthContext, AuthProvider }
 const AuthContext = createContext()
 
 function AuthProvider({ children }) {
-    const { isAuthed, user, handleSignIn, handleLogin, handleLogout } = useAuth()
+    const { isAuthed, setAuth, user, setUser } = useAuth()
     return(
         <AuthContext.Provider
-            value = {{
-                isAuthed,
-                user,
-                handleSignIn,
-                handleLogin,
-                handleLogout
-            }}
+            value = {{ isAuthed, setAuth, user, setUser }}
         >
             {children}
         </AuthContext.Provider>

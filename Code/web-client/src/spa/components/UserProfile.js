@@ -2,7 +2,6 @@
 import * as React from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-
 // material-ui/Formik components
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Avatar from '@material-ui/core/Avatar'
@@ -16,7 +15,6 @@ import { TextField } from 'formik-material-ui'
 import Typography from '@material-ui/core/Typography'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-
 //controllers
 import UseAction, { ActionStates } from '../controllers/UseAction'
 import { UserController } from '../controllers/UserController'
@@ -41,12 +39,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function App() {
-  const classes = useStyles()
 
+  const classes = useStyles()
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [user, setUser] = React.useState()
-
   const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
@@ -67,15 +64,15 @@ export default function App() {
 
   const handleClickShowNewPassword = () => {
     setShowNewPassword(!showNewPassword)
-  };
+  }
 
   const handleClickShowRepeatNewPassword = () => {
     setShowRepeatNewPassword(!showRepeatNewPassword)
-  };
+  }
 
   const handleMouseDownPassword = (event) => {
       event.preventDefault();
-  };
+  }
 
   if (actionState === ActionStates.clear) {
     return <p>insert URL</p>

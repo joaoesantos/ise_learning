@@ -1,5 +1,5 @@
 // react
-import React, { useContext } from 'react'
+import React from 'react'
 // material-ui components
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -11,13 +11,20 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+// notifications
+import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
+// controllers
+import UserController from '../../controllers/UserController'
+import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
+// utils
+import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,16 +64,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp(props) {
+export default function SignUp() {
 
-  const { handleSignIn } = useContext(AuthContext)
-
+  const classes = useStyles()
+  const { isAuthed, setAuth, setUser } = React.useContext(AuthContext)
+  const [action, setAction] = React.useState()
+  const [actionState, response] = UseAction(action)
   const [state, setState] = React.useState({
     name: '',
     username: '',
     email: '',
     password: '',
   })
+
+  React.useEffect(() => {
+    if (actionState === ActionStates.done) {
+      if(response.severity === 'success') {
+        setAuth(true)
+        setUser(response.json)
+        localStorage.setItem('user', response.json)
+        history.push("/")
+      }
+    }
+  },[actionState]);
 
   const onChangeHandler = event => {
     const {name, value} = event.target
@@ -77,99 +97,105 @@ export default function SignUp(props) {
     setState({ ...state, showPassword: !state.showPassword })
   }
 
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-    handleSignIn({ data: { name: state.name, username: state.username, email: state.email, password: state.password } })
+  const onSubmitHandler = async (event) => {
+    event.preventDefault()
+    let userModel = { name: state.name, username: state.username, email: state.email, password: state.password }
+    setAction({
+        function: UserController.createMe,
+        args: [userModel]
+      })
   }
 
-  const classes = useStyles()
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="SignInName"
-                label="Name"
-                name="name"
-                autoComplete="name"
-                autoFocus
-                value={state.name}
-                onChange={onChangeHandler}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="SignInUsername"
-                label="Username"
-                name="username"
-                value={state.username}
-                onChange={onChangeHandler}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="signInEmail"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={state.email}
-                onChange={onChangeHandler}
-              />
-            </Grid>
-            <Grid item xs={12}>
-                <FormControl variant="outlined" style={{ width:'100%' }}>
-                  <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
-                  <OutlinedInput
-                    id="signInPassword"
-                    name="password"
-                    label="Password"
-                    type={state.showPassword ? 'text' : 'password'}
-                    onChange={onChangeHandler}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={onToggleShowPasswordHandler}
-                          edge="end"
-                        >
-                          {state.showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    labelWidth={70}
-                  />
-                </FormControl>
+    <>
+      {actionState === ActionStates.done && <CustomizedSnackbars message={response.message} severity={response.severity} />}
+      <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="SignInName"
+                  label="Name"
+                  name="name"
+                  autoComplete="name"
+                  autoFocus
+                  value={state.name}
+                  onChange={onChangeHandler}
+                />
               </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={onSubmitHandler}
-          >
-            Sign Up
-          </Button>
-        </form>
-      </div>
-    </Container>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="SignInUsername"
+                  label="Username"
+                  name="username"
+                  value={state.username}
+                  onChange={onChangeHandler}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="signInEmail"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={state.email}
+                  onChange={onChangeHandler}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                  <FormControl variant="outlined" style={{ width:'100%' }}>
+                    <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
+                    <OutlinedInput
+                      id="signInPassword"
+                      name="password"
+                      label="Password"
+                      type={state.showPassword ? 'text' : 'password'}
+                      onChange={onChangeHandler}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={onToggleShowPasswordHandler}
+                            edge="end"
+                          >
+                            {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      labelWidth={70}
+                    />
+                  </FormControl>
+                </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={onSubmitHandler}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </div>
+      </Container>
+    </>
   )
 }

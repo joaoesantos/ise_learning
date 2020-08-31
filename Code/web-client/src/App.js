@@ -14,6 +14,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 const useStyles = makeStyles((theme) => ({
   layout: {
     minWidth: 570,
+    minHeight: '100vh',
+    position: 'relative'
   },
 }));
 

@@ -29,6 +29,10 @@ export let fetchHeaders = {
     append: function({ key, value }) {
         if(!this.headers) { this.get() }
         this.headers.append(`${key}`,`${value}`)
+    },
+
+    clear: function() {
+        this.headers = undefined
     }
 
 }

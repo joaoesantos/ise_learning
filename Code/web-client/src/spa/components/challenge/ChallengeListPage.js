@@ -1,5 +1,5 @@
 // react
-import React, { useContext, useState } from 'react'
+import React from 'react'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -48,20 +48,16 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-const ChallengeListPage = function(props) {
+const ChallengeListPage = function() {
 
-  const { isAuthed } = useContext(AuthContext)
+  const classes = useStyles()
+  const { isAuthed } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
 
   React.useEffect(() => {
-    if (response === undefined && actionState === ActionStates.clear) {
-      //not Done || done but not rendering
-    } else if (actionState === ActionStates.done &&
-    action.render && action.render === true) {
+   if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {
       // redirect do Rodrigo to create new challenge page
-    } else {
-      //not Done || done but not rendering
     }
   },[actionState]);
 
@@ -69,7 +65,7 @@ const ChallengeListPage = function(props) {
     setAction({
       function: challengeCtrl.getRandomChallenge,
       args: [],
-      render: false
+      name: 'getRandomChallenge'
     })
   }
 
@@ -77,7 +73,6 @@ const ChallengeListPage = function(props) {
     // redirect do Rodrigo to create new challenge page
   }
 
-  const classes = useStyles();
   return (
     <div className={classes.layout}>
       <Container className={classes.mainContainer}>
