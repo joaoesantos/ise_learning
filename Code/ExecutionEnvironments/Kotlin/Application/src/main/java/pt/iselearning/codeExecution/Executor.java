@@ -1,6 +1,7 @@
 package pt.iselearning.codeExecution;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import pt.iselearning.exceptions.CommandExecutionTimeout;
 import pt.iselearning.exceptions.MissingClassException;
 import pt.iselearning.models.ExecutionResult;
 import pt.iselearning.utils.CodeParser;
@@ -35,7 +36,12 @@ public class Executor {
             this.testCode = CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
-                throw new MissingClassException("Cannot parse public class name from unit test code.");
+                throw new MissingClassException(
+                        "MissingPublicClass",
+                        "No public class name on unit tests",
+                        "Cannot parse public class name from unit test code.",
+                        "/execute/kotlin/tests/compile/publicClass"
+                );
             }
         }
         this.cmdExec = CommandExecutor.getInstance();
@@ -54,7 +60,7 @@ public class Executor {
         }
         Path fullPathToCodeFile = CODE_OUTPUT.resolve(String.format("%s.kt", CODE_FILE_NAME));
         ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{}, CODE_FILE_NAME);
-        if (codeCompileRes.wasError()) {
+        if (codeCompileRes.getWasError()) {
             return codeCompileRes;
         } else if (testCode != null) {
             return compileTestCode();
@@ -97,7 +103,7 @@ public class Executor {
      * @throws IOException
      * @throws InterruptedException
      */
-    public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
+    public ExecutionResult executeUnitTests() throws IOException, InterruptedException, CommandExecutionTimeout {
         Path codeJar = CODE_OUTPUT.resolve(String.format("%s.jar", CODE_FILE_NAME));
         Path testJar = CODE_OUTPUT.resolve(String.format("%s.jar", testClassName));
         Path[] classpath = new Path[]{JarLocations.JUNIT_JAR, JarLocations.HAMCREST_JAR, codeJar, testJar};
@@ -111,7 +117,7 @@ public class Executor {
      * @throws IOException
      * @throws InterruptedException
      */
-    public ExecutionResult executeCode() throws IOException, InterruptedException {
+    public ExecutionResult executeCode() throws IOException, InterruptedException, CommandExecutionTimeout {
         Path[] classpath = new Path[]{CODE_OUTPUT};
         return cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath, CODE_FILE_NAME);
     }
