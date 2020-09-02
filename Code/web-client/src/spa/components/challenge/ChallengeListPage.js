@@ -11,9 +11,11 @@ import RepeatOne from '@material-ui/icons/RepeatOne'
 import ChallengeListTable from './ChallengeListTable'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import ChallengeController from '../../controllers/ChallengeController'
+import { ChallengeController } from '../../controllers/challenge/ChallengeController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
+// utils
+import history from '../navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -53,8 +55,8 @@ export default function ChallengeListPage() {
   const [actionState, response] = UseAction(action)
 
   React.useEffect(() => {
-   if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {
-      // redirect do Rodrigo to create new challenge page
+    if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {
+      history.push(`/challenges/${response.challengeId}`)
     }
   },[actionState]);
 
@@ -67,7 +69,7 @@ export default function ChallengeListPage() {
   }
 
   const onCreateChallengeButton = () => {
-    // redirect do Rodrigo to create new challenge page
+    history.push('/newChallenge')
   }
 
   return (
@@ -92,9 +94,9 @@ export default function ChallengeListPage() {
               </Button>
               {isAuthed  && 
                 <Button className={classes.randomChallengeButton}
-                  id="randomChallengeButton"
+                  id="createChallengeButton"
                   variant="contained"
-                  onClick={onRandomChallengeButton}
+                  onClick={onCreateChallengeButton}
                 >
                   Create new challenge
                 </Button>

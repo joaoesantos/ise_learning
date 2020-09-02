@@ -19,7 +19,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 // notifications
 import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
 // controllers
-import UserController from '../../controllers/UserController'
+import { UserController } from '../../controllers/UserController'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
@@ -82,7 +82,7 @@ export default function SignUp() {
       if(response.severity === 'success') {
         setAuth(true)
         setUser(response.json)
-        localStorage.setItem('user', response.json)
+        localStorage.setItem('ISELearningLoggedUser', response.json)
         history.push("/")
       }
     }

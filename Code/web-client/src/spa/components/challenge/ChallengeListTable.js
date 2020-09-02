@@ -6,10 +6,11 @@ import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
-
+// controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import ChallengeController from '../../controllers/ChallengeController'
-
+import { ChallengeController } from '../../controllers/challenge/ChallengeController'
+// utils
+import history from '../navigation/history'
 import { importAllImagesFromFolder } from '../../utils/utils'
 const codeLanguageIcons = importAllImagesFromFolder(require.context('../../images/icons/codeLanguages', false, /\.(png|jpe?g|svg)$/))
 
@@ -57,17 +58,17 @@ export default function ChallengeListTable(){
           { title: '#', field: 'id' , width: '5%', cellStyle: {color: '#777777'} },
           { title: 'Title', field: 'title', width: '45%',
           render: challenge => 
-            <Link className={classes.link} component={RouterLink} to={`/`} key={`${challenge.title.challengeId}`}>
+            <Link className={classes.link} component={RouterLink} to={`challenges/${challenge.title.challengeId}`} key={`${challenge.title.challengeId}`}>
               {`${challenge.title.challengeTitle}`}
             </Link>
           },
           { title: 'Solution', field: 'solution', 
           render: challengeSolutions => challengeSolutions.solution.map(it =>
-              <Link component={RouterLink} to={`/`} key={`${it.solutionId}`}> 
+              //<Link component={RouterLink} to={`/`} key={`${it.solutionId}`}> 
                   <img src={codeLanguageIcons[it.codeLanguage]} height={24} />
-              </Link>
+              //</Link>
             )
-          } // redirect do Rodrigo to challenges solution page isntead of link
+          }
       ],
       data: [],
   });

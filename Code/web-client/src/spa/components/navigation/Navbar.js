@@ -73,7 +73,7 @@ export default function Navbar() {
     setAnchorEl(null)
     setAuth(false)
     setUser(undefined)
-    localStorage.removeItem('user')
+    localStorage.removeItem('ISELearningLoggedUser')
     fetchHeaders.clear()
     history.push("/")
   }

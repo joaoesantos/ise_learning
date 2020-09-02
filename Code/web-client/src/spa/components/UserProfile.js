@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function App() {
+export default function UserProfile() {
 
   const classes = useStyles()
   const [action, setAction] = React.useState()
@@ -55,7 +55,7 @@ export default function App() {
       })
     } else if (response && actionState === ActionStates.done && 
     action.render && action.render === true) {
-      setUser(response)
+      setUser(response.json)
     }
   },[actionState]);
 

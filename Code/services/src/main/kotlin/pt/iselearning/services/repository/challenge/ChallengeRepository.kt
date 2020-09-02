@@ -13,6 +13,6 @@ interface ChallengeRepository : CrudRepository<Challenge, Int> {
     fun findAllByCreatorId(userId: Int): List<Challenge>
     fun findAllByIsPrivate(isPrivate : Boolean): List<Challenge>
     fun findAllByCreatorIdAndIsPrivate(userId: Int, private: Boolean): List<Challenge>
-    @Query(value = "SELECT c.challengeId FROM Challenge c")
-    fun findAllChallengeIds(): List<Int>
+    @Query(value = "SELECT c.challengeId FROM Challenge c WHERE isPrivate='false'")
+    fun findAllPublicChallengeIds(): List<Int>
 }

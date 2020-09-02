@@ -22,7 +22,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import UserController from '../../controllers/UserController'
+import { UserController } from '../../controllers/UserController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
@@ -83,7 +83,7 @@ export default function SignUp() {
       if(response.severity === 'success') {
         setAuth(true)
         setUser(response.json)
-        localStorage.setItem('user', response.json)
+        localStorage.setItem('ISELearningLoggedUser', response.json)
         history.push("/")
       } else {
         fetchHeaders.clear()
@@ -105,7 +105,7 @@ export default function SignUp() {
     let credentials = btoa(`${state.username}:${state.password}`)
     fetchHeaders.append({ key: "Authorization", value: `Basic ${credentials}` })
     setAction({
-        function: UserController.login,
+        function: UserController.logMein,
         args: [],
       })
   }

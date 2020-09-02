@@ -1,9 +1,8 @@
 import { apiUrlTemplates } from '../clientSideConfig'
 import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
 
-export default UserController = {
-
-  login: async () => {
+export const UserController = {
+  logMein: async () => {
     let url = apiUrlTemplates.login()
     let options = {
       method: HttpMethods.post,
@@ -24,7 +23,6 @@ export default UserController = {
       }
     }
   },
-  
   createMe: async (userModel) => {
     let url = apiUrlTemplates.createUser()
     let options = {
@@ -47,7 +45,6 @@ export default UserController = {
       }
     }
   },
-
   getMe: async () => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
@@ -68,7 +65,6 @@ export default UserController = {
       }
     }
   },
-
   updateMe: async (userModel) => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
@@ -90,13 +86,12 @@ export default UserController = {
       }
     }
   },
-
-  changeCredentials: async (userModel) => {
+  changeCredentials: async (credentials) => {
     let url = apiUrlTemplates.myCredentials()
     let options = {
       method: HttpMethods.post,
       headers: fetchHeaders.get(),
-      body: JSON.stringify(userModel)
+      body: JSON.stringify(credentials)
     }
     let response = await fetch(url, options)
     let jsonResponse = await response.json()
@@ -112,7 +107,6 @@ export default UserController = {
         severity: 'error'
       }
     }
-  }
-  
+  },
 }
 
