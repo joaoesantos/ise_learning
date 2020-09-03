@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
+import { HttpMethods, FetchHeaders } from '../utils/fetchUtils'
 
 export const RunCodeController = {
 
@@ -7,7 +7,7 @@ export const RunCodeController = {
         let url = apiUrlTemplates.executeCode()
         let options = {
             method: HttpMethods.post,
-            headers: fetchHeaders.get(),
+            headers: FetchHeaders.get(),
             body: JSON.stringify(payload)
         }
         let response = await fetch(url, options)

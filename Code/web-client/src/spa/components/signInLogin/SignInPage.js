@@ -24,6 +24,7 @@ import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
+import { FetchHeaders } from '../../utils/fetchUtils'
 import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
 
   const classes = useStyles()
-  const { isAuthed, setAuth, setUser } = React.useContext(AuthContext)
+  const { setAuth, setUser } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [state, setState] = React.useState({
@@ -82,7 +83,8 @@ export default function SignUp() {
       if(response.severity === 'success') {
         setAuth(true)
         setUser(response.json)
-        localStorage.setItem('ISELearningLoggedUser', response.json)
+        localStorage.setItem('ISELearningLoggedUser', JSON.stringify(response.json))
+        FetchHeaders.append({ key: "Authorization", value: `Basic ${action.credentials}` })
         history.push("/")
       }
     }
@@ -102,7 +104,8 @@ export default function SignUp() {
     let userModel = { name: state.name, username: state.username, email: state.email, password: state.password }
     setAction({
         function: UserController.createMe,
-        args: [userModel]
+        args: [userModel],
+        credentials: btoa(`${state.username}:${state.password}`)
       })
   }
 

@@ -3,21 +3,21 @@ import React, { useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import AppBar from '@material-ui/core/AppBar'
-import Badge from '@material-ui/core/Badge'
+import Brightness4Icon from '@material-ui/icons/Brightness4'
+import Brightness7Icon from '@material-ui/icons/Brightness7'
 import IconButton from '@material-ui/core/IconButton'
 import Link from '@material-ui/core/Link'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import NotificationsIcon from '@material-ui/icons/Notifications'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 // logo
 import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
 // controllers
-import { fetchHeaders } from '../../utils/fetchUtils'
+import { FetchHeaders } from '../../utils/fetchUtils'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
@@ -52,12 +52,13 @@ const useStyles = makeStyles(theme => ({
     title: {
       flexGrow: 1, 
     },
-}))
+}));
   
 export default function Navbar() {
 
   const classes = useStyles()
   const { isAuthed, setAuth, setUser } = useContext(AuthContext)
+  const [checked, setChecked] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -69,12 +70,16 @@ export default function Navbar() {
     setAnchorEl(null)
   }
 
+  const toggleChecked = () => {
+    setChecked((prev) => !prev)
+  }
+
   const handleOnLogout = () => {
     setAnchorEl(null)
     setAuth(false)
     setUser(undefined)
     localStorage.removeItem('ISELearningLoggedUser')
-    fetchHeaders.clear()
+    FetchHeaders.clear()
     history.push("/")
   }
 
@@ -99,20 +104,27 @@ export default function Navbar() {
               }
             </Typography>
             {isAuthed ? 
-              <div>
-                <IconButton color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
+            <>
+              <Tooltip title="Switch theme">
+                <IconButton
+                  aria-controls="theme-button"
+                  aria-haspopup="true"
+                  onClick={toggleChecked}
+                  color="inherit"
+                >
+                  {checked ? <Brightness4Icon /> : <Brightness7Icon />}
                 </IconButton>
-              <IconButton
-                aria-controls="menu-user"
-                aria-haspopup="true"
-                onClick={handleOnMenu}
-                color="inherit"
-              >
-                <PowerSettingsNewIcon />
-              </IconButton>
+              </Tooltip>
+              <Tooltip title="User options">
+                <IconButton
+                  aria-controls="menu-user"
+                  aria-haspopup="true"
+                  onClick={handleOnMenu}
+                  color="inherit"
+                >
+                  <PowerSettingsNewIcon />
+                </IconButton>
+              </Tooltip>
               <Menu className={classes.menu}
                 id="menu-user"
                 getContentAnchorEl={null}
@@ -126,15 +138,15 @@ export default function Navbar() {
                 <MenuItem component={RouterLink} to="/profile" onClick={handleOnClose}>Profile</MenuItem>
                 <MenuItem onClick={handleOnLogout}>Log out</MenuItem>
               </Menu>
-            </div>
+            </>
             :
-            <div>
+            <>
               <Tooltip title="Login">
                 <IconButton color="inherit" component={RouterLink} to="/login">
                   <PowerSettingsNewIcon />
                 </IconButton>
               </Tooltip>
-            </div>
+            </>
           }
         </Toolbar>
       </AppBar>

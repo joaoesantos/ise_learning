@@ -81,7 +81,7 @@ class UserController(
     @PatchMapping("/me", name = "updateMe")
     fun updateUser(
             @RequestBody userProfileModel: UserProfileModel,
-            @RequestHeader(value = "Authorization") authorization : String
+            @RequestHeader(value = "Authorization") authorization: String
     ): ResponseEntity<UserModel> {
         val loggedUser = authenticationService.getLoggedInUser(authorization)
         val user = userService.updateUserInformation(userProfileModel, loggedUser.userId!!)
@@ -91,14 +91,14 @@ class UserController(
     /**
      * Method to update an user credentials.
      *
-     * A json object that represents a object of the type Questionnaire must be present in the body
-     * @param password represents a String
+     * A json object that represents a object of the type UserPasswordModel must be present in the body
+     * @param password represents a UserPasswordModel
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/me/password", name = "updatePassword")
     fun updatePassword(
-            password: UserPasswordModel,
-            @RequestHeader(value = "Authorization") authorization : String
+            @RequestBody password: UserPasswordModel,
+            @RequestHeader(value = "Authorization") authorization: String
     ): ResponseEntity<UserModel> {
         val loggedUser = authenticationService.getLoggedInUser(authorization)
         val user = userService.updatePassword(password.password, loggedUser.userId!!)

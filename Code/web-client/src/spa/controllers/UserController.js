@@ -1,12 +1,13 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
+import { HttpMethods, FetchHeaders } from '../utils/fetchUtils'
 
 export const UserController = {
+
   logMein: async () => {
     let url = apiUrlTemplates.login()
     let options = {
       method: HttpMethods.post,
-      headers: fetchHeaders.get(),
+      headers: FetchHeaders.get(),
     }
     let response = await fetch(url, options)
     let jsonResponse = await response.json()
@@ -23,11 +24,12 @@ export const UserController = {
       }
     }
   },
+
   createMe: async (userModel) => {
     let url = apiUrlTemplates.createUser()
     let options = {
       method: HttpMethods.post,
-      headers: fetchHeaders.get(),
+      headers: FetchHeaders.get(),
       body: JSON.stringify(userModel)
     }
     let response = await fetch(url, options)
@@ -45,17 +47,19 @@ export const UserController = {
       }
     }
   },
+
   getMe: async () => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
       method: HttpMethods.get,
-      headers: fetchHeaders.get()
+      headers: FetchHeaders.get()
     }
     let response = await fetch(url, options)
     let jsonResponse = await response.json()
     if(response.ok) {
       return {
         json: jsonResponse,
+        message: `Welcome ${jsonResponse.name}`,
         severity: 'success'
       }
     } else {
@@ -65,11 +69,12 @@ export const UserController = {
       }
     }
   },
+
   updateMe: async (userModel) => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
-      method: HttpMethods.post,
-      headers: fetchHeaders.get(),
+      method: HttpMethods.patch,
+      headers: FetchHeaders.get(),
       body: JSON.stringify(userModel)
     }
     let response = await fetch(url, options)
@@ -77,6 +82,7 @@ export const UserController = {
     if(response.ok) {
       return {
         json: jsonResponse,
+        message: `Profile updated successfully`,
         severity: 'success'
       }
     } else {
@@ -86,13 +92,15 @@ export const UserController = {
       }
     }
   },
-  changeCredentials: async (credentials) => {
+
+  changeMyCredentials: async (credentials) => {
     let url = apiUrlTemplates.myCredentials()
     let options = {
-      method: HttpMethods.post,
-      headers: fetchHeaders.get(),
+      method: HttpMethods.put,
+      headers: FetchHeaders.get(),
       body: JSON.stringify(credentials)
     }
+    console.log('pass',options.body)
     let response = await fetch(url, options)
     let jsonResponse = await response.json()
     if(response.ok) {
@@ -108,5 +116,26 @@ export const UserController = {
       }
     }
   },
+
+  deleteMe: async () => {
+    let url = apiUrlTemplates.myUserOperations()
+    let options = {
+      method: HttpMethods.delete,
+      headers: FetchHeaders.get(),
+    }
+    let response = await fetch(url, options)
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        severity: 'success'
+      }
+    } else {
+      return {
+        message: jsonResponse.detail,
+        severity: 'error'
+      }
+    }
+  },
+
 }
 

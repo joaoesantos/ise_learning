@@ -35,7 +35,7 @@ export default function Routes() {
                 <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
                 <Route path="*" render={() => <DefaultErrorMessage title={'Page not found'} message={'This page does not exist'}/> } />
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

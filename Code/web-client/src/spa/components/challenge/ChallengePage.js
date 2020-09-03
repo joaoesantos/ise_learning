@@ -21,12 +21,11 @@ import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { ChallengeController } from '../../controllers/challenge/ChallengeController'
-import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
-import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/ChallengeUtils'
 // configs
 import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
-
+import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
+// utils
+import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/challengeUtils'
 
 const useStyles = makeStyles(theme => ({
     layout: { },

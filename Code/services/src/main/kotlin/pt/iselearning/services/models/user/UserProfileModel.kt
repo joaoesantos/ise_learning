@@ -1,7 +1,5 @@
 package pt.iselearning.services.models.user
 
-import org.springframework.web.multipart.MultipartFile
-import javax.validation.constraints.Positive
 import javax.validation.constraints.Size
 
 class UserProfileModel(
