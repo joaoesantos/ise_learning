@@ -1,10 +1,9 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
 // material-ui components
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(theme => ({
     challengeStatementText: {
@@ -16,8 +15,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ChallengePage(props) {
-    const classes = useStyles();
-
+    const classes = useStyles()
     return (
         <Paper variant="outlined" square elevation={1} className={classes.challengeStatementPage} >
             <TextField
@@ -32,4 +30,4 @@ export default function ChallengePage(props) {
             />
         </Paper>
     )
-};
+}

@@ -108,7 +108,7 @@ class ChallengeService (
      */
     fun getRandomChallenge(): Challenge {
 
-        val challengeId = challengeRepository.findAllChallengeIds().random()
+        val challengeId = challengeRepository.findAllPublicChallengeIds().random()
         val challenge = challengeRepository.findById(challengeId)
         checkIfChallengeExists(challenge, challengeId)
 

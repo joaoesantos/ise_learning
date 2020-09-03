@@ -1,5 +1,5 @@
 // react
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import AppBar from '@material-ui/core/AppBar'
@@ -8,14 +8,20 @@ import IconButton from '@material-ui/core/IconButton'
 import Link from '@material-ui/core/Link'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
-import { makeStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 // logo
-import logo from '../../images/ISELearning_logo_wht.png'
+import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
+// controllers
+import { fetchHeaders } from '../../utils/fetchUtils'
+// authentication context
+import { AuthContext } from '../../context/AuthContext'
+// utils
+import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -46,53 +52,53 @@ const useStyles = makeStyles(theme => ({
     title: {
       flexGrow: 1, 
     },
-}));
+}))
   
-export default function Navbar(props) {
+export default function Navbar() {
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const classes = useStyles()
+  const { isAuthed, setAuth, setUser } = useContext(AuthContext)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
 
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleOnMenu = event => {
+    setAnchorEl(event.currentTarget)
+  }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleOnClose = () => {
+    setAnchorEl(null)
+  }
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    props.setAuth(false);
-  };
+  const handleOnLogout = () => {
+    setAnchorEl(null)
+    setAuth(false)
+    setUser(undefined)
+    localStorage.removeItem('ISELearningLoggedUser')
+    fetchHeaders.clear()
+    history.push("/")
+  }
 
-  const classes = useStyles();
   return (
     <div className={classes.layout}>
       <AppBar className={classes.appBar}>
         <Toolbar variant="dense">
             <Link className={classes.link} component={RouterLink} to="/">
-              <img src={logo} height={40}/>
+              <img src={ISELearningLogo} height={40}/>
             </Link>
-          {props.isAuthed ? 
             <Typography className={classes.title}>
+              <Link className={classes.link} component={RouterLink} to="/runCode">
+                Run Code
+              </Link>
               <Link className={classes.link} component={RouterLink} to="/listChallenges">
                 Challenges
               </Link>
-              <Link className={classes.link} component={RouterLink} to="/questionnaires">
-                Questionnaires
-              </Link>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
+              {isAuthed &&
+                <Link className={classes.link} component={RouterLink} to="/questionnaires">
+                  Questionnaires
+                </Link>
+              }
             </Typography>
-            :
-            <Typography className={classes.title}>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
-            </Typography>}
-            {props.isAuthed ? 
+            {isAuthed ? 
               <div>
                 <IconButton color="inherit">
                   <Badge badgeContent={4} color="secondary">
@@ -102,7 +108,7 @@ export default function Navbar(props) {
               <IconButton
                 aria-controls="menu-user"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={handleOnMenu}
                 color="inherit"
               >
                 <PowerSettingsNewIcon />
@@ -115,10 +121,10 @@ export default function Navbar(props) {
                 keepMounted
                 transformOrigin={{vertical:'top', horizontal:'center'}}
                 open={open}
-                onClose={handleClose}
+                onClose={handleOnClose}
               >
-                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/" onClick={handleLogout}>Log out</MenuItem>
+                <MenuItem component={RouterLink} to="/profile" onClick={handleOnClose}>Profile</MenuItem>
+                <MenuItem onClick={handleOnLogout}>Log out</MenuItem>
               </Menu>
             </div>
             :
@@ -133,6 +139,6 @@ export default function Navbar(props) {
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }
 

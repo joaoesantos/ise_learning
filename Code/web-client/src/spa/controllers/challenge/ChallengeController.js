@@ -1,37 +1,61 @@
-import {apiUrlTemplates} from '../clientSideConfig'
-import {HttpMethods, defaultHeaders} from '../components/fetchUtils'
-import {LanguageController} from './LanguageController'
+import { apiUrlTemplates } from '../../clientSideConfig'
+import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
-  getChallengeById: async (challengeId) => {
-    let url = apiUrlTemplates.challenge(challengeId)
+
+  getAllChallenges: async () => {
+    let url = apiUrlTemplates.getAllChallenges()
     let options = {
-      method: HttpMethods.get,
-      headers: defaultHeaders()
+        method: HttpMethods.get,
+        headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
   },
+
+  getRandomChallenge: async () => {
+      let url = apiUrlTemplates.getRandomChallenge()
+      let options = {
+          method: HttpMethods.get,
+          headers: fetchHeaders.get()
+      }
+      let response = await fetch(url, options)
+      return response.json()
+  },
+
+  getChallengeById: async (challengeId) => {
+    let url = apiUrlTemplates.challenge(challengeId)
+    let options = {
+      method: HttpMethods.get,
+      headers: fetchHeaders.get()
+    }
+    let response = await fetch(url, options)
+    return response.json()
+  },
+
   createChallenge: async (challengeModel) => {
     let url = apiUrlTemplates.challenges()
     let options = {
       method: HttpMethods.post,
-      headers: defaultHeaders(),
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
     return response.json();
   },
+
   updateChallenge: async (challengeId, challengeModel) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
       method: HttpMethods.put,
-      headers: defaultHeaders(),
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
     return {challenge: await response.json()};
   },
+
   getChallengeByIdAndAvailableLanguages: async (challengeId) => {
     let challengePromise = ChallengeController.getChallengeById(challengeId);
     let languagesPromise = LanguageController.getAvailableLanguages();
@@ -41,4 +65,5 @@ export const ChallengeController = {
       challenge: responses[0]
     }
   }
+
 }

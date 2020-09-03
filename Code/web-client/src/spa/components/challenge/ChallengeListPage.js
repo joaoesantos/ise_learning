@@ -1,22 +1,23 @@
 // react
-import React, {useState} from 'react'
+import React from 'react'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
 import RepeatOne from '@material-ui/icons/RepeatOne'
 // components
 import ChallengeListTable from './ChallengeListTable'
-
+// controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import challengeCtrl from '../../controllers/_challengeCtrl'
+import { ChallengeController } from '../../controllers/challenge/ChallengeController'
+// authentication context
+import { AuthContext } from '../../context/AuthContext'
+// utils
+import history from '../navigation/history'
 
 const useStyles = makeStyles((theme) => ({
-  layout: {
-
-  },
   mainContainer: {
     maxWidth: '90%',
     padding: theme.spacing(2),
@@ -46,37 +47,33 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-const ChallengeListPage = function(props){
+export default function ChallengeListPage() {
 
+  const classes = useStyles()
+  const { isAuthed } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
 
   React.useEffect(() => {
-    if (response === undefined && actionState === ActionStates.clear) {
-      //not Done || done but not rendering
-    } else if (actionState === ActionStates.done &&
-    action.render && action.render === true) {
-      // redirect do Rodrigo to create new challenge page
-    } else {
-      //not Done || done but not rendering
+    if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {
+      history.push(`/challenges/${response.challengeId}`)
     }
   },[actionState]);
 
   const onRandomChallengeButton = () => {
     setAction({
-      function: challengeCtrl.getRamdomChallenge,
-      args: [props.credentials],
-      render: false
+      function: ChallengeController.getRandomChallenge,
+      args: [],
+      name: 'getRandomChallenge'
     })
   }
 
   const onCreateChallengeButton = () => {
-    // redirect do Rodrigo to create new challenge page
+    history.push('/newChallenge')
   }
 
-  const classes = useStyles();
   return (
-    <div className={classes.layout}>
+    <>
       <Container className={classes.mainContainer}>
         <Grid 
         container 
@@ -88,20 +85,22 @@ const ChallengeListPage = function(props){
           <Grid item xs={12} sm={10}>
             <Toolbar className={classes.toolbar} variant="regular" >
               <Button className={classes.randomChallengeButton}
-              id="randomChallengeButton"
-              variant="contained"
-              onClick={onRandomChallengeButton}
-              >
-                Create new challenge
-              </Button>
-              <Button className={classes.randomChallengeButton}
-              endIcon={<RepeatOne />}
-              id="randomChallengeButton"
-              variant="contained"
-              onClick={onRandomChallengeButton}
+                endIcon={<RepeatOne />}
+                id="randomChallengeButton"
+                variant="contained"
+                onClick={onRandomChallengeButton}
               >
                 Pick one
               </Button>
+              {isAuthed  && 
+                <Button className={classes.randomChallengeButton}
+                  id="createChallengeButton"
+                  variant="contained"
+                  onClick={onCreateChallengeButton}
+                >
+                  Create new challenge
+                </Button>
+              }
             </Toolbar>
             <ChallengeListTable />
           </Grid>
@@ -111,9 +110,7 @@ const ChallengeListPage = function(props){
           </Grid>
         </Grid>
       </Container>
-    </div>
+    </>
   )
 
 }
-
-export default ChallengeListPage

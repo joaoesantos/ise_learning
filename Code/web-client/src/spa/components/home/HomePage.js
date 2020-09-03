@@ -65,8 +65,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function HomePage() {
-  const classes = useStyles();
 
+  const classes = useStyles()
   const motivationRef = React.useRef(null)
   const challQuestRef = React.useRef(null)
   const langEnvRef = React.useRef(null)
@@ -210,5 +210,5 @@ export default function HomePage() {
         </Container>
       </Container>
     </div>
-  );
+  )
 }

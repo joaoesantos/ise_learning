@@ -1,30 +1,27 @@
 // react
-import * as React from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-
+import React from 'react'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
 // material-ui/Formik components
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Avatar from '@material-ui/core/Avatar';
-import { Button, LinearProgress } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from 'formik-material-ui';
-import Typography from '@material-ui/core/Typography';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import Avatar from '@material-ui/core/Avatar'
+import { Button, LinearProgress } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { makeStyles } from '@material-ui/core/styles'
+import { TextField } from 'formik-material-ui'
+import Typography from '@material-ui/core/Typography'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 //controllers
 import UseAction, { ActionStates } from '../controllers/UseAction'
-import {UserController} from '../controllers/UserController'
+import { UserController } from '../controllers/UserController'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
-    //backgroundColor: palleteColor.color4,
   },
   centerItems: {
     textAlign: 'center'
@@ -40,45 +37,39 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function App() {
-  const classes = useStyles()
+export default function UserProfile() {
 
+  const classes = useStyles()
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [user, setUser] = React.useState()
-
   const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
 
   React.useEffect(() => {
-    if (response && actionState === ActionStates.done &&
-      action.render && action.render === true) {
-      setUser(response)
-    } else if (!response) {
+    if (response === undefined && actionState === ActionStates.clear) {
       setAction({
-        function: UserController.getUserMe,
+        function: UserController.getMe,
         args: [],
         render: true
       })
-    } else if (actionState === ActionStates.done &&
-      action.render && action.render === true) {
-      setUser(response)
-    } else {
-      //not Done || done but not rendering
+    } else if (response && actionState === ActionStates.done && 
+    action.render && action.render === true) {
+      setUser(response.json)
     }
   },[actionState]);
 
   const handleClickShowNewPassword = () => {
     setShowNewPassword(!showNewPassword)
-  };
+  }
 
   const handleClickShowRepeatNewPassword = () => {
     setShowRepeatNewPassword(!showRepeatNewPassword)
-  };
+  }
 
   const handleMouseDownPassword = (event) => {
       event.preventDefault();
-  };
+  }
 
   if (actionState === ActionStates.clear) {
     return <p>insert URL</p>

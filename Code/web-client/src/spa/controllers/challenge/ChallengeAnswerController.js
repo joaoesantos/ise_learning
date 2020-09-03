@@ -1,7 +1,6 @@
-import {apiUrlTemplates} from '../clientSideConfig'
-import {HttpMethods, defaultHeaders} from '../components/fetchUtils'
-import {LanguageController} from './LanguageController'
-import {ChallengeController} from './ChallengeController'
+import { apiUrlTemplates } from '../../clientSideConfig'
+import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { ChallengeController } from './ChallengeController'
 
 export const ChallengeAnswerController = {
   getChallengeAndChallengeAnswerBychallengeIdAndUserId: async (challengeId, userId) => {
@@ -17,7 +16,7 @@ export const ChallengeAnswerController = {
     let url = apiUrlTemplates.challengeAnswerByChallengeIdAndUserId(challengeId, userId)
     let options = {
       method: HttpMethods.get,
-      headers: defaultHeaders()
+      headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
@@ -26,7 +25,7 @@ export const ChallengeAnswerController = {
     let url = apiUrlTemplates.challengeAnswers()
     let options = {
       method: HttpMethods.post,
-      headers: defaultHeaders(),
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
@@ -36,7 +35,7 @@ export const ChallengeAnswerController = {
     let url = apiUrlTemplates.challengeAnswer(challengeAnswerId)
     let options = {
       method: HttpMethods.put,
-      headers: defaultHeaders(),
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)

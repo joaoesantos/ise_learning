@@ -1,33 +1,31 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Redirect, useHistory, withRouter } from 'react-router-dom'
+import React from 'react'
+import { Redirect, withRouter } from 'react-router-dom'
 // material-ui components
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import ListItemText from '@material-ui/core/ListItemText'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Select from '@material-ui/core/Select'
+import Toolbar from '@material-ui/core/Toolbar'
 // custom components
 import Tabs from '../Tabs'
 import ChallengeStatement from './ChallengeStatement'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 // controllers
-import { ChallengeController } from '../../controllers/ChallengeController'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { ChallengePageConfigs } from '../../controllers/ChallengePageConfigs'
+import { ChallengeController } from '../../controllers/challenge/ChallengeController'
+import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
 import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/ChallengeUtils'
 // configs
-import {CodeMirrorOptions, defaultUnitTests} from '../../clientSideConfig'
+import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 
 
 const useStyles = makeStyles(theme => ({
@@ -89,8 +87,8 @@ const GrayCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 export default withRouter(function ChallengePage(props) {
+
     const classes = useStyles();
-    //const history = useHistory();
     const challengeId = props.match.params.challengeId
     const userId = props.match.params.userId
 
@@ -130,7 +128,7 @@ export default withRouter(function ChallengePage(props) {
         challengeAnswer: { state: challengeAnswer, setter: setChallengeAnswer},
         availableLanguages: { state: availableLanguages, setter: setAvailableLanguages}
     }
-    let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates)[props.configKey]
+    let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates)[props.location.configKey ? props.location.configKey : props.configKey]
 
     React.useEffect(() => {
         if (response && actionState === ActionStates.done &&
@@ -209,7 +207,7 @@ export default withRouter(function ChallengePage(props) {
         <React.Fragment>
             {redirectObject !== undefined && <Redirect push to={redirectObject} />}
             <div className={classes.layout}>
-                <h1>Challenges</h1>
+                <h1>{challenge ? challenge.challengeTitle : ''}</h1>
             </div>
             <Toolbar className={classes.runCodetoolbar} variant="dense">
                 <FormControl variant="standard" className={classes.form}>
@@ -259,6 +257,7 @@ export default withRouter(function ChallengePage(props) {
                 </FormControl>}
                 {pageConfigs.headerButtons.filter(e => e.isVisible).map( e => {
                     return <Button className={classes.runButton}
+                        key={e.id}
                         id={e.id}
                         variant="contained"
                         onClick={() => e.onClick()}

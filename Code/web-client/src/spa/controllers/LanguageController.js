@@ -1,14 +1,14 @@
-import {apiUrlTemplates} from '../clientSideConfig'
-import {HttpMethods, defaultHeaders} from '../components/fetchUtils'
+import { apiUrlTemplates } from '../clientSideConfig'
+import { HttpMethods, fetchHeaders } from '../utils/fetchUtils'
 
 export const LanguageController = {
   getAvailableLanguages: async () => {
     let url = apiUrlTemplates.languages()
     let options = {
       method: HttpMethods.get,
-      headers: defaultHeaders()
+      headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
-  } 
+  },
 }
