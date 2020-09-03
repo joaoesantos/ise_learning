@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.service.UserService
 import pt.iselearning.services.models.user.CreateUserModel
-import pt.iselearning.services.models.user.UpdatePasswordModel
-import pt.iselearning.services.models.user.UpdateProfileModel
+import pt.iselearning.services.models.user.UserPasswordModel
+import pt.iselearning.services.models.user.UserProfileModel
 import pt.iselearning.services.models.user.UserModel
+import pt.iselearning.services.service.AuthenticationService
 import pt.iselearning.services.util.VERSION
 
 /**
@@ -16,38 +17,16 @@ import pt.iselearning.services.util.VERSION
 @RestController
 @RequestMapping("/${VERSION}/users")
 class UserController(
-        private val userService: UserService
+        private val userService: UserService,
+        private val authenticationService: AuthenticationService
 ) {
-
-    //A usar caso estejamos a tempo de usar microservices
-    /*@Autowired
-    private lateinit var webClient : WebClient*/
-
-    /**
-     * Method to get all users
-     * @return ResponseEntity<Iterable<User>> represents a a collection that can hold zero or one elements of the type User
-     */
-    @GetMapping(name = "getAllUsers")
-    fun getAllUsers(): ResponseEntity<Iterable<UserModel>> = ResponseEntity.ok().body(userService.getAllUsers())
-
-
-    /**
-     * Method to get a single user.
-     * Path variable "id" must be present
-     * @param id represents user id
-     * @return ResponseEntity<User>
-     */
-    @GetMapping("/{id}", name = "getUserById")
-    fun getUserById(
-            @PathVariable id: Int
-    ): ResponseEntity<UserModel> = ResponseEntity.ok(userService.getUserById(id))
-
 
     /**
      * Method to create an user.
+     *
      * A json object that represents a object of the type User must be present in the body
      * @param createUserModel represents the user's information
-     * @return ResponseEntity<User> represents the newly created user
+     * @return ResponseEntity<UserModel> represents the newly created user
      */
     @PostMapping(name = "createUser")
     fun createUser(
@@ -60,27 +39,69 @@ class UserController(
     }
 
     /**
-     * Method to update an user.
+     * Method to get all users
+     *
+     * @return ResponseEntity<Iterable<UserModel>> represents a a collection that can hold zero or one elements of the type User
+     */
+    @GetMapping(name = "getAllUsers")
+    fun getAllUsers(): ResponseEntity<Iterable<UserModel>> = ResponseEntity.ok().body(userService.getAllUsers())
+
+    /**
+     * Method to get a single user by its unique identifier.
+     *
+     * Path variable "id" must be present
+     * @param id represents user id
+     * @return ResponseEntity<UserModel>
+     */
+    @GetMapping("/{id}", name = "getUserById")
+    fun getUserById(
+            @PathVariable id: Int
+    ): ResponseEntity<UserModel> = ResponseEntity.ok(userService.getUserById(id))
+
+    /**
+     * Method to get logged user.
+     *
+     * Path variable "id" must be present
+     * @return ResponseEntity<UserModel>
+     */
+    @GetMapping("/me", name = "getMe")
+    fun getMe(
+            @RequestHeader(value = "Authorization") authorization : String
+    ): ResponseEntity<UserModel> {
+        val loggedUser = authenticationService.getLoggedInUser(authorization)
+        return ResponseEntity.ok(userService.getUserById(loggedUser.userId!!))
+}
+    /**
+     * Method to update logged user information.
+     *
      * A json object that represents a object of the type User must be present in the body
-     * @param updateProfileModel represents the information an user can update
+     * @param userProfileModel represents the information an user can update
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    //TODO refactor once application is tracking current logged user
-    @PatchMapping("/me", name = "updateUser")
+    @PatchMapping("/me", name = "updateMe")
     fun updateUser(
-            @RequestBody updateProfileModel: UpdateProfileModel
+            @RequestBody userProfileModel: UserProfileModel,
+            @RequestHeader(value = "Authorization") authorization : String
     ): ResponseEntity<UserModel> {
-        val user = userService.updateUserInformation(updateProfileModel, updateProfileModel.userId)
+        val loggedUser = authenticationService.getLoggedInUser(authorization)
+        val user = userService.updateUserInformation(userProfileModel, loggedUser.userId!!)
         return ResponseEntity.ok(user)
     }
 
-    //TODO does it make sense to return the user?
-    //TODO refactor once application is tracking current logged user
+    /**
+     * Method to update an user credentials.
+     *
+     * A json object that represents a object of the type Questionnaire must be present in the body
+     * @param password represents a String
+     * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
     @PutMapping("/me/password", name = "updatePassword")
     fun updatePassword(
-            password: UpdatePasswordModel
+            password: UserPasswordModel,
+            @RequestHeader(value = "Authorization") authorization : String
     ): ResponseEntity<UserModel> {
-        val user = userService.updatePassword(password.password, password.userId)
+        val loggedUser = authenticationService.getLoggedInUser(authorization)
+        val user = userService.updatePassword(password.password, loggedUser.userId!!)
         return ResponseEntity.ok(user)
     }
 
@@ -88,7 +109,6 @@ class UserController(
      * Method to delete an user
      * Path variable "id" must be present
      * @param id represents user id
-     * @return ResponseEntity represents the response for a http message
      */
     @DeleteMapping("/{id}", name = "deleteUser")
     fun deleteUser(
@@ -97,6 +117,19 @@ class UserController(
         userService.deleteUser(id)
         return ResponseEntity.noContent().build()
     }
+
+    /**
+     * Method to delete logged user
+     */
+    @DeleteMapping("/me", name = "deleteMe")
+    fun deleteMe(
+            @RequestHeader(value = "Authorization") authorization : String
+    ): ResponseEntity<Unit> {
+        val loggedUser = authenticationService.getLoggedInUser(authorization)
+        userService.deleteUser(loggedUser.userId!!)
+        return ResponseEntity.noContent().build()
+    }
+
 }
 
 

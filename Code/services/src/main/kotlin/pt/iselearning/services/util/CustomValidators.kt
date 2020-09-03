@@ -1,5 +1,6 @@
 package pt.iselearning.services.util
 
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
@@ -15,6 +16,22 @@ import java.util.*
 /**
  * Custom Javax validators
  */
+
+//region CHALLENGE
+
+/**
+ * Validates if challenge is empty.
+ *
+ * @param user to be validated
+ * @param userId identifier of object
+ * @throws ServerException when on failure to find questionnaire
+ */
+fun checkIfUserExists(user: Optional<User>, userId: Int) {
+    if (user.isEmpty) {
+        throw ServerException("User not found.",
+                "There is no user with id $user", ErrorCode.ITEM_NOT_FOUND)
+    }
+}
 
 //region CHALLENGE
 
