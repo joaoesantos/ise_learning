@@ -1,5 +1,5 @@
 // react
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import AppBar from '@material-ui/core/AppBar'
@@ -19,6 +19,7 @@ import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
 // controllers
 import { FetchHeaders } from '../../utils/fetchUtils'
 // authentication context
+import { themes, ThemeContext } from '../../context/ThemeContext'
 import { AuthContext } from '../../context/AuthContext'
 // utils
 import history from '../../components/navigation/history'
@@ -57,8 +58,9 @@ const useStyles = makeStyles(theme => ({
 export default function Navbar() {
 
   const classes = useStyles()
-  const { isAuthed, setAuth, setUser } = useContext(AuthContext)
-  const [checked, setChecked] = React.useState(false)
+  const { setTheme } = React.useContext(ThemeContext)
+  const { isAuthed, setAuth, setUser } = React.useContext(AuthContext)
+  const [checked, setChecked] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
 
@@ -72,6 +74,7 @@ export default function Navbar() {
 
   const toggleChecked = () => {
     setChecked((prev) => !prev)
+    checked ? setTheme(themes.dark) : setTheme(themes.light)
   }
 
   const handleOnLogout = () => {
@@ -103,18 +106,18 @@ export default function Navbar() {
                 </Link>
               }
             </Typography>
+            <Tooltip title={checked ? "Switch to darkmode" : "Switch to lightmode"} >
+              <IconButton
+                aria-controls="theme-button"
+                aria-haspopup="true"
+                onClick={toggleChecked}
+                color="inherit"
+              >
+                {checked ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Tooltip>
             {isAuthed ? 
             <>
-              <Tooltip title="Switch theme">
-                <IconButton
-                  aria-controls="theme-button"
-                  aria-haspopup="true"
-                  onClick={toggleChecked}
-                  color="inherit"
-                >
-                  {checked ? <Brightness4Icon /> : <Brightness7Icon />}
-                </IconButton>
-              </Tooltip>
               <Tooltip title="User options">
                 <IconButton
                   aria-controls="menu-user"

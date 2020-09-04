@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Routes from './spa/components/navigation/Routes'
 // context
 import { AuthProvider } from './spa/context/AuthContext'
+import { ThemeProvider } from './spa/context/ThemeContext'
 // css normalization
 import CssBaseline from '@material-ui/core/CssBaseline'
 
@@ -22,13 +23,15 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles();
   return (
-    <div className={classes.layout}>
-      <CssBaseline />
-      <AuthProvider>
-        <Router history={history}>
-          <Routes />
-        </Router>
-      </AuthProvider>
-    </div>
+    <ThemeProvider>
+      <div className={classes.layout}>
+        <CssBaseline />
+        <AuthProvider>
+          <Router history={history}>
+            <Routes />
+          </Router>
+        </AuthProvider>
+      </div>
+    </ThemeProvider>
   )
 }

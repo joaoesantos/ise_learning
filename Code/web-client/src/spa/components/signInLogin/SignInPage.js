@@ -36,32 +36,32 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: "#be5041",
+    backgroundColor: "#757575",
   },
   form: {
     width: '100%',
     marginTop: theme.spacing(3),
-    '& label.Mui-focused': {
-      color: '#be5041',
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'gray',
-      },
-      '&:hover fieldset': {
-        borderColor: 'black',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#e68d4c',
-      },
-    },
+    // '& label.Mui-focused': {
+    //   color: '#be5041',
+    // },
+    // '& .MuiOutlinedInput-root': {
+    //   '& fieldset': {
+    //     borderColor: 'gray',
+    //   },
+    //   '&:hover fieldset': {
+    //     borderColor: 'black',
+    //   },
+    //   '&.Mui-focused fieldset': {
+    //     borderColor: '#e68d4c',
+    //   },
+    // },
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#be5041",
-    '&:hover': {
-      backgroundColor: '#cf6744',
-    },
+    // backgroundColor: "#be5041",
+    // '&:hover': {
+    //   backgroundColor: '#cf6744',
+    // },
   },
 }));
 
@@ -186,12 +186,11 @@ export default function SignUp() {
                   </FormControl>
                 </Grid>
             </Grid>
-            <Button
+            <Button className={classes.submit}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
               onClick={onSubmitHandler}
             >
               Sign Up

@@ -21,6 +21,9 @@ import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
+// context
+import { AuthContext } from '../../context/AuthContext'
+import { ThemeContext } from '../../context/ThemeContext'
 // configs
 import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
@@ -31,7 +34,6 @@ const useStyles = makeStyles(theme => ({
     layout: { },
     runCodetoolbar: {
         paddingLeft: theme.spacing(1),
-        background: '#ffffff',
         borderBottom: `1px solid ${theme.palette.divider}`,
         justifyContent: "space-between"
     },
@@ -41,20 +43,6 @@ const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(1),
         textTransform:"none",
-        color:'#ffffff',
-        backgroundColor:'#5cb85c', // cor isel -> '#963727'
-        '&:hover' : {
-            backgroundColor: '#17b033',
-        }
-    },
-    runButton: {
-        margin: theme.spacing(1),
-        textTransform:"none",
-        color:'#ffffff',
-        backgroundColor:'#5cb85c', // cor do isel -> '#963727'
-        '&:hover' : {
-            backgroundColor: '#17b033',
-        }
     },
     formControl: {
         margin: theme.spacing(1),
@@ -74,7 +62,6 @@ const MenuProps = {
     },
 };
 
-
 const GrayCheckbox = withStyles({
     root: {
         color: '#9b9b9b',
@@ -88,6 +75,7 @@ const GrayCheckbox = withStyles({
 export default withRouter(function ChallengePage(props) {
 
     const classes = useStyles();
+    const { theme } = React.useContext(ThemeContext)
     const challengeId = props.match.params.challengeId
     const userId = props.match.params.userId
 
@@ -173,31 +161,31 @@ export default withRouter(function ChallengePage(props) {
         tab1: {
             components: [
                 <ChallengeStatement challengeStatement={challenge ? challenge.challengeText : ""} setChallengeStatement={handleChallengeStatementChange} readOnly={!isChallengeEditable} />,
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourSolution, "code")} setTextEditorData={genericSetTextEditorData(setOurSolution, ourSolution, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourSolutionRunCodeAction]} />
+                <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourSolution, "code")} setTextEditorData={genericSetTextEditorData(setOurSolution, ourSolution, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourSolutionRunCodeAction]} />
             ],
             labels: ["Challenge Statement", "Our Solution"]
         },
         tab2: {
             components: [
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourSolution, yourSolution, codeLanguage)} actions={[yourSolutionRunCodeAction]} />
+                <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} textEditorData={yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourSolution, yourSolution, codeLanguage)} actions={[yourSolutionRunCodeAction]} />
             ],
             labels: ["Your Solution"]
         },
         tab3: {
             components: [
-                <RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourTests, "test")} setTextEditorData={genericSetTextEditorData(setOurTests, ourTests, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourTestsRunCodeAction]} />
+                <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} textEditorData={determineDefaultTextForEditableEditors(ourTests, "test")} setTextEditorData={genericSetTextEditorData(setOurTests, ourTests, codeLanguage)} readOnly={!isChallengeEditable || !codeLanguage} actions={[ourTestsRunCodeAction]} />
             ],
             labels: ["Our Tests"]
         },
         tab4: {
             components: [
-                <OutputTextEditor textArea={outputText} setTextArea={setOutputText} />
+                <OutputTextEditor theme={theme} textArea={outputText} setTextArea={setOutputText} />
             ],
             labels: ["Execution Result"]
         }
     }
     if(pageConfigs.showYourTests) {
-        tabs.tab3.components.push(<RunCodeTextEditor codeLanguage={codeLanguage} textEditorData={yourTests[codeLanguage] ? yourTests[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourTests, yourTests, codeLanguage)} actions={[yourTestsRunCodeAction]} />)
+        tabs.tab3.components.push(<RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} textEditorData={yourTests[codeLanguage] ? yourTests[codeLanguage].value : ""} setTextEditorData={genericSetTextEditorData(setYourTests, yourTests, codeLanguage)} actions={[yourTestsRunCodeAction]} />)
         tabs.tab3.labels.push("Your Tests");
     }
     
@@ -256,6 +244,7 @@ export default withRouter(function ChallengePage(props) {
                 </FormControl>}
                 {pageConfigs.headerButtons.filter(e => e.isVisible).map( e => {
                     return <Button className={classes.runButton}
+                        color={"primary"}
                         key={e.id}
                         id={e.id}
                         variant="contained"
