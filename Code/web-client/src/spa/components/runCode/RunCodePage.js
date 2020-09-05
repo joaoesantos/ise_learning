@@ -1,50 +1,47 @@
 // react
-import React from 'react';
+import React from 'react'
 // material-ui components
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import FormControl from '@material-ui/core/FormControl'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
 // codemirror components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
-// client side configurations
-import { defaultLanguage } from '../../clientSideConfig';
 // controller
 import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
+// authentication context
+import { ThemeContext } from '../../context/ThemeContext'
+// client side configurations
+import { defaultLanguage } from '../../clientSideConfig'
 
 const useStyles = makeStyles((theme) => ({
-  layout: {
-
-  },
+  layout: {},
   container: {
     padding: theme.spacing(0),
   },
   runCodetoolbar: {
     paddingLeft: theme.spacing(1),
-    background: '#ffffff',
     borderBottom: `1px solid ${theme.palette.divider}`,
     justifyContent: "space-between"
   },
   outputToolbar: {
     paddingLeft: theme.spacing(1),
-    background: '#f5f5f5',
     borderBottom: `1px solid ${theme.palette.divider}`,
     justifyContent: "space-between"
   },
   runButton: {
       margin: theme.spacing(1),
       textTransform:"none",
-      color:'#ffffff',
-      backgroundColor:'#5cb85c', // cor do isel -> '#963727'
+      backgroundColor:'#4caf50',
       '&:hover' : {
-          backgroundColor: '#17b033',
+          backgroundColor: '#388e3c',
       }
   },
   clearButton: {
@@ -59,9 +56,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RunCodePage() {
 
-  const [runState, setRunState] = React.useState('notRunning');
+  const { theme } = React.useContext(ThemeContext)
+  const [runState, setRunState] = React.useState('notRunning')
   const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage);
-  const [textEditorData, setTextEditorData] = React.useState();
+  const [textEditorData, setTextEditorData] = React.useState()
   const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
 
   function onLanguageChange(event) {
@@ -93,7 +91,9 @@ export default function RunCodePage() {
           <Grid item xs={7}>
             <Grid>
               <Toolbar className={classes.runCodetoolbar} variant="dense">
-                <Button className={classes.runButton}
+                <Button 
+                  className={classes.runButton}
+                  color="success"
                   id="runCodeButton"
                   variant="contained"
                   onClick={onRunCode}
@@ -115,7 +115,7 @@ export default function RunCodePage() {
                 </FormControl>
               </Toolbar>
             </Grid>
-            <RunCodeTextEditor codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
+            <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
           </Grid>
           <Grid item xs={5}>
             <Grid>
@@ -149,7 +149,7 @@ export default function RunCodePage() {
                 </Button>
               </Toolbar>
             </Grid>
-            <OutputTextEditor textArea={textArea} setTextArea={setTextArea} />
+            <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} />
           </Grid>
         </Grid>
       </Container>

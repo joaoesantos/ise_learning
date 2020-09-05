@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   toolbar: {
-    background: '#ffffff',
     borderBottom: `1px solid ${theme.palette.divider}`,
     justifyContent: "space-between"
   },
@@ -39,11 +38,6 @@ const useStyles = makeStyles((theme) => ({
   randomChallengeButton: {
     margin: theme.spacing(1),
     textTransform:"none",
-    color:'#ffffff',
-    backgroundColor:'#db9e07',
-    '&:hover' : {
-        backgroundColor: '#be5041',
-    }
 },
 }));
 
@@ -85,6 +79,7 @@ export default function ChallengeListPage() {
           <Grid item xs={12} sm={10}>
             <Toolbar className={classes.toolbar} variant="regular" >
               <Button className={classes.randomChallengeButton}
+                color="primary"
                 endIcon={<RepeatOne />}
                 id="randomChallengeButton"
                 variant="contained"
@@ -94,6 +89,7 @@ export default function ChallengeListPage() {
               </Button>
               {isAuthed  && 
                 <Button className={classes.randomChallengeButton}
+                  color="primary"
                   id="createChallengeButton"
                   variant="contained"
                   onClick={onCreateChallengeButton}
@@ -104,7 +100,7 @@ export default function ChallengeListPage() {
             </Toolbar>
             <ChallengeListTable />
           </Grid>
-          <Grid item xs={12} sm={2} style={{backgroundColor:'#db9e07'}}>
+          <Grid item xs={12} sm={2}>
             <p>Possible user information</p>
             <p>Pie-chart statistics of number of challenges compelted?</p>
           </Grid>

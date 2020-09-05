@@ -20,6 +20,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to create an questionnaire instance.
+     *
      * A json object that represents a object of the type QuestionnaireInstance must be present in the body
      * @param ucb helps build URLs
      * @param questionnaireInstance represents a QuestionnaireInstance object
@@ -40,6 +41,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to get a single questionnaire instance.
+     *
      * Path variable "questionnaireInstanceId" must be present
      * @param questionnaireInstanceId represents QuestionnaireInstance unique identifier
      * @return ResponseEntity<QuestionnaireInstance>
@@ -54,6 +56,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to get a single questionnaire instance.
+     *
      * Path variable "questionnaireInstanceUuid" must be present
      * @param questionnaireInstanceUuid represents QuestionnaireInstance UUID
      * @return ResponseEntity<QuestionnaireInstance>
@@ -68,6 +71,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to get all questionnaire instances from a questionnaire.
+     *
      * Path variable "questionnaireId" must be present
      * @param questionnaireId represents the Questionnaire parent object
      * @return ResponseEntity<List<QuestionnaireInstance>> represents a data stream that can hold zero or one elements of the type ServerResponse
@@ -82,6 +86,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to update an questionnaire instance.
+     *
      * A json object that represents a object of the type Questionnaire must be present in the body
      * @param questionnaireInstanceId represents a QuestionnaireInstance unique identifier
      * @param questionnaireModel represents a QuestionnaireInstance object
@@ -98,6 +103,7 @@ class QuestionnaireInstanceController(
 
     /**
      * Method to delete a single questionnaire instance.
+     *
      * Path variable "questionnaireInstanceId" must be present
      * @param questionnaireInstanceId represents QuestionnaireInstance unique identifier
      * @return No Content

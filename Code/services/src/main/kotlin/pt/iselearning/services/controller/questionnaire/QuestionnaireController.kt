@@ -23,6 +23,7 @@ class QuestionnaireController(
 
     /**
      * Method to create an questionnaire.
+     *
      * A json object that represents a object of the type Questionnaire must be present in the body
      * @param ucb helps build URLs
      * @param questionnaire represents a Questionnaire object
@@ -43,6 +44,7 @@ class QuestionnaireController(
 
     /**
      * Method to create an questionnaire with challenges associated.
+     *
      * A json object that represents a object of the type Questionnaire and its Challenges Ids must be present in the body
      * @param ucb helps build URLs
      * @param questionnaireWithChallengesModel represents a Questionnaire object and a collection of challenges unique identifiers
@@ -65,6 +67,7 @@ class QuestionnaireController(
 
     /**
      * Method to get a single questionnaire.
+     *
      * Path variable "questionnaireId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<Questionnaire>
@@ -79,6 +82,7 @@ class QuestionnaireController(
 
     /**
      * Method to get all user questionnaires.
+     *
      * Path variable "userId" must be present
      * @param userId represents the Questionnaire creator
      * @return ResponseEntity<List<Questionnaire>> represents a data stream that can hold zero or one elements of the type ServerResponse
@@ -92,7 +96,25 @@ class QuestionnaireController(
     }
 
     /**
+     * Method to get an questionnaire with its challenges.
+     *
+     * A json object that represents a object of the type Questionnaire must be present in the body
+     * Path variable "questionnaireId" must be present
+     * @param questionnaireId represents Questionnaire unique identifier
+     * @return ResponseEntity<QuestionnaireOutputModel> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
+    fun getQuestionnaireByIdWithChallenge(
+            @PathVariable questionnaireId: Int
+    ) : ResponseEntity<QuestionnaireOutputModel> {
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireServices.getQuestionnaireInstanceByIdWithChallenge(questionnaireId))
+    }
+
+    /**
      * Method to update an questionnaire.
+     *
      * A json object that represents a object of the type Questionnaire must be present in the body
      * @param questionnaireId represents a Questionnaire unique identifier
      * @param questionnaireModel represents a Questionnaire
@@ -109,6 +131,7 @@ class QuestionnaireController(
 
     /**
      * Method to delete a single questionnaire.
+     *
      * Path variable "questionnaireId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
      * @return No Content
@@ -121,12 +144,4 @@ class QuestionnaireController(
         return ResponseEntity.noContent().build()
     }
 
-    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
-    fun getQuestionnaireByIdWithChallenge(
-            @PathVariable questionnaireId: Int
-    ) : ResponseEntity<QuestionnaireOutputModel> {
-
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.getQuestionnaireInstanceByIdWithChallenge(questionnaireId))
-    }
 }
