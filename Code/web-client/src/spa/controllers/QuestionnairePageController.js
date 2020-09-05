@@ -39,9 +39,30 @@ export const QuestionnairePageController = {
         } 
     },
     submitChallenge: async () => {
-        console.log("submitChallenge")
+
     },
-    submitQuestionnaire: async() => {
-        console.log("submitQuestionnaire")
+    submitQuestionnaire: async(questionnaireInfo) => {
+        let options = {
+            method: HttpMethods.post,
+            headers: defaultHeaders()
+        }
+
+        const body = {
+            questionnaireId: questionnaireInfo.questionnaire.questionnaireId,
+            questionnaireId: questionnaireInfo.questionnaire.questionnaireId,
+            questionnaireInstanceId: questionnaireInfo.questionnaire.questionnaireInstanceId,
+            challengesAnswers: questionnaireInfo.challengesAnswer.map(cc => {
+                return {
+                    challengeId: cc.id,
+                    answer: {
+                        codeLanguage: cc.codeLanguage,
+                        answerCode: cc.answerCode,
+                        unitTests: cc.unitTests
+                    }
+                }
+            })
+        }
+        const url = apiUrlTemplates.createQuestionnaireAnswer
+        let response = await fetch(url, options)
     }
 }

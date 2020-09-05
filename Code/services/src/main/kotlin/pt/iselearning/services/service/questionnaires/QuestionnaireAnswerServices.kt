@@ -54,10 +54,12 @@ class QuestionnaireAnswerServices(
                 }
 
 
+/*
         questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.get().questionnaireInstanceId
         questionnaireAnswer.qcId = questionnaireChallenge.qcId
+*/
 
-        return questionnaireAnswerRepository.save(questionnaireAnswer)
+        return questionnaireAnswerRepository.save(QuestionnaireAnswer())
     }
 
     /**
@@ -101,10 +103,10 @@ class QuestionnaireAnswerServices(
 
         //region data for update operation
         val updatedQuestionnaireAnswer = questionnaireAnswerFromDB.get()
-        if(updatedQuestionnaireAnswer.answer?.answerCode != null)
+/*        if(updatedQuestionnaireAnswer.answer?.answerCode != null)
             updatedQuestionnaireAnswer.answer?.answerCode = questionnaireAnswerModel.answer.answerCode
         if(updatedQuestionnaireAnswer.answer?.unitTests != null)
-            updatedQuestionnaireAnswer.answer?.unitTests = questionnaireAnswerModel.answer.unitTests
+            updatedQuestionnaireAnswer.answer?.unitTests = questionnaireAnswerModel.answer.unitTests*/
         //endregion
 
         return questionnaireAnswerRepository.save(updatedQuestionnaireAnswer)
@@ -135,9 +137,9 @@ class QuestionnaireAnswerServices(
     private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
         // build answer from model
         val answer = Answer()
-        answer.codeLanguage = questionnaireAnswerModel.answer.codeLanguage
+/*        answer.codeLanguage = questionnaireAnswerModel.answer.codeLanguage
         answer.answerCode = questionnaireAnswerModel.answer.answerCode
-        answer.unitTests = questionnaireAnswerModel.answer.unitTests
+        answer.unitTests = questionnaireAnswerModel.answer.unitTests*/
 
         // build questionnaireAnswer from model
         val questionnaireAnswer = QuestionnaireAnswer()
