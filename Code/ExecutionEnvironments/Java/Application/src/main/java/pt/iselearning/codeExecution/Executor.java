@@ -1,6 +1,7 @@
 package pt.iselearning.codeExecution;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import pt.iselearning.exceptions.CommandExecutionTimeout;
 import pt.iselearning.exceptions.MissingClassException;
 import pt.iselearning.models.ExecutionResult;
 import pt.iselearning.utils.CodeParser;
@@ -34,13 +35,23 @@ public class Executor {
         this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);
         this.codeClassName = CodeParser.extractClassName(this.code);
         if(this.codeClassName == null) {
-            throw new MissingClassException("Cannot parse public class name from code.");
+            throw new MissingClassException(
+                    "MissingPublicClass",
+                    "No public class name on code",
+                    "Cannot parse public class name from code.",
+                    "/execute/java/code/compile/publicClass"
+            );
         }
         if(testCode != null) {
             this.testCode = String.format("package %s; import %s.%s;",PACKAGE_NAME, PACKAGE_NAME, codeClassName) + CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
-                throw new MissingClassException("Cannot parse public class name from unit test code.");
+                throw new MissingClassException(
+                        "MissingPublicClass",
+                        "No public class name on unit tests",
+                        "Cannot parse public class name from unit test code.",
+                        "/execute/java/tests/compile/publicClass"
+                );
             }
         }
         this.cmdExec = CommandExecutor.getInstance();
@@ -59,7 +70,7 @@ public class Executor {
         }
         Path fullPathToCodeFile = CODE_OUTPUT.resolve(PACKAGE_NAME).resolve(String.format("%s.java", codeClassName));
         ExecutionResult codeCompileRes = compile(fullPathToCodeFile, code, new Path[]{CODE_OUTPUT});
-        if (codeCompileRes.wasError()) {
+        if (codeCompileRes.getWasError()) {
             return codeCompileRes;
         } else if (testCode != null) {
             return compileTestCode();
@@ -101,7 +112,7 @@ public class Executor {
      * @throws IOException
      * @throws InterruptedException
      */
-    public ExecutionResult executeUnitTests() throws IOException, InterruptedException {
+    public ExecutionResult executeUnitTests() throws IOException, InterruptedException, CommandExecutionTimeout {
         Path[] classpath = new Path[]{JarLocations.JUNIT_JAR, JarLocations.HAMCREST_JAR, CODE_OUTPUT};
         return cmdExec.executionCommand(CommandExecutor.CodeType.TEST, classpath,
                 String.format("%s.%s", PACKAGE_NAME, testClassName));
@@ -114,7 +125,7 @@ public class Executor {
      * @throws IOException
      * @throws InterruptedException
      */
-    public ExecutionResult executeCode() throws IOException, InterruptedException {
+    public ExecutionResult executeCode() throws IOException, InterruptedException, CommandExecutionTimeout {
         Path[] classpath = new Path[]{CODE_OUTPUT};
         return cmdExec.executionCommand(CommandExecutor.CodeType.CODE, classpath,
                 String.format("%s.%s", PACKAGE_NAME, codeClassName));
