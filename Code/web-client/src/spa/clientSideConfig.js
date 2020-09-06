@@ -62,13 +62,15 @@ export const languageLabelMappings = {
 }
 
 export const apiUrlTemplates = {
+    // USER
     login: () => `/${apiVersion}/login`,
     logout: () => `/${apiVersion}/logout`,
     createUser:()=> `/${apiVersion}/users`,
     myUserOperations: () => `/${apiVersion}/users/me`,
     myCredentials: () => `/${apiVersion}/users/me/password`,
-    profile: () => `/${apiVersion}/users/me`,
+    // RUN CODE
     executeCode: () => `/${apiVersion}/execute`,
+    // CHALLENGES
     challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
     challenges: () => `/${apiVersion}/challenges`,
     challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${apiVersion}/challengeAnswers/${challengeId}/answers/users/${userId}`,
@@ -77,6 +79,7 @@ export const apiUrlTemplates = {
     languages: () => `/${apiVersion}/codeLanguages`,
     getAllChallenges: () => `/${apiVersion}/challenges`,
     getRandomChallenge: () => `/${apiVersion}/challenges/random`,
+    // QUESTIONNAIRES
     getQuestionnaireInstances: () => `/${apiVersion}/questionnaireAnswers`,
     getQuestionnaireAnswers: (id) => `/${apiVersion}/questionnaireAnswers/questionnaireInstances/${id}`,
     getChallenges: () => `/${apiVersion}/challenges`,

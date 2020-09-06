@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, FetchHeaders } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
@@ -8,7 +8,7 @@ export const ChallengeController = {
     let url = apiUrlTemplates.getAllChallenges()
     let options = {
         method: HttpMethods.get,
-        headers: fetchHeaders.get()
+        headers: FetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
@@ -18,7 +18,7 @@ export const ChallengeController = {
       let url = apiUrlTemplates.getRandomChallenge()
       let options = {
           method: HttpMethods.get,
-          headers: fetchHeaders.get()
+          headers: FetchHeaders.get()
       }
       let response = await fetch(url, options)
       return response.json()
@@ -28,7 +28,7 @@ export const ChallengeController = {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
       method: HttpMethods.get,
-      headers: fetchHeaders.get()
+      headers: FetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
@@ -38,7 +38,7 @@ export const ChallengeController = {
     let url = apiUrlTemplates.challenges()
     let options = {
       method: HttpMethods.post,
-      headers: fetchHeaders.get(),
+      headers: FetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
@@ -49,7 +49,7 @@ export const ChallengeController = {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
       method: HttpMethods.put,
-      headers: fetchHeaders.get(),
+      headers: FetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)

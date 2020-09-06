@@ -2,6 +2,7 @@ export const HttpMethods = {
     post: 'POST',
     get: 'GET',
     put: 'PUT',
+    patch: 'PATCH',
     delete: 'DELETE'
 }
 
@@ -12,7 +13,7 @@ export const defaultHeaders = () => {
     return headers
 }
 
-export let fetchHeaders = {
+export let FetchHeaders = {
     
     headers: undefined,
 

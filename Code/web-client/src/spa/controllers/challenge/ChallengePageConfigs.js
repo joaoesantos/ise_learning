@@ -1,10 +1,10 @@
-// utils
-import { convertLanguagesToObjectWithLabel } from '../../utils/ChallengeUtils'
-import { reduceObjectArrayToMap } from '../../utils/utils'
 // controllers
 import { LanguageController } from '../LanguageController'
 import { ChallengeController } from './ChallengeController'
 import { ChallengeAnswerController } from './ChallengeAnswerController'
+// utils
+import { convertLanguagesToObjectWithLabel } from '../../utils/challengeUtils'
+import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, userId, componentAggregateStates) => {
     //BUTTONS - init

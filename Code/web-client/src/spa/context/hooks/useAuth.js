@@ -7,11 +7,10 @@ export default function useAuth() {
     const [user, setUser] = React.useState()
 
     React.useEffect(() => {
-        const storedlUser = localStorage.getItem('user')
-        //localStorage.setItem('credentials', credentials)
-        if(storedlUser) {
+        const storedUser = localStorage.getItem('ISELearningLoggedUser')
+        if(storedUser) {
             setAuth(true)
-            setUser(storedlUser)
+            setUser(JSON.parse(storedUser))
         }
     }, [])
 
