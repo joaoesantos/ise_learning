@@ -4,6 +4,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
 import pt.iselearning.services.util.CHALLENGE_ANSWER_PATTERN
@@ -26,9 +27,10 @@ class ChallengeAnswerController(
     @PostMapping(name = "createChallengeAnswer")
     fun createChallengeAnswer(
             @RequestBody challengeAnswer: ChallengeAnswer,
-            ucb: UriComponentsBuilder
+            ucb: UriComponentsBuilder,
+            loggedUser: User
     ): ResponseEntity<ChallengeAnswer> {
-        val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswer)
+        val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswer, loggedUser)
         val location = ucb.path("/v0/challengeAnswers")
                 .path(challengeAnswer!!.challengeAnswerId.toString())
                 .build()
@@ -45,11 +47,12 @@ class ChallengeAnswerController(
     @PutMapping("/{challengeAnswerId}", name = "updateChallengeAnswer")
     fun updateChallengeAnswer(
             @PathVariable challengeAnswerId: Int,
-            @RequestBody challengeAnswer: ChallengeAnswer
+            @RequestBody challengeAnswer: ChallengeAnswer,
+            loggedUser: User
     ): ResponseEntity<ChallengeAnswer> {
         challengeAnswer.challengeAnswerId = challengeAnswerId
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
-                .body(challengeAnswerService.updateChallengeAnswer(challengeAnswer))
+                .body(challengeAnswerService.updateChallengeAnswer(challengeAnswer, loggedUser))
     }
 
     /**
@@ -60,9 +63,10 @@ class ChallengeAnswerController(
      */
     @DeleteMapping("/{challengeAnswerId}", name = "deleteChallengeAnswer")
     fun deleteChallengeAnswer(
-            @PathVariable challengeAnswerId: Int
+            @PathVariable challengeAnswerId: Int,
+            loggedUser: User
     ): ResponseEntity<Void> {
-        challengeAnswerService.deleteChallengeAnswer(challengeAnswerId)
+        challengeAnswerService.deleteChallengeAnswer(challengeAnswerId, loggedUser)
         return ResponseEntity.ok().build()
     }
 
@@ -75,9 +79,10 @@ class ChallengeAnswerController(
     @GetMapping("/{challengeId}/answers/users/{userId}", name = "getChallengeAnswerByUserId")
     fun getChallengeAnswerByUserId(
             @PathVariable challengeId: Int,
-            @PathVariable userId: Int
+            @PathVariable userId: Int,
+            loggedUser: User
     ): ResponseEntity<ChallengeAnswer> {
-        val challengeAnswer = challengeAnswerService.getChallengeAnswerByUserId(challengeId, userId)
+        val challengeAnswer = challengeAnswerService.getChallengeAnswerByUserId(challengeId, userId, loggedUser)
         return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
     }
 }
