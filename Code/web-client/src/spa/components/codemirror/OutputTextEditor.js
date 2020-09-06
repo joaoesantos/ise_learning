@@ -1,13 +1,14 @@
 // react
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // material-ui components
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper'
+import { withStyles } from '@material-ui/core/styles'
 // codemirror
-import codemirror from 'codemirror';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/markdown/markdown.js';
-import 'codemirror/theme/neat.css';
+import codemirror from 'codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/markdown/markdown.js'
+import 'codemirror/theme/neat.css'
+import 'codemirror/theme/monokai.css'
 
 const styles = theme => ({
   toolbar: {
@@ -48,6 +49,9 @@ class OutputTextEditor extends Component {
   // is invoked immediately after props change
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
+      if(prevProps !== this.props && prevProps.theme.palette.type !== this.props.theme.palette.type) {
+        this.editor.setOption("theme", this.props.theme.palette.type === "light" ? "neat" : "monokai")
+      }
       if(this.props.textArea.toUpdate) {
         this.props.setTextArea({...this.props.textArea, toUpdate: false});
         const _this = this.props.textArea.value;

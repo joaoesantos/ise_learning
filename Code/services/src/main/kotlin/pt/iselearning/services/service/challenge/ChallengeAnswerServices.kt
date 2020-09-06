@@ -10,18 +10,20 @@ import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.challenge.ChallengeAnswerRepository
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.UserRepository
-import pt.iselearning.services.service.UserService
+import pt.iselearning.services.util.checkIfUserExists
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
 @Validated
 @Service
-class ChallengeAnswerService (private val challengeAnswerRepository: ChallengeAnswerRepository,
-                              private val challengeRepository: ChallengeRepository,
-                              private val challengeService: ChallengeService,
-                              private val userServices: UserService,
-                              private val userRepository: UserRepository) {
+class ChallengeAnswerService (
+        private val challengeAnswerRepository: ChallengeAnswerRepository,
+        private val challengeRepository: ChallengeRepository,
+        private val challengeService: ChallengeService,
+        private val userRepository: UserRepository
+) {
+
     @Validated
     fun createChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer? {
         challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
@@ -61,6 +63,7 @@ class ChallengeAnswerService (private val challengeAnswerRepository: ChallengeAn
     @Validated
     fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): ChallengeAnswer? {
         challengeService.checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
+        checkIfUserExists(userRepository.findById(userId), userId)
         userServices.checkIfUserExists(userRepository.findById(userId), userId)
         if(userId != loggedUser.userId) {
             throw ServerException("Cannot get other user's answers.",

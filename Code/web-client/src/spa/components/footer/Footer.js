@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         paddingLeft: 15,
-        textDecoration: 'none',
-        color: '#f0bc5e'
+        textDecoration: 'none'
       }
 }));
 

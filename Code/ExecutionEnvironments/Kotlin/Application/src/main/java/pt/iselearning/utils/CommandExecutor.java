@@ -3,13 +3,17 @@ package pt.iselearning.utils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pt.iselearning.exceptions.CommandExecutionTimeout;
 import pt.iselearning.models.ExecutionResult;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,6 +29,8 @@ public class CommandExecutor {
 
     private ProcessBuilder processBuilder;
     private ShellType shellType;
+
+    private long timeout;
 
     private enum ShellType {
         BASH("bash", "-c", ":"), CMD("cmd.exe", "/c", ";");
@@ -54,6 +60,14 @@ public class CommandExecutor {
         processBuilder = new ProcessBuilder();
         processBuilder.redirectErrorStream(true);
         processBuilder.redirectOutput(CMD_OUTPUT_FILE.toFile());
+
+        Properties prop = new Properties();
+        String propFileName = "props.properties";
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);) {
+            prop.load(inputStream);
+            this.timeout = Long.parseLong(prop.getProperty("execution.timeout"));
+        }
     }
 
     public static CommandExecutor getInstance() throws IOException {
@@ -84,7 +98,7 @@ public class CommandExecutor {
         processBuilder.command(shellType.exec, shellType.c, commandText);
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
-        return getExecutionResult(exitVal);
+        return getExecutionResult(exitVal, 0);
     }
 
     /**
@@ -98,7 +112,7 @@ public class CommandExecutor {
      * @throws IOException
      */
     public ExecutionResult executionCommand(CodeType type, Path[] classpath, String fullQualifiedClassNameToExecute)
-            throws InterruptedException, IOException {
+            throws InterruptedException, IOException, CommandExecutionTimeout {
         if(type.equals(CodeType.TEST)) {
             String executeTestCommandText = String.format("java -cp %s org.junit.runner.JUnitCore %s",
                     classpathPathArrayToString(classpath), fullQualifiedClassNameToExecute);
@@ -110,25 +124,37 @@ public class CommandExecutor {
             LOGGER.info(String.format("Execute execute code command %s", executeCodeCommandText));
             processBuilder.command(shellType.exec, shellType.c, executeCodeCommandText);
         }
+        long start = System.currentTimeMillis();
         Process process = processBuilder.start();
-        int exitVal = process.waitFor();
-        return getExecutionResult(exitVal);
+        boolean wasTimeout = !process.waitFor(this.timeout, TimeUnit.SECONDS);
+        long end = System.currentTimeMillis();
+        if(wasTimeout) {
+            throw new CommandExecutionTimeout(
+                    "TimeoutExpire",
+                    "TimeoutExpired",
+                    String.format("The command execution timed out, took more than %d seconds", this.timeout),
+                    "/execute/kotlin/timeout"
+            );
+        }
+        int exitVal = process.exitValue();
+        return getExecutionResult(exitVal, end-start);
     }
 
     /**
      * Auxiliary method to get Execution result depending of value returned from shell.
      *
      * @param exitVal
+     * @param duration
      * @return
      * @throws IOException
      */
-    public ExecutionResult getExecutionResult(int exitVal) throws IOException {
+    public ExecutionResult getExecutionResult(int exitVal, long duration) throws IOException {
         if (exitVal == 0) {
             LOGGER.info("Command executed successfuly.");
-            return new ExecutionResult(getDataFromCmdResultFile(), false);
+            return new ExecutionResult(getDataFromCmdResultFile(), false, duration);
         } else {
             LOGGER.error("Command executed with error.");
-            return new ExecutionResult(getDataFromCmdResultFile(), true);
+            return new ExecutionResult(getDataFromCmdResultFile(), true, duration);
         }
     }
 

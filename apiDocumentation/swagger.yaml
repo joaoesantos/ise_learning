@@ -52,12 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  rawResult:
-                    type: string
-                    description: Result or execution of compilation.
-                    example: Hello World
+                $ref: '#/components/schemas/executionResult'
         '400':
           description: Bad Request
           content:
