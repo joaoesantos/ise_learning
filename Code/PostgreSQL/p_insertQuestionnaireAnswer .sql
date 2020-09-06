@@ -1,9 +1,9 @@
 ------------------------------------
 --    INSERT CHALLENGE ANSWER     --
 ------------------------------------
-SET search_path TO ise_learning,public;
+SET search_path TO public;
 
-CREATE OR REPLACE PROCEDURE ise_learning.p_insertquestionnaireanswer(
+CREATE OR REPLACE PROCEDURE p_insertquestionnaireanswer(
 	questionnaire_instance_id integer,
 	qc_id integer,
 	code_language character varying,

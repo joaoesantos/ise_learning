@@ -3,6 +3,7 @@ package pt.iselearning.services.controller.challenge
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.ChallengeTag
 import pt.iselearning.services.models.tag.ChallengeTagModel
 import pt.iselearning.services.service.challenge.ChallengeTagService
@@ -25,9 +26,10 @@ class ChallengeTagController (private val challengeTagService: ChallengeTagServi
     fun createChallengeTag(
             @PathVariable challengeId: Int,
             @RequestBody challengeTagModel: ChallengeTagModel,
-            ucb : UriComponentsBuilder
+            ucb : UriComponentsBuilder,
+            loggedUser: User
     ): ResponseEntity<ChallengeTag> {
-        val savedChallengeTag = challengeTagService.createChallengeTag(challengeTagModel, challengeId)
+        val savedChallengeTag = challengeTagService.createChallengeTag(challengeTagModel, challengeId, loggedUser)
         val location = ucb.path("/v0/challenges/")
                 .path(java.lang.String.valueOf(savedChallengeTag!!.challengeId))
                 .path("/tags/")
@@ -47,9 +49,10 @@ class ChallengeTagController (private val challengeTagService: ChallengeTagServi
     @GetMapping("/{tagId}", name = "getChallengeTagByChallengeIdAndTagText")
     fun getChallengeTagByChallengeIdAndTagText(
             @PathVariable challengeId: Int,
-            @PathVariable tagId: Int
+            @PathVariable tagId: Int,
+            loggedUser: User?
     ): ResponseEntity<ChallengeTag> {
-        return ResponseEntity.ok().body(challengeTagService.getChallengeTagByChallengeIdAndTagId(challengeId, tagId))
+        return ResponseEntity.ok().body(challengeTagService.getChallengeTagByChallengeIdAndTagId(challengeId, tagId, loggedUser))
     }
 
     /**
@@ -60,9 +63,10 @@ class ChallengeTagController (private val challengeTagService: ChallengeTagServi
      */
     @GetMapping(name = "getChallengeTagsByChallengeId")
     fun getChallengeTagsByChallengeId(
-            @PathVariable challengeId: Int
+            @PathVariable challengeId: Int,
+            loggedUser: User?
     ): ResponseEntity<List<ChallengeTag>> {
-        return ResponseEntity.ok().body(challengeTagService.getChallengeTagByChallengeId(challengeId))
+        return ResponseEntity.ok().body(challengeTagService.getChallengeTagByChallengeId(challengeId, loggedUser))
     }
 
     /**
@@ -73,9 +77,10 @@ class ChallengeTagController (private val challengeTagService: ChallengeTagServi
     @DeleteMapping("/{tagId}", name = "deleteChallengeTag")
     fun deleteChallengeTag(
             @PathVariable challengeId: Int,
-            @PathVariable tagId: Int
+            @PathVariable tagId: Int,
+            loggedUser: User
     ): ResponseEntity<Void> {
-        challengeTagService.deleteChallengeTag(challengeId, tagId)
+        challengeTagService.deleteChallengeTag(challengeId, tagId, loggedUser)
         return ResponseEntity.noContent().build()
     }
 }

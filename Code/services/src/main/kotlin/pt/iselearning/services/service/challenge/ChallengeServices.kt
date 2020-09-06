@@ -8,7 +8,9 @@ import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.challenge.ChallengeTagRepository
 import java.util.*
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.models.ChallengePrivacyEnum
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.PRIVACY_REGEX_STRING
@@ -27,37 +29,48 @@ class ChallengeService (
 ) {
     @Validated
     fun getAllChallenges(tags: String?,
-                         @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?): List<Challenge> {
+                         @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
+                         loggedUser: User?): List<Challenge> {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
                     .distinct().asIterable()
             return if(privacy != null) {
-                val isPrivate = privacy=="private"
+                val isPrivate = privacy == ChallengePrivacyEnum.PRIVATE.value
                 challengeRepository.findAllById(challengeIdList).filter { c -> c.isPrivate == isPrivate }
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             } else {
                 challengeRepository.findAllById(challengeIdList).toList()
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             }
         } else {
             return if(privacy == null) {
                 challengeRepository.findAll().toList()
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             } else {
-                val isPrivate = privacy=="private"
+                val isPrivate = privacy == ChallengePrivacyEnum.PRIVATE.value
                 challengeRepository.findAllByIsPrivate(isPrivate)
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             }
         }
     }
 
     @Validated
-    fun getChallengeById(@Positive challengeId : Int) : Challenge {
-        val challenge = challengeRepository.findById(challengeId)
-        checkIfChallengeExists(challenge, challengeId)
-        return challenge.get()
+    fun getChallengeById(@Positive challengeId : Int, loggedUser: User?) : Challenge {
+        val challengeOpt = challengeRepository.findById(challengeId)
+        val challenge = checkIfChallengeExists(challengeOpt, challengeId)
+        if(challenge.isPrivate!! && (loggedUser == null || challenge.creatorId != loggedUser!!.userId)) {
+            throw ServerException("Cannot retrieve private challenge from other users.",
+                    "Cannot retrieve private challenge from other users. Private challenge belongs to other user.",
+                    ErrorCode.FORBIDDEN)
+        }
+        return challenge
     }
 
     @Validated
     fun getUserChallenges(@Positive userId: Int, tags: String?,
-                          @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?): List<Challenge>? {
+                          @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
+                          loggedUser: User?): List<Challenge>? {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -66,15 +79,19 @@ class ChallengeService (
                 val isPrivate = privacy=="private"
                 challengeRepository.findAllById(challengeIdList).filter{c -> c.creatorId == userId }
                         .filter { c -> c.isPrivate == isPrivate }
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             } else {
                 challengeRepository.findAllById(challengeIdList).filter{c -> c.creatorId == userId }.toList()
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             }
         } else {
             return if(privacy == null) {
                 challengeRepository.findAllByCreatorId(userId)
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             } else {
                 val isPrivate = privacy=="private"
                 challengeRepository.findAllByCreatorIdAndIsPrivate(userId, isPrivate)
+                        .filter { c -> !(c.isPrivate!! && (loggedUser == null || c.creatorId != loggedUser.userId))}
             }
         }
     }
@@ -116,28 +133,45 @@ class ChallengeService (
     }
 
     @Validated
-    fun createChallenge(@Valid challenge: Challenge): Challenge? {
+    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
+        if(challenge.creatorId != loggedUser.userId) {
+            throw ServerException("Cannot create challenge for other users.",
+                    "Cannot create challenge for other users. Challenge must belong to logged user.",
+                    ErrorCode.FORBIDDEN)
+        }
+        challenge.creatorId = loggedUser.userId
         return challengeRepository.save(challenge);
     }
 
     @Validated
-    fun updateChallenge(@Valid challenge: Challenge): Challenge? {
+    fun updateChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
         val challengeFromDb = challengeRepository.findById(challenge.challengeId!!)
         checkIfChallengeExists(challengeFromDb, challenge.challengeId!!)
+        if(challenge.creatorId != loggedUser!!.userId) {
+            throw ServerException("Cannot update challenge from other users.",
+                    "Cannot update challenge from other users. Challenge belongs to other user.",
+                    ErrorCode.FORBIDDEN)
+        }
         return challengeRepository.save(challenge)
     }
 
     @Validated
-    fun deleteChallenge(@Positive challengeId: Int) {
+    fun deleteChallenge(@Positive challengeId: Int, loggedUser: User) {
         val challengeFromDb = challengeRepository.findById(challengeId)
-        checkIfChallengeExists(challengeFromDb, challengeId)
+        val challenge = checkIfChallengeExists(challengeFromDb, challengeId)
+        if(challenge.creatorId != loggedUser!!.userId) {
+            throw ServerException("Cannot delete challenge from other users.",
+                    "Cannot delete challenge from other users. Challenge belongs to other user.",
+                    ErrorCode.FORBIDDEN)
+        }
         challengeRepository.deleteById(challengeId)
     }
 
-    fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) {
+    fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) : Challenge{
         if (challenge.isEmpty) {
-            throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode, "This challenge does not exist.", // dar fix quando houver refactoring
+            throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode, "This challenge does not exist.",
                     "There is no challenge with id: $challengeId")
         }
+        return challenge.get();
     }
 }

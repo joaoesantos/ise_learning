@@ -4,6 +4,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.service.challenge.ChallengeAnswerService
 import pt.iselearning.services.service.challenge.ChallengeService
@@ -26,29 +27,31 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     @GetMapping(name = "getAllChallenges")
     fun getAllChallenges(
             @RequestParam(required = false) tags: String?,
-            @RequestParam(required = false) privacy: String?
+            @RequestParam(required = false) privacy: String?,
+            loggedUser: User?
     ): ResponseEntity<List<Challenge>> {
-        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.getAllChallenges(tags, privacy))
+        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.getAllChallenges(tags, privacy, loggedUser))
     }
 
 
     /**
      * Method to get a single challenge.
      * Path variable "id" must be present
-     * @param challengeId represens challenge id
+     * @param challengeId represents challenge id
      * @return ResponseEntity<Challenge>
      */
     @GetMapping("/{challengeId}", name = "getChallengeById")
     fun getChallengeById(
-            @PathVariable challengeId: Int
+            @PathVariable challengeId: Int,
+            loggedUser: User?
     ): ResponseEntity<Challenge> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
-                .body(challengeService.getChallengeById(challengeId))
+                .body(challengeService.getChallengeById(challengeId, loggedUser))
     }
 
 
     /**
-     * Method to get a single challenge.
+     * Method to get all challenges created by a specific user.
      * Path variable "id" must be present
      * @param id represens challenge id
      * @param tags represens tags to search for
@@ -59,10 +62,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     fun getChallengeByUserId(
             @PathVariable userId: Int,
             @RequestParam(required = false) tags: String?,
-            @RequestParam(required = false) privacy: String?
+            @RequestParam(required = false) privacy: String?,
+            loggedUser: User?
     ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
-                .body(challengeService.getUserChallenges(userId, tags, privacy))
+                .body(challengeService.getUserChallenges(userId, tags, privacy, loggedUser))
     }
 
     /**
@@ -73,7 +77,8 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      */
     @GetMapping("/questionnaires/{questionnaireId}", name = "getAllChallengesByQuestionnaireId")
     fun getAllChallengesByQuestionnaireId(
-            @PathVariable questionnaireId: Int
+            @PathVariable questionnaireId: Int,
+            loggedUser: User?
     ): ResponseEntity<List<Challenge>> {
         return ResponseEntity.ok().contentType(APPLICATION_JSON)
                 .body(challengeService.getAllChallengesByQuestionnaireId(questionnaireId))
@@ -100,9 +105,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     @PostMapping(name = "createChallenge")
     fun createChallenge(
             @RequestBody challenge: Challenge,
-            ucb: UriComponentsBuilder
+            ucb: UriComponentsBuilder,
+            loggedUser: User
     ): ResponseEntity<Challenge> {
-        val savedChallenge = challengeService.createChallenge(challenge)
+        val savedChallenge = challengeService.createChallenge(challenge, loggedUser)
         val location = ucb.path("/v0/challenges")
                 .path(savedChallenge!!.challengeId.toString())
                 .build()
@@ -120,10 +126,11 @@ class ChallengeController (private val challengeService: ChallengeService, priva
     @PutMapping("/{challengeId}", name = "updateChallenge")
     fun updateChallenge(
             @PathVariable challengeId: Int,
-            @RequestBody challenge: Challenge
+            @RequestBody challenge: Challenge,
+            loggedUser: User
     ): ResponseEntity<Challenge> {
         challenge.challengeId = challengeId
-        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.updateChallenge(challenge))
+        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeService.updateChallenge(challenge, loggedUser))
     }
 
     /**
@@ -134,9 +141,10 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      */
     @DeleteMapping("/{challengeId}", name = "deleteChallenge")
     fun deleteChallenge(
-            @PathVariable challengeId: Int
+            @PathVariable challengeId: Int,
+            loggedUser: User
     ): ResponseEntity<Void> {
-        challengeService.deleteChallenge(challengeId)
+        challengeService.deleteChallenge(challengeId, loggedUser)
         return ResponseEntity.noContent().build()
     }
 }
