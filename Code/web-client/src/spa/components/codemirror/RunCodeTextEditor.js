@@ -77,12 +77,17 @@ class RunCodeTextEditor extends Component {
 
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props && prevProps.theme.palette.type !== this.props.theme.palette.type) {
-            this.editor.setOption("theme", this.props.theme.palette.type === "light" ? "neat" : "monokai")
-        }
-        if(prevProps !== this.props && prevProps.codeLanguage !== this.props.codeLanguage) {
-            this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
-            this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
+        if(prevProps !== this.props) {
+
+            if(prevProps.theme.palette.type !== this.props.theme.palette.type) {
+                this.editor.setOption("theme", this.props.theme.palette.type === "light" ? "neat" : "monokai")
+            }
+
+            if(prevProps.codeLanguage !== this.props.codeLanguage) {
+                this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
+                this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
+            }
+
         }
     }
 

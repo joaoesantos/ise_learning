@@ -17,6 +17,7 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 // notifications
 import CustomizedSnackbars from '../components/notifications/CustomizedSnackbars'
+import DefaultErrorMessage from '../components/notifications/DefaultErrorMessage'
 //controllers
 import UseAction, { ActionStates } from '../controllers/UseAction'
 import { UserController } from '../controllers/UserController'
@@ -71,7 +72,7 @@ export default function UserProfile() {
   if(user) {
     return (
       <>
-        {actionState === ActionStates.done && <CustomizedSnackbars message={response.message} severity={response.severity} />}
+        {actionState === ActionStates.done && response.render && <CustomizedSnackbars message={response.message} severity={response.severity} />}
         <Container component = "main" maxWidth = "md" className = {classes.paper} >
           <Avatar className = {classes.avatar} >
             <AccountCircle />
@@ -181,7 +182,7 @@ export default function UserProfile() {
                 exclusive: false
               }),
             repeatNewPassword: Yup.string()
-              .min(8, 'Must be at least 8 characters')
+              .min(4, 'Must be at least 4 characters')
               .required('Required')
           })}
           onSubmit={(data, { setSubmitting }) => {
@@ -263,6 +264,6 @@ export default function UserProfile() {
     </>
     )
   } else {
-    return <p>error...</p>
+    return <DefaultErrorMessage message={"404 | Not Found"} />
   }
 }

@@ -26,7 +26,7 @@ import { UserController } from '../../controllers/UserController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
-import { FetchHeaders } from '../../utils/fetchUtils'
+import { fetchHeaders } from '../../utils/fetchUtils'
 import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +82,7 @@ export default function SignUp() {
         localStorage.setItem('ISELearningLoggedUser', JSON.stringify(response.json))
         history.push("/")
       } else {
-        FetchHeaders.clear()
+        fetchHeaders.clear()
       }
     } 
   },[actionState]);
@@ -99,7 +99,7 @@ export default function SignUp() {
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     let credentials = btoa(`${state.username}:${state.password}`)
-    FetchHeaders.append({ key: "Authorization", value: `Basic ${credentials}` })
+    fetchHeaders.append({ key: "Authorization", value: `Basic ${credentials}` })
     setAction({
         function: UserController.logMein,
         args: [],

@@ -1,11 +1,11 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
+import { httpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async () => {
         //let url = alterar url
         let options = {
-          method: HttpMethods.get,
+          method: httpMethods.get,
           headers: defaultHeaders()
         }
         //let response = await fetch(url, options)

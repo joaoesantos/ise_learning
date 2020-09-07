@@ -1,6 +1,3 @@
-// client side configurations
-import { apiVersion } from '../clientSideConfig';
-
 export async function runCodeModel(codeLanguage, code) {
     const options = {
         method: "POST",
@@ -15,7 +12,7 @@ export async function runCodeModel(codeLanguage, code) {
             executeTests: false
         })
     };
-    let response = await fetch(`${apiVersion}/execute`, options)
+    let response = await fetch("v0/execute", options)
         .then((res)=> res.json()).catch((err) => { throw err });
 
     console.log(response)

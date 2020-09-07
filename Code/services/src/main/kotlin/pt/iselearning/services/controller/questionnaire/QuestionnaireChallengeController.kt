@@ -22,9 +22,8 @@ class QuestionnaireChallengeController(
     /**
      * Method to add one or multiple challenges to a single questionnaire.
      *
-     * A json object that represents a object of the type QuestionnaireChallengeModel must be present in the body
      * @param ucb helps build URLs
-     * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
+     * @param listOfQuestionnaireChallenge json object that represents a collection of QuestionnaireChallengeModel
      * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping(name = "addChallengesToQuestionnaire")
@@ -43,7 +42,6 @@ class QuestionnaireChallengeController(
     /**
      * Method to get a single questionnaire-challenge.
      *
-     * Path variables "questionnaireId" and "challengeId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
      * @param challengeId represents Challenge unique identifier
      * @return ResponseEntity<QuestionnaireChallenge> represents a data stream that can hold zero or one elements of the type ServerResponse
@@ -60,8 +58,7 @@ class QuestionnaireChallengeController(
     /**
      * Method to update the list of challenges on a single questionnaire.
      *
-     * A json object that represents a object of the type QuestionnaireChallengeModel must be present in the body
-     * @param listOfQuestionnaireChallenge represents a collection of QuestionnaireChallenge
+     * @param listOfQuestionnaireChallenge json object that represents a collection of QuestionnaireChallenge
      * @return ResponseEntity<List<QuestionnaireChallenge>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping(name = "updateChallengesOnQuestionnaire")

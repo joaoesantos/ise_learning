@@ -33,7 +33,7 @@ export default function Routes() {
                 <Route exact path="/questionnaires" component={Questionnaire} />
                 <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />
                 <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
-                <Route path="*" render={() => <DefaultErrorMessage title={'Page not found'} message={'This page does not exist'}/> } />
+                <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />
             </Switch>
             <Footer />
         </>

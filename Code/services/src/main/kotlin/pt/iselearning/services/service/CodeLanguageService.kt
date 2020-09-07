@@ -9,8 +9,10 @@ import pt.iselearning.services.repository.CodeLanguageRepository
 
 @Validated
 @Service
-class CodeLanguageService (private val codeLanguageRepository : CodeLanguageRepository,
-                           private val modelMapper: ModelMapper) {
+class CodeLanguageService (
+        private val codeLanguageRepository: CodeLanguageRepository,
+        private val modelMapper: ModelMapper
+) {
 
     @Transactional
     fun getAllCodeLanguages(): List<CodeLanguageModel> {

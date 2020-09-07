@@ -19,9 +19,10 @@ class ChallengeAnswerController(
 ){
 
     /**
-     * Method to create an user.
-     * A json object that represents a object of the type User must be present in the body
-     * @param ServerRequest represents an HTTP message
+     * Method to create an challenge answer.
+     *
+     * @param challengeAnswer json object that represents a object of the type challenge answer model
+     * @param loggedUser user that is calling the service
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping(name = "createChallengeAnswer")
@@ -39,9 +40,30 @@ class ChallengeAnswerController(
     }
 
     /**
-     * Method to update an user.
-     * A json object that represents a object of the type User must be present in the body
-     * @param ServerRequest represents an HTTP message
+     * Method to get an challenge answer
+     *
+     * Path variable "id" must be present
+     * @param challengeId path variable with Challenge unique identifier
+     * @param userId path variable with creator unique identifier
+     * @param loggedUser user that is calling the service
+     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @GetMapping("/{challengeId}/answers/users/{userId}", name = "getChallengeAnswerByUserId")
+    fun getChallengeAnswerByUserId(
+            @PathVariable challengeId: Int,
+            @PathVariable userId: Int,
+            loggedUser: User
+    ): ResponseEntity<ChallengeAnswer> {
+        val challengeAnswer = challengeAnswerService.getChallengeAnswerByChallengeIdAndUserId(challengeId, userId, loggedUser)
+        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
+    }
+
+    /**
+     * Method to update an challenge answer.
+     *
+     * A json object that represents a object of the type challenge answer must be present in the body
+     * @param challengeAnswerId  represents ChallengeAnswer unique identifier
+     * @param loggedUser user that is calling the service
      * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{challengeAnswerId}", name = "updateChallengeAnswer")
@@ -56,10 +78,11 @@ class ChallengeAnswerController(
     }
 
     /**
-     * Method to delete an user
-     * Path variable "id" must be present
-     * @param ServerRequest represents an HTTP message
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * Method to delete an challenge answer
+     *
+     * @param challengeAnswerId  represents ChallengeAnswer unique identifier
+     * @param loggedUser user that is calling the service
+     * @return No Content
      */
     @DeleteMapping("/{challengeAnswerId}", name = "deleteChallengeAnswer")
     fun deleteChallengeAnswer(
@@ -70,21 +93,6 @@ class ChallengeAnswerController(
         return ResponseEntity.ok().build()
     }
 
-    /**
-     * Method to delete an user
-     * Path variable "id" must be present
-     * @param ServerRequest represents an HTTP message
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
-     */
-    @GetMapping("/{challengeId}/answers/users/{userId}", name = "getChallengeAnswerByUserId")
-    fun getChallengeAnswerByUserId(
-            @PathVariable challengeId: Int,
-            @PathVariable userId: Int,
-            loggedUser: User
-    ): ResponseEntity<ChallengeAnswer> {
-        val challengeAnswer = challengeAnswerService.getChallengeAnswerByUserId(challengeId, userId, loggedUser)
-        return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
-    }
 }
 
 

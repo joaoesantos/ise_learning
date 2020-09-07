@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
