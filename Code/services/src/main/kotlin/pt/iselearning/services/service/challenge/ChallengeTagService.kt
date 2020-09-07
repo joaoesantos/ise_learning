@@ -82,6 +82,7 @@ class ChallengeTagService (
                     ErrorCode.FORBIDDEN
             )
         }
+        checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         val challengeTag = challengeTagRepository.findByChallengeIdAndTagTagId(challengeId, tagId)
         checkIfChallengeTagExists(challengeTag, challengeId, tagId)
         return challengeTag.get()
@@ -112,6 +113,7 @@ class ChallengeTagService (
                     ErrorCode.FORBIDDEN
             )
         }
+        checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         return challengeTagRepository.findAllByChallengeId(challengeId)
     }
 
@@ -134,6 +136,7 @@ class ChallengeTagService (
                     ErrorCode.FORBIDDEN
             )
         }
+        checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         val challengeTag = challengeTagRepository.findByChallengeIdAndTagTagId(challengeId, tagId)
         challengeTagRepository.delete(challengeTag.get())
     }

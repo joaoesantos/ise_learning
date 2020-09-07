@@ -41,6 +41,20 @@ class ChallengeAnswerService (
     }
 
     /**
+     * Get user challenge answer by its unique identifier.
+     *
+     * @param challengeId identifier of challenge object
+     * @param userId identifier of user answer object
+     * @return challenge answer object
+     */
+    @Validated
+    fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int): ChallengeAnswer? {
+        checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
+        checkIfUserExists(userRepository.findById(userId), userId)
+        return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
+    }
+
+    /**
      * Get challenge answer by its unique identifier.
      *
      * @param challengeId identifier of challenge object
