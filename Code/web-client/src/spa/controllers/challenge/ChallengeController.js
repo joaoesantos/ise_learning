@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { HttpMethods, FetchHeaders } from '../../utils/fetchUtils'
+import { httpMethods, fetchHeaders } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
@@ -7,8 +7,8 @@ export const ChallengeController = {
   getAllChallenges: async () => {
     let url = apiUrlTemplates.getAllChallenges()
     let options = {
-        method: HttpMethods.get,
-        headers: FetchHeaders.get()
+        method: httpMethods.get,
+        headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
@@ -17,8 +17,8 @@ export const ChallengeController = {
   getRandomChallenge: async () => {
       let url = apiUrlTemplates.getRandomChallenge()
       let options = {
-          method: HttpMethods.get,
-          headers: FetchHeaders.get()
+          method: httpMethods.get,
+          headers: fetchHeaders.get()
       }
       let response = await fetch(url, options)
       return response.json()
@@ -27,8 +27,8 @@ export const ChallengeController = {
   getChallengeById: async (challengeId) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: HttpMethods.get,
-      headers: FetchHeaders.get()
+      method: httpMethods.get,
+      headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
     return response.json()
@@ -37,8 +37,8 @@ export const ChallengeController = {
   createChallenge: async (challengeModel) => {
     let url = apiUrlTemplates.challenges()
     let options = {
-      method: HttpMethods.post,
-      headers: FetchHeaders.get(),
+      method: httpMethods.post,
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
@@ -48,8 +48,8 @@ export const ChallengeController = {
   updateChallenge: async (challengeId, challengeModel) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: HttpMethods.put,
-      headers: FetchHeaders.get(),
+      method: httpMethods.put,
+      headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)

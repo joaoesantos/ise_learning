@@ -4,8 +4,6 @@ import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
-import pt.iselearning.services.exception.ServerException
-import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
@@ -76,16 +74,8 @@ class QuestionnaireInstanceServices(
      */
     @Validated
     fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstance {
-        val questionnaireInstanceOptional = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
-
-        if(questionnaireInstanceOptional.isEmpty){
-            throw ServerException("Questionnaire instances not found.",
-                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceUuid", ErrorCode.ITEM_NOT_FOUND)
-        }
-        val questionnaireInstance = questionnaireInstanceOptional.get()
-
+        val questionnaireInstance = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceUuid)
         checkQuestionnaireInstanceTimeout(questionnaireInstance, questionnaireInstanceRepository)
-
         return questionnaireInstance
     }
 

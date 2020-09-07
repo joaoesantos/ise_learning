@@ -38,7 +38,7 @@ class OutputTextEditor extends Component {
       {
         readOnly: true,
         mode: 'markdown',
-        //theme:"neat"
+        theme: this.props.theme.palette.type === "light" ? "neat" : "monokai"
       }
     );
     const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
@@ -49,19 +49,22 @@ class OutputTextEditor extends Component {
   // is invoked immediately after props change
   componentDidUpdate(prevProps) {
     if(prevProps !== this.props) {
-      if(prevProps !== this.props && prevProps.theme.palette.type !== this.props.theme.palette.type) {
+
+      if(prevProps.theme.palette.type !== this.props.theme.palette.type) {
         this.editor.setOption("theme", this.props.theme.palette.type === "light" ? "neat" : "monokai")
       }
+
       if(this.props.textArea.toUpdate) {
         this.props.setTextArea({...this.props.textArea, toUpdate: false});
         const _this = this.props.textArea.value;
         const oldText = this.editor.doc.getValue();
-        
         this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${_this.rawResult}\n\n`);
       }
+
       if(this.props.runState !== 'running' && this.props.textArea === 'cls') {
         this.editor.setValue('');
       }
+      
     }
   }
 

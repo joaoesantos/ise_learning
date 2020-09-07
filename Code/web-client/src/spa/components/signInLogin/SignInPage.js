@@ -24,7 +24,7 @@ import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
-import { FetchHeaders } from '../../utils/fetchUtils'
+import { fetchHeaders } from '../../utils/fetchUtils'
 import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +84,7 @@ export default function SignUp() {
         setAuth(true)
         setUser(response.json)
         localStorage.setItem('ISELearningLoggedUser', JSON.stringify(response.json))
-        FetchHeaders.append({ key: "Authorization", value: `Basic ${action.credentials}` })
+        fetchHeaders.append({ key: "Authorization", value: `Basic ${action.credentials}` })
         history.push("/")
       }
     }

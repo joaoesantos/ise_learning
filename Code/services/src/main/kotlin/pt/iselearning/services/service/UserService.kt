@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
-import pt.iselearning.services.exception.IselearningException
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.UserRepository
 import pt.iselearning.services.models.user.CreateUserModel
@@ -76,10 +75,11 @@ class UserService(
     @Transactional
     fun updateUserInformation(@Valid userProfileModel: UserProfileModel, @Positive userId: Int): UserModel {
         if(!emailValidator.isValid(userProfileModel.email, null)){
-            throw IselearningException(
-                    ErrorCode.VALIDATION_ERROR.httpCode,
+            throw ServiceException(
+                    "Invalid Email",
                     "Invalid Email inserted",
-                    "Invalid Email"
+                    "/iselearning/user/invalidEmail",
+                    ErrorCode.VALIDATION_ERROR
             )
         }
         val user = verifyUser(userId = userId)
@@ -113,17 +113,13 @@ class UserService(
     fun deleteUser(@Positive userId: Int)  {
         val user = verifyUser(userId = userId)
         userRepository.deleteByUsername(user.username!!)
-        val exists = userRepository.existsByUsername(user.username)
-        if(exists) {
-            throw IselearningException(ErrorCode.UNEXPECTED_ERROR.httpCode, "Unable to delete user with id:$userId", "Unable to delete user")
-        }
     }
 
     /**
      * Validates if user exists, and return users in case of success.
      *
      * @param userId identifier of object
-     * @throws ServerException when on failure to find questionnaire
+     * @throws ServiceException when on failure to find questionnaire
      */
     private fun verifyUser(username: String? = null, @Positive userId: Int? = null): User {
 
@@ -134,7 +130,12 @@ class UserService(
                                             else throw Exception("Invalid arguments")
 
         if(optionalUser.isEmpty) {
-            throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode,"User with username:$username does not exist in our records", "User does not exist")
+            throw ServiceException(
+                    "User not found",
+                    "Username and/or password don't match our records",
+                    "/iselearning/user/nonexistent",
+                    ErrorCode.ITEM_NOT_FOUND
+            )
         }
 
         return optionalUser.get()

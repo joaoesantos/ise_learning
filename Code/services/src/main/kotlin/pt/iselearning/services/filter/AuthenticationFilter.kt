@@ -6,12 +6,11 @@ import org.springframework.http.HttpMethod
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import pt.iselearning.services.domain.User
-import pt.iselearning.services.exception.IselearningException
-import pt.iselearning.services.exception.ServiceError
+import pt.iselearning.services.exception.ServiceException
+import pt.iselearning.services.exception.error.ServerError
 import pt.iselearning.services.service.AuthenticationService
 import pt.iselearning.services.util.CHALLENGE_PATTERN
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
-import pt.iselearning.services.util.QUESTIONNAIRE_PATTERN
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -53,15 +52,15 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             request.setAttribute("loggedUser", user)
             filterChain.doFilter(request, response)
             return
-        } catch (ex : IselearningException) {
-            response.status = ex.errorCode
+        }catch (ex : ServiceException){
+            response.status = ex.errorCode.httpCode
             response.setHeader(HttpHeaders.CONTENT_TYPE, "application/problem+json" )
             response.characterEncoding = "UTF-8"
-            val error = ServiceError(
+            val error = ServerError(
                     request.servletPath,
-                    ex.message,
-                    ex.outMessage,
-                    request.requestURI
+                    ex.title,
+                    ex.detail,
+                    ex.instance
             )
             val json = objectMapper.writeValueAsString(error)
             response.outputStream.flush();

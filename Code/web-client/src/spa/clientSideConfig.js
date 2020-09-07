@@ -51,7 +51,7 @@ export const defaultUnitTests = {
     python: "should contain default test code for python"
 }
 
-export const apiVersion = "v0";
+const API_VERSION = "v0";
 
 export const languageLabelMappings = {
     java: "Java",
@@ -61,30 +61,36 @@ export const languageLabelMappings = {
     python: "Python"
 }
 
+export const feloniousStatusCodes = [
+    403,    // Forbidden
+    404,    // Not Found
+    500     // Internal Server Error
+]
+
 export const apiUrlTemplates = {
     // USER
-    login: () => `/${apiVersion}/login`,
-    logout: () => `/${apiVersion}/logout`,
-    createUser:()=> `/${apiVersion}/users`,
-    myUserOperations: () => `/${apiVersion}/users/me`,
-    myCredentials: () => `/${apiVersion}/users/me/password`,
+    login: () => `/${API_VERSION}/login`,
+    logout: () => `/${API_VERSION}/logout`,
+    createUser:()=> `/${API_VERSION}/users`,
+    myUserOperations: () => `/${API_VERSION}/users/me`,
+    myCredentials: () => `/${API_VERSION}/users/me/password`,
     // RUN CODE
-    executeCode: () => `/${apiVersion}/execute`,
+    executeCode: () => `/${API_VERSION}/execute`,
     // CHALLENGES
-    challenge: (challengeId) => `/${apiVersion}/challenges/${challengeId}`,
-    challenges: () => `/${apiVersion}/challenges`,
-    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${apiVersion}/challengeAnswers/${challengeId}/answers/users/${userId}`,
-    challengeAnswer: (challengeAnswerId) => `/${apiVersion}/challengeAnswers/${challengeAnswerId}`,
-    challengeAnswers: () => `/${apiVersion}/challengeAnswers`,
-    languages: () => `/${apiVersion}/codeLanguages`,
-    getAllChallenges: () => `/${apiVersion}/challenges`,
-    getRandomChallenge: () => `/${apiVersion}/challenges/random`,
+    challenge: (challengeId) => `/${API_VERSION}/challenges/${challengeId}`,
+    challenges: () => `/${API_VERSION}/challenges`,
+    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/${challengeId}/answers/users/${userId}`,
+    challengeAnswer: (challengeAnswerId) => `/${API_VERSION}/challengeAnswers/${challengeAnswerId}`,
+    challengeAnswers: () => `/${API_VERSION}/challengeAnswers`,
+    languages: () => `/${API_VERSION}/codeLanguages`,
+    getAllChallenges: () => `/${API_VERSION}/challenges`,
+    getRandomChallenge: () => `/${API_VERSION}/challenges/random`,
     // QUESTIONNAIRES
-    getQuestionnaireInstances: () => `/${apiVersion}/questionnaireAnswers`,
-    getQuestionnaireAnswers: (id) => `/${apiVersion}/questionnaireAnswers/questionnaireInstances/${id}`,
-    getChallenges: () => `/${apiVersion}/challenges`,
-    getQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
-    saveQuestionnaire: () => `/${apiVersion}/questionnaires/{id}`,
-    createQuestionnaire: () => `/${apiVersion}/questionnaires/withChallenges`,
-    getQuestionnaireWithChallenges: () => `/${apiVersion}/questionnaires/{questionnaireId}/withChallenges`
+    getQuestionnaireInstances: () => `/${API_VERSION}/questionnaireAnswers`,
+    getQuestionnaireAnswers: (id) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${id}`,
+    getChallenges: () => `/${API_VERSION}/challenges`,
+    getQuestionnaire: () => `/${API_VERSION}/questionnaires/{id}`,
+    saveQuestionnaire: () => `/${API_VERSION}/questionnaires/{id}`,
+    createQuestionnaire: () => `/${API_VERSION}/questionnaires/withChallenges`,
+    getQuestionnaireWithChallenges: () => `/${API_VERSION}/questionnaires/{questionnaireId}/withChallenges`
 }

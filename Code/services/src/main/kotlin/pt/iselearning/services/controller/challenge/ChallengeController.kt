@@ -137,7 +137,7 @@ class ChallengeController (private val challengeService: ChallengeService, priva
      * Method to delete an challenge
      * Path variable "id" must be present
      * @param challengeId represents an HTTP message
-     * @return ResponseEntity<Void> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * @return No Content
      */
     @DeleteMapping("/{challengeId}", name = "deleteChallenge")
     fun deleteChallenge(

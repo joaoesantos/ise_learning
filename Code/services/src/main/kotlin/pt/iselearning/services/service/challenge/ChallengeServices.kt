@@ -2,23 +2,25 @@ package pt.iselearning.services.service.challenge
 
 import org.springframework.stereotype.Service
 import pt.iselearning.services.domain.challenge.Challenge
-import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.challenge.ChallengeTagRepository
-import java.util.*
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
-import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.models.ChallengePrivacyEnum
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.PRIVACY_REGEX_STRING
+import pt.iselearning.services.util.checkIfChallengeExists
 import pt.iselearning.services.util.checkIfQuestionnaireExists
 import javax.validation.Valid
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Positive
 
+/**
+ * This class contains the business logic associated with the actions on the challenge object
+ */
 @Validated
 @Service
 class ChallengeService (
@@ -27,10 +29,41 @@ class ChallengeService (
         private val questionnaireRepository: QuestionnaireRepository,
         private val questionnaireChallengeRepository: QuestionnaireChallengeRepository
 ) {
+
+    /**
+     * Create a challenge.
+     *
+     * @param challenge object information
+     * @param loggedUser user that is calling the service
+     * @return created challenge
+     */
     @Validated
-    fun getAllChallenges(tags: String?,
-                         @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
-                         loggedUser: User?): List<Challenge> {
+    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
+        if(challenge.creatorId != loggedUser.userId) {
+            throw ServiceException(
+                    "Cannot create challenge for other users.",
+                    "Cannot create challenge for other users. Challenge must belong to logged user.",
+                    "/iselearning/user/notResourceOwner",
+                    ErrorCode.FORBIDDEN
+            )
+        }
+        challenge.creatorId = loggedUser.userId
+        return challengeRepository.save(challenge);
+    }
+
+    /**
+     * Get all challenges.
+     *
+     * @param tags can be used as filter
+     * @param loggedUser user that is calling the service
+     * @return List of challenge objects
+     */
+    @Validated
+    fun getAllChallenges(
+            tags: String?,
+            @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
+            loggedUser: User?
+    ): List<Challenge> {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -55,22 +88,40 @@ class ChallengeService (
         }
     }
 
+    /**
+     * Get challenge by its unique identifier.
+     *
+     * @param challengeId identifier of challenge object
+     * @param loggedUser user that is calling the service
+     * @return challenge object
+     */
     @Validated
     fun getChallengeById(@Positive challengeId : Int, loggedUser: User?) : Challenge {
-        val challengeOpt = challengeRepository.findById(challengeId)
-        val challenge = checkIfChallengeExists(challengeOpt, challengeId)
+        val challenge = checkIfChallengeExists(challengeRepository, challengeId)
         if(challenge.isPrivate!! && (loggedUser == null || challenge.creatorId != loggedUser!!.userId)) {
-            throw ServerException("Cannot retrieve private challenge from other users.",
+            throw ServiceException(
+                    "Cannot retrieve private challenge from other users.",
                     "Cannot retrieve private challenge from other users. Private challenge belongs to other user.",
-                    ErrorCode.FORBIDDEN)
+                    "/iselearning/user/notResourceOwner",
+                    ErrorCode.FORBIDDEN
+            )
         }
         return challenge
     }
 
+    /**
+     * Get all user challenges.
+     *
+     * @param userId unique identifier of user object
+     * @param loggedUser user that is calling the service
+     * @return List of challenge objects
+     */
     @Validated
-    fun getUserChallenges(@Positive userId: Int, tags: String?,
-                          @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
-                          loggedUser: User?): List<Challenge>? {
+    fun getUserChallenges(
+            @Positive userId: Int, tags: String?,
+            @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
+            loggedUser: User?
+    ): List<Challenge>? {
         if(tags != null) {
             val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
@@ -111,8 +162,12 @@ class ChallengeService (
                 .filter { qc -> qc.challenge != null }
                 .map { questionnaireChallenge -> questionnaireChallenge.challenge!! }
         if (challenges.isEmpty()) {
-            throw ServerException("Challenges not found.",
-                    "There are no challenges for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
+            throw ServiceException(
+                    "Challenges not found.",
+                    "There are no challenges for selected questionnaire $questionnaireId",
+                    "/iselearning/challenge/nonexistentQuestionnaireChallenges",
+                    ErrorCode.ITEM_NOT_FOUND
+            )
         }
 
         return challenges
@@ -124,54 +179,51 @@ class ChallengeService (
      * @return challenge object
      */
     fun getRandomChallenge(): Challenge {
-
         val challengeId = challengeRepository.findAllPublicChallengeIds().random()
         val challenge = challengeRepository.findById(challengeId)
         checkIfChallengeExists(challenge, challengeId)
-
         return challenge.get()
     }
 
-    @Validated
-    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
-        if(challenge.creatorId != loggedUser.userId) {
-            throw ServerException("Cannot create challenge for other users.",
-                    "Cannot create challenge for other users. Challenge must belong to logged user.",
-                    ErrorCode.FORBIDDEN)
-        }
-        challenge.creatorId = loggedUser.userId
-        return challengeRepository.save(challenge);
-    }
-
+    /**
+     * Update a challenge.
+     *
+     * @param challenge information to be updated
+     * @return updated challenge
+     */
     @Validated
     fun updateChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
         val challengeFromDb = challengeRepository.findById(challenge.challengeId!!)
         checkIfChallengeExists(challengeFromDb, challenge.challengeId!!)
         if(challenge.creatorId != loggedUser!!.userId) {
-            throw ServerException("Cannot update challenge from other users.",
+            throw ServiceException(
+                    "Cannot update challenge from other users.",
                     "Cannot update challenge from other users. Challenge belongs to other user.",
-                    ErrorCode.FORBIDDEN)
+                    "/iselearning/user/notResourceOwner",
+                    ErrorCode.FORBIDDEN
+            )
         }
         return challengeRepository.save(challenge)
     }
 
+    /**
+     * Delete a challenge by its unique identifier.
+     *
+     * @param challengeId identifier of object
+     * @param loggedUser user that is calling the service
+     */
     @Validated
     fun deleteChallenge(@Positive challengeId: Int, loggedUser: User) {
-        val challengeFromDb = challengeRepository.findById(challengeId)
-        val challenge = checkIfChallengeExists(challengeFromDb, challengeId)
+        val challenge = checkIfChallengeExists(challengeRepository, challengeId)
         if(challenge.creatorId != loggedUser!!.userId) {
-            throw ServerException("Cannot delete challenge from other users.",
+            throw ServiceException(
+                    "Cannot delete challenge from other users.",
                     "Cannot delete challenge from other users. Challenge belongs to other user.",
-                    ErrorCode.FORBIDDEN)
+                    "/iselearning/user/notResourceOwner",
+                    ErrorCode.FORBIDDEN
+            )
         }
         challengeRepository.deleteById(challengeId)
     }
 
-    fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) : Challenge{
-        if (challenge.isEmpty) {
-            throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode, "This challenge does not exist.",
-                    "There is no challenge with id: $challengeId")
-        }
-        return challenge.get();
-    }
 }

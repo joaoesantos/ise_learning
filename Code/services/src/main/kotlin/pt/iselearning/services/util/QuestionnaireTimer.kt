@@ -1,7 +1,7 @@
 package pt.iselearning.services.util
 
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 
@@ -15,8 +15,12 @@ fun checkQuestionnaireInstanceTimeout(
 
     // if questionnaire is finish can no longer be accessed
     if (questionnaireInstance.isFinish) {
-        throw ServerException("Closed.",
-                "Questionnaire ${questionnaireInstance.questionnaireInstanceUuid} is closed.", ErrorCode.FORBIDDEN)
+        throw ServiceException(
+                "Closed.",
+                "Questionnaire ${questionnaireInstance.questionnaireInstanceUuid} is closed.",
+                "/iserlearning/questionnaireInstance/closed",
+                ErrorCode.FORBIDDEN
+        )
     }
 
     //if first access to resource, starts timer and updates database
@@ -31,8 +35,12 @@ fun checkQuestionnaireInstanceTimeout(
         if (System.currentTimeMillis() > expireTimeMillis) {
             questionnaireInstance.endTimestamp = expireTimeMillis
             questionnaireInstanceRepository.save(questionnaireInstance)
-            throw ServerException("Timeout.",
-                    "Questionnaire ${questionnaireInstance.questionnaireInstanceUuid}  is closed", ErrorCode.FORBIDDEN)
+            throw ServiceException(
+                    "Timeout.",
+                    "Questionnaire ${questionnaireInstance.questionnaireInstanceUuid} is closed.",
+                    "/iserlearning/questionnaireInstance/timeout",
+                    ErrorCode.FORBIDDEN
+            )
         }
     }
 }

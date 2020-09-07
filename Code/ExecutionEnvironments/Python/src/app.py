@@ -28,7 +28,8 @@ def handle_exception(e):
             response = json.dumps({
                 "type": "TypeError",
                 "title": "TypeError",
-                "detail": str(e)
+                "detail": str(e),
+                "instance": "/iselearning/executionEnvironments/python/typeError"
             }),
             status = 400,
             mimetype = "application/problem+json"
@@ -39,7 +40,9 @@ def handle_exception(e):
             response = json.dumps({
                 "type": "TimeoutExpire",
                 "title": "TimeoutExpired",
-                "detail": "Code execution was cancelled due to exceeding process time."
+                "detail": "Code execution was cancelled due to exceeding process time.",
+                "instance": "/iselearning/executionEnvironments/python/timeout"
+
             }),
             status = 408,
             mimetype = "application/problem+json"
@@ -49,7 +52,8 @@ def handle_exception(e):
         response = json.dumps({
             "type": "Internal Server Error",
             "title": "Internal Server Error",
-            "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application."
+            "detail": "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.",
+            "instance": "/iselearning/executionEnvironments/python/unexpected"
         }),
         status = 500,
         mimetype = "application/problem+json"
