@@ -58,7 +58,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             response.characterEncoding = "UTF-8"
             val error = ServerError(
                     request.servletPath,
-                    ex.message,
+                    ex.title,
                     ex.detail,
                     ex.instance
             )
