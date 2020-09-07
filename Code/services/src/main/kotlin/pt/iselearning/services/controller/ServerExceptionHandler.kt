@@ -15,7 +15,6 @@ import pt.iselearning.services.exception.error.ValidationError
 import java.lang.StringBuilder
 import javax.servlet.http.HttpServletRequest
 import javax.validation.ConstraintViolationException
-import kotlin.reflect.KClass
 
 /**
  * Handles all api exceptions
@@ -41,7 +40,7 @@ class ServerExceptionHandler(
         return createResponseEntity(
                 ServerError(
                         request.requestURL.toString(),
-                        ex.message,
+                        ex.title,
                         ex.detail,
                         ex.instance
                 ),
