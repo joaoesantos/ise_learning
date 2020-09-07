@@ -45,7 +45,6 @@ fun checkIfUserExists(
     }
 }
 
-<<<<<<< HEAD
 /**
  * Validates if logged user is the same as the resource owner.
  *
@@ -67,8 +66,6 @@ fun checkIfLoggedUserIsResourceOwner(
     }
 }
 
-=======
->>>>>>> 19c932c039651842e3fcadb04d081422b056793c
 //endregion
 
 //region TAG
@@ -119,7 +116,6 @@ fun checkIfChallengeExists(
     }
 }
 
-<<<<<<< HEAD
 /**
  * Validates if challenge is empty.
  *
@@ -143,8 +139,6 @@ fun checkIfChallengeExists(
     return challenge.get()
 }
 
-=======
->>>>>>> 19c932c039651842e3fcadb04d081422b056793c
 //endregion
 
 
