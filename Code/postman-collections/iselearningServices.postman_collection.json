@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\"\n}"
+							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\",\n    \"password\": 1234\n}"
 						},
 						"url": {
 							"raw": "{{hostServices}}/users",
@@ -405,7 +405,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeTitle\": \"Challenge created on postman\",\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -525,8 +525,27 @@
 							"variable": [
 								{
 									"key": "questionnaireId",
-									"value": "3"
+									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRandomChallenge",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/random",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"random"
 							]
 						}
 					},
@@ -1260,6 +1279,68 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"language\": \"java\",\n    \"code\": \"public class                                     code { \\r\\n \\r\\n \\r\\n \\r\\n \\r\\npublic static void main(String[] args) {  \\r\\n  System.out.println(\\\"Hello World\\\");  \\r\\n} public static void test() {System.out.println(\\\"<<Test>>\\\");}  \\r\\n}\",\n    \"unitTests\": \"import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {code.test(); Assert.assertTrue(true);}}\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/execute",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute Python code < print Hello World! > without unitTests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"python\",\n    \"code\": \"print(\\\"Hello World!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/execute",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute Python code < print Hello World!> with infinite cycle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"python\",\n    \"code\": \"while True:\\r\\n    print(\\\"Hello Worlds!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
 							"options": {
 								"raw": {}
 							}
