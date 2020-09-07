@@ -4,30 +4,20 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-export default function GenericPageMessage({ title, message }) {
+export default function DefaultErrorMessage({ message }) {
     return(
-        <Grid>
+        <div>
             <Grid 
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            style={{paddingTop:250}}
-            >
-                <Typography variant="h3" color="textSecondary">
-                    {title}
-                </Typography>
-            </Grid>
-            <Grid 
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
+                container
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ minHeight: '80vh' }}
             >
                 <Typography variant="h5" color="textSecondary">
                     {message}
                 </Typography>
             </Grid>
-        </Grid>
+        </div>
     )
 }

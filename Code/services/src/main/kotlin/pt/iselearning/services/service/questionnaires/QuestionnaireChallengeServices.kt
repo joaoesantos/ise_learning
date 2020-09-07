@@ -2,11 +2,9 @@ package pt.iselearning.services.service.questionnaires
 
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeCollectionModel
@@ -14,6 +12,7 @@ import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.checkIfChallengeExists
+import pt.iselearning.services.util.checkIfQuestionnaireChallengeExists
 import pt.iselearning.services.util.checkIfQuestionnaireExists
 import pt.iselearning.services.util.checkSupportedLanguagesForChallengeLanguageFilter
 import javax.validation.Valid
@@ -68,10 +67,7 @@ class QuestionnaireChallengeServices(
         val questionnaireChallenge = questionnaireChallengeRepository
                 .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(questionnaireId, challengeId)
 
-        if (questionnaireChallenge.isEmpty) {
-            throw ServerException("Challenge not found.",
-                    "Challenge  $challengeId its not on the list of challenges for questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
-        }
+        checkIfQuestionnaireChallengeExists(questionnaireChallenge, questionnaireId, challengeId)
 
         return questionnaireChallenge.get()
     }

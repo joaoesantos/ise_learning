@@ -2,16 +2,15 @@ package pt.iselearning.services.service.challenge
 
 import org.springframework.stereotype.Service
 import pt.iselearning.services.domain.challenge.Challenge
-import pt.iselearning.services.exception.IselearningException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.challenge.ChallengeTagRepository
-import java.util.*
 import org.springframework.validation.annotation.Validated
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.util.PRIVACY_REGEX_STRING
+import pt.iselearning.services.util.checkIfChallengeExists
 import pt.iselearning.services.util.checkIfQuestionnaireExists
 import javax.validation.Valid
 import javax.validation.constraints.Pattern
@@ -94,8 +93,12 @@ class ChallengeService (
                 .filter { qc -> qc.challenge != null }
                 .map { questionnaireChallenge -> questionnaireChallenge.challenge!! }
         if (challenges.isEmpty()) {
-            throw ServerException("Challenges not found.",
-                    "There are no challenges for selected questionnaire $questionnaireId", ErrorCode.ITEM_NOT_FOUND)
+            throw ServiceException(
+                    "Challenges not found.",
+                    "There are no challenges for selected questionnaire $questionnaireId",
+                    "/iselearning/challenge/nonexistentQuestionnaireChallenges",
+                    ErrorCode.ITEM_NOT_FOUND
+            )
         }
 
         return challenges
@@ -134,10 +137,4 @@ class ChallengeService (
         challengeRepository.deleteById(challengeId)
     }
 
-    fun checkIfChallengeExists(challenge: Optional<Challenge>, challengeId: Int) {
-        if (challenge.isEmpty) {
-            throw IselearningException(ErrorCode.ITEM_NOT_FOUND.httpCode, "This challenge does not exist.", // dar fix quando houver refactoring
-                    "There is no challenge with id: $challengeId")
-        }
-    }
 }

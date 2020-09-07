@@ -17,7 +17,7 @@ import Typography from '@material-ui/core/Typography'
 // logo
 import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
 // controllers
-import { FetchHeaders } from '../../utils/fetchUtils'
+import { fetchHeaders } from '../../utils/fetchUtils'
 // authentication context
 import { themes, ThemeContext } from '../../context/ThemeContext'
 import { AuthContext } from '../../context/AuthContext'
@@ -82,7 +82,7 @@ export default function Navbar() {
     setAuth(false)
     setUser(undefined)
     localStorage.removeItem('ISELearningLoggedUser')
-    FetchHeaders.clear()
+    fetchHeaders.clear()
     history.push("/")
   }
 
