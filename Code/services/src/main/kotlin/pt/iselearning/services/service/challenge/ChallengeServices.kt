@@ -1,5 +1,6 @@
 package pt.iselearning.services.service.challenge
 
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.exception.error.ErrorCode
@@ -10,6 +11,7 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.models.ChallengePrivacyEnum
 import pt.iselearning.services.exception.ServiceException
+import pt.iselearning.services.models.challenge.ChallengeModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.service.ExecutionEnvironmentsService
@@ -31,41 +33,38 @@ class ChallengeService (
         private val challengeTagRepository: ChallengeTagRepository,
         private val questionnaireRepository: QuestionnaireRepository,
         private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
-        private val executionEnvironmentsService: ExecutionEnvironmentsService
+        private val executionEnvironmentsService: ExecutionEnvironmentsService,
+        private val modelMapper: ModelMapper
 ) {
 
     /**
      * Create a challenge.
      *
-     * @param challenge object information
+     * @param challengeModel object information
      * @param loggedUser user that is calling the service
      * @return created challenge
      */
     @Validated
-    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge {
-        if(challenge.creatorId != loggedUser.userId) {
-            throw ServiceException(
-                    "Cannot create challenge for other users.",
-                    "Cannot create challenge for other users. Challenge must belong to logged user.",
-                    "/iselearning/user/notResourceOwner",
-                    ErrorCode.FORBIDDEN
-            )
-        }
-        challenge.solutions?.forEach { it ->
+    fun createChallenge(@Valid challengeModel: ChallengeModel, loggedUser: User): Challenge {
+        /*
+    }
+        challengeModel.solutions.forEach {
             val executableResult = executionEnvironmentsService.execute(
-                    ExecutableModel(it.codeLanguage!!,it.challengeCode!!,it.unitTests!!,true)
+                    ExecutableModel(it.codeLanguage,it.challengeCode,it.unitTests,true)
             )
             checkIfUnitTestsPassed(executableResult)
 
         }
+        */
+        val challenge = convertToEntity(challengeModel)
         challenge.creatorId = loggedUser.userId
-        return challengeRepository.save(challenge);
+        return challengeRepository.save(challenge)
     }
 
     /**
      * Get all challenges.
      *
-     * @param tags can be used as filter
+     * @param tags that can be used as filter
      * @param loggedUser user that is calling the service
      * @return List of challenge objects
      */
@@ -76,7 +75,7 @@ class ChallengeService (
             loggedUser: User?
     ): List<Challenge> {
         if(tags != null) {
-            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
+            val challengeIdList = tags.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
                     .distinct().asIterable()
             return if(privacy != null) {
@@ -198,14 +197,13 @@ class ChallengeService (
     /**
      * Update a challenge.
      *
-     * @param challenge information to be updated
+     * @param challengeModel information to be updated
      * @return updated challenge
      */
     @Validated
-    fun updateChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge {
-        val challengeFromDb = challengeRepository.findById(challenge.challengeId!!)
-        checkIfChallengeExists(challengeFromDb, challenge.challengeId!!)
-        if(challenge.creatorId != loggedUser.userId) {
+    fun updateChallenge(@Positive challengeId: Int, @Valid challengeModel: ChallengeModel, loggedUser: User): Challenge {
+        val challengeFromDb = checkIfChallengeExists(challengeRepository, challengeId)
+        if(challengeFromDb.creatorId != loggedUser.userId) {
             throw ServiceException(
                     "Cannot update challenge from other users.",
                     "Cannot update challenge from other users. Challenge belongs to other user.",
@@ -213,14 +211,23 @@ class ChallengeService (
                     ErrorCode.FORBIDDEN
             )
         }
-        challenge.solutions?.forEach { it ->
+        /*
+        challengeModel.solutions.forEach {
             val executableResult = executionEnvironmentsService.execute(
-                    ExecutableModel(it.codeLanguage!!,it.challengeCode!!,it.unitTests!!,true)
+                    ExecutableModel(it.codeLanguage,it.challengeCode,it.unitTests,true)
             )
             checkIfUnitTestsPassed(executableResult)
 
         }
-        return challengeRepository.save(challenge)
+        */
+
+        //region data for update operation
+        val updatedChallenge = convertToEntity(challengeModel)
+        updatedChallenge.challengeId = challengeId
+        updatedChallenge.creatorId = loggedUser.userId
+        //endregion
+
+        return challengeRepository.save(updatedChallenge)
     }
 
     /**
@@ -242,5 +249,10 @@ class ChallengeService (
         }
         challengeRepository.deleteById(challengeId)
     }
+
+    /**
+     * Auxiliary function that converts Challenge model to Challenge domain
+     */
+    private fun convertToEntity(input: ChallengeModel) = modelMapper.map(input, Challenge::class.java)
 
 }

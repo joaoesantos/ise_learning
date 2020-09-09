@@ -5,7 +5,7 @@ import javax.validation.Valid
 import javax.validation.constraints.Positive
 
 /**
- * Model used for creation of questionnaire-challenge entity
+ * Model used for creation of questionnaire-challenge domain
  */
 @Validated
 class QuestionnaireChallengeModel (
