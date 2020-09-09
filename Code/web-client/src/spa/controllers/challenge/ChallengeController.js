@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { httpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
@@ -7,7 +7,7 @@ export const ChallengeController = {
   getAllChallenges: async () => {
     let url = apiUrlTemplates.getAllChallenges()
     let options = {
-        method: httpMethods.get,
+        method: HttpMethods.get,
         headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
@@ -27,7 +27,7 @@ export const ChallengeController = {
   getRandomChallenge: async () => {
       let url = apiUrlTemplates.getRandomChallenge()
       let options = {
-          method: httpMethods.get,
+          method: HttpMethods.get,
           headers: fetchHeaders.get()
       }
       let response = await fetch(url, options)
@@ -47,7 +47,7 @@ export const ChallengeController = {
   getChallengeById: async (challengeId) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: httpMethods.get,
+      method: HttpMethods.get,
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
@@ -67,7 +67,7 @@ export const ChallengeController = {
   createChallenge: async (challengeModel) => {
     let url = apiUrlTemplates.challenges()
     let options = {
-      method: httpMethods.post,
+      method: HttpMethods.post,
       headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
@@ -88,7 +88,7 @@ export const ChallengeController = {
   updateChallenge: async (challengeId, challengeModel) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: httpMethods.put,
+      method: HttpMethods.put,
       headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
