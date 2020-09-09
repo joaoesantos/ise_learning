@@ -7,13 +7,16 @@ import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.challenge.ChallengeTagRepository
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
+import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.models.ChallengePrivacyEnum
 import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
+import pt.iselearning.services.service.ExecutionEnvironmentsService
 import pt.iselearning.services.util.PRIVACY_REGEX_STRING
 import pt.iselearning.services.util.checkIfChallengeExists
 import pt.iselearning.services.util.checkIfQuestionnaireExists
+import pt.iselearning.services.util.checkIfUnitTestsPassed
 import javax.validation.Valid
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Positive
@@ -27,7 +30,8 @@ class ChallengeService (
         private val challengeRepository: ChallengeRepository,
         private val challengeTagRepository: ChallengeTagRepository,
         private val questionnaireRepository: QuestionnaireRepository,
-        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository
+        private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
+        private val executionEnvironmentsService: ExecutionEnvironmentsService
 ) {
 
     /**
@@ -38,7 +42,7 @@ class ChallengeService (
      * @return created challenge
      */
     @Validated
-    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
+    fun createChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge {
         if(challenge.creatorId != loggedUser.userId) {
             throw ServiceException(
                     "Cannot create challenge for other users.",
@@ -46,6 +50,13 @@ class ChallengeService (
                     "/iselearning/user/notResourceOwner",
                     ErrorCode.FORBIDDEN
             )
+        }
+        challenge.solutions?.forEach { it ->
+            val executableResult = executionEnvironmentsService.execute(
+                    ExecutableModel(it.codeLanguage!!,it.challengeCode!!,it.unitTests!!,true)
+            )
+            checkIfUnitTestsPassed(executableResult)
+
         }
         challenge.creatorId = loggedUser.userId
         return challengeRepository.save(challenge);
@@ -96,7 +107,7 @@ class ChallengeService (
      * @return challenge object
      */
     @Validated
-    fun getChallengeById(@Positive challengeId : Int, loggedUser: User?) : Challenge {
+    fun getChallengeById(@Positive challengeId : Int, loggedUser: User?): Challenge {
         val challenge = checkIfChallengeExists(challengeRepository, challengeId)
         if(challenge.isPrivate!! && (loggedUser == null || challenge.creatorId != loggedUser!!.userId)) {
             throw ServiceException(
@@ -121,9 +132,9 @@ class ChallengeService (
             @Positive userId: Int, tags: String?,
             @Pattern(regexp = PRIVACY_REGEX_STRING) privacy: String?,
             loggedUser: User?
-    ): List<Challenge>? {
+    ): List<Challenge> {
         if(tags != null) {
-            val challengeIdList = tags!!.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
+            val challengeIdList = tags.split(",").map { tag -> challengeTagRepository.findAllByTagTag(tag) }
                     .flatMap { challengeTags -> challengeTags.map { challengeTag -> challengeTag.challengeId!! } }
                     .distinct().asIterable()
             return if(privacy != null) {
@@ -169,7 +180,6 @@ class ChallengeService (
                     ErrorCode.ITEM_NOT_FOUND
             )
         }
-
         return challenges
     }
 
@@ -192,16 +202,23 @@ class ChallengeService (
      * @return updated challenge
      */
     @Validated
-    fun updateChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge? {
+    fun updateChallenge(@Valid challenge: Challenge, loggedUser: User): Challenge {
         val challengeFromDb = challengeRepository.findById(challenge.challengeId!!)
         checkIfChallengeExists(challengeFromDb, challenge.challengeId!!)
-        if(challenge.creatorId != loggedUser!!.userId) {
+        if(challenge.creatorId != loggedUser.userId) {
             throw ServiceException(
                     "Cannot update challenge from other users.",
                     "Cannot update challenge from other users. Challenge belongs to other user.",
                     "/iselearning/user/notResourceOwner",
                     ErrorCode.FORBIDDEN
             )
+        }
+        challenge.solutions?.forEach { it ->
+            val executableResult = executionEnvironmentsService.execute(
+                    ExecutableModel(it.codeLanguage!!,it.challengeCode!!,it.unitTests!!,true)
+            )
+            checkIfUnitTestsPassed(executableResult)
+
         }
         return challengeRepository.save(challenge)
     }
@@ -215,7 +232,7 @@ class ChallengeService (
     @Validated
     fun deleteChallenge(@Positive challengeId: Int, loggedUser: User) {
         val challenge = checkIfChallengeExists(challengeRepository, challengeId)
-        if(challenge.creatorId != loggedUser!!.userId) {
+        if(challenge.creatorId != loggedUser.userId) {
             throw ServiceException(
                     "Cannot delete challenge from other users.",
                     "Cannot delete challenge from other users. Challenge belongs to other user.",

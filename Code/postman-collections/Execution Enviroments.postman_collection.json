@@ -131,7 +131,7 @@
 					"response": []
 				},
 				{
-					"name": "Python isNumberPalindrome with unitTests",
+					"name": "Python toLowerCase with unitTests -> all test passed",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -143,7 +143,34 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"code\": \"def isNumberPalindrome(number: int) -> bool:\\r\\n    if number < 0: \\r\\n        return  False\\r\\n   \\r\\n    original = number\\r\\n    revertedNumber = 0\\r\\n\\r\\n    while number != 0:\\r\\n        remainder = number % 10\\r\\n        revertedNumber = revertedNumber * 10 + remainder\\r\\n        number //= 10\\r\\n\\r\\n    return original == revertedNumber\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef isNumberPalindrome(number: int) -> bool:\\r\\n    if number < 0: \\r\\n        return  False\\r\\n   \\r\\n    original = number\\r\\n    revertedNumber = 0\\r\\n\\r\\n    while number != 0:\\r\\n        remainder = number % 10\\r\\n        revertedNumber = revertedNumber * 10 + remainder\\r\\n        number //= 10\\r\\n\\r\\n    return original == revertedNumber\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(isNumberPalindrome(121), True)\\r\\n        self.assertEqual(isNumberPalindrome(10), False)\\r\\n        self.assertEqual(isNumberPalindrome(44), True)\\r\\n        self.assertEqual(isNumberPalindrome(107), False)\\r\\n\\r\\nif __name__ == \\'__main__\\':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
+							"raw": "{\n    \"code\": \"def toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(toLowerCase(\\\"true\\\"), \\\"true\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"True\\\"), \\\"true\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"fAlSe\\\"), \\\"false\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"false\\\"), \\\"false\\\")\\r\\n\\r\\nif __name__ == '__main__':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python toLowerCase with unitTests -> test falied",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"def toLowerCase(string: str) -> str:\\r\\n    return string\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(toLowerCase(\\\"true\\\"), True)\\r\\n        self.assertEqual(toLowerCase(\\\"True\\\"), False)\\r\\n        self.assertEqual(toLowerCase(\\\"fAlSe\\\"), False)\\r\\n        self.assertEqual(toLowerCase(\\\"false\\\"), True)\\r\\n\\r\\nif __name__ == '__main__':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
 							"options": {
 								"raw": {}
 							}

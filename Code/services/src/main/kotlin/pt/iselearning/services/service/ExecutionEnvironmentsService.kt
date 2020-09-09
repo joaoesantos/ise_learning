@@ -6,9 +6,9 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import pt.iselearning.services.configuration.RemoteExecutionUrls
-import pt.iselearning.services.domain.executable.Executable
+import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.domain.executable.ExecutableResult
-import pt.iselearning.services.domain.executable.ExecutableWithNoLanguage
+import pt.iselearning.services.domain.executable.Executable
 import pt.iselearning.services.exception.ExecutionEnvironmentException
 import pt.iselearning.services.exception.error.ServerError
 import javax.validation.Valid
@@ -18,28 +18,37 @@ import javax.validation.Valid
  */
 @Validated
 @Service
-class ExecutionService {
-    private val remoteExecUrls : RemoteExecutionUrls
-    private val languageUrlMap : Map<String, String>
+class ExecutionEnvironmentsService(
+        private val remoteExecUrls: RemoteExecutionUrls
+) {
 
-    constructor(remoteExecUrls: RemoteExecutionUrls) {
-        this.remoteExecUrls = remoteExecUrls
-        this.languageUrlMap = HashMap()
-        this.languageUrlMap.put("java", remoteExecUrls.javaExecutionEnvironment)
-        this.languageUrlMap.put("kotlin", remoteExecUrls.kotlinExecutionEnvironment)
-        this.languageUrlMap.put("javascript", remoteExecUrls.javascriptExecutionEnvironment)
-        this.languageUrlMap.put("csharp", remoteExecUrls.cSharpExecutionEnvironment)
-        this.languageUrlMap.put("python", remoteExecUrls.pythonExecutionEnvironment)
+    private val languageUrlMap: Map<String, String>
+
+    init {
+        languageUrlMap = HashMap()
+        languageUrlMap.put("java", remoteExecUrls.javaExecutionEnvironment)
+        languageUrlMap.put("kotlin", remoteExecUrls.kotlinExecutionEnvironment)
+        languageUrlMap.put("javascript", remoteExecUrls.javascriptExecutionEnvironment)
+        languageUrlMap.put("csharp", remoteExecUrls.cSharpExecutionEnvironment)
+        languageUrlMap.put("python", remoteExecUrls.pythonExecutionEnvironment)
     }
 
+    /**
+     * Method to call execution environment that executes code with or without unit tests
+     * @param executableModel code to be execute for a specific programing language
+     * @return an executable result
+     */
     @Validated
-    fun execute(@Valid executable: Executable): ExecutableResult? {
+    fun execute(@Valid executableModel: ExecutableModel): ExecutableResult {
         var errorCode: HttpStatus? = null
-        val executionEnvironmentUrl = languageUrlMap[executable.language]
+        val executionEnvironmentUrl = languageUrlMap[executableModel.language]
         val response = WebClient.create(executionEnvironmentUrl!!)
                 .post()
-                .body(BodyInserters.fromValue(
-                        ExecutableWithNoLanguage(executable.code, executable.unitTests, executable.executeTests)))
+                .body(
+                        BodyInserters.fromValue(
+                                Executable(executableModel.code, executableModel.unitTests, executableModel.executeTests)
+                        )
+                )
                 .exchange()
                 .flatMap { clientResponse ->
                     if (clientResponse.statusCode().is2xxSuccessful) {

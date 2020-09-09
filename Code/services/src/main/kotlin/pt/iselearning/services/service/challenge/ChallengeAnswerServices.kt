@@ -4,13 +4,12 @@ import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
+import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.repository.challenge.ChallengeAnswerRepository
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.UserRepository
-import pt.iselearning.services.util.checkIfChallengeAnswerExists
-import pt.iselearning.services.util.checkIfChallengeExists
-import pt.iselearning.services.util.checkIfLoggedUserIsResourceOwner
-import pt.iselearning.services.util.checkIfUserExists
+import pt.iselearning.services.service.ExecutionEnvironmentsService
+import pt.iselearning.services.util.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -23,7 +22,8 @@ class ChallengeAnswerService (
         private val challengeAnswerRepository: ChallengeAnswerRepository,
         private val challengeRepository: ChallengeRepository,
         private val userRepository: UserRepository,
-        private val challengeService: ChallengeService
+        private val challengeService: ChallengeService,
+        private val executionEnvironmentsService: ExecutionEnvironmentsService
 ) {
 
     /**
@@ -34,9 +34,29 @@ class ChallengeAnswerService (
      * @return created challenge answer
      */
     @Validated
-    fun createChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer? {
-        challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
+    fun createChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer {
+
         checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswer.userId!!)
+
+        val challenge = challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
+
+        val challengeUnitTests = challenge.solutions?.first { solution ->
+            solution.codeLanguage == challengeAnswer.answer?.codeLanguage
+        }
+
+        // evaluates if answer is corrected based on challenge unit tests
+        val executableResult = executionEnvironmentsService.execute(
+                ExecutableModel(
+                        challengeAnswer.answer?.codeLanguage!!,
+                        challengeAnswer.answer?.answerCode!!,
+                        challengeUnitTests?.unitTests!!,
+                        true
+                )
+        )
+        if(!executableResult.wasError) {
+            challengeAnswer.answer!!.isCorrect = true
+        }
+
         return challengeAnswerRepository.save(challengeAnswer);
     }
 
@@ -48,7 +68,7 @@ class ChallengeAnswerService (
      * @return challenge answer object
      */
     @Validated
-    fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int): ChallengeAnswer? {
+    fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int): ChallengeAnswer {
         checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
         return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
@@ -63,10 +83,10 @@ class ChallengeAnswerService (
      * @return challenge answer object
      */
     @Validated
-    fun getChallengeAnswerByChallengeIdAndUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): ChallengeAnswer? {
+    fun getChallengeAnswerByChallengeIdAndUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): ChallengeAnswer {
+        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, userId)
         checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
-        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, userId)
         return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
     }
 
@@ -78,11 +98,29 @@ class ChallengeAnswerService (
      * @return updated challenge answer
      */
     @Validated
-    fun updateChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer? {
-        challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
+    fun updateChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer {
         checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswer.userId!!)
-        val challengeFromDb = challengeAnswerRepository.findById(challengeAnswer.challengeId!!)
-        checkIfChallengeAnswerExists(challengeFromDb, challengeAnswer.challengeId!!)
+        val challenge = challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
+        val challengeAnswerFromDb = challengeAnswerRepository.findById(challengeAnswer.challengeId!!)
+        checkIfChallengeAnswerExists(challengeAnswerFromDb, challengeAnswer.challengeId!!)
+
+        val challengeUnitTests = challenge.solutions?.first { solution ->
+            solution.codeLanguage == challengeAnswer.answer?.codeLanguage
+        }
+
+        // evaluates if answer is corrected based on challenge unit tests
+        val executableResult = executionEnvironmentsService.execute(
+                ExecutableModel(
+                        challengeAnswer.answer?.codeLanguage!!,
+                        challengeAnswer.answer?.answerCode!!,
+                        challengeUnitTests?.unitTests!!,
+                        true
+                )
+        )
+        if(!executableResult.wasError) {
+            challengeAnswer.answer!!.isCorrect = true
+        }
+
         return challengeAnswerRepository.save(challengeAnswer)
     }
 
@@ -94,9 +132,9 @@ class ChallengeAnswerService (
      */
     @Validated
     fun deleteChallengeAnswer(@Positive challengeAnswerId: Int, loggedUser: User) {
-        val challengeAnswerFromDb = challengeAnswerRepository.findById(challengeAnswerId)
-        checkIfChallengeAnswerExists(challengeAnswerFromDb, challengeAnswerId)
         checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswerId)
+        val challengeAnswer = challengeAnswerRepository.findById(challengeAnswerId)
+        checkIfChallengeAnswerExists(challengeAnswer, challengeAnswerId)
         challengeAnswerRepository.findById(challengeAnswerId)
     }
 

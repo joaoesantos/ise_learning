@@ -36,7 +36,7 @@ class ChallengeTagService (
      * @return created questionnaire
      */
     @Transactional
-    fun createChallengeTag(challengeTagModel: ChallengeTagModel, challengeId: Int, loggedUser: User): ChallengeTag? {
+    fun createChallengeTag(challengeTagModel: ChallengeTagModel, challengeId: Int, loggedUser: User): ChallengeTag {
         val challenge = challengeService.getChallengeById(challengeId, loggedUser)
         if(challenge.creatorId != loggedUser.userId)  {
             throw ServiceException(
@@ -64,7 +64,7 @@ class ChallengeTagService (
      * @param loggedUser user that is calling the service
      */
     @Transactional
-    fun getChallengeTagByChallengeIdAndTagId(challengeId: Int, tagId: Int, loggedUser: User?): ChallengeTag? {
+    fun getChallengeTagByChallengeIdAndTagId(challengeId: Int, tagId: Int, loggedUser: User?): ChallengeTag {
         val challenge = challengeService.getChallengeById(challengeId, loggedUser)
         if(challenge.isPrivate!! && loggedUser == null)  {
             throw ServiceException(
@@ -95,7 +95,7 @@ class ChallengeTagService (
      * @param loggedUser user that is calling the service
      */
     @Transactional
-    fun getChallengeTagByChallengeId(challengeId: Int, loggedUser: User?): List<ChallengeTag>? {
+    fun getChallengeTagByChallengeId(challengeId: Int, loggedUser: User?): List<ChallengeTag> {
         val challenge = challengeService.getChallengeById(challengeId, loggedUser)
         if(challenge.isPrivate!! && loggedUser == null)  {
             throw ServiceException(
