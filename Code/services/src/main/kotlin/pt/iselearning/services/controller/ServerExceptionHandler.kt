@@ -1,5 +1,7 @@
 package pt.iselearning.services.controller
 
+import org.hibernate.exception.DataException
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -100,6 +102,26 @@ class ServerExceptionHandler(
                 ),
                 headers = responseHeaders,
                 status = ex.status
+        )
+    }
+
+    /**
+     * Handles invalid SQL Statement exceptions
+     */
+    @ExceptionHandler(value = [DataIntegrityViolationException::class])
+    fun handleDataIntegrityViolationException(
+            request: HttpServletRequest,
+            ex: DataIntegrityViolationException
+    ): ResponseEntity<Any> {
+        return createResponseEntity(
+                ServerError(
+                        request.requestURL.toString(),
+                        ex.message!!,
+                        ex.toString(),
+                        "/invalidSQLStatementException"
+                ),
+                headers = responseHeaders,
+                status = HttpStatus.INTERNAL_SERVER_ERROR
         )
     }
 

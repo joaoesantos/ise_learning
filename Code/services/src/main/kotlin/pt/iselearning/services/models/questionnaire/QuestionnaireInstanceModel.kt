@@ -5,7 +5,7 @@ import javax.validation.constraints.Positive
 import javax.validation.constraints.Size
 
 /**
- * Model used for creation of questionnaire instance entity
+ * Model used for creation of questionnaire instance domain
  */
 @Validated
 class QuestionnaireInstanceModel(

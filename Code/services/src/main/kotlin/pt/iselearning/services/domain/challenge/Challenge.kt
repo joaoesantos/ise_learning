@@ -17,24 +17,24 @@ data class Challenge (
     @Column(name="challenge_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @field:Positive(message = "Challenge id must be positive")
-    var challengeId : Int? =  null,
+    var challengeId: Int? =  null,
 
     @Column(name="creator_id")
     @field:Positive(message = "Creator id must be positive")
-    var creatorId : Int?,
+    var creatorId: Int?,
 
     @Column(name="challenge_title")
-    var challengeTitle : String?,
+    var challengeTitle: String?,
 
     @Column(name="challenge_text")
-    var challengeText : String?,
+    var challengeText: String?,
 
     @Column(name="is_private")
-    var isPrivate : Boolean?,
+    var isPrivate: Boolean?,
 
     @OneToMany(cascade = [CascadeType.ALL], targetEntity= Solution::class)
     @JoinColumn(name="challenge_id", nullable=false, updatable=true, insertable=true)
-    var solutions : MutableList<Solution>?
+    var solutions: MutableList<Solution>?
 ) {
     constructor() : this(null, null, null, null, null, null)
 }
