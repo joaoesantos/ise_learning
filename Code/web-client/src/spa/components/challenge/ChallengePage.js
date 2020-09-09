@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import Input from '@material-ui/core/Input'
+import InputBase from '@material-ui/core/InputBase';
 import InputLabel from '@material-ui/core/InputLabel'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -28,7 +29,10 @@ import { ThemeContext } from '../../context/ThemeContext'
 import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 import { ChallengePageConfigs } from '../../controllers/challenge/ChallengePageConfigs'
 // utils
-import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/challengeUtils'
+import { genericRunCodeAction, genericSetTextEditorData } from '../../utils/ChallengeUtils'
+import { blue } from '@material-ui/core/colors'
+// notifications
+import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
 
 const useStyles = makeStyles(theme => ({
     layout: { },
@@ -48,7 +52,13 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         minWidth: 120,
         maxWidth: 300,
-      },
+    },
+    title: {
+        lineHeight: "32px",
+        display: "inline",
+        fontSize: "xx-large",
+        fontWeight: "bold"
+    }
 }));
 
 const ITEM_HEIGHT = 48;
@@ -78,6 +88,8 @@ export default withRouter(function ChallengePage(props) {
     const { theme } = React.useContext(ThemeContext)
     const challengeId = props.match.params.challengeId
     const userId = props.match.params.userId
+    const { user, setUser } = React.useContext(AuthContext)
+
 
     const [codeLanguage, setCodeLanguage] = React.useState();
     const [challengeLanguages, setChallengeLanguages] = React.useState([]);
@@ -115,12 +127,12 @@ export default withRouter(function ChallengePage(props) {
         challengeAnswer: { state: challengeAnswer, setter: setChallengeAnswer},
         availableLanguages: { state: availableLanguages, setter: setAvailableLanguages}
     }
-    let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates)[props.location.configKey ? props.location.configKey : props.configKey]
+    let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates, user)[props.location.configKey ? props.location.configKey : props.configKey]
 
     React.useEffect(() => {
         if (response && actionState === ActionStates.done &&
-            action.render && action.render === true) {
-                pageConfigs.renderizationFunction(response)
+            action.render && action.render === true && !response.severity) {
+                pageConfigs.renderizationFunction(response.json)
         } else if (!response && actionState === ActionStates.clear) {
             setAction(pageConfigs.pageLoadingAction())
         } else {
@@ -137,6 +149,12 @@ export default withRouter(function ChallengePage(props) {
     const handleChallengeStatementChange = (e) => {
         let newChallenge = Object.assign({}, challenge);
         newChallenge.challengeText = e.target.value;
+        setChallenge(newChallenge)
+    }
+
+    const handleChallengeTitleChange = (e) => {
+        let newChallenge = Object.assign({}, challenge);
+        newChallenge.challengeTitle = e.target.value;
         setChallenge(newChallenge)
     }
 
@@ -193,8 +211,16 @@ export default withRouter(function ChallengePage(props) {
     return (
         <React.Fragment>
             {redirectObject !== undefined && <Redirect push to={redirectObject} />}
+            {actionState === ActionStates.done && <CustomizedSnackbars message={response.message} severity={response.severity} />}
             <div className={classes.layout}>
-                <h1>{challenge ? challenge.challengeTitle : ''}</h1>
+                <InputBase
+                    className={classes.margin + " " + classes.title}
+                    defaultValue={challenge ? challenge.challengeTitle : 'New Challenge Title'}
+                    inputProps={{ 'aria-label': 'naked' }}
+                    disabled={!isChallengeEditable}
+                    required={true}
+                    onChange={handleChallengeTitleChange}
+                />
             </div>
             <Toolbar className={classes.runCodetoolbar} variant="dense">
                 <FormControl variant="standard" className={classes.form}>

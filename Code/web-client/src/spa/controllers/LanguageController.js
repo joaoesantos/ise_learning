@@ -10,7 +10,17 @@ export const LanguageController = {
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
   
 }

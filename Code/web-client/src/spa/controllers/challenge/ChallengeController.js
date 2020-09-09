@@ -11,7 +11,17 @@ export const ChallengeController = {
         headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   getRandomChallenge: async () => {
@@ -21,7 +31,17 @@ export const ChallengeController = {
           headers: fetchHeaders.get()
       }
       let response = await fetch(url, options)
-      return response.json()
+      let jsonResponse = await response.json()
+      if(response.ok) {
+        return {
+          json: jsonResponse,
+        }
+      } else {
+        return {
+          message: jsonResponse.message,
+          severity: 'error'
+        }
+      }
   },
 
   getChallengeById: async (challengeId) => {
@@ -31,7 +51,17 @@ export const ChallengeController = {
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   createChallenge: async (challengeModel) => {
@@ -42,7 +72,17 @@ export const ChallengeController = {
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    return response.json();
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   updateChallenge: async (challengeId, challengeModel) => {
@@ -53,16 +93,40 @@ export const ChallengeController = {
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    return {challenge: await response.json()};
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: {challenge: jsonResponse},
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   getChallengeByIdAndAvailableLanguages: async (challengeId) => {
     let challengePromise = ChallengeController.getChallengeById(challengeId);
     let languagesPromise = LanguageController.getAvailableLanguages();
     let responses = await Promise.all([challengePromise, languagesPromise])
+    if(responses[0].severity && responses[0].severity === 'error') {
+      return {
+        message: responses[0].message,
+        severity: 'error'
+      }
+    }
+    if(responses[1].severity && responses[1].severity === 'error') {
+      return {
+        message: responses[1].message,
+        severity: 'error'
+      }
+    }
     return {
-      languages: responses[1],
-      challenge: responses[0]
+      json : {
+        languages: responses[1].json,
+        challenge: responses[0].json
+      }
     }
   }
 

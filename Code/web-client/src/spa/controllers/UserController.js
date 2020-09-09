@@ -52,7 +52,6 @@ export const UserController = {
       headers: fetchHeaders.get(),
       body: JSON.stringify(credentials)
     }
-    console.log('pass',options.body)
     let response = await fetch(url, options)
     return handleFetchResponse(response, "Credentials updated successfully!")
   },
