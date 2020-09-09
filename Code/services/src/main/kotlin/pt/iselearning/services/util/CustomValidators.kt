@@ -5,6 +5,7 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.Challenge
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.domain.challenge.ChallengeTag
+import pt.iselearning.services.domain.executable.ExecutableResult
 import pt.iselearning.services.domain.questionnaires.Questionnaire
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
@@ -21,6 +22,23 @@ import java.util.*
 /**
  * Custom Javax validators
  */
+
+//region EXECUTION ENVIRONMENTS
+
+fun checkIfUnitTestsPassed(
+        executableResult: ExecutableResult
+) {
+    if(executableResult.wasError) {
+        throw ServiceException(
+                "Unit tests failed.",
+                "Code didn't passed unit tests.",
+                "/iselearning/unittests/failed.",
+                ErrorCode.BAD_REQUEST
+        )
+    }
+}
+
+//endregion
 
 //region USER
 

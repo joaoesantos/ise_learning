@@ -5,7 +5,7 @@ package pt.iselearning.services.util
  */
 
 const val VERSION = "v0"
-const val SCHEMA = "public"
+const val SCHEMA = "ise_learning"
 
 const val PRIVACY_REGEX_STRING = "\\b(private)\\b|\\b(public)\\b"
 const val TAGS_REGEX_STRING = "\\b([^,]+)([,][^,]+)*\\b"
