@@ -7,9 +7,23 @@ export const ChallengeAnswerController = {
     let challengePromise = ChallengeController.getChallengeById(challengeId);
     let challengeAnswerPromise = ChallengeAnswerController.getChallengeAnswerByChallengeIdAndUserId(challengeId, userId);
     let responses = await Promise.all([challengePromise, challengeAnswerPromise])
+    if(responses[0].severity && responses[0].severity === 'error') {
+      return {
+        message: responses[0].message,
+        severity: 'error'
+      }
+    }
+    if(responses[1].severity && responses[1].severity === 'error') {
+      return {
+        message: responses[1].message,
+        severity: 'error'
+      }
+    }
     return {
-      challenge: responses[0],
-      challengeAnswer: responses[1]
+      json : {
+        languages: responses[1].json,
+        challenge: responses[0].json
+      }
     }
   },
   getChallengeAnswerByChallengeIdAndUserId: async (challengeId, userId) => {
@@ -19,7 +33,17 @@ export const ChallengeAnswerController = {
       headers: FetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
   createChallengeAnswer: async (challengeAnswerModel) => {
     let url = apiUrlTemplates.challengeAnswers()
@@ -29,7 +53,17 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    return response.json();
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
   updateChallengeAnswer: async (challengeAnswerId, challengeAnswerModel) => {
     let url = apiUrlTemplates.challengeAnswer(challengeAnswerId)
@@ -39,6 +73,16 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    return response.json();
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 }

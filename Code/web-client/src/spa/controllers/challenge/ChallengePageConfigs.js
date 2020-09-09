@@ -3,17 +3,17 @@ import { LanguageController } from '../LanguageController'
 import { ChallengeController } from './ChallengeController'
 import { ChallengeAnswerController } from './ChallengeAnswerController'
 // utils
-import { convertLanguagesToObjectWithLabel } from '../../utils/challengeUtils'
+import { convertLanguagesToObjectWithLabel } from '../../utils/ChallengeUtils'
 import { reduceObjectArrayToMap } from '../../utils/utils'
 
-export const ChallengePageConfigs = (challengeId, userId, componentAggregateStates) => {
+export const ChallengePageConfigs = (challengeId, userId, componentAggregateStates, user) => {
     //BUTTONS - init
     let saveChallengeAsAnswerButton = {
         id: "saveChallengeAsAnswerButton",
         onClick: () => {
             let challengeAnswerModel = {};
             challengeAnswerModel.challengeId = Number(challengeId);
-            challengeAnswerModel.userId = 1;//TODO harcoded value to be changed once authentication is integrated
+            challengeAnswerModel.userId = user ? user.userId : undefined;
             challengeAnswerModel.answer = {
                 codeLanguage: componentAggregateStates.codeLanguage.state,
                 answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value,
@@ -32,13 +32,13 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Save Challenge's Answer",
-        isVisible: true
+        isVisible: user != undefined
     }
     let createChallenge = {
         id: "createChallenge",
         onClick: () => {
             let challengeModel = Object.assign({}, componentAggregateStates.challenge.state);
-            challengeModel.creatorId = 1;//TODO harcoded value to be changed once authentication is integrated
+            challengeModel.creatorId = user ? user.userId : undefined;
             challengeModel.solutions = componentAggregateStates.challengeLanguages.state.map(l => {
                 return {
                     challengeCode: componentAggregateStates.yourSolution.state[l.value] ? componentAggregateStates.yourSolution.state[l.value].value : "",
@@ -59,7 +59,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Create Challenge",
-        isVisible: true
+        isVisible: user != undefined
     }
     let editChallenge = {
         id: "editChallenge",
@@ -67,7 +67,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: !componentAggregateStates.isChallengeEditable.state
+        isVisible: !componentAggregateStates.isChallengeEditable.state && user != undefined
     }
     let saveChallenge = {
         id: "saveChallenge",
@@ -95,21 +95,20 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             componentAggregateStates.isChallengeEditable.setter(false)
         },
         title: "Save Challenge",
-        isVisible: componentAggregateStates.isChallengeEditable.state
+        isVisible: componentAggregateStates.isChallengeEditable.state && user != undefined
     }
     let saveChallengeAnswer = {
         id: "saveChallengeAnswer",
         onClick: () => {
             let challengeAnswerModel = {};
             challengeAnswerModel.challengeId = Number(challengeId);
-            challengeAnswerModel.userId = 1;//TODO harcoded value to be changed once authentication is integrated
+            challengeAnswerModel.userId = user ? user.userId : undefined;
             challengeAnswerModel.answer = {
                 codeLanguage: componentAggregateStates.codeLanguage.state,
                 answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value,
                 unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value,
                 isCorrect: false,
             }
-            console.log("SAVE challenge answer", componentAggregateStates.challengeAnswer.state.challengeAnswerId)
             componentAggregateStates.action.setter({
                     function: ChallengeAnswerController.updateChallengeAnswer,
                     args: [componentAggregateStates.challengeAnswer.state.challengeAnswerId, challengeAnswerModel],
@@ -117,7 +116,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Save Challenge Answer",
-        isVisible: true
+        isVisible: user != undefined
     }
     //BUTTONS - end
 

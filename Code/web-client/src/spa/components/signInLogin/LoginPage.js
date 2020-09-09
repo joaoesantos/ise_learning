@@ -78,8 +78,10 @@ export default function SignUp() {
     if (actionState === ActionStates.done) {
       if(response.severity === 'success') {
         setAuth(true)
-        setUser(response.json)
-        localStorage.setItem('ISELearningLoggedUser', JSON.stringify(response.json))
+        let user = response.json
+        user.authorization = action.authorization;
+        setUser(user)
+        localStorage.setItem('ISELearningLoggedUser', JSON.stringify(user))
         history.push("/")
       } else {
         FetchHeaders.clear()
@@ -103,6 +105,7 @@ export default function SignUp() {
     setAction({
         function: UserController.logMein,
         args: [],
+        authorization:  `Basic ${credentials}`
       })
   }
 

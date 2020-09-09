@@ -18,7 +18,6 @@ export async function runCodeModel(codeLanguage, code) {
     let response = await fetch(`${apiVersion}/execute`, options)
         .then((res)=> res.json()).catch((err) => { throw err });
 
-    console.log(response)
     return({
         environment: codeLanguage,
         executionTime : 15,

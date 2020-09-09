@@ -100,7 +100,6 @@ export const UserController = {
       headers: FetchHeaders.get(),
       body: JSON.stringify(credentials)
     }
-    console.log('pass',options.body)
     let response = await fetch(url, options)
     let jsonResponse = await response.json()
     if(response.ok) {

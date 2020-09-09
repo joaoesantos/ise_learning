@@ -64,7 +64,6 @@ class ChallengeAnswerService (
     fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): ChallengeAnswer? {
         challengeService.checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
-        userServices.checkIfUserExists(userRepository.findById(userId), userId)
         if(userId != loggedUser.userId) {
             throw ServerException("Cannot get other user's answers.",
                     "Cannot get other user's answers. Challenge answer user different than logged user.",

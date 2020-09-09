@@ -1,3 +1,5 @@
+
+
 export const HttpMethods = {
     post: 'POST',
     get: 'GET',
@@ -21,7 +23,11 @@ export let FetchHeaders = {
         if(!this.headers) {
             let headers = new Headers()
             headers.append("Content-Type", "application/json")
-            headers.append("Accept", "application/problem+json")
+            headers.append("Accept", "application/problem+json,application/json")
+            let userString = localStorage.getItem('ISELearningLoggedUser')
+            if(userString) {
+                headers.append("Authorization" , JSON.parse(userString).authorization);
+            }
             this.headers = headers
         }
         return this.headers
