@@ -211,7 +211,8 @@ export default withRouter(function ChallengePage(props) {
     return (
         <React.Fragment>
             {redirectObject !== undefined && <Redirect push to={redirectObject} />}
-            {actionState === ActionStates.done && <CustomizedSnackbars message={response.message} severity={response.severity} />}
+            {actionState === ActionStates.done && response && response.message
+                && <CustomizedSnackbars message={response.message} severity={response.severity} />}
             <div className={classes.layout}>
                 <InputBase
                     className={classes.margin + " " + classes.title}

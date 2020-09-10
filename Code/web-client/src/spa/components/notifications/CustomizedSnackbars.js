@@ -26,7 +26,6 @@ export default function CustomizedSnackbars({ message, severity } ) {
 
   return (
     <React.Fragment>
-      {message &&
         <Snackbar 
           anchorOrigin={{ vertical:'top', horizontal:'center' }}
           autoHideDuration={3000} 
@@ -43,7 +42,6 @@ export default function CustomizedSnackbars({ message, severity } ) {
             { message }
           </Alert>
         </Snackbar>
-      }
     </React.Fragment>
   )
 
