@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "404f6164-984f-4e6c-ac5c-ff0aa63f70aa",
+		"_postman_id": "dfa267e6-8518-45dc-922c-d507775f2f11",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1400,6 +1400,30 @@
 							],
 							"path": [
 								"v0"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "languages",
+			"item": [
+				{
+					"name": "Code languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/codeLanguages",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"codeLanguages"
 							]
 						}
 					},

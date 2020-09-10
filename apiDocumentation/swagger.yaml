@@ -29,6 +29,8 @@ tags:
     description: Operations for managing the questionnaire-challenges.
   - name: Questionnaire Answers
     description: Operations for managing the questionnaire answers.
+  - name: Code Languages
+    description: Operations for managing the supported code languages.
 paths:
   '/':
     post:
@@ -1196,6 +1198,23 @@ paths:
             application/json:
               schema:
                 type: object
+  '/v0/codeLanguages':
+    get:
+      tags:
+        - Code Languages
+      summary: Retrieves all supported code languages
+      operationId: getCodeLanguages
+      description: |
+        Retrieves a complete list of all the programming languages supported for execution.
+      responses:
+        '200':
+          description: List of Code Languages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                    $ref: '#/components/schemas/codeLanguage'
 components:
   schemas:
     executable:
@@ -1332,7 +1351,20 @@ components:
           type: string
           example: "userOne@example.com"
           description: Email address which can be used to contact user
-          
+    codeLanguage:
+      type: object
+      required:
+        - languageId
+        - codeLanguage
+      properties:
+        languageId:
+          type: integer
+          example: 523
+          description: Integer representing unique language id.
+        codeLanguage:
+          type: string
+          example: "kotlin"
+          description: Test representing the label of the language.
 ##################################
 #           CHALLENGES           #
 ##################################
