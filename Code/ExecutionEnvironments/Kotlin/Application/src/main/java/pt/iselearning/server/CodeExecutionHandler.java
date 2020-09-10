@@ -25,14 +25,15 @@ public class CodeExecutionHandler {
     @ResponseBody
     public ExecutionResult executeCode(@RequestBody Executable executable) throws ApplicationException {
         try {
-            Executor exec = new Executor(executable.getCode(), executable.getExecuteTests() ? executable.getUnitTests() : null);
-            ExecutionResult compileResult = exec.compileCode();
-            if(compileResult.getWasError()) {
-                return compileResult;
-            } else if (executable.getExecuteTests()) {
-                return exec.executeUnitTests();
-            } else {
-                return exec.executeCode();
+            try(Executor exec = new Executor(executable.getCode(), executable.getExecuteTests() ? executable.getUnitTests() : null)) {
+                ExecutionResult compileResult = exec.compileCode();
+                if (compileResult.getWasError()) {
+                    return compileResult;
+                } else if (executable.getExecuteTests()) {
+                    return exec.executeUnitTests();
+                } else {
+                    return exec.executeCode();
+                }
             }
         } catch (ApplicationException e) {
             LOGGER.error(e.getMessage(), e);
