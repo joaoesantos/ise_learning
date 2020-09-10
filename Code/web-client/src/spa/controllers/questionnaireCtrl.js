@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { httpMethods, defaultHeaders } from '../utils/fetchUtils'
+import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 const questionnaireCtrl = {
     getQuestionnaireInstances: async (credentials) => {
@@ -7,7 +7,7 @@ const questionnaireCtrl = {
         headers.append("Authorization", `Basic ${credentials}`)
         let url = apiUrlTemplates.getQuestionnaireInstances()
         let options = {
-            method: httpMethods.get,
+            method: HttpMethods.get,
             headers: headers
         }
         let response = await fetch(url, options)
@@ -20,7 +20,7 @@ const questionnaireCtrl = {
         headers.append("Authorization", `Basic ${credentials}`)
         let url =  apiUrlTemplates.getQuestionnaireAnswers(id)
         let options = {
-            method: httpMethods.get,
+            method: HttpMethods.get,
             headers: headers
         }
         let response = await fetch(url, options)

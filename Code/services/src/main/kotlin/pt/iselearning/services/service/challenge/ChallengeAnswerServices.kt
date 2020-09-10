@@ -5,11 +5,14 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.domain.executable.ExecutableModel
+import pt.iselearning.services.exception.ServiceException
+import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.repository.challenge.ChallengeAnswerRepository
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.UserRepository
 import pt.iselearning.services.service.ExecutionEnvironmentsService
 import pt.iselearning.services.util.*
+import java.rmi.ServerException
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -87,6 +90,12 @@ class ChallengeAnswerService (
         checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, userId)
         checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
+        if(userId != loggedUser.userId) {
+            throw ServiceException("Cannot get other user's answers.",
+                    "Cannot get other user's answers. Challenge answer user different than logged user.",
+                    "/iselearning/challengeAnswer/notResourceOwner",
+                    ErrorCode.FORBIDDEN)
+        }
         return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
     }
 

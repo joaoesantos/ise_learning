@@ -25,22 +25,24 @@ export default function CustomizedSnackbars({ message, severity } ) {
   }
 
   return (
-      <Snackbar 
-        anchorOrigin={{ vertical:'top', horizontal:'center' }}
-        autoHideDuration={3000} 
-        open={open} 
-        onClose={ handleClose }
-      >
-        <Alert 
-          className={classes.alert}
-          elevation={5} 
-          variant="filled"
-          severity={ severity }
-          onClose={ handleClose } 
+    <React.Fragment>
+        <Snackbar 
+          anchorOrigin={{ vertical:'top', horizontal:'center' }}
+          autoHideDuration={3000} 
+          open={open} 
+          onClose={ handleClose }
         >
-          { message }
-        </Alert>
-      </Snackbar>
+          <Alert 
+            className={classes.alert}
+            elevation={5} 
+            variant="filled"
+            severity={ severity }
+            onClose={ handleClose } 
+          >
+            { message }
+          </Alert>
+        </Snackbar>
+    </React.Fragment>
   )
 
 }

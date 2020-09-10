@@ -1,12 +1,12 @@
 import { apiUrlTemplates } from '../clientSideConfig'
-import { httpMethods, fetchHeaders, handleFetchResponse } from '../utils/fetchUtils'
+import { HttpMethods, fetchHeaders, handleFetchResponse } from '../utils/fetchUtils'
 
 export const UserController = {
 
   logMein: async () => {
     let url = apiUrlTemplates.login()
     let options = {
-      method: httpMethods.post,
+      method: HttpMethods.post,
       headers: fetchHeaders.get(),
     }
     let response = await fetch(url, options)
@@ -16,7 +16,7 @@ export const UserController = {
   createMe: async (userModel) => {
     let url = apiUrlTemplates.createUser()
     let options = {
-      method: httpMethods.post,
+      method: HttpMethods.post,
       headers: fetchHeaders.get(),
       body: JSON.stringify(userModel)
     }
@@ -27,7 +27,7 @@ export const UserController = {
   getMe: async () => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
-      method: httpMethods.get,
+      method: HttpMethods.get,
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
@@ -37,7 +37,7 @@ export const UserController = {
   updateMe: async (userModel) => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
-      method: httpMethods.patch,
+      method: HttpMethods.patch,
       headers: fetchHeaders.get(),
       body: JSON.stringify(userModel)
     }
@@ -48,11 +48,10 @@ export const UserController = {
   changeMyCredentials: async (credentials) => {
     let url = apiUrlTemplates.myCredentials()
     let options = {
-      method: httpMethods.put,
+      method: HttpMethods.put,
       headers: fetchHeaders.get(),
       body: JSON.stringify(credentials)
     }
-    console.log('pass',options.body)
     let response = await fetch(url, options)
     return handleFetchResponse(response, "Credentials updated successfully!")
   },
@@ -60,7 +59,7 @@ export const UserController = {
   deleteMe: async () => {
     let url = apiUrlTemplates.myUserOperations()
     let options = {
-      method: httpMethods.delete,
+      method: HttpMethods.delete,
       headers: fetchHeaders.get(),
     }
     let response = await fetch(url, options)

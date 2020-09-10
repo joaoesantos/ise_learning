@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { httpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
@@ -7,62 +7,126 @@ export const ChallengeController = {
   getAllChallenges: async () => {
     let url = apiUrlTemplates.getAllChallenges()
     let options = {
-        method: httpMethods.get,
+        method: HttpMethods.get,
         headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   getRandomChallenge: async () => {
       let url = apiUrlTemplates.getRandomChallenge()
       let options = {
-          method: httpMethods.get,
+          method: HttpMethods.get,
           headers: fetchHeaders.get()
       }
       let response = await fetch(url, options)
-      return response.json()
+      let jsonResponse = await response.json()
+      if(response.ok) {
+        return {
+          json: jsonResponse,
+        }
+      } else {
+        return {
+          message: jsonResponse.message,
+          severity: 'error'
+        }
+      }
   },
 
   getChallengeById: async (challengeId) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: httpMethods.get,
+      method: HttpMethods.get,
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    return response.json()
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   createChallenge: async (challengeModel) => {
     let url = apiUrlTemplates.challenges()
     let options = {
-      method: httpMethods.post,
+      method: HttpMethods.post,
       headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    return response.json();
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: jsonResponse,
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   updateChallenge: async (challengeId, challengeModel) => {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
-      method: httpMethods.put,
+      method: HttpMethods.put,
       headers: fetchHeaders.get(),
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    return {challenge: await response.json()};
+    let jsonResponse = await response.json()
+    if(response.ok) {
+      return {
+        json: {challenge: jsonResponse},
+      }
+    } else {
+      return {
+        message: jsonResponse.message,
+        severity: 'error'
+      }
+    }
   },
 
   getChallengeByIdAndAvailableLanguages: async (challengeId) => {
     let challengePromise = ChallengeController.getChallengeById(challengeId);
     let languagesPromise = LanguageController.getAvailableLanguages();
     let responses = await Promise.all([challengePromise, languagesPromise])
+    if(responses[0].severity && responses[0].severity === 'error') {
+      return {
+        message: responses[0].message,
+        severity: 'error'
+      }
+    }
+    if(responses[1].severity && responses[1].severity === 'error') {
+      return {
+        message: responses[1].message,
+        severity: 'error'
+      }
+    }
     return {
-      languages: responses[1],
-      challenge: responses[0]
+      json : {
+        languages: responses[1].json,
+        challenge: responses[0].json
+      }
     }
   }
 
