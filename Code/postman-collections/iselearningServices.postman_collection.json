@@ -172,11 +172,26 @@
 						{
 							"name": "createChallengesAnswers",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 5,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"is was supose to be a test\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -197,13 +212,28 @@
 							"response": []
 						},
 						{
-							"name": "updateChallengesAnswers Copy",
+							"name": "updateChallengesAnswers",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 5,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"python\",\r\n        \"answerCode\": \"print(\\\"Hello update from Postman!\\\")\",\r\n        \"unitTests\": \"this was supose to be a test\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -223,7 +253,7 @@
 									"variable": [
 										{
 											"key": "challengeAnswerId",
-											"value": "14"
+											"value": "11"
 										}
 									]
 								}
@@ -231,7 +261,7 @@
 							"response": []
 						},
 						{
-							"name": "deleteChallengesAnswers Copy Copy",
+							"name": "deleteChallengesAnswers",
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -401,11 +431,26 @@
 				{
 					"name": "createChallenge",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeTitle\": \"Challenge created on postman\",\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"challengeTitle\": \"Challenge created on postman\",\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,7 +512,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}
@@ -554,11 +599,26 @@
 				{
 					"name": "editChallenge",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 31,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 32,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"challengeTitle\": \"Challenge updated on postman\",\r\n    \"challengeText\": \"Type on the console the <Hello World!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 28,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 29,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"WRITE YOUR CODE HERE\",\r\n            \"codeLanguage\": \"python\",\r\n            \"solutionCode\": \"print(\\\"Hello World!\\\")\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -578,7 +638,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "21"
+									"value": "10"
 								}
 							]
 						}
@@ -588,6 +648,21 @@
 				{
 					"name": "deleteChallenge",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -612,7 +687,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "21"
+									"value": "1"
 								}
 							]
 						}
@@ -1263,6 +1338,54 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "getAllTags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/tags",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Languages",
+			"item": [
+				{
+					"name": "Code languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/codeLanguages",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"codeLanguages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Execute",
 			"item": [
 				{
@@ -1353,30 +1476,6 @@
 							"path": [
 								"v0",
 								"execute"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "tags",
-			"item": [
-				{
-					"name": "getAllTags",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostServices}}/v0/tags",
-							"host": [
-								"{{hostServices}}"
-							],
-							"path": [
-								"v0",
-								"tags"
 							]
 						}
 					},
