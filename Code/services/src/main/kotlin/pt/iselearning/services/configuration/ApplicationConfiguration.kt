@@ -55,7 +55,7 @@ class ApplicationConfiguration() : WebMvcConfigurer {
                 CHALLENGE_PATTERN,
                 "${CHALLENGE_PATTERN}/*",
                 CHALLENGE_ANSWER_PATTERN,
-                "${CHALLENGE_ANSWER_PATTERN}/**",
+                "${CHALLENGE_ANSWER_PATTERN}/*",
                 QUESTIONNAIRE_ANSWER_PATTERN,
                 "/v0/questionnaires/withChallenges")
 

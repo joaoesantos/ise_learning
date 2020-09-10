@@ -46,8 +46,6 @@ class ChallengeService (
      */
     @Validated
     fun createChallenge(@Valid challengeModel: ChallengeModel, loggedUser: User): Challenge {
-        /*
-    }
         challengeModel.solutions.forEach {
             val executableResult = executionEnvironmentsService.execute(
                     ExecutableModel(it.codeLanguage,it.challengeCode,it.unitTests,true)
@@ -55,7 +53,6 @@ class ChallengeService (
             checkIfUnitTestsPassed(executableResult)
 
         }
-        */
         val challenge = convertToEntity(challengeModel)
         challenge.creatorId = loggedUser.userId
         return challengeRepository.save(challenge)
@@ -211,7 +208,6 @@ class ChallengeService (
                     ErrorCode.FORBIDDEN
             )
         }
-        /*
         challengeModel.solutions.forEach {
             val executableResult = executionEnvironmentsService.execute(
                     ExecutableModel(it.codeLanguage,it.challengeCode,it.unitTests,true)
@@ -219,9 +215,8 @@ class ChallengeService (
             checkIfUnitTestsPassed(executableResult)
 
         }
-        */
 
-        //region data for update operation
+        //region manipulation data for update operation
         val updatedChallenge = convertToEntity(challengeModel)
         updatedChallenge.challengeId = challengeId
         updatedChallenge.creatorId = loggedUser.userId

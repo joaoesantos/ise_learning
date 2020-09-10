@@ -1,6 +1,5 @@
 package pt.iselearning.services.controller
 
-import org.hibernate.exception.DataException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice

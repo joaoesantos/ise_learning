@@ -15,7 +15,7 @@ import pt.iselearning.services.util.VERSION
  * Handler responsible to respond to requests regard User entity
  */
 @RestController
-@RequestMapping("/${VERSION}/users")
+@RequestMapping("/${VERSION}/users", produces = ["application/json"])
 class UserController(
         private val userService: UserService,
         private val authenticationService: AuthenticationService
@@ -76,7 +76,7 @@ class UserController(
      *
      * A json object that represents a object of the type User must be present in the body
      * @param userProfileModel represents the information an user can update
-     * @return Mono<ServerResponse> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * @return ResponseEntity<UserModel>
      */
     @PatchMapping("/me", name = "updateMe")
     fun updateUser(
@@ -93,7 +93,7 @@ class UserController(
      *
      * A json object that represents a object of the type UserPasswordModel must be present in the body
      * @param password represents a UserPasswordModel
-     * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
+     * @return ResponseEntity<UserModel>
      */
     @PutMapping("/me/password", name = "updatePassword")
     fun updatePassword(
@@ -107,26 +107,29 @@ class UserController(
 
     /**
      * Method to delete an user
-     * Path variable "id" must be present
+     *
      * @param id represents user id
+     * @return No Content
      */
-    @DeleteMapping("/{id}", name = "deleteUser")
-    fun deleteUser(
-            @PathVariable id: Int
+    @DeleteMapping("/{userId}", name = "deleteUserById")
+    fun deleteUserById(
+            @PathVariable userId: Int
     ): ResponseEntity<Unit> {
-        userService.deleteUser(id)
+        userService.deleteUserById(userId)
         return ResponseEntity.noContent().build()
     }
 
     /**
      * Method to delete logged user
+     *
+     * @return No Content
      */
     @DeleteMapping("/me", name = "deleteMe")
     fun deleteMe(
             @RequestHeader(value = "Authorization") authorization : String
     ): ResponseEntity<Unit> {
         val loggedUser = authenticationService.getLoggedInUser(authorization)
-        userService.deleteUser(loggedUser.userId!!)
+        userService.deleteUserById(loggedUser.userId!!)
         return ResponseEntity.noContent().build()
     }
 
