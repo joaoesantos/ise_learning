@@ -83,8 +83,6 @@ export default function SignUp() {
         setUser(user)
         localStorage.setItem('ISELearningLoggedUser', JSON.stringify(user))
         history.push("/")
-      } else {
-        fetchHeaders.clear()
       }
     } 
   },[actionState]);
