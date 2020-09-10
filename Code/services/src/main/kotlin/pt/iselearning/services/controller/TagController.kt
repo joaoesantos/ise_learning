@@ -10,7 +10,7 @@ import pt.iselearning.services.util.VERSION
  * Handler responsible to respond to requests regard Tag entity
  */
 @RestController
-@RequestMapping("/${VERSION}/tags")
+@RequestMapping("/${VERSION}/tags", produces = ["application/json"])
 class TagController (private val tagService: TagService) {
     /**
      * Method to get all existing tags.

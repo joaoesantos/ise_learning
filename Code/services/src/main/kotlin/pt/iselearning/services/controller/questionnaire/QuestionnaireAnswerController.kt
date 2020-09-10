@@ -12,7 +12,7 @@ import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerService
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
 
 /**
- * Handler responsible to respond to requests regard QuestionnaireAnswer domain
+ * Handler responsible to respond to requests regard QuestionnaireAnswer entity
  */
 @RestController
 @RequestMapping(QUESTIONNAIRE_ANSWER_PATTERN, produces = ["application/json"])

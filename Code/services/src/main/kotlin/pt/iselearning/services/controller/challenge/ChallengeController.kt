@@ -14,7 +14,7 @@ import pt.iselearning.services.util.CHALLENGE_PATTERN
  * Handler responsible to respond to requests regard Challenge entity
  */
 @RestController
-@RequestMapping(CHALLENGE_PATTERN)
+@RequestMapping(CHALLENGE_PATTERN, produces = ["application/json"])
 class ChallengeController (
         private val challengeService: ChallengeService
 ) {
@@ -22,9 +22,9 @@ class ChallengeController (
     /**
      * Method to create an challenge.
      *
-     * @param ucb helps build URLs
      * @param challengeModel json object that represents a object of the type ChallengeModel
      * @param loggedUser user that is calling the service
+     * @param ucb helps build URLs
      * @return ResponseEntity<Challenge>
      */
     @PostMapping(name = "createChallenge")

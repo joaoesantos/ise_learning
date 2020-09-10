@@ -19,7 +19,7 @@ import kotlin.reflect.KFunction2
 /**
  * Class responsible to validate user credentials
  */
-class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper) : OncePerRequestFilter() {
+class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper): OncePerRequestFilter() {
     private val validateFilters : HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
             "/v0/challenges/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
             "/v0/challenges/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
@@ -33,7 +33,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             "${CHALLENGE_PATTERN}/**/tags" to hashSetOf<HttpMethod>(HttpMethod.GET)
     )
 
-    private fun optionalAuthentication(request: HttpServletRequest) : User? {
+    private fun optionalAuthentication(request: HttpServletRequest): User? {
         val pathMatcher = AntPathMatcher()
         val authenticationHeader = request.getHeader("Authorization")
         for (key in optionalAuthenticationPaths.keys) {
@@ -69,15 +69,15 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
         }
     }
 
-    private fun shouldNotFilterChallengeRequest(request: HttpServletRequest) : Boolean {
+    private fun shouldNotFilterChallengeRequest(request: HttpServletRequest): Boolean {
         return request.method == HttpMethod.GET.name
     }
 
-    private fun shouldNotFilterQuestionnaireAnswerRequest(request: HttpServletRequest) : Boolean =
+    private fun shouldNotFilterQuestionnaireAnswerRequest(request: HttpServletRequest): Boolean =
             request.method != HttpMethod.GET.name ||
                     !AntPathMatcher().match(QUESTIONNAIRE_ANSWER_PATTERN, request.servletPath)
 
-    private fun shouldNotFilterQuestionnairePattern(request: HttpServletRequest) : Boolean =
+    private fun shouldNotFilterQuestionnairePattern(request: HttpServletRequest): Boolean =
             request.method == HttpMethod.GET.name
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

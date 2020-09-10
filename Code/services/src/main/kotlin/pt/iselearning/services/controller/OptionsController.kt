@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 import pt.iselearning.services.util.VERSION
 
 @RestController
-@RequestMapping("/${VERSION}")
+@RequestMapping("/${VERSION}", produces = ["application/json"])
 class OptionsController(
         private val handlerMapping: org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 ) {
