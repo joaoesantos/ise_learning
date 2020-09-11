@@ -1,6 +1,7 @@
 package pt.iselearning.services.models.questionnaire.output
 
 import pt.iselearning.services.models.ChallengeAnswerModel
+import pt.iselearning.services.models.ChallengeAnswerOutputModel
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -21,10 +22,21 @@ class QuestionnaireInstanceOutputModel(
 
         var endTimestamp: Long?,
 
-        var isFinish: Boolean,
+        var isFinish: Boolean?,
 
-        var challenges : ChallengeAnswerModel
+        var challenges : List<ChallengeAnswerOutputModel>?
 
 ) {
+    constructor(): this(
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+    )
 }
 

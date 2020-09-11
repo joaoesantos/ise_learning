@@ -10,9 +10,9 @@ import pt.iselearning.services.exception.ServerException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.AnswerModel
 import pt.iselearning.services.models.ChallengeAnswerModel
+import pt.iselearning.services.models.ChallengeAnswerOutputModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.models.questionnaire.output.QuestionnaireInstanceOutputModel
-import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
@@ -161,7 +161,7 @@ class QuestionnaireInstanceServices(
     private fun transformQuestionnaireInstanceToOutputModel(questionnaireInstance: QuestionnaireInstance): QuestionnaireInstanceOutputModel
             = modelMapper.map(questionnaireInstance, QuestionnaireInstanceOutputModel::class.java)
 
-    private fun getOrInitializeChallengeAnswers(questionnaireInstance: QuestionnaireInstance): ChallengeAnswerModel {
+    private fun getOrInitializeChallengeAnswers(questionnaireInstance: QuestionnaireInstance): List<ChallengeAnswerOutputModel> {
         var answers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstance.questionnaireInstanceId!!)
         val challenges = challengeService.getAllChallengesByQuestionnaireId(questionnaireInstance.questionnaireId!!)
         //initialize list
@@ -176,8 +176,18 @@ class QuestionnaireInstanceServices(
             }
         }
 
-        
-        return ChallengeAnswerModel(0, AnswerModel(null, null, null));
+        return answers.mapIndexed {
+            index, questionnaireAnswer ->
+            ChallengeAnswerOutputModel(
+                    challenges[index].challengeId!!,
+                    challenges[index].challengeText!!,
+                    AnswerModel(
+                            questionnaireAnswer.answer?.codeLanguage,
+                            questionnaireAnswer.answer?.codeLanguage,
+                            questionnaireAnswer.answer?.unitTests
+                    )
+            )
+        }
     }
 
 }
