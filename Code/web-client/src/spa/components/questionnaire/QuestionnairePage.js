@@ -152,21 +152,30 @@ export default function QuestionnairePage() {
         }
     }, [actionState]);
 
+    React.useEffect(() => {
+        if(questionnaire) {
+            const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
+            setTextEditorArea(selectedChallengeAnswer.answerCode)
+            setUnitTests(selectedChallengeAnswer.unitTests)
+            setActiveChallenge(questionnaire.challenges[activeStep])
+        }
+    }, [activeStep, questionnaire])
+
     let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
     let minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
     let hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2);
 
-    React.useEffect(() => {
-        let intervalId = null
-        if (timer > 0) {
-            intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
-        }
+    // React.useEffect(() => {
+    //     let intervalId = null
+    //     if (timer > 0) {
+    //         intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
+    //     }
 
-        return () => {
-            clearInterval(intervalId)
-        }
+    //     return () => {
+    //         clearInterval(intervalId)
+    //     }
 
-    }, [timer])
+    // }, [timer])
 
     const onLanguageChange = (event) => {
         onClearConsole()
@@ -463,6 +472,7 @@ export default function QuestionnairePage() {
             </React.Fragment>
         )
     } else {
+        {console.log('action state', actionState)}
         return <p>error...</p>
     }
 }
