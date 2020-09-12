@@ -60,17 +60,17 @@ export default function ChallengeListTable(){
 
   return (
       <MaterialTable
-      title = ""
-      options =
-      {{
-          search:true, 
-          sorting:true,
-      }}
-      columns={table.columns}
-      data={table.data}
-      components={{
-        Container: props => <Paper {...props} elevation={0}/>
-      }}
+        title = ""
+        options =
+        {{
+            search:true, 
+            sorting:true,
+        }}
+        columns={table.columns}
+        data={table.data}
+        components={{
+          Container: props => <Paper {...props} elevation={0}/>
+        }}
       />
   )
 

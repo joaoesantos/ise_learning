@@ -37,7 +37,7 @@ class OutputTextEditor extends Component {
     this.editor = codemirror(this.instance, 
       {
         readOnly: true,
-        mode: 'markdown',
+        //mode: 'markdown',
         theme: this.props.theme.palette.type === "light" ? "neat" : "monokai"
       }
     );
@@ -58,7 +58,7 @@ class OutputTextEditor extends Component {
         this.props.setTextArea({...this.props.textArea, toUpdate: false});
         const _this = this.props.textArea.value;
         const oldText = this.editor.doc.getValue();
-        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${unescape(_this.rawResult)}\n\n`);
+        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${_this.rawResult}\n\n`);
       }
 
       if(this.props.runState !== 'running' && this.props.textArea === 'cls') {

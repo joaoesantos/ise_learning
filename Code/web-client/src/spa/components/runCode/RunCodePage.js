@@ -3,6 +3,7 @@ import React from 'react'
 // react-reflex
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 // material-ui components
+import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import Paper from '@material-ui/core/Paper'
@@ -73,8 +74,6 @@ export default function RunCodePage() {
     if (actionState === ActionStates.inProgress) {
       setRunState('running')
     } else if(actionState === ActionStates.done && response.severity==="success")  {
-
-      console.log('response',response)
       response.json.wasError ? setRunState('error') : setRunState('finished')
       setTextArea({ ...textArea, value: response.json, toUpdate: true });
     }
@@ -86,6 +85,7 @@ export default function RunCodePage() {
   }
 
   async function onRunCode() {
+    console.log('textEditorData',textEditorData)
     setAction({
       function: RunCodeController.execute,
       args: [{
@@ -104,7 +104,8 @@ export default function RunCodePage() {
     }
   }
 
-  if(actionState !== ActionStates.error) {
+  if(actionState === ActionStates.clear || actionState === ActionStates.inProgress ||
+    actionState === ActionStates.done && response && response.render) {
     return(
       <div className={classes.layout}>
         <ReflexContainer orientation="vertical">
@@ -142,6 +143,7 @@ export default function RunCodePage() {
             minSize="250"
           >
             <Toolbar className={classes.outputToolbar} variant="dense">
+            <Box display="flex">
               <Typography style={{paddingRight:5}}>
                 Output:
               </Typography>
@@ -160,14 +162,15 @@ export default function RunCodePage() {
                   Compile Error
                 </Paper>
               )}
-              <Button className={classes.clearButton}
-                id="clearConsoleButton"
-                variant="contained"
-                onClick={onClearConsole}
-                style={{minWidth: 125}}
-              >
-                Clear Console
-              </Button>
+            </Box>
+            <Button className={classes.clearButton}
+              id="clearConsoleButton"
+              variant="contained"
+              onClick={onClearConsole}
+              style={{minWidth: 125}}
+            >
+              Clear Console
+            </Button>
             </Toolbar>
             <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} />
           </ReflexElement>

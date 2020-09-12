@@ -16,11 +16,15 @@ import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPag
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
+import SolveChallengePage from '../challenge/SolveChallengePage'
+
 export default function Routes() {
     return (
         <>
             <Navbar />
             <Switch>
+                <Route exact path="/test/:challengeId" render={({match}) => <SolveChallengePage match={match} configKey={"challenge"} />} />
+
                 <Route exact path="/" component={Home} />
                 <Route exact path="/runCode" component={RunCode} />
                 <Route exact path="/login" component={Login} />
