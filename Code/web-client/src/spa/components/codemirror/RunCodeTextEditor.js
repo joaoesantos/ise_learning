@@ -25,15 +25,6 @@ const styles = theme => ({
         borderBottom: `1px solid ${theme.palette.divider}`,
         justifyContent: "space-between"
     },
-    button: {
-        margin: theme.spacing(1),
-        textTransform:"none",
-        color:'#ffffff',
-        backgroundColor:'#5cb85c', // cor isel -> '#963727'
-        '&:hover' : {
-            backgroundColor: '#17b033',
-        }
-    },
     runButton: {
         margin: theme.spacing(1),
         textTransform:"none",
@@ -66,10 +57,10 @@ class RunCodeTextEditor extends Component {
                 readOnly: (this.props.readOnly === true) ? true: false
             }
         );
-        this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
-        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
+        this.props.setTextEditorData(this.editor.doc.getValue())
+        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "85vh"
         const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
-        this.editor.setSize(`${editorWidth}%`, editorHeigth);
+        this.editor.setSize(`${editorWidth}%`, editorHeigth)
         this.editor.on('change', () => {
             this.props.setTextEditorData(this.editor.doc.getValue())
         })

@@ -27,7 +27,7 @@ export default function ChallengeListTable(){
     } else if (actionState === ActionStates.done &&
     action.render && action.render === true) {
       let data = []
-      response.forEach(it => data.push(
+      response.json.forEach(it => data.push(
           { 
             id: it.challengeId, 
             title: it,

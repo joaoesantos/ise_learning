@@ -20,7 +20,6 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
-import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
@@ -164,9 +163,8 @@ export default function QuestionnairePage() {
     const onRunCode = async () => {
         if (runState !== 'running') {
             setRunState('running');
-            let result = await runCodeCtrl(codeLanguage, textEditorData);
             setRunState('finished');
-            setTextArea({ ...textArea, value: result, toUpdate: true });
+            setTextArea({ ...textArea, value: response, toUpdate: true });
         }
     }
 
