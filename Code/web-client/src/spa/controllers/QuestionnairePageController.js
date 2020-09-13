@@ -3,13 +3,14 @@ import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async () => {
-        let url = '/v0/questionnaireInstances/solve/dd5badcc-e286-451c-98fd-8042929c9ed8'
+        let url = '/v0/questionnaireInstances/solve/0c98e06e-b5cb-4088-8fcb-88080c0a83db'
         let options = {
           method: HttpMethods.get,
           headers: defaultHeaders()
         }
         let response = await fetch(url, options)
-        return response.json()
+        let json = await response.json();
+        return json
 
     },
     submitChallenge: async () => {
@@ -21,22 +22,16 @@ export const QuestionnairePageController = {
             headers: defaultHeaders()
         }
 
+        console.log(questionnaireInfo.challenges)
         const body = {
-            questionnaireId: questionnaireInfo.questionnaire.questionnaireId,
-            questionnaireId: questionnaireInfo.questionnaire.questionnaireId,
-            questionnaireInstanceId: questionnaireInfo.questionnaire.questionnaireInstanceId,
-            challengesAnswers: questionnaireInfo.challengesAnswer.map(cc => {
-                return {
-                    challengeId: cc.id,
-                    answer: {
-                        codeLanguage: cc.codeLanguage,
-                        answerCode: cc.answerCode,
-                        unitTests: cc.unitTests
-                    }
-                }
-            })
+            questionnaireInstanceId: questionnaireInfo.questionnaireInstanceId,
+            questionnaireId: questionnaireInfo.questionnaireId,
+            challenges: questionnaireInfo.challenges
         }
+
+        options.body = JSON.stringify(body)
         const url = apiUrlTemplates.createQuestionnaireAnswer
-        let response = await fetch(url, options)
+        let response = await fetch('/v0/questionnaireAnswers', options)
+        return response.json()
     }
 }

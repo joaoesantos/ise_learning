@@ -4,6 +4,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.controller.questionnaire.input.QuestionnaireAnswerInputModel
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
@@ -27,17 +28,20 @@ class QuestionnaireAnswerController(
      * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerModel
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
+    //todo devolver o que
     @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
-            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
+            @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder
-    ): ResponseEntity<QuestionnaireAnswer> {
-        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
-        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
+    ): ResponseEntity<Unit> {
+        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerInputModel)
+        //todo enviar para onde?
+/*        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
                 .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
                 .build()
-                .toUri()
-        return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
+                .toUri()*/
+        //return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
+        return ResponseEntity.ok().build()
     }
 
     /**

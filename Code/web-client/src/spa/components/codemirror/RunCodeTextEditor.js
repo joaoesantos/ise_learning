@@ -77,7 +77,6 @@ class RunCodeTextEditor extends Component {
 
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
-        console.log('codeLanguage:', this.props.codeLanguage)
         if(prevProps !== this.props) {
 
             if(prevProps.theme.palette.type !== this.props.theme.palette.type) {

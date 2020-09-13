@@ -16,7 +16,9 @@ import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
 import { createMuiTheme } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
@@ -25,6 +27,7 @@ import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
 import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
+import { defaultHeaders } from '../fetchUtils';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -119,11 +122,12 @@ export default function QuestionnairePage() {
     const [questionnaire, setQuestionnaire] = React.useState()
     const [timer, setTimer] = React.useState(5000)
     const [runState, setRunState] = React.useState('notRunning');
+    const [runTests, setRunTests] = React.useState(false)
     const [textEditorArea, setTextEditorArea] = React.useState();
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
     const [unitTests, setUnitTests] = React.useState('');
     const [activeChallenge, setActiveChallenge] = React.useState()
-    
+
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
@@ -132,42 +136,35 @@ export default function QuestionnairePage() {
                 render: true
             })
         } else if (actionState === ActionStates.done && action.render) {
+            const initChallenge = response.challenges[0]
+            initChallenge.answer.codeLanguage = response.challenges[0].answer.codeLanguage || defaultLanguage
             setQuestionnaire(response)
             setTimer(response.timer)
-            setActiveChallenge(response.challenges[0])
+            setActiveChallenge(initChallenge)
         } else {
             //not Done || done but not rendering
         }
     }, [actionState]);
 
-    React.useEffect(() => {
-        if(questionnaire) {
-            const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
-            setTextEditorArea(selectedChallengeAnswer.answerCode)
-            setUnitTests(selectedChallengeAnswer.unitTests)
-            setActiveChallenge(questionnaire.challenges[activeStep])
-        }
-    }, [activeStep, questionnaire])
-
     let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
     let minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
     let hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2);
 
-    // React.useEffect(() => {
-    //     let intervalId = null
-    //     if (timer > 0) {
-    //         intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
-    //     }
+    React.useEffect(() => {
+        let intervalId = null
+        if (timer > 0) {
+            intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
+        }
 
-    //     return () => {
-    //         clearInterval(intervalId)
-    //     }
+        return () => {
+            clearInterval(intervalId)
+        }
 
-    // }, [timer])
+    }, [timer])
 
     const onLanguageChange = (event) => {
         onClearConsole()
-        let clone = {...questionnaire}
+        let clone = { ...questionnaire }
         clone.challenges[activeStep].answer.codeLanguage = event.target.value
         clone.challenges[activeStep].answer.codeText = CodeMirrorOptions.get(event.target.value).value
         setQuestionnaire(clone);
@@ -178,7 +175,7 @@ export default function QuestionnairePage() {
         if (runState !== 'running') {
             setRunState('running');
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
-            let result = await runCodeCtrl(selectedChallengeAnswer.codeLanguage, selectedChallengeAnswer.answerCode);
+            let result = await runCodeCtrl(selectedChallengeAnswer.codeLanguage, selectedChallengeAnswer.answerCode, selectedChallengeAnswer.unitTests, runTests);
             setRunState('finished');
             setTextArea({ ...textArea, value: result, toUpdate: true });
         }
@@ -198,7 +195,7 @@ export default function QuestionnairePage() {
     };
 
     const setTestArea = (text) => {
-        const clone = {...questionnaire}
+        const clone = { ...questionnaire }
         const selectedAnswer = clone.challenges[activeStep].answer
         selectedAnswer.unitTests = text
         setQuestionnaire(clone)
@@ -206,21 +203,21 @@ export default function QuestionnairePage() {
     }
 
     const setCodeArea = (text) => {
-        const clone = {...questionnaire}
-        clone.challenges[activeStep].answer = text
+        const clone = { ...questionnaire }
+        clone.challenges[activeStep].answer.answerCode = text
         setQuestionnaire(clone)
     }
 
     const getCodeArea = (idx) => {
-        const selectedAnswer =  questionnaire.challenges[idx].answer
+        const selectedAnswer = questionnaire.challenges[idx].answer
         let codeText = selectedAnswer.answerCode
-        if(!codeText){
+        if (!codeText) {
             codeText = CodeMirrorOptions.get(selectedAnswer.codeLanguage || defaultLanguage).value
         }
         return codeText
     }
 
-    
+
     const handleNext = () => {
         handleStepChange(activeStep + 1)
     };
@@ -230,10 +227,20 @@ export default function QuestionnairePage() {
     };
 
     const handleStepChange = (nextStep) => {
-        setActiveChallenge(questionnaire.challenges[nextStep])
+        const nextChallenge = questionnaire.challenges[nextStep]
+
+        if(!nextChallenge.answer.codeLanguage || nextChallenge.answer.codeLanguage == '') {
+            nextChallenge.answer.codeLanguage = defaultLanguage
+        }
+
+        setActiveChallenge(nextChallenge)
         setTextEditorArea(getCodeArea(nextStep))
         setTextArea({ value: '', toUpdate: false })
         setActiveStep(nextStep);
+    }
+
+    const handleRunTestsChange = (event) => {
+        setRunTests(event.target.checked)
     }
 
     const handleSubmitChallenge = () => {
@@ -243,7 +250,7 @@ export default function QuestionnairePage() {
     const handleSubmitQuestionnaire = () => {
         setAction({
             function: QuestionnairePageController.submitQuestionnaire,
-            args: [],
+            args: [questionnaire],
             render: false
         })
     }
@@ -281,9 +288,7 @@ export default function QuestionnairePage() {
     }
 
     const getChallengeContent = (step) => {
-        console.log('step:', step)
         const challenge = activeChallenge.description
-        console.log('challenge:', challenge)
         return (
             <React.Fragment>
                 <Container className={classes.container} maxWidth={false}>
@@ -296,9 +301,19 @@ export default function QuestionnairePage() {
                                         size='medium'
                                         multiline
                                         id="challenge-description"
-                                        //defaultValue={activeChallenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, value:activeChallenge.description}} />
+                                        InputProps={{ readOnly: true, value: activeChallenge.description }} />
+
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            checked={runTests}
+                                            onChange={handleRunTestsChange}
+                                            color="primary"
+                                            inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                        />}
+                                        label="Run unit tests?"
+                                    />
+
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl variant="standard" className={classes.form} fullWidth>
@@ -355,7 +370,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <OutputTextEditor textArea={textArea} setTextArea={setTestArea} editorHeigth='300'/>
+                            <OutputTextEditor textArea={textArea} setTextArea={setTestArea} editorHeigth='300' />
                             <Grid>
                                 <Toolbar className={classes.outputToolbar} variant="dense">
                                     <Box display="flex">
@@ -366,7 +381,7 @@ export default function QuestionnairePage() {
 
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor value={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300'/>
+                            <RunCodeTextEditor value={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
                         </Grid>
                     </Grid>
                 </Container>
@@ -428,7 +443,6 @@ export default function QuestionnairePage() {
             </React.Fragment>
         )
     } else {
-        {console.log('action state', actionState)}
         return <p>error...</p>
     }
 }
