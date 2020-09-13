@@ -18,7 +18,7 @@ data class Answer (
         @Column(name="answer_id")
         @GeneratedValue(strategy=GenerationType.IDENTITY)
         @field:Positive(message = "Answer id must be positive")
-        var answerId : Int? =  null,
+        var answerId : Int?,
 
         @Column(name="code_language")
         @Pattern(regexp = SupportedLanguages.REGEX_STRING_SUPPORTED_LANGUAGES)

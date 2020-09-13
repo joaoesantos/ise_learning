@@ -1,5 +1,6 @@
 package pt.iselearning.services.service.challenge
 
+import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.User
@@ -7,12 +8,12 @@ import pt.iselearning.services.domain.challenge.ChallengeAnswer
 import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.challenge.ChallengeAnswerModel
 import pt.iselearning.services.repository.challenge.ChallengeAnswerRepository
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.UserRepository
 import pt.iselearning.services.service.ExecutionEnvironmentsService
 import pt.iselearning.services.util.*
-import java.rmi.ServerException
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -26,41 +27,39 @@ class ChallengeAnswerService (
         private val challengeRepository: ChallengeRepository,
         private val userRepository: UserRepository,
         private val challengeService: ChallengeService,
-        private val executionEnvironmentsService: ExecutionEnvironmentsService
+        private val executionEnvironmentsService: ExecutionEnvironmentsService,
+        private val modelMapper: ModelMapper
 ) {
 
     /**
      * Create a challenge answer.
      *
-     * @param challengeAnswer object information
+     * @param challengeAnswerModel object information
      * @param loggedUser user that is calling the service
      * @return created challenge answer
      */
     @Validated
-    fun createChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer {
+    fun createChallengeAnswer(@Valid challengeAnswerModel: ChallengeAnswerModel, loggedUser: User): ChallengeAnswer {
 
-        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswer.userId!!)
-
-        val challenge = challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
-
-        val challengeUnitTests = challenge.solutions?.first { solution ->
-            solution.codeLanguage == challengeAnswer.answer?.codeLanguage
-        }
+        val challenge = challengeService.getChallengeById(challengeAnswerModel.challengeId, loggedUser)
+        val createdChallengeAnswer = convertToEntity(challengeAnswerModel)
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswer.answer?.codeLanguage!!,
-                        challengeAnswer.answer?.answerCode!!,
-                        challengeUnitTests?.unitTests!!,
+                        challengeAnswerModel.answer.codeLanguage,
+                        challengeAnswerModel.answer.answerCode,
+                        challengeSolution?.unitTests!!,
                         true
                 )
         )
-        if(!executableResult.wasError) {
-            challengeAnswer.answer!!.isCorrect = true
-        }
+        //region data manipulation for create operation
+        createdChallengeAnswer.userId = loggedUser.userId
+        createdChallengeAnswer.answer?.isCorrect = !executableResult.wasError
+        //endregion
 
-        return challengeAnswerRepository.save(challengeAnswer);
+        return challengeAnswerRepository.save(createdChallengeAnswer);
     }
 
     /**
@@ -102,35 +101,39 @@ class ChallengeAnswerService (
     /**
      * Update a challenge answer.
      *
-     * @param challengeAnswer information to be updated
+     * @param challengeAnswerId identifier of challenge answer object
+     * @param challengeAnswerModel information to be updated
      * @param loggedUser user that is calling the service
      * @return updated challenge answer
      */
     @Validated
-    fun updateChallengeAnswer(@Valid challengeAnswer: ChallengeAnswer, loggedUser: User): ChallengeAnswer {
-        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswer.userId!!)
-        val challenge = challengeService.getChallengeById(challengeAnswer.challengeId!!, loggedUser)
-        val challengeAnswerFromDb = challengeAnswerRepository.findById(challengeAnswer.challengeId!!)
-        checkIfChallengeAnswerExists(challengeAnswerFromDb, challengeAnswer.challengeId!!)
+    fun updateChallengeAnswer(@Positive challengeAnswerId: Int, @Valid challengeAnswerModel: ChallengeAnswerModel, loggedUser: User): ChallengeAnswer {
+        val challengeAnswerFromDb = checkIfChallengeAnswerExists(challengeAnswerRepository, challengeAnswerId)
+        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, challengeAnswerFromDb.userId!!)
+        val updatedChallengeAnswer = convertToEntity(challengeAnswerModel)
 
-        val challengeUnitTests = challenge.solutions?.first { solution ->
-            solution.codeLanguage == challengeAnswer.answer?.codeLanguage
-        }
+        val challenge = challengeService.getChallengeById(challengeAnswerFromDb.challengeId!!, loggedUser)
+
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswer.answer?.codeLanguage!!,
-                        challengeAnswer.answer?.answerCode!!,
-                        challengeUnitTests?.unitTests!!,
+                        challengeAnswerModel.answer.codeLanguage,
+                        challengeAnswerModel.answer.answerCode,
+                        challengeSolution?.unitTests!!,
                         true
                 )
         )
-        if(!executableResult.wasError) {
-            challengeAnswer.answer!!.isCorrect = true
-        }
 
-        return challengeAnswerRepository.save(challengeAnswer)
+        //region data manipulation for update operation
+        updatedChallengeAnswer.userId = loggedUser.userId
+        updatedChallengeAnswer.challengeAnswerId = challengeAnswerFromDb.challengeAnswerId
+        updatedChallengeAnswer.answer?.answerId = challengeAnswerFromDb.answer?.answerId
+        updatedChallengeAnswer.answer?.isCorrect = !executableResult.wasError
+        //endregion
+
+        return challengeAnswerRepository.save(updatedChallengeAnswer)
     }
 
     /**
@@ -146,5 +149,10 @@ class ChallengeAnswerService (
         checkIfChallengeAnswerExists(challengeAnswer, challengeAnswerId)
         challengeAnswerRepository.findById(challengeAnswerId)
     }
+
+    /**
+     * Auxiliary function that converts ChallengeAnswer model to ChallengeAnswer domain
+     */
+    private fun convertToEntity(input: ChallengeAnswerModel) = modelMapper.map(input, ChallengeAnswer::class.java)
 
 }

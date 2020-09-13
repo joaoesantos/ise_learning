@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component
 @PropertySource("classpath:executionEnvironments.properties")
 data class RemoteExecutionUrls (
     @Value( "\${execution.environment.java}" )
-    var javaExecutionEnvironment : String,
+    val javaExecutionEnvironment : String,
 
     @Value( "\${execution.environment.kotlin}" )
-    var kotlinExecutionEnvironment : String,
+    val kotlinExecutionEnvironment : String,
 
     @Value( "\${execution.environment.javascript}" )
-    var javascriptExecutionEnvironment : String,
+    val javascriptExecutionEnvironment : String,
 
     @Value( "\${execution.environment.c#}" )
-    var cSharpExecutionEnvironment : String,
+    val cSharpExecutionEnvironment : String,
 
     @Value( "\${execution.environment.python}" )
-    var pythonExecutionEnvironment : String
+    val pythonExecutionEnvironment : String
 )

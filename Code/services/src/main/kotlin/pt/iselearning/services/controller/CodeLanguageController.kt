@@ -9,7 +9,7 @@ import pt.iselearning.services.service.CodeLanguageService
  * Handler responsible to respond to requests regard code languages entity
  */
 @RestController
-@RequestMapping("/v0/codeLanguages")
+@RequestMapping("/v0/codeLanguages", produces = ["application/json"])
 class CodeLanguageController (private val codeLanguageService: CodeLanguageService) {
     /**
      * Method to get all existing code languages.

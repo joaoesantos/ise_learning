@@ -1,5 +1,6 @@
 package pt.iselearning.services.util
 
+import pt.iselearning.services.domain.Solution
 import pt.iselearning.services.domain.Tag
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.challenge.Challenge
@@ -13,6 +14,7 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireChallengeModel
+import pt.iselearning.services.repository.challenge.ChallengeAnswerRepository
 import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
@@ -157,6 +159,32 @@ fun checkIfChallengeExists(
     return challenge.get()
 }
 
+/**
+ * Validates if challenge is empty.
+ *
+ * @param challenge to be validated
+ * @param codeLanguage to be filtered
+ * @throws ServiceException when on failure to find challenge
+ */
+fun checkIfChallengeSolutionExistsForCodeLanguage(
+        challenge: Challenge,
+        codeLanguage: String
+): Solution {
+    val challengeSolution = challenge.solutions
+            ?.filter { solution -> solution.codeLanguage == codeLanguage }
+    if (challengeSolution?.isEmpty()!!) {
+        throw ServiceException(
+                "Code language not supported.",
+                "There is no solution available for language $codeLanguage on challenge with id ${challenge.challengeId}",
+                "/iselearning/challenge/nonSupportedSolutionForLanguage",
+                ErrorCode.ITEM_NOT_FOUND
+        )
+    } else {
+        return challengeSolution.first()
+    }
+}
+
+
 //endregion
 
 
@@ -189,6 +217,29 @@ fun checkIfChallengeTagExists(
 //endregion
 
 //region CHALLENGE ANSWER
+
+/**
+ * Validates if challenge answer is empty.
+ *
+ * @param challengeAnswerRepository interface of repository for the questionnaire class
+ * @param challengeAnswerId identifier of object
+ * @throws ServiceException when on failure to find challenge answer
+ */
+fun checkIfChallengeAnswerExists(
+        challengeAnswerRepository: ChallengeAnswerRepository,
+        challengeAnswerId: Int
+): ChallengeAnswer {
+    val challengeAnswer = challengeAnswerRepository.findById(challengeAnswerId)
+    if (challengeAnswer.isEmpty) {
+        throw ServiceException(
+                "Challenge answer not found.",
+                "There is no challenge answer with id $challengeAnswerId",
+                "/iselearning/challengeAnswer/nonexistent",
+                ErrorCode.ITEM_NOT_FOUND
+        )
+    }
+    return challengeAnswer.get()
+}
 
 /**
  * Validates if challenge answer is empty.

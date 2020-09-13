@@ -5,7 +5,7 @@ import javax.validation.constraints.Positive
 import javax.validation.constraints.Size
 
 /**
- * Model used for data input manipulation of questionnaire entity
+ * Model used for data input manipulation of questionnaire domain
  */
 @Validated
 class QuestionnaireModel (

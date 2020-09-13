@@ -110,7 +110,7 @@ class UserService(
      * @param userId identifier of object
      */
     @Transactional
-    fun deleteUser(@Positive userId: Int)  {
+    fun deleteUserById(@Positive userId: Int)  {
         val user = verifyUser(userId = userId)
         userRepository.deleteByUsername(user.username!!)
     }

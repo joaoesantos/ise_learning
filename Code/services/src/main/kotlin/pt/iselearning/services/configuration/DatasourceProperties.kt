@@ -1,10 +1,8 @@
 package pt.iselearning.services.configuration
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Component
-import java.nio.file.Paths
 
 @Component
 @PropertySource("classpath:application.properties")
