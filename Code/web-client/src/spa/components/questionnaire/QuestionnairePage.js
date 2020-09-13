@@ -141,10 +141,12 @@ export default function QuestionnairePage() {
             const initialLanguage = response.challenges[0].answer.codeLanguage || defaultLanguage
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
+            console.log(initChallenge.answer.unitTests)
             setQuestionnaire(response)
             setTimer(response.timer)
             setActiveChallenge(initChallenge)
             setCodeLanguage(initChallenge.codeLanguage)
+            setUnitTests(initChallenge.answer.unitTests || '')
         } else {
             //not Done || done but not rendering
         }
@@ -167,7 +169,6 @@ export default function QuestionnairePage() {
     }, [timer])
 
     const onLanguageChange = (event) => {
-        console.log('codeLanguage:', event.target.value)
         onClearConsole()
         let clone = { ...questionnaire }
         const cha = clone.challenges[activeStep]
@@ -184,14 +185,11 @@ export default function QuestionnairePage() {
             setRunState('running');
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
             let result = await runCodeCtrl(selectedChallengeAnswer.codeLanguage, selectedChallengeAnswer.answerCode, selectedChallengeAnswer.unitTests, runTests);
+            setTextArea({
+                value: result,
+                toUpdate: true
+            })
             setRunState('finished');
-            setTextArea({ ...textArea, 
-                value: `${result.wasError ? "Code Executed with errors" : "Code Executed Correctly"}. ${os.EOL} 
-                Executed in ${result.executionTime}result.rawResult.  ${os.EOL}
-                Result: ${os.EOL}
-                ${result.rawResult}
-                `, 
-                toUpdate: true });
         }
     }
 
@@ -365,7 +363,7 @@ export default function QuestionnairePage() {
                                     </Button>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor theme={theme} value={textEditorArea} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setCodeArea} />
+                            <RunCodeTextEditor theme={theme} textEditorData={textEditorArea} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setCodeArea} />
                         </Grid>
                         <Grid item xs={5}>
                             <Grid style={{ paddingTop: 50 }}>
@@ -392,7 +390,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTestArea} editorHeigth='300' />
+                            <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} editorHeigth='300' />
                             <Grid>
                                 <Toolbar className={classes.outputToolbar} variant="dense">
                                     <Box display="flex">
@@ -403,7 +401,7 @@ export default function QuestionnairePage() {
 
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor theme={theme} value={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
+                            <RunCodeTextEditor theme={theme} textEditorData={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
                         </Grid>
                     </Grid>
                 </Container>
