@@ -127,6 +127,7 @@ export default function QuestionnairePage() {
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
     const [unitTests, setUnitTests] = React.useState('');
     const [activeChallenge, setActiveChallenge] = React.useState()
+    const [codeLanguage, setCodeLanguage] = React.useState()
 
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
@@ -141,6 +142,7 @@ export default function QuestionnairePage() {
             setQuestionnaire(response)
             setTimer(response.timer)
             setActiveChallenge(initChallenge)
+            setCodeLanguage(initChallenge.codeLanguage)
         } else {
             //not Done || done but not rendering
         }
@@ -163,12 +165,14 @@ export default function QuestionnairePage() {
     }, [timer])
 
     const onLanguageChange = (event) => {
+        console.log('codeLanguage:', event.target.value)
         onClearConsole()
         let clone = { ...questionnaire }
         clone.challenges[activeStep].answer.codeLanguage = event.target.value
         clone.challenges[activeStep].answer.codeText = CodeMirrorOptions.get(event.target.value).value
         setQuestionnaire(clone);
-        setActiveChallenge(clone[activeStep])
+        setActiveChallenge(clone.challenges[activeStep])
+        setCodeLanguage(event.target.value)
     }
 
     const onRunCode = async () => {
@@ -236,6 +240,8 @@ export default function QuestionnairePage() {
         setActiveChallenge(nextChallenge)
         setTextEditorArea(getCodeArea(nextStep))
         setTextArea({ value: '', toUpdate: false })
+        console.log(nextChallenge)
+        setCodeLanguage(nextChallenge.answer.codeLanguage)
         setActiveStep(nextStep);
     }
 
@@ -266,7 +272,7 @@ export default function QuestionnairePage() {
                         variant="contained"
                         color="primary"
                         onClick={handleSubmitQuestionnaire}>
-                        Complete
+                        Submit Questionnaire
                     </Button>
                 </div>
 
@@ -289,6 +295,7 @@ export default function QuestionnairePage() {
 
     const getChallengeContent = (step) => {
         const challenge = activeChallenge.description
+        console.log('codeLanguage2:', codeLanguage)
         return (
             <React.Fragment>
                 <Container className={classes.container} maxWidth={false}>
@@ -320,6 +327,7 @@ export default function QuestionnairePage() {
                                         <Select
                                             id="languageSelect"
                                             native
+                                            value={codeLanguage}
                                             onChange={onLanguageChange}>
                                             <option value={'java'}>Java</option>
                                             <option value={'kotlin'}>Kotlin</option>
@@ -434,7 +442,7 @@ export default function QuestionnairePage() {
                                     variant="contained"
                                     color="primary"
                                     onClick={handleSubmitChallenge}>
-                                    Submit answer
+                                    Save answer
                                 </Button>
                             </div>
                         </React.Fragment>

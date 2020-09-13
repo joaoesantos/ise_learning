@@ -28,20 +28,13 @@ class QuestionnaireAnswerController(
      * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerModel
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    //todo devolver o que
     @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
             @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder
     ): ResponseEntity<Unit> {
         val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerInputModel)
-        //todo enviar para onde?
-/*        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
-                .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
-                .build()
-                .toUri()*/
-        //return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.created(ucb.build().toUri()).build()
     }
 
     /**
