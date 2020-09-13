@@ -17,9 +17,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
-import { createMuiTheme } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import { ThemeContext } from '../../context/ThemeContext'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
 import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
@@ -27,7 +26,8 @@ import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
 import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
-import { defaultHeaders } from '../fetchUtils';
+
+const os = require("os");
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -115,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QuestionnairePage() {
     const classes = useStyles();
+    const { theme } = React.useContext(ThemeContext)
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState(new Set());
     const [action, setAction] = React.useState()
@@ -181,7 +182,13 @@ export default function QuestionnairePage() {
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
             let result = await runCodeCtrl(selectedChallengeAnswer.codeLanguage, selectedChallengeAnswer.answerCode, selectedChallengeAnswer.unitTests, runTests);
             setRunState('finished');
-            setTextArea({ ...textArea, value: result, toUpdate: true });
+            setTextArea({ ...textArea, 
+                value: `${result.wasError ? "Code Executed with errors" : "Code Executed Correctly"}. ${os.EOL} 
+                Executed in ${result.executionTime}result.rawResult.  ${os.EOL}
+                Result: ${os.EOL}
+                ${result.rawResult}
+                `, 
+                toUpdate: true });
         }
     }
 
@@ -351,7 +358,7 @@ export default function QuestionnairePage() {
                                     </Button>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor value={textEditorArea} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setCodeArea} />
+                            <RunCodeTextEditor theme={theme} value={textEditorArea} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setCodeArea} />
                         </Grid>
                         <Grid item xs={5}>
                             <Grid style={{ paddingTop: 50 }}>
@@ -378,7 +385,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <OutputTextEditor textArea={textArea} setTextArea={setTestArea} editorHeigth='300' />
+                            <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTestArea} editorHeigth='300' />
                             <Grid>
                                 <Toolbar className={classes.outputToolbar} variant="dense">
                                     <Box display="flex">
@@ -389,7 +396,7 @@ export default function QuestionnairePage() {
 
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor value={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
+                            <RunCodeTextEditor theme={theme} value={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
                         </Grid>
                     </Grid>
                 </Container>

@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.domain.Answer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.AnswerModel
 import pt.iselearning.services.models.ChallengeAnswerModel
@@ -89,8 +89,10 @@ class QuestionnaireInstanceServices(
         val questionnaireInstanceOptional = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
 
         if(questionnaireInstanceOptional.isEmpty){
-            throw ServerException("Questionnaire instances not found.",
-                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceUuid", ErrorCode.ITEM_NOT_FOUND)
+            throw ServiceException("Questionnaire instances not found.",
+                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceUuid",
+                    "/iselearning/questionnaireInstance/nonexistent",
+                    ErrorCode.ITEM_NOT_FOUND)
         }
         val questionnaireInstance = questionnaireInstanceOptional.get()
         val model = transformQuestionnaireInstanceToOutputModel(questionnaireInstance)

@@ -10,7 +10,7 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
-import pt.iselearning.services.exception.ServerException
+import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
@@ -60,8 +60,10 @@ class QuestionnaireAnswerServices(
                                     challenge.challengeId
                             )
                     if(optionalQc.isEmpty){
-                        throw ServerException("Challenge not in that questionnaire",
-                                "Challenge  ${challenge.challengeId} its not on the list of challenges for questionnaire ${questionnaireAnswerInputModel.questionnaireId}", ErrorCode.ITEM_NOT_FOUND)
+                        throw ServiceException("Challenge not in that questionnaire",
+                                "Challenge  ${challenge.challengeId} its not on the list of challenges for questionnaire ${questionnaireAnswerInputModel.questionnaireId}",
+                                "/iselearning/questionnaireAnswers/noChallengesToAnswer",
+                                ErrorCode.ITEM_NOT_FOUND)
                     }
                     QuestionnaireAnswer(
                             null,
