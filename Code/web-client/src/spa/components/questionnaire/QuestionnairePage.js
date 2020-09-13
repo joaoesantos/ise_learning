@@ -25,7 +25,7 @@ import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
-import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
+import { defaultLanguage, CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig';
 
 const os = require("os");
 
@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
         padding: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            //marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
             padding: theme.spacing(3),
         },
@@ -139,7 +138,9 @@ export default function QuestionnairePage() {
             })
         } else if (actionState === ActionStates.done && action.render) {
             const initChallenge = response.challenges[0]
-            initChallenge.answer.codeLanguage = response.challenges[0].answer.codeLanguage || defaultLanguage
+            const initialLanguage = response.challenges[0].answer.codeLanguage || defaultLanguage
+            initChallenge.answer.codeLanguage = initialLanguage
+            initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
             setQuestionnaire(response)
             setTimer(response.timer)
             setActiveChallenge(initChallenge)
@@ -169,10 +170,12 @@ export default function QuestionnairePage() {
         console.log('codeLanguage:', event.target.value)
         onClearConsole()
         let clone = { ...questionnaire }
-        clone.challenges[activeStep].answer.codeLanguage = event.target.value
-        clone.challenges[activeStep].answer.codeText = CodeMirrorOptions.get(event.target.value).value
+        const cha = clone.challenges[activeStep]
+        cha.answer.codeLanguage = event.target.value
+        cha.answer.codeText = CodeMirrorOptions.get(event.target.value).value
+        cha.answer.unitTests = defaultUnitTests[event.target.value]
         setQuestionnaire(clone);
-        setActiveChallenge(clone.challenges[activeStep])
+        setActiveChallenge(cha)
         setCodeLanguage(event.target.value)
     }
 
@@ -239,9 +242,13 @@ export default function QuestionnairePage() {
 
     const handleStepChange = (nextStep) => {
         const nextChallenge = questionnaire.challenges[nextStep]
-
+        
         if(!nextChallenge.answer.codeLanguage || nextChallenge.answer.codeLanguage == '') {
             nextChallenge.answer.codeLanguage = defaultLanguage
+        }
+
+        if(!nextChallenge.unitTests){
+            nextChallenge.answer.unitTests = defaultUnitTests[nextChallenge.answer.codeLanguage]
         }
 
         setActiveChallenge(nextChallenge)
