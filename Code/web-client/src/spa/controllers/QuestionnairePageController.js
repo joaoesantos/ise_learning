@@ -1,5 +1,6 @@
 import { apiUrlTemplates } from '../clientSideConfig'
 import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
+import { LanguageController } from './LanguageController'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async () => {
@@ -10,6 +11,12 @@ export const QuestionnairePageController = {
         }
         let response = await fetch(url, options)
         let json = await response.json();
+        const availableLanguages = await LanguageController.getAvailableLanguages()
+        json.challenges.forEach(async (element) => {
+            if(!element.languages){
+                element.languages = availableLanguages.json.map(l => l.codeLanguage)
+            }
+        });
         return json
 
     },
@@ -21,8 +28,6 @@ export const QuestionnairePageController = {
             method: HttpMethods.post,
             headers: defaultHeaders()
         }
-
-        console.log(questionnaireInfo.challenges)
         const body = {
             questionnaireInstanceId: questionnaireInfo.questionnaireInstanceId,
             questionnaireId: questionnaireInfo.questionnaireId,

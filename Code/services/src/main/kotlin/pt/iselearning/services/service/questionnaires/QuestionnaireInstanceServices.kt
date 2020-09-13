@@ -14,6 +14,7 @@ import pt.iselearning.services.models.ChallengeAnswerOutputModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
 import pt.iselearning.services.models.questionnaire.output.QuestionnaireInstanceOutputModel
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
 import pt.iselearning.services.service.challenge.ChallengeService
@@ -21,6 +22,7 @@ import pt.iselearning.services.util.checkIfQuestionnaireExists
 import pt.iselearning.services.util.checkIfQuestionnaireInstanceExists
 import pt.iselearning.services.util.checkQuestionnaireInstanceTimeout
 import java.util.*
+import javax.transaction.Transactional
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -33,6 +35,7 @@ class QuestionnaireInstanceServices(
         private val questionnaireRepository: QuestionnaireRepository,
         private val questionnaireInstanceRepository: QuestionnaireInstanceRepository,
         private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
+        private val questionnaireChallengeRepository : QuestionnaireChallengeRepository,
         private val challengeService: ChallengeService,
         private val modelMapper: ModelMapper
 ) {
@@ -85,6 +88,7 @@ class QuestionnaireInstanceServices(
      * @return questionnaire instance object
      */
     @Validated
+    @Transactional
     fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstanceOutputModel {
         val questionnaireInstanceOptional = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
 
@@ -166,6 +170,7 @@ class QuestionnaireInstanceServices(
     private fun getOrInitializeChallengeAnswers(questionnaireInstance: QuestionnaireInstance): List<ChallengeAnswerOutputModel> {
         var answers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstance.questionnaireInstanceId!!)
         val challenges = challengeService.getAllChallengesByQuestionnaireId(questionnaireInstance.questionnaireId!!)
+
         //initialize list
         if(answers.isEmpty()) {
             answers = challenges.map {
@@ -178,10 +183,14 @@ class QuestionnaireInstanceServices(
             }
         }
 
+        val questionnaireChallenges = questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireInstance.questionnaireId!!)
+
+
         return answers.mapIndexed {
             index, questionnaireAnswer ->
             ChallengeAnswerOutputModel(
                     challenges[index].challengeId!!,
+                    questionnaireChallenges.first { qc -> qc.challenge?.challengeId == challenges[index].challengeId!! }.languageFilter?.split(",") ,
                     challenges[index].challengeText!!,
                     AnswerModel(
                             questionnaireAnswer.answer?.codeLanguage,

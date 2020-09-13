@@ -141,11 +141,10 @@ export default function QuestionnairePage() {
             const initialLanguage = response.challenges[0].answer.codeLanguage || defaultLanguage
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
-            console.log(initChallenge.answer.unitTests)
             setQuestionnaire(response)
             setTimer(response.timer)
             setActiveChallenge(initChallenge)
-            setCodeLanguage(initChallenge.codeLanguage)
+            setCodeLanguage(initChallenge.codeLanguage || initChallenge.languages && initChallenge.languages[0])
             setUnitTests(initChallenge.answer.unitTests || '')
         } else {
             //not Done || done but not rendering
@@ -169,7 +168,6 @@ export default function QuestionnairePage() {
     }, [timer])
 
     const onLanguageChange = (event) => {
-        console.log('codeLanguage:', event.target.value)
         onClearConsole()
         let clone = { ...questionnaire }
         const cha = clone.challenges[activeStep]
@@ -253,7 +251,6 @@ export default function QuestionnairePage() {
         setActiveChallenge(nextChallenge)
         setTextEditorArea(getCodeArea(nextStep))
         setTextArea({ value: '', toUpdate: false })
-        console.log(nextChallenge)
         setCodeLanguage(nextChallenge.answer.codeLanguage)
         setActiveStep(nextStep);
     }
@@ -306,9 +303,14 @@ export default function QuestionnairePage() {
 
     }
 
+    const languageOptions = () => {
+        return activeChallenge.languages.map( (l, index) => 
+        <option key={index} value={l}>{l.toLowerCase()}</option>   
+        )
+    }
+
     const getChallengeContent = (step) => {
         const challenge = activeChallenge.description
-        console.log('codeLanguage2:', codeLanguage)
         return (
             <React.Fragment>
                 <Container className={classes.container} maxWidth={false}>
@@ -342,11 +344,12 @@ export default function QuestionnairePage() {
                                             native
                                             value={codeLanguage}
                                             onChange={onLanguageChange}>
-                                            <option value={'java'}>Java</option>
+                                            {/* <option value={'java'}>Java</option>
                                             <option value={'kotlin'}>Kotlin</option>
                                             <option value={'javascript'}>JavaScript</option>
                                             <option value={'csharp'}>C#</option>
-                                            <option value={'python'}>Python</option>
+                                            <option value={'python'}>Python</option> */}
+                                            {languageOptions()}
                                         </Select>
                                     </FormControl>
                                 </Grid>

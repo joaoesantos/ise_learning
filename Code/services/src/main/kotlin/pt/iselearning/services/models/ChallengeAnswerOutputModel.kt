@@ -5,7 +5,7 @@ import javax.validation.constraints.Positive
 
 class ChallengeAnswerOutputModel (
         var challengeId : Int,
-        var languages : List<String>,
+        var languages : List<String>?,
         var description : String,
         var answer: AnswerModel
 )
