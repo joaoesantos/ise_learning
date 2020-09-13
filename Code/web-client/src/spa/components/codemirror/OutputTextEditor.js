@@ -32,7 +32,7 @@ class OutputTextEditor extends Component {
     super(props);
   };
 
-  // is invoked immediately after a component is mounted (inserted into the tree)
+  // is invoked immediately after a component is mounted (inserted into the DOM tree)
   componentDidMount = () => {
     this.editor = codemirror(this.instance, 
       {
@@ -41,8 +41,8 @@ class OutputTextEditor extends Component {
         theme: this.props.theme.palette.type === "light" ? "neat" : "monokai"
       }
     );
-    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "85vh"
-    const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
+    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "80vh"
+    const editorWidth = this.props.editorWidth ? this.props.editorWidth : "100%"
     this.editor.setSize(`${editorWidth}%`, editorHeigth);
   };
 

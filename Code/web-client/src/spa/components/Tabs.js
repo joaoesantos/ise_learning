@@ -8,7 +8,6 @@ import Tabs from '@material-ui/core/Tabs'
 // utils
 import PropTypes from 'prop-types'
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -49,6 +48,7 @@ function a11yProps(index) {
  *  - 'useStyles' a function to be used for styling this component
  */
 export default function FullWidthTabs(props) {
+
   const [value, setValue] = React.useState(0);
   const [state, SetState] = React.useState({
     childComponents: props.childComponents,

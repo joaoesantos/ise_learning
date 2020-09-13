@@ -182,7 +182,7 @@ export default function UserProfile() {
                 exclusive: false
               }),
             repeatNewPassword: Yup.string()
-              .min(4, 'Must be at least 4 characters')
+              .min(6, 'Must be at least 6 characters')
               .required('Required')
           })}
           onSubmit={(data, { setSubmitting }) => {

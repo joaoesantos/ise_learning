@@ -49,9 +49,7 @@ export default function ChallengeListTable(){
           },
           { title: 'Solution', field: 'solution', 
           render: challengeSolutions => challengeSolutions.solution.map(it =>
-              //<Link component={RouterLink} to={`/`} key={`${it.solutionId}`}> 
-                  <img src={codeLanguageIcons[it.codeLanguage]} height={24} />
-              //</Link>
+              <img src={codeLanguageIcons[it.codeLanguage]} height={24} key={it.solutionId} />
             )
           }
       ],
