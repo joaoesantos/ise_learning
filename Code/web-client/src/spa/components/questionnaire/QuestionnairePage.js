@@ -169,6 +169,7 @@ export default function QuestionnairePage() {
     }, [timer])
 
     const onLanguageChange = (event) => {
+        console.log('codeLanguage:', event.target.value)
         onClearConsole()
         let clone = { ...questionnaire }
         const cha = clone.challenges[activeStep]
