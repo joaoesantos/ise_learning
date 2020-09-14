@@ -8,7 +8,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
+import { useParams } from 'react-router-dom'
 import blue from '@material-ui/core/colors/blue';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -21,7 +21,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { ThemeContext } from '../../context/ThemeContext'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
-import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
+import { RunCodeController } from '../../controllers/RunCodeController'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
 
@@ -129,11 +129,13 @@ export default function QuestionnairePage() {
     const [activeChallenge, setActiveChallenge] = React.useState()
     const [codeLanguage, setCodeLanguage] = React.useState()
 
+    const {uuid} = useParams()
+
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
                 function: QuestionnairePageController.getQuestionnaire,
-                args: [],
+                args: [uuid],
                 render: true
             })
         } else if (actionState === ActionStates.done && action.render) {
@@ -183,7 +185,12 @@ export default function QuestionnairePage() {
         if (runState !== 'running') {
             setRunState('running');
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
-            let result = await runCodeCtrl(selectedChallengeAnswer.codeLanguage, selectedChallengeAnswer.answerCode, selectedChallengeAnswer.unitTests, runTests);
+            let result = await RunCodeController.execute({
+                language: codeLanguage,
+                code: selectedChallengeAnswer.answer.answerCodecode,
+                unitTests: unitTests,
+                executeTests: runTests
+            });
             setTextArea({
                 value: result,
                 toUpdate: true

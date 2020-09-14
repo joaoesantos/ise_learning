@@ -3,8 +3,8 @@ import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
 import { LanguageController } from './LanguageController'
 
 export const QuestionnairePageController = {
-    getQuestionnaire: async () => {
-        let url = '/v0/questionnaireInstances/solve/0c98e06e-b5cb-4088-8fcb-88080c0a83db'
+    getQuestionnaire: async (uuid) => {
+        let url = `/v0/questionnaireInstances/solve/${uuid}`
         let options = {
           method: HttpMethods.get,
           headers: defaultHeaders()

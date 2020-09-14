@@ -47,7 +47,6 @@ class QuestionnaireAnswerServices(
     @Validated
     @Transactional
     fun createQuestionnaireAnswer(@Valid questionnaireAnswerInputModel : QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
-        //val questionnaireAnswer = convertToEntity(questionnaireAnswerModel)
         val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerInputModel.questionnaireInstanceId)
         checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerInputModel.questionnaireInstanceId)
         checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
@@ -124,12 +123,6 @@ class QuestionnaireAnswerServices(
 
         //region data for update operation
         val updatedQuestionnaireAnswer = questionnaireAnswerFromDB.get()
-/*        if(updatedQuestionnaireAnswer.answer?.answerCode != null)
-            updatedQuestionnaireAnswer.answer?.answerCode = questionnaireAnswerModel.answer.answerCode
-        if(updatedQuestionnaireAnswer.answer?.unitTests != null)
-            updatedQuestionnaireAnswer.answer?.unitTests = questionnaireAnswerModel.answer.unitTests*/
-        //endregion
-
         return questionnaireAnswerRepository.save(updatedQuestionnaireAnswer)
     }
 
@@ -158,9 +151,6 @@ class QuestionnaireAnswerServices(
     private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
         // build answer from model
         val answer = Answer()
-/*        answer.codeLanguage = questionnaireAnswerModel.answer.codeLanguage
-        answer.answerCode = questionnaireAnswerModel.answer.answerCode
-        answer.unitTests = questionnaireAnswerModel.answer.unitTests*/
 
         // build questionnaireAnswer from model
         val questionnaireAnswer = QuestionnaireAnswer()
