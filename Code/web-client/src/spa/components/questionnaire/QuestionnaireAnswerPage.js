@@ -128,14 +128,14 @@ export default function QuestionnaireAnswerPage(props) {
                         <Grid container spacing={2} >
                             <Grid container spacing={4}>
                                 <Grid item xs={9}>
-                                    {/* <TextField
+                                    <TextField
                                         fullWidth
                                         size='medium'
                                         multiline
                                         id="challenge-description"
                                         defaultValue={challenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, }} /> */}
+                                        InputProps={{ readOnly: true, }} />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl variant="standard" className={classes.form} fullWidth>

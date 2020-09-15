@@ -4,6 +4,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
+import pt.iselearning.services.controller.questionnaire.input.QuestionnaireAnswerInputModel
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
@@ -29,15 +30,11 @@ class QuestionnaireAnswerController(
      */
     @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
-            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
+            @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder
-    ): ResponseEntity<QuestionnaireAnswer> {
-        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
-        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
-                .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
-                .build()
-                .toUri()
-        return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
+    ): ResponseEntity<Unit> {
+        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerInputModel)
+        return ResponseEntity.created(ucb.build().toUri()).build()
     }
 
     /**

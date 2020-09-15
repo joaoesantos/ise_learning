@@ -36,7 +36,7 @@ BEGIN
 	
 	CREATE TABLE answer (
 		answer_id INT GENERATED ALWAYS AS IDENTITY,
-		code_language VARCHAR(20) NOT NULL,
+		code_language VARCHAR(20),
 		answer_code TEXT,
 		unit_tests TEXT,
 		is_correct BOOLEAN DEFAULT FALSE,
@@ -153,7 +153,7 @@ BEGIN
 		questionnaire_answer_id INT GENERATED ALWAYS AS IDENTITY,
 		answer_id INT UNIQUE NOT NULL,
 		questionnaire_instance_id INT NOT NULL,
-		qc_id INT UNIQUE NOT NULL,
+		qc_id INT NOT NULL,
 		--
 		PRIMARY KEY (questionnaire_answer_id),
 		FOREIGN KEY (answer_id) 

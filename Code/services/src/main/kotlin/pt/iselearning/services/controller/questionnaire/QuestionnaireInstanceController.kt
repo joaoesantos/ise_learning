@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireInstanceOutputModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireInstanceServices
 import pt.iselearning.services.util.QUESTIONNAIRE_INSTANCE_PATTERN
 
@@ -64,7 +65,7 @@ class QuestionnaireInstanceController(
     @GetMapping("/solve/{questionnaireInstanceUuid}", name = "getQuestionnaireInstanceByUuid")
     fun getQuestionnaireInstanceByUuid(
             @PathVariable questionnaireInstanceUuid: String
-    ): ResponseEntity<QuestionnaireInstance> {
+    ): ResponseEntity<QuestionnaireInstanceOutputModel> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireInstanceServices.getQuestionnaireInstanceByUuid(questionnaireInstanceUuid))
     }

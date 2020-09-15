@@ -3,14 +3,26 @@ package pt.iselearning.services.service.questionnaires
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.domain.Answer
+import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstance
+import pt.iselearning.services.exception.ServiceException
+import pt.iselearning.services.exception.error.ErrorCode
+import pt.iselearning.services.models.AnswerModel
+import pt.iselearning.services.models.ChallengeAnswerModel
+import pt.iselearning.services.models.ChallengeAnswerOutputModel
 import pt.iselearning.services.models.questionnaire.QuestionnaireInstanceModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireInstanceOutputModel
+import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
+import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireRepository
+import pt.iselearning.services.service.challenge.ChallengeService
 import pt.iselearning.services.util.checkIfQuestionnaireExists
 import pt.iselearning.services.util.checkIfQuestionnaireInstanceExists
 import pt.iselearning.services.util.checkQuestionnaireInstanceTimeout
 import java.util.*
+import javax.transaction.Transactional
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 
@@ -22,6 +34,9 @@ import javax.validation.constraints.Positive
 class QuestionnaireInstanceServices(
         private val questionnaireRepository: QuestionnaireRepository,
         private val questionnaireInstanceRepository: QuestionnaireInstanceRepository,
+        private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
+        private val questionnaireChallengeRepository : QuestionnaireChallengeRepository,
+        private val challengeService: ChallengeService,
         private val modelMapper: ModelMapper
 ) {
 
@@ -73,10 +88,21 @@ class QuestionnaireInstanceServices(
      * @return questionnaire instance object
      */
     @Validated
-    fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstance {
-        val questionnaireInstance = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceUuid)
+    @Transactional
+    fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstanceOutputModel {
+        val questionnaireInstanceOptional = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
+
+        if(questionnaireInstanceOptional.isEmpty){
+            throw ServiceException("Questionnaire instances not found.",
+                    "There are no questionnaire instances for selected questionnaire $questionnaireInstanceUuid",
+                    "/iselearning/questionnaireInstance/nonexistent",
+                    ErrorCode.ITEM_NOT_FOUND)
+        }
+        val questionnaireInstance = questionnaireInstanceOptional.get()
+        val model = transformQuestionnaireInstanceToOutputModel(questionnaireInstance)
         checkQuestionnaireInstanceTimeout(questionnaireInstance, questionnaireInstanceRepository)
-        return questionnaireInstance
+        model.challenges = getOrInitializeChallengeAnswers(questionnaireInstance)
+        return model
     }
 
     /**
@@ -134,5 +160,45 @@ class QuestionnaireInstanceServices(
      * Auxiliary function that converts QuestionnaireInstance model to QuestionnaireInstance domain
      */
     private fun convertToEntity(input : QuestionnaireInstanceModel) = modelMapper.map(input, QuestionnaireInstance::class.java)
+
+    /**
+     * Auxiliary function that converts QuestionnaireInstance domain entity to QuestionnaireInstanceOutputModel
+     */
+    private fun transformQuestionnaireInstanceToOutputModel(questionnaireInstance: QuestionnaireInstance): QuestionnaireInstanceOutputModel
+            = modelMapper.map(questionnaireInstance, QuestionnaireInstanceOutputModel::class.java)
+
+    private fun getOrInitializeChallengeAnswers(questionnaireInstance: QuestionnaireInstance): List<ChallengeAnswerOutputModel> {
+        var answers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstance.questionnaireInstanceId!!)
+        val challenges = challengeService.getAllChallengesByQuestionnaireId(questionnaireInstance.questionnaireId!!)
+
+        //initialize list
+        if(answers.isEmpty()) {
+            answers = challenges.map {
+                QuestionnaireAnswer(
+                        null,
+                        questionnaireInstance.questionnaireInstanceId,
+                        null,
+                        Answer(null, null, null, null, false)
+                )
+            }
+        }
+
+        val questionnaireChallenges = questionnaireChallengeRepository.findAllByQuestionnaireQuestionnaireId(questionnaireInstance.questionnaireId!!)
+
+
+        return answers.mapIndexed {
+            index, questionnaireAnswer ->
+            ChallengeAnswerOutputModel(
+                    challenges[index].challengeId!!,
+                    questionnaireChallenges.first { qc -> qc.challenge?.challengeId == challenges[index].challengeId!! }.languageFilter?.split(",") ,
+                    challenges[index].challengeText!!,
+                    AnswerModel(
+                            questionnaireAnswer.answer?.codeLanguage,
+                            questionnaireAnswer.answer?.codeLanguage,
+                            questionnaireAnswer.answer?.unitTests
+                    )
+            )
+        }
+    }
 
 }

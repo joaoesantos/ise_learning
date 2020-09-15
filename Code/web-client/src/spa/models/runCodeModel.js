@@ -1,4 +1,7 @@
-export async function runCodeModel(codeLanguage, code) {
+// client side configurations
+import { apiVersion } from '../clientSideConfig';
+
+export async function runCodeModel(codeLanguage, code, unitTests, executeTests) {
     const options = {
         method: "POST",
         headers : {
@@ -8,18 +11,14 @@ export async function runCodeModel(codeLanguage, code) {
         body: JSON.stringify({
             language: codeLanguage,
             code: code,
-            unitTests:'',
-            executeTests: false
+            unitTests: unitTests,
+            executeTests: executeTests
         })
     };
     let response = await fetch("v0/execute", options)
         .then((res)=> res.json()).catch((err) => { throw err });
 
-    return({
-        environment: codeLanguage,
-        executionTime : 15,
-        result : response.rawResult
-    })
+    return response
 }
 
 export default { runCodeModel }
