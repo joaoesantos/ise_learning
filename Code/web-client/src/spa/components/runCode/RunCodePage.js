@@ -88,7 +88,6 @@ export default function RunCodePage() {
   }
 
   async function onRunCode() {
-    console.log('textEditorData',textEditorData)
     setAction({
       function: RunCodeController.execute,
       args: [{
@@ -146,34 +145,34 @@ export default function RunCodePage() {
             minSize="250"
           >
             <Toolbar className={classes.outputToolbar} variant="dense">
-            <Box display="flex">
-              <Typography style={{paddingRight:5}}>
-                Output:
-              </Typography>
-              {runState === 'running' && (
-                <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
-                  Running...
-                </Paper>
-              )}
-              {runState === 'finished' && (
-                <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
-                  Finished
-                </Paper>
-              )}
-              {runState === 'error' && (
-                <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#d9534f'}}>
-                  Compile Error
-                </Paper>
-              )}
-            </Box>
-            <Button className={classes.clearButton}
-              id="clearConsoleButton"
-              variant="contained"
-              onClick={onClearConsole}
-              style={{minWidth: 125}}
-            >
-              Clear Console
-            </Button>
+              <Box display="flex">
+                <Typography style={{paddingRight:5}}>
+                  Output:
+                </Typography>
+                {runState === 'running' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
+                    Running...
+                  </Paper>
+                )}
+                {runState === 'finished' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
+                    Finished
+                  </Paper>
+                )}
+                {runState === 'error' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#d9534f'}}>
+                    Compile Error
+                  </Paper>
+                )}
+              </Box>
+              <Button className={classes.clearButton}
+                id="clearConsoleButton"
+                variant="contained"
+                onClick={onClearConsole}
+                style={{minWidth: 125}}
+              >
+                Clear Console
+              </Button>
             </Toolbar>
             <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} />
           </ReflexElement>

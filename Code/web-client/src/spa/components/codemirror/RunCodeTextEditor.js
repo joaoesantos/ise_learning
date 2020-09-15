@@ -50,7 +50,7 @@ class RunCodeTextEditor extends Component {
                 value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
                 mode:CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
                 theme: this.props.theme.palette.type === "light" ? "neat" : "monokai",
-                autoRefresh: true,
+                //autoRefresh: true,
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
