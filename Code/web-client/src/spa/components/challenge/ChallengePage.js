@@ -4,6 +4,7 @@ import { Redirect, withRouter } from 'react-router-dom'
 // react-reflex
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 // material-ui components
+import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
@@ -13,10 +14,12 @@ import Input from '@material-ui/core/Input'
 import InputBase from '@material-ui/core/InputBase'
 import InputLabel from '@material-ui/core/InputLabel'
 import ListItemText from '@material-ui/core/ListItemText'
+import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Select from '@material-ui/core/Select'
 import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 // custom components
 import CustomizedTabs from '../Tabs'
 import ChallengeStatement from './ChallengeStatement'
@@ -43,6 +46,11 @@ const useStyles = makeStyles(theme => ({
         height: "80vh"
     },
     toolbar: {
+        paddingLeft: theme.spacing(1),
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        justifyContent: "space-between"
+    },
+    outputToolbar: {
         paddingLeft: theme.spacing(1),
         borderBottom: `1px solid ${theme.palette.divider}`,
         justifyContent: "space-between"
@@ -105,6 +113,7 @@ export default withRouter(function ChallengePage(props) {
     const [ourTests, setOurTests] = React.useState({})
 
     const [outputText, setOutputText] = React.useState({ value: '', toUpdate: false })
+    const [runState, setRunState] = React.useState('notRunning')
 
 
     // fetch props & data
@@ -158,6 +167,13 @@ export default withRouter(function ChallengePage(props) {
         newChallenge.challengeTitle = e.target.value;
         setChallenge(newChallenge)
     }
+
+    function onClearConsole() {
+        //if(runState !== 'notRunning') {
+          setRunState('notRunning');
+          setOutputText('cls')
+        //}
+      }
 
     let yourSolutionRunCodeAction = genericRunCodeAction(yourSolution.value, "", false, "Your Solution", setOutputText, codeLanguage);
     let ourSolutionRunCodeAction = genericRunCodeAction(ourSolution.value, "", false, "Our Solution", setOutputText, codeLanguage);
@@ -327,13 +343,46 @@ export default withRouter(function ChallengePage(props) {
                                     </ReflexElement>
                                     <ReflexSplitter />
                                     <ReflexElement >
+               
                                         <CustomizedTabs
                                             childComponents={[
-                                                <OutputTextEditor 
-                                                    theme={theme} 
-                                                    textArea={outputText} 
-                                                    setTextArea={setOutputText} 
-                                                />
+                                                <>
+                                                    <Toolbar className={classes.outputToolbar} variant="dense">
+                                                        <Box display="flex">
+                                                            <Typography style={{paddingRight:5}}>
+                                                            Output:
+                                                            </Typography>
+                                                            {runState === 'running' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
+                                                                Running...
+                                                            </Paper>
+                                                            )}
+                                                            {runState === 'finished' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
+                                                                Finished
+                                                            </Paper>
+                                                            )}
+                                                            {runState === 'error' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#d9534f'}}>
+                                                                Compile Error
+                                                            </Paper>
+                                                            )}
+                                                        </Box>
+                                                        <Button className={classes.clearButton}
+                                                            id="clearConsoleButton"
+                                                            variant="contained"
+                                                            onClick={onClearConsole}
+                                                            style={{minWidth: 125}}
+                                                        >
+                                                            Clear Console
+                                                        </Button>
+                                                    </Toolbar>
+                                                    <OutputTextEditor 
+                                                        theme={theme} 
+                                                        textArea={outputText} 
+                                                        setTextArea={setOutputText} 
+                                                    />
+                                                </>
                                             ]} 
                                             tabLabels={['EXECUTION RESULT']}
                                         />
