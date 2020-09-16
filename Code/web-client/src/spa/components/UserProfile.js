@@ -23,6 +23,9 @@ import UseAction, { ActionStates } from '../controllers/UseAction'
 import { UserController } from '../controllers/UserController'
 // authentication context
 import { AuthContext } from '../context/AuthContext'
+// utils
+import { fetchHeaders } from '../utils/fetchUtils'
+import history from '../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -53,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserProfile() {
 
   const classes = useStyles()
-  const { user, setUser } = React.useContext(AuthContext)
+  const { setAuth, user, setUser } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [showNewPassword, setShowNewPassword] = React.useState(false)
@@ -63,6 +66,12 @@ export default function UserProfile() {
   React.useEffect(() => {
     if (response && actionState === ActionStates.done && action.name && action.name === 'updateMe') {
       setUser(response.json)
+    } else if(response && actionState === ActionStates.done && action.name && action.name === 'deleteMe') {
+      setAuth(false)
+      setUser(undefined)
+      localStorage.removeItem('ISELearningLoggedUser')
+      fetchHeaders.clear()
+      history.push("/")
     }
   },[actionState]);
 
@@ -83,8 +92,9 @@ export default function UserProfile() {
       setAction({
         function: UserController.deleteMe,
         args: [],
+        render: false,
+        name: "deleteMe"
       })
-      localStorage.removeItem('ISELearningLoggedUser')
     }
     setDeleteAccount(!deleteAccount)
 }

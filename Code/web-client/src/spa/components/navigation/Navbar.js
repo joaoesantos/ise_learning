@@ -16,12 +16,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 // logo
 import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
-// controllers
-import { fetchHeaders } from '../../utils/fetchUtils'
 // authentication context
 import { themes, ThemeContext } from '../../context/ThemeContext'
 import { AuthContext } from '../../context/AuthContext'
 // utils
+import { fetchHeaders } from '../../utils/fetchUtils'
 import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
