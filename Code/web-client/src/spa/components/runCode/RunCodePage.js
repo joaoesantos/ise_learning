@@ -128,6 +128,7 @@ export default function RunCodePage() {
                 <Select
                   id="languageSelect"
                   native
+                  value={codeLanguage}
                   onChange={event => onLanguageChange(event)}
                 >
                   {Object.keys(languageLabelMappings).map(key => {

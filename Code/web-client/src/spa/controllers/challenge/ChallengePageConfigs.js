@@ -31,7 +31,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                 args: [challengeAnswerModel]
             });
         },
-        title: "Save Challenge's Answer",
+        title: "Submit Answer",
         isVisible: user != undefined
     }
     let createChallenge = {
@@ -128,7 +128,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                 componentAggregateStates.availableLanguages.setter(convertLanguagesToObjectWithLabel(response.map(s => s.codeLanguage)))
                 componentAggregateStates.challenge.setter({
                     challengeText: "Insert Challenge text here.",
-                    isPrivate: true,
+                    isPrivate: false,
                     solutions: []
                 })
             },

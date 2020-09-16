@@ -48,9 +48,9 @@ class RunCodeTextEditor extends Component {
                 lineNumbers: true,
                 matchBrackets: true,
                 value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
-                mode:CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
+                mode: CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
                 theme: this.props.theme.palette.type === "light" ? "neat" : "monokai",
-                //autoRefresh: true,
+                autoRefresh: true,
                 smartIndent: true,
                 matchClosing: true, 
                 autoCloseBrackets: true,
@@ -78,7 +78,6 @@ class RunCodeTextEditor extends Component {
                 this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
                 this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
             }
-
         }
     }
 

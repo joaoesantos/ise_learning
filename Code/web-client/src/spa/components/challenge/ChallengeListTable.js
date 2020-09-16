@@ -12,7 +12,7 @@ import { ChallengeController } from '../../controllers/challenge/ChallengeContro
 import { importAllImagesFromFolder } from '../../utils/utils'
 const codeLanguageIcons = importAllImagesFromFolder(require.context('../../images/icons/codeLanguages', false, /\.(png|jpe?g|svg)$/))
 
-export default function ChallengeListTable(){
+export default function ChallengeListTable() {
 
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
@@ -27,6 +27,7 @@ export default function ChallengeListTable(){
     } else if (actionState === ActionStates.done &&
     action.render && action.render === true) {
       let data = []
+      console.log(response)
       response.json.forEach(it => data.push(
           { 
             id: it.challengeId, 

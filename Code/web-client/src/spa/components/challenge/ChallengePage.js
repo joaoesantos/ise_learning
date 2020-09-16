@@ -109,8 +109,6 @@ export default withRouter(function ChallengePage(props) {
     const [ourTests, setOurTests] = React.useState({})
 
     const [outputText, setOutputText] = React.useState({ value: '', toUpdate: false })
-    const [runState, setRunState] = React.useState('notRunning')
-
 
     // fetch props & data
     const [action, setAction] = React.useState()
@@ -138,10 +136,18 @@ export default withRouter(function ChallengePage(props) {
     let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates, user)[props.location.configKey ? props.location.configKey : props.configKey]
 
     React.useEffect(() => {
-        if (response && actionState === ActionStates.done &&
+        // React.state evaluation for run code button action
+        if(actionState === ActionStates.done && action.name === "runcode" && response.severity === "success") {
+            response.textSufix = action.textSufix
+            setOutputText({ value: response.json, toUpdate: true })
+        } 
+        // React.state evaluation for action.done
+        else if(response && actionState === ActionStates.done &&
             action.render && action.render === true && !response.severity) {
                 pageConfigs.renderizationFunction(response.json)
-        } else if (!response && actionState === ActionStates.clear) {
+        } 
+        // React.state evaluation for action.clear
+        else if(actionState === ActionStates.clear) {
             setAction(pageConfigs.pageLoadingAction())
         }
     },[actionState]);
@@ -166,15 +172,14 @@ export default withRouter(function ChallengePage(props) {
 
     function onClearConsole() {
         if(actionState !== ActionStates.inProgress) {
-          setRunState('notRunning');
           setOutputText('cls')
         }
-      }
+    }
 
-    let yourSolutionRunCodeAction = genericRunCodeAction(yourSolution.value, "", false, "Your Solution", setOutputText, codeLanguage);
-    let ourSolutionRunCodeAction = genericRunCodeAction(ourSolution.value, "", false, "Our Solution", setOutputText, codeLanguage);
-    let yourTestsRunCodeAction = genericRunCodeAction(yourSolution.value, yourTests.value, true, "Your Tests", setOutputText, codeLanguage);
-    let ourTestsRunCodeAction = genericRunCodeAction(yourSolution.value, ourTests.value, true, "Our Tests", setOutputText, codeLanguage);
+    let yourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "", "", false, "Your Solution")
+    let ourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage, ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "", "", false, "Our Solution")
+    let yourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",  yourTests.value, true, "Your Tests")
+    let ourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",  ourTests.value, true, "Our Tests")
 
     let determineDefaultTextForEditableEditors = (map, type) => {
         if(map[codeLanguage]) {
@@ -188,12 +193,9 @@ export default withRouter(function ChallengePage(props) {
         }
     }
 
-    if(challenge) {
+    const renderChallengePage = () => {
         return (
             <div className={classes.layout}>
-                {redirectObject !== undefined && <Redirect push to={redirectObject} />}
-                {actionState === ActionStates.done && response && response.message
-                    && <CustomizedSnackbars message={response.message} severity={response.severity} />}
                 <InputBase
                     className={classes.margin + " " + classes.title}
                     defaultValue={challenge ? challenge.challengeTitle : 'New Challenge Title'}
@@ -208,6 +210,7 @@ export default withRouter(function ChallengePage(props) {
                         <Select
                             id="languageSelect"
                             native
+                            value={codeLanguage}
                             onChange={event => setCodeLanguage(event.target.value)}
                         >
                             {challengeLanguages.map(lang => {
@@ -325,7 +328,7 @@ export default withRouter(function ChallengePage(props) {
                                                     childComponents={[
                                                         <RunCodeTextEditor 
                                                             theme={theme} 
-                                                            codeLanguage={codeLanguage} 
+                                                            codeLanguage={codeLanguage}
                                                             textEditorData={yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : ""} 
                                                             setTextEditorData={genericSetTextEditorData(setYourSolution, yourSolution, codeLanguage)} 
                                                             actions={[yourSolutionRunCodeAction]} 
@@ -368,12 +371,48 @@ export default withRouter(function ChallengePage(props) {
                 </ReflexContainer>
             </div>
         )
-    } else if(actionState === ActionStates.clear) {
-        return <></>
-    } else if(actionState === ActionStates.inProgress) {
-        return <CircularProgress />
-    } else {
-        return <DefaultErrorMessage message={response.message} />
     }
+
+    switch(props.configKey) {
+        case "challenge":
+            if(actionState === ActionStates.clear) {
+                return <></>
+            } else if(actionState === ActionStates.inProgress) {
+                return <CircularProgress />
+            } else if(challenge) {
+                return (
+                    <>
+                        {actionState === ActionStates.done && response.message && 
+                            <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                        {renderChallengePage()}
+                    </>
+                )
+            } else {
+                return <DefaultErrorMessage message={"404 | Not Found"} />
+            }
+
+        case "newChallenge":
+            if(actionState === ActionStates.clear) {
+                return renderChallengePage()
+            } else if(actionState === ActionStates.inProgress) {
+                return <CircularProgress />
+            } else if(actionState === ActionStates.done) {
+                return (
+                    <>
+                        {redirectObject !== undefined && <Redirect push to={redirectObject} />}
+                        {actionState === ActionStates.done && response.message && 
+                            <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                        {renderChallengePage()}
+                    </>
+                )
+            }
+    
+        case "challengeAnswer":
+            // code block
+            break
+        default:
+            return <DefaultErrorMessage message={"404 | Not Found"} />
+    }
+
 
 });
