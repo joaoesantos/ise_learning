@@ -107,7 +107,7 @@ export default function RunCodePage() {
   }
 
   if(actionState === ActionStates.clear || actionState === ActionStates.inProgress ||
-    actionState === ActionStates.done && response && response.render) {
+    actionState === ActionStates.done && response && response.severity==="success") {
     return(
       <div className={classes.layout}>
         <ReflexContainer orientation="vertical" style={{height: "85vh"}}>
