@@ -40,7 +40,7 @@ value:
 // PYTHON
 CodeMirrorOptions.set('python',{
 mode:'python',
-value:`print "Hello World!"`
+value:`print("Hello World!")`
 });
 
 export const defaultUnitTests = {
