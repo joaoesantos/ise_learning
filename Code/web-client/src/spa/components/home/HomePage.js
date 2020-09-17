@@ -19,7 +19,7 @@ import QuestionnairesCard from './QuestionnairesCard.js'
 import CodeLanguagesCard from './CodeLanguagesCard.js'
 import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js'
 //import OpenSourceCard from './OpenSourceCard.js';
-import '../../images/wickedcss.min.css'
+
 
 const useStyles = makeStyles((theme) => ({
   layout: {

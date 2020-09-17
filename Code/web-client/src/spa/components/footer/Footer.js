@@ -12,7 +12,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary">
             {'Copyright © '}
-                <Link color="inherit" href="https://material-ui.com/">
+                <Link color="inherit" href="https://github.com/joaoesantos/ise_learning">
                     IS E-Learning
                 </Link>{' '}
             {new Date().getFullYear()}
@@ -48,9 +48,9 @@ export default function Footer() {
             >
                 <Copyright />
                 <Typography variant="body2">
-                    <Link className={classes.link} component={RouterLink} to="/contactUs">Contact Us</Link>
-                    <Link className={classes.link} component={RouterLink} to="/faq">FAQ</Link>
-                    <Link className={classes.link}component={RouterLink} to="/privacyPolicy">Privacy Policy</Link>
+                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning">Contact Us</Link>
+                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning/wiki">Wiki</Link>
+                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning/blob/master/LICENSE">Privacy Policy</Link>
                 </Typography>
             </Grid>
         </footer>

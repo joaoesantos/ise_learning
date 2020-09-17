@@ -11,14 +11,19 @@ import { AuthProvider } from './spa/context/AuthContext'
 import { ThemeProvider } from './spa/context/ThemeContext'
 // css normalization
 import CssBaseline from '@material-ui/core/CssBaseline'
+import 'react-reflex/styles.css'
+import './spa/css/iselearning.css'
+import './spa/css/wickedcss.min.css'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
     minWidth: 570,
-    minHeight: '100vh',
-    position: 'relative'
+    height: "100vh",
+    position: 'relative',
   },
 }));
+
+
 
 export default function App() {
   const classes = useStyles();

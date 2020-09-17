@@ -41,7 +41,7 @@ class OutputTextEditor extends Component {
         theme: this.props.theme.palette.type === "light" ? "neat" : "monokai"
       }
     );
-    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
+    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "85vh"
     const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
     this.editor.setSize(`${editorWidth}%`, editorHeigth);
   };
@@ -58,7 +58,7 @@ class OutputTextEditor extends Component {
         this.props.setTextArea({...this.props.textArea, toUpdate: false});
         const _this = this.props.textArea.value;
         const oldText = this.editor.doc.getValue();
-        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${_this.rawResult}\n\n`);
+        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${unescape(_this.rawResult)}\n\n`);
       }
 
       if(this.props.runState !== 'running' && this.props.textArea === 'cls') {
