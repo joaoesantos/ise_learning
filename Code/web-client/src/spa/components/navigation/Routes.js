@@ -15,15 +15,6 @@ import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPag
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-//TODO rever caminhos por exemplo QuestionnairePage é para responder ao questionario
-=======
-import SolveChallengePage from '../challenge/SolveChallengePage'
-
->>>>>>> update on new re-flexed ChallengePage
-=======
->>>>>>> facelift on challenge page
 export default function Routes() {
     return (
         <>

@@ -77,7 +77,7 @@ export default function RunCodePage() {
   React.useEffect(() => {
     if (actionState === ActionStates.inProgress) {
       setRunState('running')
-    } else if(actionState === ActionStates.done && response.severity==="success")  {
+    } else if(actionState === ActionStates.done && response.severity === "success")  {
       response.json.wasError ? setRunState('error') : setRunState('finished')
       setTextArea({ ...textArea, value: response.json, toUpdate: true });
     }

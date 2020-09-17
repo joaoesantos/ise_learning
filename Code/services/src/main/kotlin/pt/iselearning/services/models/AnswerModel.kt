@@ -1,6 +1,5 @@
 package pt.iselearning.services.models
 
-import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 class AnswerModel(

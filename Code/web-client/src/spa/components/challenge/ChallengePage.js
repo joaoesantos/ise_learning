@@ -4,10 +4,12 @@ import { Redirect, withRouter } from 'react-router-dom'
 // react-reflex
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 // material-ui components
+import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Paper from '@material-ui/core/Paper'
 import Input from '@material-ui/core/Input'
 import InputBase from '@material-ui/core/InputBase'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -16,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Select from '@material-ui/core/Select'
 import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 // custom components
 import CustomizedTabs from '../Tabs'
 import ChallengeStatement from './ChallengeStatement'
@@ -50,6 +53,10 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(1),
         borderBottom: `1px solid ${theme.palette.divider}`,
         justifyContent: "space-between"
+    },
+    runStatePaper: {
+        elevation:1,
+        borderStyle:'solid',
     },
     button: {
         margin: theme.spacing(1),
@@ -113,8 +120,9 @@ export default withRouter(function ChallengePage(props) {
     // fetch props & data
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
+    const [runState, setRunState] = React.useState('notRunning')
     const [challenge, setChallenge] = React.useState()
-    const [challengeAnswer, setChallengeAnswer] = React.useState()
+    const [challengeAnswer, setChallengeAnswer] = React.useState({})
     const [availableLanguages, setAvailableLanguages] = React.useState([])
 
     let componentAggregateStates = {
@@ -137,11 +145,15 @@ export default withRouter(function ChallengePage(props) {
 
     React.useEffect(() => {
         // React.state evaluation for run code button action
-        if(actionState === ActionStates.done && action.name === "runcode" && response.severity === "success") {
-            response.textSufix = action.textSufix
-            console.log("should only enter here once")
-            setOutputText({ value: response.json, toUpdate: true })
-        } 
+        if (action && action.name && action.name === "runcode") {
+            if(actionState === ActionStates.inProgress) {
+                setRunState('running')
+            } else if(actionState === ActionStates.done && response.severity === "success") {
+                response.json.wasError ? setRunState('error') : setRunState('finished')
+                response.textSufix = action.textSufix
+                setOutputText({ value: response.json, toUpdate: true })
+            } 
+        }
         // React.state evaluation for action.done
         else if(response && actionState === ActionStates.done &&
             action.render && action.render === true && !response.severity) {
@@ -173,7 +185,8 @@ export default withRouter(function ChallengePage(props) {
 
     function onClearConsole() {
         if(actionState !== ActionStates.inProgress) {
-          setOutputText('cls')
+            setRunState('notRunning')
+            setOutputText('cls')
         }
     }
 
@@ -199,7 +212,8 @@ export default withRouter(function ChallengePage(props) {
             <div className={classes.layout}>
                 <InputBase
                     className={classes.title}
-                    defaultValue={challenge ? challenge.challengeTitle : 'New Challenge Title'}
+                    defaultValue={challenge ? challenge.challengeTitle : ''}
+                    placeholder={"New Challenge Title"}
                     inputProps={{ 'aria-label': 'naked' }}
                     disabled={!isChallengeEditable}
                     required={true}
@@ -235,14 +249,12 @@ export default withRouter(function ChallengePage(props) {
                             multiple
                             value={availableLanguages.filter(lang => challengeLanguages.map(l => l.value).indexOf(lang.value) > -1)}
                             onChange={e => {
-                                if(e.target.value.length < 1) {
-                                    alert("There must be at least 1 language selected.")
+                                setChallengeLanguages(e.target.value)
+                                if(e.target.value.length === 1) {
+                                    let language = e.target.value[0].value
+                                    setCodeLanguage(language)
                                 } else {
-                                    setChallengeLanguages(e.target.value)
-                                    if(e.target.value.length === 1) {
-                                        let language = e.target.value[0].value;
-                                        setCodeLanguage(language)
-                                    }
+                                    setCodeLanguage(undefined)
                                 }
                             }}
                             input={<Input />}
@@ -263,6 +275,7 @@ export default withRouter(function ChallengePage(props) {
                             key={e.id}
                             id={e.id}
                             variant="contained"
+                            disabled={e.disabled}
                             onClick={() => e.onClick()}
                         >
                             {e.title}
@@ -348,14 +361,36 @@ export default withRouter(function ChallengePage(props) {
                                         <CustomizedTabs
                                             childComponents={[
                                                 <>
-                                                    <Button className={classes.button}
-                                                        id="clearConsoleButton"
-                                                        variant="contained"
-                                                        onClick={onClearConsole}
-                                                        style={{minWidth: 125}}
-                                                    >
-                                                        Clear Console
-                                                    </Button>
+                                                    <Toolbar className={classes.outputToolbar} variant="dense">
+                                                        <Box display="flex">
+                                                            <Typography style={{paddingRight:5}}>
+                                                            Output:
+                                                            </Typography>
+                                                            {runState === 'running' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
+                                                                Running...
+                                                            </Paper>
+                                                            )}
+                                                            {runState === 'finished' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
+                                                                Finished
+                                                            </Paper>
+                                                            )}
+                                                            {runState === 'error' && (
+                                                            <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#d9534f'}}>
+                                                                Compile Error
+                                                            </Paper>
+                                                            )}
+                                                        </Box>
+                                                        <Button className={classes.clearButton}
+                                                            id="clearConsoleButton"
+                                                            variant="contained"
+                                                            onClick={onClearConsole}
+                                                            style={{minWidth: 125}}
+                                                        >
+                                                            Clear Console
+                                                        </Button>
+                                                    </Toolbar>
                                                     <OutputTextEditor 
                                                         theme={theme} 
                                                         textArea={outputText} 
@@ -375,7 +410,6 @@ export default withRouter(function ChallengePage(props) {
         )
     }
 
-    console.log(actionState,response)
     switch(props.configKey) {
         case "challenge":
             if(challenge) {
@@ -396,17 +430,10 @@ export default withRouter(function ChallengePage(props) {
 
         case "newChallenge":
             if(user) {
-                if(actionState === ActionStates.clear) {
-                    console.log("do something")
-                } else if(actionState === ActionStates.inProgress) {
-                    console.log("do not something")
-                } else if(actionState === ActionStates.done) {
-                    console.log("do not")
-                }
                 return (
                     <>
                         {redirectObject !== undefined && <Redirect push to={redirectObject} />}
-                        {actionState === ActionStates.done && response.message && 
+                        {actionState === ActionStates.done && response && response.message && 
                             <CustomizedSnackbars message={response.message} severity={response.severity} />}
                         {renderChallengePage()}
                     </>

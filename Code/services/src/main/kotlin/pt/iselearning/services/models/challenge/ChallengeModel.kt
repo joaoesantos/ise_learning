@@ -11,10 +11,11 @@ import javax.validation.constraints.Size
 @Validated
 class ChallengeModel(
 
+        @field:NotNull(message = "Challenge must have a title")
         @field:Size(min = 1, max = 50, message = "Challenge description must less than 50 characters")
         var challengeTitle: String,
 
-        @field:NotNull
+        @field:NotNull(message = "Challenge must have a stament")
         var challengeText: String,
 
         @field:NotNull

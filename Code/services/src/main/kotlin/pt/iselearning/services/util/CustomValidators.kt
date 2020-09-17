@@ -33,7 +33,7 @@ fun checkIfUnitTestsPassed(
     if(executableResult.wasError) {
         throw ServiceException(
                 "Unit tests failed.",
-                "Code didn't passed unit tests.",
+                "Code didn't failed to pass unit tests.",
                 "/iselearning/unittests/failed.",
                 ErrorCode.BAD_REQUEST
         )

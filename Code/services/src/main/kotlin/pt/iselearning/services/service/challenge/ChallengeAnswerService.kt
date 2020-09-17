@@ -43,13 +43,13 @@ class ChallengeAnswerService (
 
         val challenge = challengeService.getChallengeById(challengeAnswerModel.challengeId, loggedUser)
         val createdChallengeAnswer = convertToEntity(challengeAnswerModel)
-        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage!!)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswerModel.answer.codeLanguage,
-                        challengeAnswerModel.answer.answerCode,
+                        challengeAnswerModel.answer.codeLanguage!!,
+                        challengeAnswerModel.answer.answerCode!!,
                         challengeSolution?.unitTests!!,
                         true
                 )
@@ -114,13 +114,13 @@ class ChallengeAnswerService (
 
         val challenge = challengeService.getChallengeById(challengeAnswerFromDb.challengeId!!, loggedUser)
 
-        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage!!)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswerModel.answer.codeLanguage,
-                        challengeAnswerModel.answer.answerCode,
+                        challengeAnswerModel.answer.codeLanguage!!,
+                        challengeAnswerModel.answer.answerCode!!,
                         challengeSolution?.unitTests!!,
                         true
                 )

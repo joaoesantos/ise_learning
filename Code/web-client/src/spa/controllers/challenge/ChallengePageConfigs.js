@@ -38,7 +38,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
         id: "createChallenge",
         onClick: () => {
             let challengeModel = Object.assign({}, componentAggregateStates.challenge.state);
-            challengeModel.creatorId = user ? user.userId : undefined;
+            challengeModel.creatorId = user.userId
             challengeModel.solutions = componentAggregateStates.challengeLanguages.state.map(l => {
                 return {
                     challengeCode: componentAggregateStates.yourSolution.state[l.value] ? componentAggregateStates.yourSolution.state[l.value].value : "",
@@ -54,23 +54,23 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                         componentAggregateStates.redirectObject.setter({
                             pathname: `/challenges/${response.json.challengeId}`
                         })
-                        return response.json;
                     }
+                    return response
                 },
                 args: [challengeModel]
             });
         },
         title: "Create Challenge",
-        isVisible: user != undefined
+        isVisible: user !== undefined,
+        disabled: componentAggregateStates.codeLanguage.state === undefined
     }
-    console.log(componentAggregateStates.challenge.creatorId, userId )
     let editChallenge = {
         id: "editChallenge",
         onClick: () => {
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: !componentAggregateStates.isChallengeEditable.state && componentAggregateStates.challenge.creatorId === userId  // tem de ser creatorId == user.userId -> esta tudo a null no inicio...
+        isVisible: componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
     }
     let saveChallenge = {
         id: "saveChallenge",

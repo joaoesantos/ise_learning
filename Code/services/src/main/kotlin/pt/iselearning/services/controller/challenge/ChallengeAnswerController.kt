@@ -35,7 +35,7 @@ class ChallengeAnswerController(
     ): ResponseEntity<ChallengeAnswer> {
         val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswerModel, loggedUser)
         val location = ucb.path("/v0/challengeAnswers")
-                .path(challengeAnswer!!.challengeAnswerId.toString())
+                .path(challengeAnswer.challengeAnswerId.toString())
                 .build()
                 .toUri()
         return ResponseEntity.created(location).body(challengeAnswer)
