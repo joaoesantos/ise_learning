@@ -100,6 +100,9 @@ export default function Navbar() {
               <Link className={classes.link} component={RouterLink} to="/listChallenges">
                 Challenges
               </Link>
+              <Link className={classes.link} component={RouterLink} to="/test">
+                Test
+              </Link>
               {isAuthed &&
                 <Link className={classes.link} component={RouterLink} to="/questionnaires">
                   Questionnaires

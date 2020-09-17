@@ -7,21 +7,23 @@ import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles(theme => ({
     challengeStatementText: {
-        width: '100%'
+        width: '100%',
     },
     challengeStatementPage: {
-        height: '100%'
+        height: '100%',
+        padding: theme.spacing(2),
     }
 }));
 
 export default function ChallengePage(props) {
     const classes = useStyles()
     return (
-        <Paper variant="outlined" square elevation={1} className={classes.challengeStatementPage} >
+        <Paper variant="outlined" square={true} className={classes.challengeStatementPage} >
             <TextField
                 id="challengeStatement"
                 label="Challenge Statement"
                 multiline
+                variant="outlined"
                 rowsMax={38}
                 value={props.challengeStatement}
                 disabled={props.readOnly}

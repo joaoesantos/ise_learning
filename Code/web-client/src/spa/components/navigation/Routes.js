@@ -16,12 +16,19 @@ import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPag
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
+<<<<<<< HEAD
 //TODO rever caminhos por exemplo QuestionnairePage é para responder ao questionario
+=======
+import SolveChallengePage from '../challenge/SolveChallengePage'
+
+>>>>>>> update on new re-flexed ChallengePage
 export default function Routes() {
     return (
         <>
             <Navbar />
             <Switch>
+                <Route exact path="/test/:challengeId" render={({match}) => <SolveChallengePage match={match} configKey={"challenge"} />} />
+
                 <Route exact path="/" component={Home} />
                 <Route exact path="/runCode" component={RunCode} />
                 <Route exact path="/login" component={Login} />

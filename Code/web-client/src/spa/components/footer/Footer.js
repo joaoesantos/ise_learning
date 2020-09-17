@@ -1,6 +1,5 @@
 // react
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import { Grid } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider'
@@ -40,17 +39,17 @@ export default function Footer() {
         <footer className={classes.footer}>
             <Divider variant="middle" />
             <Grid 
-            container
-            direction="row"
-            justify="space-around"
-            alignItems="center"
-            style={{ paddingTop:10 }}
+                container
+                direction="row"
+                justify="space-around"
+                alignItems="center"
+                style={{ paddingTop:10 }}
             >
                 <Copyright />
                 <Typography variant="body2">
-                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning">Contact Us</Link>
-                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning/wiki">Wiki</Link>
-                    <Link className={classes.link} href="https://github.com/joaoesantos/ise_learning/blob/master/LICENSE">Privacy Policy</Link>
+                    <Link className={classes.link} target="_blank" href="https://github.com/joaoesantos/ise_learning">Contact Us</Link>
+                    <Link className={classes.link} target="_blank" href="https://github.com/joaoesantos/ise_learning/wiki">Wiki</Link>
+                    <Link className={classes.link} target="_blank" href="https://github.com/joaoesantos/ise_learning/blob/master/LICENSE">Privacy Policy</Link>
                 </Typography>
             </Grid>
         </footer>
