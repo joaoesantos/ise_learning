@@ -48,7 +48,7 @@ export const defaultUnitTests = {
     kotlin: "import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}",
     javascript: "should contain default test code for javascript",
     csharp: "should contain default test code for C#",
-    python: "import unittest\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
+    python: "import unittest\r\n\r\ndef foo():\r\n    return  True\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
 }
 
 const API_VERSION = "v0"

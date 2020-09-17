@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom'
 // page components
 import Navbar from '../navigation/Navbar'
 import Home from '../home/HomePage.js'
-import Footer from '../footer/Footer.js'
 import RunCode from '../runCode/RunCodePage.js'
 import SignIn from '../signInLogin/SignInPage.js'
 import Login from '../signInLogin/LoginPage.js'
@@ -17,18 +16,19 @@ import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 //TODO rever caminhos por exemplo QuestionnairePage é para responder ao questionario
 =======
 import SolveChallengePage from '../challenge/SolveChallengePage'
 
 >>>>>>> update on new re-flexed ChallengePage
+=======
+>>>>>>> facelift on challenge page
 export default function Routes() {
     return (
         <>
             <Navbar />
             <Switch>
-                <Route exact path="/test/:challengeId" render={({match}) => <SolveChallengePage match={match} configKey={"challenge"} />} />
-
                 <Route exact path="/" component={Home} />
                 <Route exact path="/runCode" component={RunCode} />
                 <Route exact path="/login" component={Login} />
@@ -44,7 +44,6 @@ export default function Routes() {
                 <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
                 <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />
             </Switch>
-            <Footer />
         </>
     )
 }

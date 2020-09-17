@@ -14,6 +14,9 @@ import { makeStyles } from '@material-ui/core/styles'
 // codemirror components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
+// custom components
+import Footer from '../footer/Footer.js'
+// notifications
 import DefaultErrorMessage from '../../components/notifications/DefaultErrorMessage'
 // authentication context
 import { ThemeContext } from '../../context/ThemeContext'
@@ -25,7 +28,7 @@ import { defaultLanguage, languageLabelMappings } from '../../clientSideConfig'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
-    height: "85vh"
+    height: "90vh"
   },
   container: {
     padding: theme.spacing(0),
@@ -108,7 +111,7 @@ export default function RunCodePage() {
     actionState === ActionStates.done && response && response.render) {
     return(
       <div className={classes.layout}>
-        <ReflexContainer orientation="vertical">
+        <ReflexContainer orientation="vertical" style={{height: "85vh"}}>
 
           <ReflexElement className="left-pane"
             minSize="265"
@@ -176,6 +179,7 @@ export default function RunCodePage() {
           </ReflexElement>
 
         </ReflexContainer>
+        <Footer />
       </div>
     )
   } else {

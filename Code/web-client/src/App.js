@@ -18,7 +18,8 @@ import './spa/css/wickedcss.min.css'
 const useStyles = makeStyles((theme) => ({
   layout: {
     minWidth: 570,
-    height: "100vh"
+    height: "100%",
+    position: "relative"
   },
 }));
 

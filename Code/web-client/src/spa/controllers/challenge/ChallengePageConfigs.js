@@ -127,7 +127,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                 componentAggregateStates.isChallengeEditable.setter(true)
                 componentAggregateStates.availableLanguages.setter(convertLanguagesToObjectWithLabel(response.map(s => s.codeLanguage)))
                 componentAggregateStates.challenge.setter({
-                    challengeText: "Insert Challenge text her.",
+                    challengeText: "Insert Challenge text here.",
                     isPrivate: true,
                     solutions: []
                 })

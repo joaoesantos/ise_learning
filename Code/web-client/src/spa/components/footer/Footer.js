@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         width: '100%',
         bottom: 0,
-        position: 'absolute',
+        //position: 'absolute',
     },
     link: {
         paddingLeft: 15,

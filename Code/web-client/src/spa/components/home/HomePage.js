@@ -11,14 +11,15 @@ import Typography from '@material-ui/core/Typography'
 // IS E-Learning images
 import mainImage from '../../images/ISELearning.png'
 import scriptIcon from '../../images/icons/services/color/scriptYlw.png'
-// cards components
+// custom components
 import BusinessCard from './BusinessCard.js'
 import MotivationCard from './MotivationCard.js'
 import ChallengesCard from './ChallengesCard.js'
 import QuestionnairesCard from './QuestionnairesCard.js'
 import CodeLanguagesCard from './CodeLanguagesCard.js'
 import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js'
-//import OpenSourceCard from './OpenSourceCard.js';
+import Footer from '../footer/Footer.js'
+// import OpenSourceCard from './OpenSourceCard.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -206,6 +207,7 @@ export default function HomePage() {
           </Grid>
         </Container>
       </Container>
+      <Footer />
     </div>
   )
 }
