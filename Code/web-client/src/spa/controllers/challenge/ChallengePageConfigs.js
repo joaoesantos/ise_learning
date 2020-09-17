@@ -49,11 +49,13 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
             componentAggregateStates.action.setter({
                 function: async (arg) => {
-                    let newChallenge = await ChallengeController.createChallenge(arg);
-                    componentAggregateStates.redirectObject.setter({
-                            pathname: `/challenges/${newChallenge.challengeId}`
-                    })
-                    return newChallenge;
+                    let response = await ChallengeController.createChallenge(arg);
+                    if(response.severity === "success") {
+                        componentAggregateStates.redirectObject.setter({
+                            pathname: `/challenges/${response.json.challengeId}`
+                        })
+                        return response.json;
+                    }
                 },
                 args: [challengeModel]
             });
@@ -61,13 +63,14 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
         title: "Create Challenge",
         isVisible: user != undefined
     }
+    console.log(componentAggregateStates.challenge.creatorId, userId )
     let editChallenge = {
         id: "editChallenge",
         onClick: () => {
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: !componentAggregateStates.isChallengeEditable.state && user != undefined
+        isVisible: !componentAggregateStates.isChallengeEditable.state && componentAggregateStates.challenge.creatorId === userId  // tem de ser creatorId == user.userId -> esta tudo a null no inicio...
     }
     let saveChallenge = {
         id: "saveChallenge",

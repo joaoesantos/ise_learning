@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 300,
     },
     title: {
-        display: "inline",
+        margin: theme.spacing(1.5),
         lineHeight: "32px",
         fontSize: "xx-large",
         fontWeight: "bold"
@@ -139,6 +139,7 @@ export default withRouter(function ChallengePage(props) {
         // React.state evaluation for run code button action
         if(actionState === ActionStates.done && action.name === "runcode" && response.severity === "success") {
             response.textSufix = action.textSufix
+            console.log("should only enter here once")
             setOutputText({ value: response.json, toUpdate: true })
         } 
         // React.state evaluation for action.done
@@ -197,12 +198,13 @@ export default withRouter(function ChallengePage(props) {
         return (
             <div className={classes.layout}>
                 <InputBase
-                    className={classes.margin + " " + classes.title}
+                    className={classes.title}
                     defaultValue={challenge ? challenge.challengeTitle : 'New Challenge Title'}
                     inputProps={{ 'aria-label': 'naked' }}
                     disabled={!isChallengeEditable}
                     required={true}
                     onChange={handleChallengeTitleChange}
+                    sytle={{paddingLeft:50}}
                 />
                 <Toolbar className={classes.toolbar} variant="dense">
                     <FormControl className={classes.formControl}>
@@ -373,13 +375,10 @@ export default withRouter(function ChallengePage(props) {
         )
     }
 
+    console.log(actionState,response)
     switch(props.configKey) {
         case "challenge":
-            if(actionState === ActionStates.clear) {
-                return <></>
-            } else if(actionState === ActionStates.inProgress) {
-                return <CircularProgress />
-            } else if(challenge) {
+            if(challenge) {
                 return (
                     <>
                         {actionState === ActionStates.done && response.message && 
@@ -388,15 +387,22 @@ export default withRouter(function ChallengePage(props) {
                     </>
                 )
             } else {
-                return <DefaultErrorMessage message={"404 | Not Found"} />
+                if(actionState === ActionStates.clear || actionState === ActionStates.inProgress) {
+                    return <CircularProgress />
+                } else if(actionState === ActionStates.done && response.message) {
+                    return <DefaultErrorMessage message={ response.message } />
+                }
             }
 
         case "newChallenge":
-            if(actionState === ActionStates.clear) {
-                return renderChallengePage()
-            } else if(actionState === ActionStates.inProgress) {
-                return <CircularProgress />
-            } else if(actionState === ActionStates.done) {
+            if(user) {
+                if(actionState === ActionStates.clear) {
+                    console.log("do something")
+                } else if(actionState === ActionStates.inProgress) {
+                    console.log("do not something")
+                } else if(actionState === ActionStates.done) {
+                    console.log("do not")
+                }
                 return (
                     <>
                         {redirectObject !== undefined && <Redirect push to={redirectObject} />}
@@ -405,10 +411,20 @@ export default withRouter(function ChallengePage(props) {
                         {renderChallengePage()}
                     </>
                 )
+            } else {
+                return <DefaultErrorMessage message={"401 | Unauthorized"} />
             }
+
     
         case "challengeAnswer":
-            // code block
+            return (
+                <>
+                    {redirectObject !== undefined && <Redirect push to={redirectObject} />}
+                    {actionState === ActionStates.done && response.message && 
+                        <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                    {renderChallengePage()}
+                </>
+            )
             break
         default:
             return <DefaultErrorMessage message={"404 | Not Found"} />

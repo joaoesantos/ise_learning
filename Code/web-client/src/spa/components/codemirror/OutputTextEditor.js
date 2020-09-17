@@ -55,6 +55,7 @@ class OutputTextEditor extends Component {
       }
 
       if(this.props.textArea.toUpdate) {
+        console.log("yo",this.props.textArea,prevProps)
         this.props.setTextArea({...this.props.textArea, toUpdate: false})
         const _this = this.props.textArea.value
         const oldText = this.editor.doc.getValue()
