@@ -12,7 +12,6 @@ import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.UserRepository
 import pt.iselearning.services.service.ExecutionEnvironmentsService
 import pt.iselearning.services.util.*
-import java.rmi.ServerException
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 

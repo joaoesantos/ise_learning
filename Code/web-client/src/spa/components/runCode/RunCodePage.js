@@ -17,6 +17,7 @@ import OutputTextEditor from '../codemirror/OutputTextEditor'
 // custom components
 import Footer from '../footer/Footer.js'
 // notifications
+import CustomizedSnackbars from '../../components/notifications/CustomizedSnackbars'
 import DefaultErrorMessage from '../../components/notifications/DefaultErrorMessage'
 // authentication context
 import { ThemeContext } from '../../context/ThemeContext'
@@ -107,9 +108,11 @@ export default function RunCodePage() {
   }
 
   if(actionState === ActionStates.clear || actionState === ActionStates.inProgress ||
-    actionState === ActionStates.done && response && response.severity==="success") {
+    actionState === ActionStates.done && response.render) {
     return(
       <div className={classes.layout}>
+        {actionState === ActionStates.done && response.message && 
+            <CustomizedSnackbars message={response.message} severity={response.severity} />}
         <ReflexContainer orientation="vertical" style={{height: "85vh"}}>
 
           <ReflexElement className="left-pane"

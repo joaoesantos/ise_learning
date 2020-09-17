@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, fetchHeaders, handleFetchResponse } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const ChallengeController = {
@@ -11,17 +11,7 @@ export const ChallengeController = {
         headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response)
   },
 
   getRandomChallenge: async () => {
@@ -31,17 +21,7 @@ export const ChallengeController = {
           headers: fetchHeaders.get()
       }
       let response = await fetch(url, options)
-      let jsonResponse = await response.json()
-      if(response.ok) {
-        return {
-          json: jsonResponse,
-        }
-      } else {
-        return {
-          message: jsonResponse.message,
-          severity: 'error'
-        }
-      }
+      return handleFetchResponse(response)
   },
 
   getChallengeById: async (challengeId) => {
@@ -51,17 +31,7 @@ export const ChallengeController = {
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response)
   },
 
   createChallenge: async (challengeModel) => {
@@ -72,17 +42,7 @@ export const ChallengeController = {
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response,"Challenge created successfully!")
   },
 
   updateChallenge: async (challengeId, challengeModel) => {
@@ -93,17 +53,7 @@ export const ChallengeController = {
       body: JSON.stringify(challengeModel)
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: {challenge: jsonResponse},
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response, "Challenge updated successfully!")
   },
 
   getChallengeByIdAndAvailableLanguages: async (challengeId) => {
