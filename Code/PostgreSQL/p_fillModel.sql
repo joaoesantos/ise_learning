@@ -447,10 +447,44 @@ BEGIN
 	(
 		5, -- user
 		4, -- challenge
+		'java',
+		'public class Main {
+			public static void main(String[] args) {
+				System.out.println("Hello World!");
+			}
+		}',
+		'import org.junit.Assert;import org.junit.Test;public class unitTests {@Test public void TestCase1() {Assert.assertTrue(true);}}'
+	);
+	
+	
+	CALL p_insertchallengeanswer
+	(
+		5, -- user
+		4, -- challenge
+		'kotlin',
+		'fun main(args: Array<String>) {
+			println("Hello, World!")
+		}',
+		''
+	);
+	
+	CALL p_insertchallengeanswer
+	(
+		5, -- user
+		4, -- challenge
 		'javascript',
 		'function main() {
 			console.log("Hello World!");
 		}());',
+		''
+	);
+	
+	CALL p_insertchallengeanswer
+	(
+		5, -- user
+		4, -- challenge
+		'python',
+		'print("Hello World!")',
 		''
 	);
 	

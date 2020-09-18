@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom'
 // page components
 import Navbar from '../navigation/Navbar'
 import Home from '../home/HomePage.js'
-import Footer from '../footer/Footer.js'
 import RunCode from '../runCode/RunCodePage.js'
 import SignIn from '../signInLogin/SignInPage.js'
 import Login from '../signInLogin/LoginPage.js'
@@ -16,7 +15,6 @@ import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPag
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
-//TODO rever caminhos por exemplo QuestionnairePage é para responder ao questionario
 export default function Routes() {
     return (
         <>
@@ -30,14 +28,12 @@ export default function Routes() {
                 <Route exact path="/listChallenges" component={ChallengeList} />
                 <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge match={match} configKey={"challenge"} />} />
                 <Route exact path="/newChallenge" render={({match}) => <Challenge match={match} configKey={"newChallenge"} />} />
-                <Route exact path="/challengeAnswers/:challengeId/answers/users/:userId" render={({match}) => <Challenge match={match} configKey={"challengeAnswer"} />} />
                 <Route exact path="/questionnaires" component={Questionnaire} />
                 <Route exact path="/questionnaireInstances/solve/:uuid" component={Questionnaire} />
                 <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />
                 <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
                 <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />
             </Switch>
-            <Footer />
         </>
     )
 }

@@ -12,7 +12,7 @@ export const HttpMethods = {
 export const defaultHeaders = () => {
     const headers = new Headers()
     headers.append("Content-Type", "application/json")
-    //headers.append("Accept", "application/problem+json")
+    headers.append("Accept", "application/problem+json")
     return headers
 }
 

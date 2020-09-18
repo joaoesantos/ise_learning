@@ -50,7 +50,7 @@ export default function ChallengeListPage() {
 
   React.useEffect(() => {
     if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {
-      history.push(`/challenges/${response.challengeId}`)
+      history.push(`/challenges/${response.json.challengeId}`)
     }
   },[actionState]);
 
@@ -66,15 +66,16 @@ export default function ChallengeListPage() {
     history.push('/newChallenge')
   }
 
+
   return (
     <>
       <Container className={classes.mainContainer}>
         <Grid 
-        container 
-        direction="row"
-        justify="space-evenly"
-        alignItems="center"
-        spacing={3}
+          container 
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+          spacing={3}
         >
           <Grid item xs={12} sm={10}>
             <Toolbar className={classes.toolbar} variant="regular" >
@@ -102,7 +103,7 @@ export default function ChallengeListPage() {
           </Grid>
           <Grid item xs={12} sm={2}>
             <p>Possible user information</p>
-            <p>Pie-chart statistics of number of challenges compelted?</p>
+            <p>Pie-chart statistics of number of challenges completed?</p>
           </Grid>
         </Grid>
       </Container>

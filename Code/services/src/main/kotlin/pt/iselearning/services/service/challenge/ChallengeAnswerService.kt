@@ -43,14 +43,14 @@ class ChallengeAnswerService (
 
         val challenge = challengeService.getChallengeById(challengeAnswerModel.challengeId, loggedUser)
         val createdChallengeAnswer = convertToEntity(challengeAnswerModel)
-        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage!!)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswerModel.answer.codeLanguage,
-                        challengeAnswerModel.answer.answerCode,
-                        challengeSolution?.unitTests!!,
+                        challengeAnswerModel.answer.codeLanguage!!,
+                        challengeAnswerModel.answer.answerCode!!,
+                        challengeSolution.unitTests!!,
                         true
                 )
         )
@@ -63,39 +63,40 @@ class ChallengeAnswerService (
     }
 
     /**
-     * Get user challenge answer by its unique identifier.
+     * Get all user challenge answers by its unique identifier.
      *
      * @param challengeId identifier of challenge object
      * @param userId identifier of user answer object
-     * @return challenge answer object
+     * @return List of challenge answer objects
      */
     @Validated
-    fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int): ChallengeAnswer {
+    fun getChallengeAnswerByUserId(@Positive challengeId: Int, @Positive userId: Int): List<ChallengeAnswer> {
         checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
-        return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
+        return challengeAnswerRepository.findAllByChallengeIdAndUserId(challengeId, userId)
     }
 
     /**
-     * Get challenge answer by its unique identifier.
+     * Get all  challenge answers by its unique identifier.
      *
      * @param challengeId identifier of challenge object
      * @param userId identifier of user answer object
      * @param loggedUser user that is calling the service
-     * @return challenge answer object
+     * @return List of challenge answer objects
      */
     @Validated
-    fun getChallengeAnswerByChallengeIdAndUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): ChallengeAnswer {
+    fun getChallengeAnswersByChallengeIdAndUserId(@Positive challengeId: Int, @Positive userId: Int, loggedUser: User): List<ChallengeAnswer> {
         checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, userId)
         checkIfChallengeExists(challengeRepository.findById(challengeId), challengeId)
         checkIfUserExists(userRepository.findById(userId), userId)
         if(userId != loggedUser.userId) {
-            throw ServiceException("Cannot get other user's answers.",
+            throw ServiceException(
+                    "Cannot get other user's answers.",
                     "Cannot get other user's answers. Challenge answer user different than logged user.",
                     "/iselearning/challengeAnswer/notResourceOwner",
                     ErrorCode.FORBIDDEN)
         }
-        return challengeAnswerRepository.findByChallengeIdAndUserId(challengeId, userId).get()
+        return challengeAnswerRepository.findAllByChallengeIdAndUserId(challengeId, userId)
     }
 
     /**
@@ -114,14 +115,14 @@ class ChallengeAnswerService (
 
         val challenge = challengeService.getChallengeById(challengeAnswerFromDb.challengeId!!, loggedUser)
 
-        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage)
+        val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage!!)
 
         // evaluates if answer is corrected based on challenge unit tests
         val executableResult = executionEnvironmentsService.execute(
                 ExecutableModel(
-                        challengeAnswerModel.answer.codeLanguage,
-                        challengeAnswerModel.answer.answerCode,
-                        challengeSolution?.unitTests!!,
+                        challengeAnswerModel.answer.codeLanguage!!,
+                        challengeAnswerModel.answer.answerCode!!,
+                        challengeSolution.unitTests!!,
                         true
                 )
         )

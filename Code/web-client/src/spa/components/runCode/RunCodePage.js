@@ -1,11 +1,11 @@
 // react
 import React from 'react'
+// react-reflex
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
 // material-ui components
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import Container from '@material-ui/core/Container'
 import FormControl from '@material-ui/core/FormControl'
-import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Select from '@material-ui/core/Select'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -14,15 +14,23 @@ import { makeStyles } from '@material-ui/core/styles'
 // codemirror components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
-// controller
-import { runCodeCtrl } from '../../controllers/runCodeCtrl.js'
+// custom components
+import Footer from '../footer/Footer.js'
+// notifications
+import CustomizedSnackbars from '../../components/notifications/CustomizedSnackbars'
+import DefaultErrorMessage from '../../components/notifications/DefaultErrorMessage'
 // authentication context
 import { ThemeContext } from '../../context/ThemeContext'
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { RunCodeController } from '../../controllers/RunCodeController'
 // client side configurations
-import { defaultLanguage } from '../../clientSideConfig'
+import { defaultLanguage, languageLabelMappings } from '../../clientSideConfig'
 
 const useStyles = makeStyles((theme) => ({
-  layout: {},
+  layout: {
+    height: "90vh"
+  },
   container: {
     padding: theme.spacing(0),
   },
@@ -39,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
   runButton: {
       margin: theme.spacing(1),
       textTransform:"none",
-      backgroundColor:'#4caf50',
+      color: "#ffffff",
+      backgroundColor:'#5cb85c',
       '&:hover' : {
           backgroundColor: '#388e3c',
       }
@@ -56,11 +65,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RunCodePage() {
 
+  const classes = useStyles()
   const { theme } = React.useContext(ThemeContext)
+  const [action, setAction] = React.useState()
+  const [actionState, response] = UseAction(action)
   const [runState, setRunState] = React.useState('notRunning')
-  const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage);
+  const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage)
   const [textEditorData, setTextEditorData] = React.useState()
-  const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
+  const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false })
+
+  React.useEffect(() => {
+    if (actionState === ActionStates.inProgress) {
+      setRunState('running')
+    } else if(actionState === ActionStates.done && response.severity === "success")  {
+      response.json.wasError ? setRunState('error') : setRunState('finished')
+      setTextArea({ ...textArea, value: response.json, toUpdate: true });
+    }
+  },[actionState]);
 
   function onLanguageChange(event) {
     onClearConsole()
@@ -68,12 +89,15 @@ export default function RunCodePage() {
   }
 
   async function onRunCode() {
-    if(runState !== 'running') {
-      setRunState('running');
-      let result = await runCodeCtrl(codeLanguage, textEditorData);
-      setRunState('finished');
-      setTextArea({ ...textArea, value: result, toUpdate: true });
-    }
+    setAction({
+      function: RunCodeController.execute,
+      args: [{
+        language: codeLanguage,
+        code: textEditorData,
+        unitTests: "runcodepage",
+        executeTests: false
+      }],
+    })
   }
 
   function onClearConsole() {
@@ -83,76 +107,86 @@ export default function RunCodePage() {
     }
   }
 
-  const classes = useStyles();
-  return(
-    <div className={classes.layout}>
-      <Container className={classes.container} maxWidth={false}>
-        <Grid container>
-          <Grid item xs={7}>
-            <Grid>
-              <Toolbar className={classes.runCodetoolbar} variant="dense">
-                <Button 
-                  className={classes.runButton}
-                  color="success"
-                  id="runCodeButton"
-                  variant="contained"
-                  onClick={onRunCode}
-                >
-                  Run Code
-                </Button>
-                <FormControl variant="standard" className={classes.form}>
-                  <Select
+  if(actionState === ActionStates.clear || actionState === ActionStates.inProgress ||
+    actionState === ActionStates.done && response.render) {
+    return(
+      <div className={classes.layout}>
+        {actionState === ActionStates.done && response.message && 
+            <CustomizedSnackbars message={response.message} severity={response.severity} />}
+        <ReflexContainer orientation="vertical" style={{height: "85vh"}}>
+
+          <ReflexElement className="left-pane"
+            minSize="265"
+          >
+            <Toolbar className={classes.runCodetoolbar} variant="dense">
+              <Button 
+                className={classes.runButton}
+                id="runCodeButton"
+                variant="contained"
+                onClick={onRunCode}
+              >
+                Run Code
+              </Button>
+              <FormControl variant="standard" className={classes.form}>
+                <Select
                   id="languageSelect"
                   native
+                  value={codeLanguage}
                   onChange={event => onLanguageChange(event)}
-                  >
-                    <option value={'java'}>Java</option>
-                    <option value={'kotlin'}>Kotlin</option>
-                    <option value={'javascript'}>JavaScript</option>
-                    <option value={'csharp'}>C#</option>
-                    <option value={'python'}>Python</option>
-                  </Select>
-                </FormControl>
-              </Toolbar>
-            </Grid>
-            <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
-          </Grid>
-          <Grid item xs={5}>
-            <Grid>
-              <Toolbar className={classes.outputToolbar} variant="dense">
-                <Box display="flex">
-                  <Typography style={{paddingRight:5}}>
-                    Output:
-                  </Typography>
-                  {runState === 'running' && (
-                    <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
-                      Running...
-                    </Paper>
-                  )}
-                  {runState === 'finished' && (
-                    <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
-                      Finished
-                    </Paper>
-                  )}
-                  {runState === 'compileError' && (
-                    <Paper className={classes.runStatePaper} style={{color:'#d9534f',backgroundColor:'#17b033'}}>
-                      Compile Error
-                    </Paper>
-                  )}
-                </Box>
-                <Button className={classes.clearButton}
-                  id="clearConsoleButton"
-                  variant="contained"
-                  onClick={onClearConsole}
                 >
-                  Clear Console
-                </Button>
-              </Toolbar>
-            </Grid>
+                  {Object.keys(languageLabelMappings).map(key => {
+                    return <option value={key} key={key}>{languageLabelMappings[key]}</option>
+                  })}
+                </Select>
+              </FormControl>
+            </Toolbar>
+            <RunCodeTextEditor theme={theme} codeLanguage={codeLanguage} setTextEditorData={setTextEditorData} />
+          </ReflexElement>
+
+          <ReflexSplitter/>
+
+          <ReflexElement className="right-pane"
+            minSize="250"
+          >
+            <Toolbar className={classes.outputToolbar} variant="dense">
+              <Box display="flex">
+                <Typography style={{paddingRight:5}}>
+                  Output:
+                </Typography>
+                {runState === 'running' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#0082C4'}}>
+                    Running...
+                  </Paper>
+                )}
+                {runState === 'finished' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#5cb85c'}}>
+                    Finished
+                  </Paper>
+                )}
+                {runState === 'error' && (
+                  <Paper className={classes.runStatePaper} style={{color:'#ffffff',backgroundColor:'#d9534f'}}>
+                    Compile Error
+                  </Paper>
+                )}
+              </Box>
+              <Button className={classes.clearButton}
+                id="clearConsoleButton"
+                variant="contained"
+                onClick={onClearConsole}
+                style={{minWidth: 125}}
+              >
+                Clear Console
+              </Button>
+            </Toolbar>
             <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} />
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
-  )
-};
+          </ReflexElement>
+
+        </ReflexContainer>
+        <Footer />
+      </div>
+    )
+  } else {
+    return <DefaultErrorMessage message={ response.message } />
+  }
+
+}

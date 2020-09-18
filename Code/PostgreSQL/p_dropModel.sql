@@ -9,10 +9,10 @@ LANGUAGE 'plpgsql'
 AS $BODY$
 BEGIN
 	SET search_path TO ise_learning,public;
-	DROP VIEW questionnaire_instances_questionnaire;
 	DROP TABLE challenge_solution, challenge_answer, questionnaire_answer, answer;
 	DROP TABLE qc, ct; -- MANY TO MANY
 	DROP TABLE challenge, questionnaire_instance, questionnaire;
+	DROP VIEW questionnaire_instances_questionnaire;
 	DROP TABLE app_user;
 	DROP TABLE tag;
 	DROP TABLE code_language;

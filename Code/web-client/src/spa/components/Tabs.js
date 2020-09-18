@@ -1,18 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-
-const theme = createMuiTheme({
-  palette: {
-    primary:{
-      main: "#51344d"
-    } 
-  },
-});
+// react
+import React from 'react'
+// material-ui components
+import AppBar from '@material-ui/core/AppBar'
+import Box from '@material-ui/core/Box'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+// utils
+import PropTypes from 'prop-types'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -26,7 +20,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={0.5}>
           {children}
         </Box>
       )}
@@ -54,6 +48,7 @@ function a11yProps(index) {
  *  - 'useStyles' a function to be used for styling this component
  */
 export default function FullWidthTabs(props) {
+
   const [value, setValue] = React.useState(0);
   const [state, SetState] = React.useState({
     childComponents: props.childComponents,
@@ -78,23 +73,21 @@ export default function FullWidthTabs(props) {
   },[props]);
 
   const tabs = state.childComponents.map((comp, idx) => <TabPanel key={idx} value={value} index={idx}>{comp}</TabPanel>)
-  const labels = state.tabLabels.map((label, idx) => <Tab key={idx} label={`${label}`} {...a11yProps(idx)} />)
+  const labels = state.tabLabels.map((label, idx) => <Tab key={idx} label={`${label}`} {...a11yProps(idx)}  />)
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="fullWidth"
-            indicatorColor='primary'
-            textColor = 'primary'
-          >
-            {labels}
-          </Tabs>
-        </AppBar>     
-        {tabs}
-      </ThemeProvider>
-    </div>
+    <>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="fullWidth"
+          indicatorColor="primary"
+          textColor = "primary"
+        >
+          {labels}
+        </Tabs>
+      </AppBar>     
+      {tabs}
+    </>
   );
 }

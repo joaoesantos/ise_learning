@@ -40,7 +40,7 @@ value:
 // PYTHON
 CodeMirrorOptions.set('python',{
 mode:'python',
-value:`print "Hello World!"`
+value:`print("Hello World!")`
 });
 
 export const defaultUnitTests = {
@@ -48,10 +48,10 @@ export const defaultUnitTests = {
     kotlin: "import org.junit.Assert import org.junit.Test class UnitTests {@Test fun foo() {Assert.assertTrue(true);}}",
     javascript: "should contain default test code for javascript",
     csharp: "should contain default test code for C#",
-    python: "should contain default test code for python"
+    python: "import unittest\r\n\r\ndef foo():\r\n    return  True\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
 }
 
-const API_VERSION = "v0";
+const API_VERSION = "v0"
 
 export const languageLabelMappings = {
     java: "Java",
@@ -79,7 +79,7 @@ export const apiUrlTemplates = {
     // CHALLENGES
     challenge: (challengeId) => `/${API_VERSION}/challenges/${challengeId}`,
     challenges: () => `/${API_VERSION}/challenges`,
-    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/${challengeId}/answers/users/${userId}`,
+    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/challenges/${challengeId}/users/${userId}`,
     challengeAnswer: (challengeAnswerId) => `/${API_VERSION}/challengeAnswers/${challengeAnswerId}`,
     challengeAnswers: () => `/${API_VERSION}/challengeAnswers`,
     languages: () => `/${API_VERSION}/codeLanguages`,

@@ -12,7 +12,7 @@ import { ChallengeController } from '../../controllers/challenge/ChallengeContro
 import { importAllImagesFromFolder } from '../../utils/utils'
 const codeLanguageIcons = importAllImagesFromFolder(require.context('../../images/icons/codeLanguages', false, /\.(png|jpe?g|svg)$/))
 
-export default function ChallengeListTable(){
+export default function ChallengeListTable() {
 
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
@@ -24,10 +24,10 @@ export default function ChallengeListTable(){
         args: [],
         render: true
       })
-    } else if (actionState === ActionStates.done &&
-    action.render && action.render === true) {
+    } else if (response && response.json && 
+        actionState === ActionStates.done && action.render && action.render === true) {
       let data = []
-      response.forEach(it => data.push(
+      response.json.forEach(it => data.push(
           { 
             id: it.challengeId, 
             title: it,
@@ -49,9 +49,7 @@ export default function ChallengeListTable(){
           },
           { title: 'Solution', field: 'solution', 
           render: challengeSolutions => challengeSolutions.solution.map(it =>
-              //<Link component={RouterLink} to={`/`} key={`${it.solutionId}`}> 
-                  <img src={codeLanguageIcons[it.codeLanguage]} height={24} />
-              //</Link>
+              <img src={codeLanguageIcons[it.codeLanguage]} height={24} key={it.solutionId} />
             )
           }
       ],
@@ -60,17 +58,17 @@ export default function ChallengeListTable(){
 
   return (
       <MaterialTable
-      title = ""
-      options =
-      {{
-          search:true, 
-          sorting:true,
-      }}
-      columns={table.columns}
-      data={table.data}
-      components={{
-        Container: props => <Paper {...props} elevation={0}/>
-      }}
+        title = ""
+        options =
+        {{
+            search:true, 
+            sorting:true,
+        }}
+        columns={table.columns}
+        data={table.data}
+        components={{
+          Container: props => <Paper {...props} elevation={0}/>
+        }}
       />
   )
 

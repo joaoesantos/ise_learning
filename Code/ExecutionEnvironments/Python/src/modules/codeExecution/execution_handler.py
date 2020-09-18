@@ -47,7 +47,7 @@ class ExecutionHandler:
                     f.write(executable.unitTests)
                 completedProcess, executionTime = self.executeScript(unittest_filename,self.timeout)
                 return ExecutionResult(
-                    completedProcess.stderr,
+                    completedProcess.stderr.decode('utf-8'),
                     completedProcess.returncode != 0,
                     executionTime
                 )  
@@ -57,7 +57,7 @@ class ExecutionHandler:
                     f.write(executable.code)
                 completedProcess, executionTime = self.executeScript(code_filename,self.timeout)
                 return ExecutionResult(
-                    completedProcess.stdout if completedProcess.returncode == 0 else completedProcess.stderr,
+                    completedProcess.stdout.decode('utf-8') if completedProcess.returncode == 0 else completedProcess.stderr.decode('utf-8'),
                     completedProcess.returncode != 0,
                     executionTime
                 )  

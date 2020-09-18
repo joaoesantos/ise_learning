@@ -23,6 +23,9 @@ import UseAction, { ActionStates } from '../controllers/UseAction'
 import { UserController } from '../controllers/UserController'
 // authentication context
 import { AuthContext } from '../context/AuthContext'
+// utils
+import { fetchHeaders } from '../utils/fetchUtils'
+import history from '../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -35,25 +38,40 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   },
   paper: {
+    maxWidth: '35%',
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  deleteAccount: {
+    color: "#ffffff",
+    backgroundColor:'#9b1003',
+    '&:hover' : {
+      backgroundColor: '#e3242b'
+    }
   }
 }))
 
 export default function UserProfile() {
 
   const classes = useStyles()
-  const { user, setUser } = React.useContext(AuthContext)
+  const { setAuth, user, setUser } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
   const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
+  const [deleteAccount, setDeleteAccount] = React.useState(false)
 
   React.useEffect(() => {
     if (response && actionState === ActionStates.done && action.name && action.name === 'updateMe') {
       setUser(response.json)
+    } else if(response && actionState === ActionStates.done && action.name && action.name === 'deleteMe') {
+      setAuth(false)
+      setUser(undefined)
+      localStorage.removeItem('ISELearningLoggedUser')
+      fetchHeaders.clear()
+      history.push("/")
     }
   },[actionState]);
 
@@ -68,6 +86,18 @@ export default function UserProfile() {
   const handleMouseDownPassword = (event) => {
       event.preventDefault();
   }
+
+  const handleDeleteAccount = () => {
+    if(deleteAccount) {
+      setAction({
+        function: UserController.deleteMe,
+        args: [],
+        render: false,
+        name: "deleteMe"
+      })
+    }
+    setDeleteAccount(!deleteAccount)
+}
 
   if(user) {
     return (
@@ -163,7 +193,7 @@ export default function UserProfile() {
             Change password
           </Typography >
           {/*Credentials Form*/}
-          <Formik
+        <Formik
           initialValues={{
             newPassword: '',
             repeatNewPassword: ''
@@ -182,7 +212,7 @@ export default function UserProfile() {
                 exclusive: false
               }),
             repeatNewPassword: Yup.string()
-              .min(4, 'Must be at least 4 characters')
+              .min(6, 'Must be at least 6 characters')
               .required('Required')
           })}
           onSubmit={(data, { setSubmitting }) => {
@@ -260,6 +290,36 @@ export default function UserProfile() {
             </Grid>
           )}
         </Formik>
+        <br />
+        <br />
+        <br />
+        <Grid item xs={12} className={classes.centerItems}>
+          {!deleteAccount ?
+            <Button className={classes.deleteAccount}
+              variant="contained"
+              onClick={handleDeleteAccount}
+            >
+              Delete account
+            </Button>
+            :
+            <Grid>
+              <Typography component = "h1" variant = "h6" style={{color:"#9b1003"}}>
+                This action is irreversible, are you sure?
+              </Typography >
+              <Grid           
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+              >
+                <Button onClick={handleDeleteAccount}>Yes</Button>
+                <Button onClick={() => setDeleteAccount(false)}>No</Button>
+              </Grid>
+            </Grid>
+        }
+        </Grid>
+        <br />
+        <br />
       </Container>
     </>
     )

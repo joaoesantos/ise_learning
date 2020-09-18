@@ -6,7 +6,7 @@ import { ChallengeAnswerController } from './ChallengeAnswerController'
 import { convertLanguagesToObjectWithLabel } from '../../utils/ChallengeUtils'
 import { reduceObjectArrayToMap } from '../../utils/utils'
 
-export const ChallengePageConfigs = (challengeId, userId, componentAggregateStates, user) => {
+export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     //BUTTONS - init
     let saveChallengeAsAnswerButton = {
         id: "saveChallengeAsAnswerButton",
@@ -31,14 +31,14 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                 args: [challengeAnswerModel]
             });
         },
-        title: "Save Challenge's Answer",
-        isVisible: user != undefined
+        title: "Submit Answer",
+        isVisible: user !== undefined
     }
     let createChallenge = {
         id: "createChallenge",
         onClick: () => {
             let challengeModel = Object.assign({}, componentAggregateStates.challenge.state);
-            challengeModel.creatorId = user ? user.userId : undefined;
+            challengeModel.creatorId = user.userId
             challengeModel.solutions = componentAggregateStates.challengeLanguages.state.map(l => {
                 return {
                     challengeCode: componentAggregateStates.yourSolution.state[l.value] ? componentAggregateStates.yourSolution.state[l.value].value : "",
@@ -49,17 +49,20 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
             componentAggregateStates.action.setter({
                 function: async (arg) => {
-                    let newChallenge = await ChallengeController.createChallenge(arg);
-                    componentAggregateStates.redirectObject.setter({
-                            pathname: `/challenges/${newChallenge.challengeId}`
-                    })
-                    return newChallenge;
+                    let response = await ChallengeController.createChallenge(arg);
+                    if(response.severity === "success") {
+                        componentAggregateStates.redirectObject.setter({
+                            pathname: `/challenges/${response.json.challengeId}`
+                        })
+                    }
+                    return response
                 },
                 args: [challengeModel]
             });
         },
         title: "Create Challenge",
-        isVisible: user != undefined
+        isVisible: user !== undefined,
+        disabled: componentAggregateStates.codeLanguage.state === undefined
     }
     let editChallenge = {
         id: "editChallenge",
@@ -67,7 +70,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: !componentAggregateStates.isChallengeEditable.state && user != undefined
+        isVisible: componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
     }
     let saveChallenge = {
         id: "saveChallenge",
@@ -95,7 +98,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             componentAggregateStates.isChallengeEditable.setter(false)
         },
         title: "Save Challenge",
-        isVisible: componentAggregateStates.isChallengeEditable.state && user != undefined
+        isVisible: componentAggregateStates.isChallengeEditable.state && user !== undefined
     }
     let saveChallengeAnswer = {
         id: "saveChallengeAnswer",
@@ -116,7 +119,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Save Challenge Answer",
-        isVisible: user != undefined
+        isVisible: user !== undefined
     }
     //BUTTONS - end
 
@@ -127,8 +130,8 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
                 componentAggregateStates.isChallengeEditable.setter(true)
                 componentAggregateStates.availableLanguages.setter(convertLanguagesToObjectWithLabel(response.map(s => s.codeLanguage)))
                 componentAggregateStates.challenge.setter({
-                    challengeText: "Insert Challenge text her.",
-                    isPrivate: true,
+                    challengeText: "Insert Challenge text here.",
+                    isPrivate: false,
                     solutions: []
                 })
             },
@@ -180,7 +183,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             },
             pageLoadingAction: () => {return {
                 function: ChallengeAnswerController.getChallengeAndChallengeAnswerBychallengeIdAndUserId,
-                args: [challengeId, userId],
+                args: [challengeId, user.userId],
                 render: true
             }},
             headerButtons: [saveChallengeAnswer]

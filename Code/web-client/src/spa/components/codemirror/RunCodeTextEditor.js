@@ -25,15 +25,6 @@ const styles = theme => ({
         borderBottom: `1px solid ${theme.palette.divider}`,
         justifyContent: "space-between"
     },
-    button: {
-        margin: theme.spacing(1),
-        textTransform:"none",
-        color:'#ffffff',
-        backgroundColor:'#5cb85c', // cor isel -> '#963727'
-        '&:hover' : {
-            backgroundColor: '#17b033',
-        }
-    },
     runButton: {
         margin: theme.spacing(1),
         textTransform:"none",
@@ -50,14 +41,14 @@ class RunCodeTextEditor extends Component {
         super(props);
     }
   
-    // is invoked immediately after a component is mounted (inserted into the tree)
+    // is invoked immediately after a component is mounted (inserted into the DOM tree)
     componentDidMount = () => {
         this.editor = codemirror(this.instance, 
             {
                 lineNumbers: true,
                 matchBrackets: true,
                 value: (this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData, 
-                mode:CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
+                mode: CodeMirrorOptions.get(this.props.codeLanguage) ? CodeMirrorOptions.get(this.props.codeLanguage).mode : "null", 
                 theme: this.props.theme.palette.type === "light" ? "neat" : "monokai",
                 autoRefresh: true,
                 smartIndent: true,
@@ -66,10 +57,10 @@ class RunCodeTextEditor extends Component {
                 readOnly: (this.props.readOnly === true) ? true: false
             }
         );
-        this.props.setTextEditorData(this.editor.doc.getValue()); // after mount signal father what it's in text editor
-        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
-        const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
-        this.editor.setSize(`${editorWidth}%`, editorHeigth);
+        this.props.setTextEditorData(this.editor.doc.getValue())
+        const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "80vh"
+        const editorWidth = this.props.editorWidth ? this.props.editorWidth : "100%"
+        this.editor.setSize(`${editorWidth}%`, editorHeigth)
         this.editor.on('change', () => {
             this.props.setTextEditorData(this.editor.doc.getValue())
         })
@@ -87,7 +78,6 @@ class RunCodeTextEditor extends Component {
                 this.editor.options.readOnly = (this.props.readOnly === true) ? true : false;
                 this.editor.setValue((this.props.textEditorData === undefined) ? CodeMirrorOptions.get(this.props.codeLanguage).value : this.props.textEditorData);
             }
-
         }
     }
 
@@ -101,6 +91,7 @@ class RunCodeTextEditor extends Component {
                             id={a.id}
                             variant="contained"
                             onClick={() => a.function()}
+                            key={a.id}
                         >
                             {a.title}
                         </Button>

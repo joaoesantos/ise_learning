@@ -1,20 +1,22 @@
 import { languageLabelMappings } from '../clientSideConfig'
 import { RunCodeController } from '../controllers/RunCodeController'
 
-export const genericRunCodeAction = (code, unitTests, executeTests, textSufix, setOutputText, codeLanguage) => {
+export const genericRunCodeAction = (setAction, codeLanguage, code, unitTests, executeTests, textSufix) => {
     return {
         id: "executeCode",
         title: "Run Code",
-        function: async () => {
-            let result = await RunCodeController.execute({
-                language: codeLanguage,
-                code: code,
-                unitTests: unitTests,
-                executeTests: executeTests
-            });
-            result.textSufix = textSufix;
-            setOutputText({ value: result, toUpdate: true });
-        }
+        function: async () =>
+            setAction({
+                function: RunCodeController.execute,
+                args: [{
+                    language: codeLanguage,
+                    code: code,
+                    unitTests: unitTests,
+                    executeTests: executeTests
+                }],
+                name: 'runcode',
+                textSufix: textSufix
+        })
     }
 }
 

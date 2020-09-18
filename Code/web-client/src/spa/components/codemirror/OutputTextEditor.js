@@ -32,18 +32,18 @@ class OutputTextEditor extends Component {
     super(props);
   };
 
-  // is invoked immediately after a component is mounted (inserted into the tree)
+  // is invoked immediately after a component is mounted (inserted into the DOM tree)
   componentDidMount = () => {
     this.editor = codemirror(this.instance, 
       {
         readOnly: true,
-        mode: 'markdown',
+        //mode: 'markdown',
         theme: this.props.theme.palette.type === "light" ? "neat" : "monokai"
       }
-    );
-    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : 700
-    const editorWidth = this.props.editorWidth ? this.props.editorWidth : 100
-    this.editor.setSize(`${editorWidth}%`, editorHeigth);
+    )
+    const editorHeigth = this.props.editorHeigth ? this.props.editorHeigth : "80vh"
+    const editorWidth = this.props.editorWidth ? this.props.editorWidth : "100%"
+    this.editor.setSize(`${editorWidth}%`, editorHeigth)
   };
 
   // is invoked immediately after props change
@@ -55,14 +55,15 @@ class OutputTextEditor extends Component {
       }
 
       if(this.props.textArea.toUpdate) {
-        this.props.setTextArea({...this.props.textArea, toUpdate: false});
-        const _this = this.props.textArea.value;
-        const oldText = this.editor.doc.getValue();
-        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${_this.rawResult}\n\n`);
+        console.log("yo",this.props.textArea,prevProps)
+        this.props.setTextArea({...this.props.textArea, toUpdate: false})
+        const _this = this.props.textArea.value
+        const oldText = this.editor.doc.getValue()
+        this.editor.setValue(`${oldText}## Finished in ${_this.executionTime} ms${_this.textSufix ? ` - ${_this.textSufix}` : ""}\n${decodeURIComponent(_this.rawResult)}\n\n`)
       }
 
       if(this.props.runState !== 'running' && this.props.textArea === 'cls') {
-        this.editor.setValue('');
+        this.editor.setValue('')
       }
       
     }
