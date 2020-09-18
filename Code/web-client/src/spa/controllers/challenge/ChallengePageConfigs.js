@@ -6,7 +6,7 @@ import { ChallengeAnswerController } from './ChallengeAnswerController'
 import { convertLanguagesToObjectWithLabel } from '../../utils/ChallengeUtils'
 import { reduceObjectArrayToMap } from '../../utils/utils'
 
-export const ChallengePageConfigs = (challengeId, userId, componentAggregateStates, user) => {
+export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     //BUTTONS - init
     let saveChallengeAsAnswerButton = {
         id: "saveChallengeAsAnswerButton",
@@ -32,7 +32,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Submit Answer",
-        isVisible: user != undefined
+        isVisible: user !== undefined
     }
     let createChallenge = {
         id: "createChallenge",
@@ -98,7 +98,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             componentAggregateStates.isChallengeEditable.setter(false)
         },
         title: "Save Challenge",
-        isVisible: componentAggregateStates.isChallengeEditable.state && user != undefined
+        isVisible: componentAggregateStates.isChallengeEditable.state && user !== undefined
     }
     let saveChallengeAnswer = {
         id: "saveChallengeAnswer",
@@ -119,7 +119,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             });
         },
         title: "Save Challenge Answer",
-        isVisible: user != undefined
+        isVisible: user !== undefined
     }
     //BUTTONS - end
 
@@ -183,7 +183,7 @@ export const ChallengePageConfigs = (challengeId, userId, componentAggregateStat
             },
             pageLoadingAction: () => {return {
                 function: ChallengeAnswerController.getChallengeAndChallengeAnswerBychallengeIdAndUserId,
-                args: [challengeId, userId],
+                args: [challengeId, user.userId],
                 render: true
             }},
             headerButtons: [saveChallengeAnswer]

@@ -79,7 +79,7 @@ export const apiUrlTemplates = {
     // CHALLENGES
     challenge: (challengeId) => `/${API_VERSION}/challenges/${challengeId}`,
     challenges: () => `/${API_VERSION}/challenges`,
-    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/${challengeId}/answers/users/${userId}`,
+    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/challenges/${challengeId}/users/${userId}`,
     challengeAnswer: (challengeAnswerId) => `/${API_VERSION}/challengeAnswers/${challengeAnswerId}`,
     challengeAnswers: () => `/${API_VERSION}/challengeAnswers`,
     languages: () => `/${API_VERSION}/codeLanguages`,

@@ -34,7 +34,7 @@ class ChallengeAnswerController(
             ucb: UriComponentsBuilder
     ): ResponseEntity<ChallengeAnswer> {
         val challengeAnswer = challengeAnswerService.createChallengeAnswer(challengeAnswerModel, loggedUser)
-        val location = ucb.path("/v0/challengeAnswers")
+        val location = ucb.path(CHALLENGE_ANSWER_PATTERN)
                 .path(challengeAnswer.challengeAnswerId.toString())
                 .build()
                 .toUri()
@@ -50,13 +50,13 @@ class ChallengeAnswerController(
      * @param loggedUser user that is calling the service
      * @return ResponseEntity<ChallengeAnswer>
      */
-    @GetMapping("/{challengeId}/answers/users/{userId}", name = "getChallengeAnswerByUserId")
-    fun getChallengeAnswerByUserId(
+    @GetMapping("/challenges/{challengeId}/users/{userId}", name = "getChallengeAnswersByChallengeIdAndUserId")
+    fun getChallengeAnswersByChallengeIdAndUserId(
             @PathVariable challengeId: Int,
             @PathVariable userId: Int,
             loggedUser: User
-    ): ResponseEntity<ChallengeAnswer> {
-        val challengeAnswer = challengeAnswerService.getChallengeAnswerByChallengeIdAndUserId(challengeId, userId, loggedUser)
+    ): ResponseEntity<List<ChallengeAnswer>> {
+        val challengeAnswer = challengeAnswerService.getChallengeAnswersByChallengeIdAndUserId(challengeId, userId, loggedUser)
         return ResponseEntity.ok().contentType(APPLICATION_JSON).body(challengeAnswer)
     }
 

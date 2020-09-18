@@ -66,6 +66,7 @@ export default function ChallengeListPage() {
     history.push('/newChallenge')
   }
 
+
   return (
     <>
       <Container className={classes.mainContainer}>
@@ -102,7 +103,7 @@ export default function ChallengeListPage() {
           </Grid>
           <Grid item xs={12} sm={2}>
             <p>Possible user information</p>
-            <p>Pie-chart statistics of number of challenges compelted?</p>
+            <p>Pie-chart statistics of number of challenges completed?</p>
           </Grid>
         </Grid>
       </Container>

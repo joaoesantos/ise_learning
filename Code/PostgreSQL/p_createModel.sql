@@ -101,9 +101,7 @@ BEGIN
 		FOREIGN KEY (answer_id) 
 			REFERENCES answer (answer_id) ON DELETE CASCADE,
 		FOREIGN KEY (user_id) 
-			REFERENCES app_user (user_id) ON DELETE CASCADE,
-		--
-		UNIQUE(challenge_id,user_id)
+			REFERENCES app_user (user_id) ON DELETE CASCADE
 	);
 
 	CREATE TABLE questionnaire (
@@ -165,13 +163,13 @@ BEGIN
 	);
 	
 	CREATE OR REPLACE VIEW questionnaire_instances_questionnaire AS
-    select
+    SELECT
     qi.questionnaire_instance_id, 
-    q.description as QuestionnaireDescription,
-    qi.description as QuestionnaireInstanceDescription,
-    q.creator_id as Creator_Id
-    from questionnaire q
-    inner join questionnaire_instance qi on qi.questionnaire_id = q.questionnaire_id;
+    q.description AS QuestionnaireDescription,
+    qi.description AS QuestionnaireInstanceDescription,
+    q.creator_id AS Creator_Id
+    FROM questionnaire q
+    INNER JOIN questionnaire_instance qi ON qi.questionnaire_id = q.questionnaire_id;
 
     COMMIT;
 END;

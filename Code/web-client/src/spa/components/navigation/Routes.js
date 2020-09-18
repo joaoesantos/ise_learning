@@ -28,7 +28,6 @@ export default function Routes() {
                 <Route exact path="/listChallenges" component={ChallengeList} />
                 <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge match={match} configKey={"challenge"} />} />
                 <Route exact path="/newChallenge" render={({match}) => <Challenge match={match} configKey={"newChallenge"} />} />
-                <Route exact path="/challengeAnswers/:challengeId/answers/users/:userId" render={({match}) => <Challenge match={match} configKey={"challengeAnswer"} />} />
                 <Route exact path="/questionnaires" component={Questionnaire} />
                 <Route exact path="/questionnaireInstances/solve/:uuid" component={Questionnaire} />
                 <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />

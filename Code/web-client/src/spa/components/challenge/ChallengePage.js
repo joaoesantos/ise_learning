@@ -102,7 +102,6 @@ export default withRouter(function ChallengePage(props) {
     const { theme } = React.useContext(ThemeContext)
     const { user } = React.useContext(AuthContext)
     const challengeId = props.match.params.challengeId
-    const userId = props.match.params.userId
 
     const [codeLanguage, setCodeLanguage] = React.useState()
     const [challengeLanguages, setChallengeLanguages] = React.useState([])
@@ -141,7 +140,7 @@ export default withRouter(function ChallengePage(props) {
         challengeAnswer: { state: challengeAnswer, setter: setChallengeAnswer},
         availableLanguages: { state: availableLanguages, setter: setAvailableLanguages}
     }
-    let pageConfigs = ChallengePageConfigs(challengeId, userId, componentAggregateStates, user)[props.location.configKey ? props.location.configKey : props.configKey]
+    let pageConfigs = ChallengePageConfigs(challengeId, componentAggregateStates, user)[props.location.configKey ? props.location.configKey : props.configKey]
 
     React.useEffect(() => {
         // React.state evaluation for run code button action
@@ -442,17 +441,6 @@ export default withRouter(function ChallengePage(props) {
                 return <DefaultErrorMessage message={"401 | Unauthorized"} />
             }
 
-    
-        case "challengeAnswer":
-            return (
-                <>
-                    {redirectObject !== undefined && <Redirect push to={redirectObject} />}
-                    {actionState === ActionStates.done && response.message && 
-                        <CustomizedSnackbars message={response.message} severity={response.severity} />}
-                    {renderChallengePage()}
-                </>
-            )
-            break
         default:
             return <DefaultErrorMessage message={"404 | Not Found"} />
     }
