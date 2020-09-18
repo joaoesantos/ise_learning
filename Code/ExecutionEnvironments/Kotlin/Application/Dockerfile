@@ -7,6 +7,8 @@ RUN unzip temp.zip
 RUN rm temp.zip
 ENV PATH="/kotlinc/bin:${PATH}"
 COPY KotlinExecutionEnvironment-1.0.0-SNAPSHOT-spring-boot.jar .
+COPY startup.sh .
+RUN chmod +x startup.sh 
 COPY ./libs ./libs
-CMD java -jar KotlinExecutionEnvironment-1.0.0-SNAPSHOT-spring-boot.jar
 EXPOSE 8080
+ENTRYPOINT [ "./startup.sh" ]

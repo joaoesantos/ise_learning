@@ -1,7 +1,6 @@
 FROM openjdk:13
-COPY JavaExecutionEnvironment-1.0.0-SNAPSHOT-spring-boot.jar .
+COPY services-0.0.1-SNAPSHOT.jar .
 COPY startup.sh .
 RUN chmod +x startup.sh 
-COPY ./libs ./libs
 EXPOSE 8080
 ENTRYPOINT [ "./startup.sh" ]
