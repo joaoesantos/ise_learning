@@ -195,6 +195,7 @@ class ChallengeService (
      * Update a challenge.
      *
      * @param challengeModel information to be updated
+     * @param loggedUser user that is calling the service
      * @return updated challenge
      */
     @Validated

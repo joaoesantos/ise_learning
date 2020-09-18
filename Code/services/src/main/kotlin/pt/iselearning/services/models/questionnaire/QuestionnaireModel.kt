@@ -14,9 +14,6 @@ class QuestionnaireModel (
         var description: String?,
 
         @field:Positive
-        var timer: Long?,
-
-        @field:Positive(message = "Creator id must be positive")
-        var creatorId: Int?
+        var timer: Long?
 
 )
