@@ -1,0 +1,6 @@
+Dockerfile
+Application.iml
+JavaExecutionEnvironment.iml
+.dockerignore
+target/
+.idea/
