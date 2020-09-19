@@ -1,25 +1,27 @@
-import React from 'react';
-import {useParams} from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+// react
+import React from 'react'
+import { useParams } from "react-router-dom"
+// material-ui components
 import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import UseAction, { ActionStates } from '../../controllers/UseAction'
-import questionnaireCtrl from '../../controllers/questionnaireCtrl'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormLabel from '@material-ui/core/FormLabel'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+// custom components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
-
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { QuestionnaireController } from '../../controllers/questionnaire/QuestionnaireController'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -90,7 +92,7 @@ export default function QuestionnaireAnswerPage(props) {
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
-                function: questionnaireCtrl.getQuestionnaireAnswers,
+                function: QuestionnaireController.getQuestionnaireAnswers,
                 args: [id, props.credentials],
                 render: true
             })
@@ -179,7 +181,6 @@ export default function QuestionnaireAnswerPage(props) {
     } else if (actionState === ActionStates.done && questionnaire) {
         return (
             <React.Fragment>
-                <CssBaseline />
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>

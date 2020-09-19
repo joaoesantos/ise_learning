@@ -1,29 +1,30 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import blue from '@material-ui/core/colors/blue';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import { createMuiTheme } from '@material-ui/core/styles';
-
-import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
+// react
+import React from 'react'
+// material-ui components
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import FormControl from '@material-ui/core/FormControl'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+// custom components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { QuestionnairePageController } from '../../controllers/questionnaire/QuestionnairePageController'
+// utils
+import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig'
 
-import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
+import blue from '@material-ui/core/colors/blue';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         textTransform: "none",
         color: '#ffffff',
-        backgroundColor: '#5cb85c', // cor do isel -> '#963727'
+        backgroundColor: '#5cb85c',
         '&:hover': {
             backgroundColor: '#17b033',
         }
@@ -362,7 +363,6 @@ export default function QuestionnairePage() {
     } else if (actionState === ActionStates.done && questionnaire) {
         return (
             <React.Fragment>
-                <CssBaseline />
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <React.Fragment>

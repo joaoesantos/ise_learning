@@ -9,13 +9,6 @@ export const HttpMethods = {
     delete: 'DELETE'
 }
 
-export const defaultHeaders = () => {
-    const headers = new Headers()
-    headers.append("Content-Type", "application/json")
-    headers.append("Accept", "application/problem+json")
-    return headers
-}
-
 export let fetchHeaders = {
     
     headers: undefined,

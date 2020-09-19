@@ -20,14 +20,13 @@ import kotlin.reflect.KFunction2
  * Class responsible to validate user credentials
  */
 class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper): OncePerRequestFilter() {
-    private val validateFilters : HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
-            "/v0/challenges/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
-            "/v0/challenges/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
-            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest,
-            "/v0/questionnaires/**" to AuthenticationFilter::shouldNotFilterQuestionnairePattern
+    private val validateFilters: HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
+            "${CHALLENGE_PATTERN}/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            "${CHALLENGE_PATTERN}/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
     )
 
-    private val optionalAuthenticationPaths : HashMap<String, HashSet<HttpMethod>> = hashMapOf(
+    private val optionalAuthenticationPaths: HashMap<String, HashSet<HttpMethod>> = hashMapOf(
             CHALLENGE_PATTERN to hashSetOf<HttpMethod>(HttpMethod.GET),
             "${CHALLENGE_PATTERN}/**" to hashSetOf<HttpMethod>(HttpMethod.GET),
             "${CHALLENGE_PATTERN}/**/tags" to hashSetOf<HttpMethod>(HttpMethod.GET)

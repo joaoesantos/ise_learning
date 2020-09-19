@@ -3,16 +3,22 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 // page components
 import Navbar from '../navigation/Navbar'
-import Home from '../home/HomePage.js'
-import RunCode from '../runCode/RunCodePage.js'
-import SignIn from '../signInLogin/SignInPage.js'
-import Login from '../signInLogin/LoginPage.js'
+import Home from '../home/HomePage'
+import RunCode from '../runCode/RunCodePage'
+import SignIn from '../signInLogin/SignInPage'
+import Login from '../signInLogin/LoginPage'
 import UserProfile from '../UserProfile'
-import Challenge from '../challenge/ChallengePage.js'
-import ChallengeList from '../challenge/ChallengeListPage.js'
-import Questionnaire from '../questionnaire/QuestionnairePage.js'
+// challenges
+import Challenge from '../challenge/ChallengePage'
+import ChallengeList from '../challenge/ChallengeListPage'
+// questionnaires
+import QuestionnaireList from '../questionnaire/QuestionnaireListPage'
+import CreateEditQuestionnaire from '../questionnaire/CreateEditQuestionnairePage'
+import QuestionnaireInstanceList from '../questionnaire/QuestionnaireInstanceListPage'
+import QuestionnaireInstance from '../questionnaire/QuestionnairePage'
 import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPage'
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
+// notifications
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 
 export default function Routes() {
@@ -28,8 +34,10 @@ export default function Routes() {
                 <Route exact path="/listChallenges" component={ChallengeList} />
                 <Route exact path="/challenges/:challengeId" render={({match}) => <Challenge match={match} configKey={"challenge"} />} />
                 <Route exact path="/newChallenge" render={({match}) => <Challenge match={match} configKey={"newChallenge"} />} />
-                <Route exact path="/questionnaires" component={Questionnaire} />
-                <Route exact path="/questionnaireInstances/solve/:uuid" component={Questionnaire} />
+                <Route exact path="/questionnaires" component={QuestionnaireList} />
+                <Route exact path="/createEditQuestionnaire/:questionnaireId" render={({match}) => <CreateEditQuestionnaire match={match} />} />
+                <Route exact path="/questionnaireInstances/:questionnaireId" render={({match}) => <QuestionnaireInstanceList match={match} />} />
+                <Route exact path="/questionnaireInstances/solve/:uuid" component={QuestionnaireInstance} />
                 <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />
                 <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
                 <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />

@@ -24,8 +24,8 @@ class QuestionnaireAnswerController(
     /**
      * Method to create an questionnaire answer.
      *
+     * @param questionnaireAnswerInputModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
      * @param ucb helps build URLs
-     * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerModel
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping(name = "createQuestionnaireAnswer")
@@ -66,6 +66,19 @@ class QuestionnaireAnswerController(
     }
 
     /**
+     * Method to get all questionnaire answers from Questionnaire Creator.
+     *
+     * @param loggedUser user that is calling the service
+     * @return ResponseEntity<QuestionnaireInstanceQuestionnaireView>
+     */
+    @GetMapping(name = "getAllQuestionnaireAnswersFromQuestionnaireCreator")
+    fun getAllQuestionnaireAnswersFromQuestionnaireCreator(
+            loggedUser: User
+    ): ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
+        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromQuestionnaireCreator(loggedUser))
+    }
+
+    /**
      * Method to update an questionnaire answer.
      *
      * @param questionnaireAnswerId represents a Questionnaire unique identifier
@@ -93,16 +106,6 @@ class QuestionnaireAnswerController(
     ): ResponseEntity<QuestionnaireAnswer> {
         questionnaireAnswerServices.deleteQuestionnaireAnswerById(questionnaireAnswerId)
         return ResponseEntity.noContent().build()
-    }
-
-    /**
-     *
-     */
-    @GetMapping(name="getQuestionnaireAnswerList")
-    fun getQuestionnaireAnswerList( loggedUser: User)
-            : ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
-
-        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromCreator(loggedUser))
     }
 
 }

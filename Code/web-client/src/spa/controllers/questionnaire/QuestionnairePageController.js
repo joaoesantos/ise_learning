@@ -1,13 +1,13 @@
-import { apiUrlTemplates } from '../clientSideConfig'
-import { HttpMethods, defaultHeaders } from '../utils/fetchUtils'
-import { LanguageController } from './LanguageController'
+import { apiUrlTemplates } from '../../clientSideConfig'
+import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { LanguageController } from '../LanguageController'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async (uuid) => {
         let url = `/v0/questionnaireInstances/solve/${uuid}`
         let options = {
           method: HttpMethods.get,
-          headers: defaultHeaders()
+          headers: fetchHeaders.get()
         }
         let response = await fetch(url, options)
         let json = await response.json();
@@ -26,7 +26,7 @@ export const QuestionnairePageController = {
     submitQuestionnaire: async(questionnaireInfo) => {
         let options = {
             method: HttpMethods.post,
-            headers: defaultHeaders()
+            headers: fetchHeaders.get()
         }
         const body = {
             questionnaireInstanceId: questionnaireInfo.questionnaireInstanceId,
