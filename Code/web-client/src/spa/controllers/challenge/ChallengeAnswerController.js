@@ -3,6 +3,7 @@ import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
 import { ChallengeController } from './ChallengeController'
 
 export const ChallengeAnswerController = {
+
   getChallengeAndChallengeAnswerBychallengeIdAndUserId: async (challengeId, userId) => {
     let challengePromise = ChallengeController.getChallengeById(challengeId);
     let challengeAnswerPromise = ChallengeAnswerController.getChallengeAnswerByChallengeIdAndUserId(challengeId, userId);
@@ -26,6 +27,7 @@ export const ChallengeAnswerController = {
       }
     }
   },
+
   getChallengeAnswerByChallengeIdAndUserId: async (challengeId, userId) => {
     let url = apiUrlTemplates.challengeAnswerByChallengeIdAndUserId(challengeId, userId)
     let options = {
@@ -45,6 +47,7 @@ export const ChallengeAnswerController = {
       }
     }
   },
+
   createChallengeAnswer: async (challengeAnswerModel) => {
     let url = apiUrlTemplates.challengeAnswers()
     let options = {
@@ -65,6 +68,7 @@ export const ChallengeAnswerController = {
       }
     }
   },
+
   updateChallengeAnswer: async (challengeAnswerId, challengeAnswerModel) => {
     let url = apiUrlTemplates.challengeAnswer(challengeAnswerId)
     let options = {
@@ -85,4 +89,5 @@ export const ChallengeAnswerController = {
       }
     }
   },
+  
 }

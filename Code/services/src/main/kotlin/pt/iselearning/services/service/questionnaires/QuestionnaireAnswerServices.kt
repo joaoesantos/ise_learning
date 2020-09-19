@@ -140,14 +140,13 @@ class QuestionnaireAnswerServices(
     /**
      *
      */
-    fun getAllQuestionnaireAnswersFromCreator(user: User): List<QuestionnaireInstanceQuestionnaireView> {
-        return questionnaireInstanceQuestionnaireViewRepository.findAllByCreatorId(user.userId!!)
+    fun getAllQuestionnaireAnswersFromQuestionnaireCreator(user: User): List<QuestionnaireInstanceQuestionnaireView> {
+        val yo = questionnaireInstanceQuestionnaireViewRepository.findAllByCreatorId(user.userId!!)
+        return yo
     }
     /**
      * Auxiliary function that converts QuestionnaireAnswer model to QuestionnaireAnswer domain
      */
-    //TODO: usar o mapper a funcionar em vez desta função auxiliar ??
-    //private fun convertToEntity(input : Any) = modelMapper.map(input, QuestionnaireAnswer::class.java)
     private fun convertToEntity(questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
         // build answer from model
         val answer = Answer()

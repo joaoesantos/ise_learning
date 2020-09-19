@@ -1,13 +1,15 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import UseAction, { ActionStates } from '../../controllers/UseAction'
-import Link from '@material-ui/core/Link';
-import { Link as RouterLink } from 'react-router-dom';
+// React
+import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+// material-ui components
+import Link from '@material-ui/core/Link'
+import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from "material-table"
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { QuestionnaireAnswerController } from '../../controllers/questionnaire/QuestionnaireAnswerController'
 
-import questionnaireCtrl from '../../controllers/questionnaireCtrl'
-
-export default function QuestionnaireAnswerListPage(props) {
+export default function QuestionnaireAnswerListPage() {
 
   const useStyles = makeStyles((theme) => ({}))
   const classes = useStyles()
@@ -17,12 +19,11 @@ export default function QuestionnaireAnswerListPage(props) {
   React.useEffect(() => {
     if (response === undefined && actionState === ActionStates.clear) {
       setAction({
-        function: questionnaireCtrl.getQuestionnaireInstances,
-        args: [props.credentials],
+        function: QuestionnaireAnswerController.getAllQuestionnaireAnswersFromQuestionnaireCreator,
+        args: [],
         render: true
       })
-    } else if (actionState === ActionStates.done &&
-      action.render && action.render === true) {
+    } else if (actionState === ActionStates.done && action.render && action.render === true) {
       setTable({...table, data:response})
     } else {
       //not Done || done but not rendering

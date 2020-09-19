@@ -3,12 +3,12 @@ import { HttpMethods, fetchHeaders, handleFetchResponse } from '../utils/fetchUt
 
 export const RunCodeController = {
 
-    execute: async (payload) => {
+    execute: async (data) => {
         let url = apiUrlTemplates.executeCode()
         let options = {
             method: HttpMethods.post,
             headers: fetchHeaders.get(),
-            body: JSON.stringify(payload)
+            body: JSON.stringify(data)
         }
         let response = await fetch(url, options)
         return handleFetchResponse(response)
