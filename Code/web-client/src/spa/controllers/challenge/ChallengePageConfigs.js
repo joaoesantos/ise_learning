@@ -8,31 +8,9 @@ import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     //BUTTONS - init
-    let saveChallengeAsAnswerButton = {
-        id: "saveChallengeAsAnswerButton",
-        onClick: () => {
-            let challengeAnswerModel = {};
-            challengeAnswerModel.challengeId = Number(challengeId);
-            challengeAnswerModel.userId = user ? user.userId : undefined;
-            challengeAnswerModel.answer = {
-                codeLanguage: componentAggregateStates.codeLanguage.state,
-                answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value,
-                unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value,
-                isCorrect: false,
-            }
-            componentAggregateStates.action.setter({
-                function: async (arg) => {
-                    let newChallengeAnswer = await ChallengeAnswerController.createChallengeAnswer(arg);
-                    componentAggregateStates.redirectObject.setter({
-                            pathname: `/challengeAnswers/${newChallengeAnswer.challengeId}/answers/users/${newChallengeAnswer.userId}`
-                    })
-                    return newChallengeAnswer;
-                },
-                args: [challengeAnswerModel]
-            });
-        },
-        title: "Submit Answer",
-        isVisible: user !== undefined
+    if(!user){
+        console.log(localStorage.getItem('ISELearningLoggedUser'))
+        user = JSON.parse(localStorage.getItem('ISELearningLoggedUser'))
     }
     let createChallenge = {
         id: "createChallenge",
@@ -70,7 +48,7 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
+        isVisible: !componentAggregateStates.isChallengeEditable.state && componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
     }
     let saveChallenge = {
         id: "saveChallenge",
@@ -100,29 +78,106 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
         title: "Save Challenge",
         isVisible: componentAggregateStates.isChallengeEditable.state && user !== undefined
     }
-    let saveChallengeAnswer = {
-        id: "saveChallengeAnswer",
+    let saveAnswerButton = {
+        id: "saveAnswer",
         onClick: () => {
             let challengeAnswerModel = {};
             challengeAnswerModel.challengeId = Number(challengeId);
-            challengeAnswerModel.userId = user ? user.userId : undefined;
             challengeAnswerModel.answer = {
                 codeLanguage: componentAggregateStates.codeLanguage.state,
                 answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value,
-                unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value,
-                isCorrect: false,
+                unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value
             }
-            componentAggregateStates.action.setter({
-                    function: ChallengeAnswerController.updateChallengeAnswer,
-                    args: [componentAggregateStates.challengeAnswer.state.challengeAnswerId, challengeAnswerModel],
-                    render: false
-            });
+            let matchingChallengeAnswer = componentAggregateStates.challengeAnswers.state.find(ca => ca.answer.codeLanguage === componentAggregateStates.codeLanguage.state);
+            if(matchingChallengeAnswer) {
+                componentAggregateStates.action.setter({
+                    function: async (arg1, arg2) => {
+                        let newChallengeAnswer = await ChallengeAnswerController.updateChallengeAnswer(arg1, arg2);
+                        if(newChallengeAnswer.severity && newChallengeAnswer.severity === 'error') {
+                            return {
+                              message: newChallengeAnswer.message,
+                              severity: 'error'
+                            }
+                        }
+                        let cenas = componentAggregateStates.challengeAnswers.state.map(ca => {
+                            if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
+                                return newChallengeAnswer.json;
+                            }
+                            return ca;
+                        })
+                        return {
+                            json: {
+                                languages: componentAggregateStates.challengeLanguages.state,
+                                challenge: componentAggregateStates.challenge.state,
+                                challengeAnswers: componentAggregateStates.challengeAnswers.state.map(ca => {
+                                    if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
+                                        return newChallengeAnswer.json;
+                                    }
+                                    return ca;
+                                })
+                            }
+                        };
+                    },
+                    args: [matchingChallengeAnswer.challengeAnswerId, challengeAnswerModel],
+                    render: true
+                });
+            } else {
+                componentAggregateStates.action.setter({
+                    function: async (arg) => {
+                        let newChallengeAnswer = await ChallengeAnswerController.createChallengeAnswer(arg);
+                        if(newChallengeAnswer.severity && newChallengeAnswer.severity === 'error') {
+                            return {
+                              message: newChallengeAnswer.message,
+                              severity: 'error'
+                            }
+                        }
+                        return {
+                            json: {
+                                languages: componentAggregateStates.challengeLanguages.state,
+                                challenge: componentAggregateStates.challenge.state,
+                                challengeAnswers: componentAggregateStates.challengeAnswers.state.map(ca => {
+                                    if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
+                                        return newChallengeAnswer.json;
+                                    }
+                                    return ca;
+                                })
+                            }
+                        };
+                    },
+                    args: [challengeAnswerModel],
+                    render: true
+                });
+            }
         },
-        title: "Save Challenge Answer",
+        title: "Save Answer",
         isVisible: user !== undefined
     }
+    let deleteChallenge = {
+        id: "deleteChallenge",
+        onClick: () => {
+            componentAggregateStates.action.setter({
+                function: async (arg) => {
+                    let newChallengeAnswer = await ChallengeController.deleteChallengeById(arg);
+                    if(newChallengeAnswer.severity && newChallengeAnswer.severity === 'error') {
+                        return {
+                          message: newChallengeAnswer.message,
+                          severity: 'error'
+                        }
+                    }
+                    componentAggregateStates.redirectObject.setter({
+                            pathname: `/listChallenges`
+                    })
+                    return newChallengeAnswer;
+                },
+                args: [challengeId],
+                render: true
+            });
+            componentAggregateStates.isChallengeEditable.setter(false)
+        },
+        title: "Delete Challenge",
+        isVisible: componentAggregateStates.isChallengeEditable.state && user !== undefined
+    }
     //BUTTONS - end
-
     return {
         newChallenge : {
             showYourTests: false,
@@ -145,48 +200,42 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
         challenge : {
             showYourTests: true,
             renderizationFunction: (response) => {
-                componentAggregateStates.challenge.setter(response.challenge)
-                componentAggregateStates.codeLanguage.setter(response.challenge.solutions[0].codeLanguage)
-                componentAggregateStates.challengeLanguages.setter(convertLanguagesToObjectWithLabel(response.challenge.solutions.map(s => s.codeLanguage)))
-                if(response.languages) {
-                    componentAggregateStates.availableLanguages.setter(convertLanguagesToObjectWithLabel(response.languages.map(s => s.codeLanguage)))
+                if(response.challengeAnswers !== undefined && response.challengeAnswers.length > 0) {
+                    componentAggregateStates.challenge.setter(response.challenge)
+                    componentAggregateStates.challengeAnswers.setter(response.challengeAnswers)
+                    componentAggregateStates.challengeLanguages.setter(convertLanguagesToObjectWithLabel(response.challenge.solutions.map(s => s.codeLanguage)))
+                    componentAggregateStates.codeLanguage.setter(response.challengeAnswers[0].answer.codeLanguage)
+                    componentAggregateStates.isChallengeEditable.setter(false)
+                    let yourSolution = reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "challengeCode");
+                    let yourTests = reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests");
+                    response.challengeAnswers.forEach(e => {
+                        yourSolution[e.answer.codeLanguage] = { value: e.answer.answerCode }
+                        yourTests[e.answer.codeLanguage] = { value: e.answer.unitTests }
+                    });
+                    componentAggregateStates.yourSolution.setter(yourSolution)
+                    componentAggregateStates.yourTests.setter(yourTests)
+                    componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))
+                    componentAggregateStates.ourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
+                } else {
+                    componentAggregateStates.challenge.setter(response.challenge)
+                    componentAggregateStates.codeLanguage.setter(response.challenge.solutions[0].codeLanguage)
+                    componentAggregateStates.challengeLanguages.setter(convertLanguagesToObjectWithLabel(response.challenge.solutions.map(s => s.codeLanguage)))
+                    if(response.languages) {
+                        componentAggregateStates.availableLanguages.setter(convertLanguagesToObjectWithLabel(response.languages.map(s => s.codeLanguage)))
+                    }
+                    componentAggregateStates.isChallengeEditable.setter(false)
+                    componentAggregateStates.yourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "challengeCode"))
+                    componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))
+                    componentAggregateStates.yourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
+                    componentAggregateStates.ourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
                 }
-                componentAggregateStates.isChallengeEditable.setter(false)
-                componentAggregateStates.yourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "challengeCode"))
-                componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))
-                componentAggregateStates.yourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
-                componentAggregateStates.ourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
             },
             pageLoadingAction: () => {return {
-                function: ChallengeController.getChallengeByIdAndAvailableLanguages,
-                args: [challengeId],
+                function: ChallengeController.getChallengeByIdAvailableLanguagesAndChallengeAnswerIfExists,
+                args: [challengeId, user ? user.userId : undefined],
                 render: true
             }},
-            headerButtons: [saveChallengeAsAnswerButton, editChallenge, saveChallenge]
-        },
-        challengeAnswer: {
-            showYourTests: true,
-            renderizationFunction: (response) => {
-                componentAggregateStates.challenge.setter(response.challenge)
-                componentAggregateStates.challengeAnswer.setter(response.challengeAnswer)
-                componentAggregateStates.challengeLanguages.setter(convertLanguagesToObjectWithLabel(response.challenge.solutions.map(s => s.codeLanguage)))
-                componentAggregateStates.codeLanguage.setter(response.challengeAnswer.answer.codeLanguage)
-                componentAggregateStates.isChallengeEditable.setter(false)
-                let yourSolution = {};
-                yourSolution[response.challengeAnswer.answer.codeLanguage] = { value: response.challengeAnswer.answer.answerCode }
-                componentAggregateStates.yourSolution.setter(yourSolution)
-                componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))
-                let yourTests = {};
-                yourTests[response.challengeAnswer.answer.codeLanguage] = { value: response.challengeAnswer.answer.unitTests }
-                componentAggregateStates.yourTests.setter(yourTests)
-                componentAggregateStates.ourTests.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "unitTests"))
-            },
-            pageLoadingAction: () => {return {
-                function: ChallengeAnswerController.getChallengeAndChallengeAnswerBychallengeIdAndUserId,
-                args: [challengeId, user.userId],
-                render: true
-            }},
-            headerButtons: [saveChallengeAnswer]
+            headerButtons: [saveAnswerButton, editChallenge, saveChallenge, deleteChallenge]
         }
     }
 }
