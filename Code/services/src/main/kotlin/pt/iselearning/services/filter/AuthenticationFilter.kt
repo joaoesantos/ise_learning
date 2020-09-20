@@ -11,6 +11,7 @@ import pt.iselearning.services.exception.error.ServerError
 import pt.iselearning.services.service.AuthenticationService
 import pt.iselearning.services.util.CHALLENGE_PATTERN
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_INSTANCE_PATTERN
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -23,6 +24,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
     private val validateFilters: HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
             "${CHALLENGE_PATTERN}/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
             "${CHALLENGE_PATTERN}/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            "${QUESTIONNAIRE_INSTANCE_PATTERN}/solve/**" to AuthenticationFilter::shouldNotFilterGenericPattern,
             QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
     )
 
@@ -76,8 +78,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             request.method != HttpMethod.GET.name ||
                     !AntPathMatcher().match(QUESTIONNAIRE_ANSWER_PATTERN, request.servletPath)
 
-    private fun shouldNotFilterQuestionnairePattern(request: HttpServletRequest): Boolean =
-            request.method == HttpMethod.GET.name
+    private fun shouldNotFilterGenericPattern(request: HttpServletRequest): Boolean = true
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val pathMatcher = AntPathMatcher()

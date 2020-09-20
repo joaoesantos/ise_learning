@@ -13,6 +13,17 @@ export const QuestionnaireAnswerController = {
         let response = await fetch(url, options)
         return handleFetchResponse(response)
     },
+
+    getAllQuestionnaireAnswersFromQuestionnaireCreator: async () => {
+        const headers = fetchHeaders.get()
+        let url = apiUrlTemplates.getAllQuestionnaireAnswersFromQuestionnaireCreator()
+        let options = {
+            method: HttpMethods.get,
+            headers: headers
+        }
+        let response = await fetch(url, options)
+        return handleFetchResponse(response)
+    },
   
     getQuestionnaireAnswers: async (id) => {
   

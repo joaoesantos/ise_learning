@@ -113,7 +113,6 @@ export default function CreateEditQuestionnairePage(props) {
     const [savedQuestionnaire, setSavedQuestionnaire] = React.useState(questionnaire)
     const [challengesData, setChallengesData] = React.useState([])
 
-    console.log(actionState)
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({

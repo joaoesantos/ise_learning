@@ -49,7 +49,7 @@ BEGIN
 	CREATE TABLE challenge (
 		challenge_id INT GENERATED ALWAYS AS IDENTITY,
 		creator_id INT NOT NULL,
-		challenge_title VARCHAR(50) NOT NULL,
+		challenge_title VARCHAR(50) UNIQUE NOT NULL,
 		challenge_text TEXT NOT NULL,
 		is_private BOOLEAN NOT NULL DEFAULT FALSE,
 		--

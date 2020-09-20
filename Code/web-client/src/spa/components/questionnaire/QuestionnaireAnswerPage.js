@@ -21,7 +21,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { QuestionnaireController } from '../../controllers/questionnaire/QuestionnaireController'
+import { QuestionnaireAnswerController } from '../../controllers/questionnaire/QuestionnaireAnswerController'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -92,8 +92,8 @@ export default function QuestionnaireAnswerPage(props) {
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
-                function: QuestionnaireController.getQuestionnaireAnswers,
-                args: [id, props.credentials],
+                function: QuestionnaireAnswerController.getAllQuestionnaireAnswersFromQuestionnaireInstanceId,
+                args: [id],
                 render: true
             })
         } else if (actionState === ActionStates.done && action.render) {
@@ -204,7 +204,8 @@ export default function QuestionnaireAnswerPage(props) {
                                             variant="contained"
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}>
+                                            className={classes.button}
+                                        >
                                             Next
                                         </Button>
                                     )

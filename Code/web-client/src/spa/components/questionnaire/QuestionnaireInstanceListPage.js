@@ -2,7 +2,6 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
-import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
@@ -78,7 +77,8 @@ export default function QuestionnaireinstanceListPage(props) {
     } else if (response && response.json && actionState === ActionStates.done && action.render) {
         let data = []
         response.json.forEach(it => data.push(
-            { 
+            {
+                questionnaireInstanceId: it.questionnaireInstanceId, 
                 description: it.description,
                 timer: it.timer ? parseInt(it.timer)/(1000*60) : "N/A",
                 status: it.isFinish ? "Closed" : "Open",
@@ -88,69 +88,79 @@ export default function QuestionnaireinstanceListPage(props) {
     } 
     },[actionState]);
 
-
-  return (
-    <>
-        {actionState === ActionStates.done && response.message && 
-            <CustomizedSnackbars message={response.message} severity={response.severity} />}
-        <Container className={classes.mainContainer}>
-        <Grid 
-            container 
-            direction="row"
-            justify="space-evenly"
-            alignItems="center"
-            spacing={3}
-        >
-            <Grid item xs={12} sm={12}>
-            <Toolbar className={classes.toolbar} variant="regular" >
-                <Typography variant="h5">
-                    {`Instances of Questionnaire # ${questionnaireId}`}
-                </Typography>
-            </Toolbar>
-            <MaterialTable
-                columns={table.columns}
-                data={table.data}
-                title=""
-                editable={{
-                    onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                        setAction({
-                            function: QuestionnaireInstanceController.createQuestionnaireInstances,
-                                args: [{
-                                    questionnaireId: questionnaireId,
-                                    description: newData.description,
-                                    timer: parseInt(newData.timer)*(1000*60)
-                                }],
-                                render: true
-                        })
-                        resolve()
-                    }),
-                    onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
-                    //   let labelId = siren.entities[table.data.indexOf(oldData)].properties.id
-                    //   let action = siren.actions.find(a => a.name.includes('edit-label'))
-                    //   let href = action.href.replace("{labelId}", labelId)
-                    //   setUrl(href)
-                    //   setOptions({ ...options, method: action.method, body: newData })
-                    //   pushGetSelfToNextFetch()
-                      resolve()
-                    }),
-                    onRowDelete: (oldData) =>
-                        new Promise((resolve) => {
-                        // let labelId = siren.entities[table.data.indexOf(oldData)].properties.id
-                        // let action = siren.actions.find(a => a.name.includes('delete-label'))
-                        // let href = action.href.replace("{labelId}", labelId)
-                        // setUrl(href)
-                        // setOptions({ ...options, method: action.method })
-                        // pushGetSelfToNextFetch()
-                        resolve()
-                    }),
-                }} 
-            />
-            </Grid>
-        </Grid>
-        </Container>
-    </>
-  )
+    if(actionState === ActionStates.clear) {
+        return <CircularProgress />
+    } else {
+        return (
+            <>
+                {actionState === ActionStates.done && response.message && 
+                    <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                <Container className={classes.mainContainer}>
+                <Grid 
+                    container 
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="center"
+                    spacing={3}
+                >
+                    <Grid item xs={12} sm={12}>
+                    <Toolbar className={classes.toolbar} variant="regular" >
+                        <Typography variant="h5">
+                            {`Instances of Questionnaire # ${questionnaireId}`}
+                        </Typography>
+                    </Toolbar>
+                    <MaterialTable
+                        columns={table.columns}
+                        data={table.data}
+                        title=""
+                        editable={{
+                            onRowAdd: (newData) =>
+                            new Promise((resolve) => {
+                                setAction({
+                                    function: QuestionnaireInstanceController.createQuestionnaireInstance,
+                                        args: [{
+                                            questionnaireId: questionnaireId,
+                                            description: newData.description,
+                                            timer: parseInt(newData.timer)*(1000*60)
+                                        }],
+                                        render: true
+                                })
+                                resolve()
+                            }),
+                            onRowUpdate: (newData, oldData) =>
+                            new Promise((resolve) => {
+                                console.log(newData)
+                                setAction({
+                                    function: QuestionnaireInstanceController.updateQuestionnaireInstance,
+                                        args: [{
+                                            questionnaireId: questionnaireId,
+                                            questionnaireInstanceId: newData.questionnaireInstanceId,
+                                            description: newData.description,
+                                            timer: parseInt(newData.timer)*(1000*60)
+                                        }],
+                                        render: true
+                                })
+                              resolve()
+                            }),
+                            onRowDelete: (oldData) =>
+                                new Promise((resolve) => {
+                                    setAction({
+                                        function: QuestionnaireInstanceController.deleteQuestionnaireInstance,
+                                            args: [{
+                                                questionnaireId: questionnaireId,
+                                                questionnaireInstanceId: oldData.questionnaireInstanceId,
+                                            }],
+                                            render: true
+                                    })
+                                resolve()
+                            }),
+                        }} 
+                    />
+                    </Grid>
+                </Grid>
+                </Container>
+            </>
+        )
+    }
 
 }

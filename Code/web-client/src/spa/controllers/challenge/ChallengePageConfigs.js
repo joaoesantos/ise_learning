@@ -7,7 +7,7 @@ import { convertLanguagesToObjectWithLabel } from '../../utils/ChallengeUtils'
 import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
-    //BUTTONS - init
+    // BUTTONS - init
     if(!user){
         console.log(localStorage.getItem('ISELearningLoggedUser'))
         user = JSON.parse(localStorage.getItem('ISELearningLoggedUser'))

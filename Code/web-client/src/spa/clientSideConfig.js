@@ -62,7 +62,7 @@ export const languageLabelMappings = {
 }
 
 export const feloniousStatusCodes = [
-    403,    // Forbidden
+    //403,    // Forbidden
     404,    // Not Found
     500     // Internal Server Error
 ]
@@ -88,15 +88,16 @@ export const apiUrlTemplates = {
     // QUESTIONNAIRES
     createQuestionnaire: () => `/${API_VERSION}/questionnaires/withChallenges`,
     getQuestionnaireWithChallenges: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
-    getQuestionnaireById: (id) => `/${API_VERSION}/questionnaires/${id}`,
-    getAllUserQuestionnaires: (id) => `/${API_VERSION}/questionnaires/users`,
-    saveQuestionnaire: () => `/${API_VERSION}/questionnaires/{id}`,
+    getQuestionnaireById: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    getAllUserQuestionnaires: () => `/${API_VERSION}/questionnaires/users`,
+    saveQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
     // QUESTIONNAIRE INSTANCES
     createQuestionnaireInstance: () => `/${API_VERSION}/questionnaireInstances`,
     getAllQuestionnaireInstancesByQuestionnaireId: (questionnaireId) => `/${API_VERSION}/questionnaireInstances/questionnaires/${questionnaireId}`,
+    updateQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
+    deleteQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
     // QUESTIONNAIRE ANSWERS
-    createQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers`, 
-    getAllQuestionnaireAnswersFromQuestionnaireCreator: () => `/${API_VERSION}/questionnaireAnswers`,
-    getQuestionnaireAnswers: (id) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${id}`,   
+    createQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers`,
+    getAllQuestionnaireAnswersFromQuestionnaireInstanceId: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${questionnaireInstanceId}`,   
 
 }

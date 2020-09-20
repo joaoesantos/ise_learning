@@ -41,7 +41,7 @@ class QuestionnaireAnswerServices(
     /**
      * Create a questionnaire answer.
      *
-     * @param questionnaireAnswerModel object information
+     * @param questionnaireAnswerInputModel object information
      * @return created questionnaire answer
      */
     @Validated
@@ -141,8 +141,7 @@ class QuestionnaireAnswerServices(
      *
      */
     fun getAllQuestionnaireAnswersFromQuestionnaireCreator(user: User): List<QuestionnaireInstanceQuestionnaireView> {
-        val yo = questionnaireInstanceQuestionnaireViewRepository.findAllByCreatorId(user.userId!!)
-        return yo
+        return questionnaireInstanceQuestionnaireViewRepository.findAllByCreatorId(user.userId!!)
     }
     /**
      * Auxiliary function that converts QuestionnaireAnswer model to QuestionnaireAnswer domain

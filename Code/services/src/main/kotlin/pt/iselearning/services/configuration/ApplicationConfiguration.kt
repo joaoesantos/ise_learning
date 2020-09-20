@@ -55,8 +55,8 @@ class ApplicationConfiguration() : WebMvcConfigurer {
                 "${CHALLENGE_PATTERN}/*",
                 "${CHALLENGE_ANSWER_PATTERN}/*",
                 "${QUESTIONNAIRE_PATTERN}/*",
-                QUESTIONNAIRE_ANSWER_PATTERN,
-                "${QUESTIONNAIRE_PATTERN}/withChallenges"
+                "${QUESTIONNAIRE_INSTANCE_PATTERN}/*",
+                "${QUESTIONNAIRE_ANSWER_PATTERN}/*"
         )
 
         return registrationBean

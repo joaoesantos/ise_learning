@@ -54,7 +54,6 @@ export default function QuestionnaireListPage() {
     history.push(`/createEditQuestionnaire/${undefined}`)
   }
 
-
   return (
     <>
       <Container className={classes.mainContainer}>

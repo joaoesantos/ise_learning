@@ -16,7 +16,6 @@ import QuestionnaireList from '../questionnaire/QuestionnaireListPage'
 import CreateEditQuestionnaire from '../questionnaire/CreateEditQuestionnairePage'
 import QuestionnaireInstanceList from '../questionnaire/QuestionnaireInstanceListPage'
 import QuestionnaireInstance from '../questionnaire/QuestionnairePage'
-import QuestionnaireAnswerList from '../questionnaire/QuestionnaireAnswerListPage'
 import QuestionnaireAnswer from '../questionnaire/QuestionnaireAnswerPage'
 // notifications
 import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
@@ -38,8 +37,7 @@ export default function Routes() {
                 <Route exact path="/createEditQuestionnaire/:questionnaireId" render={({match}) => <CreateEditQuestionnaire match={match} />} />
                 <Route exact path="/questionnaireInstances/:questionnaireId" render={({match}) => <QuestionnaireInstanceList match={match} />} />
                 <Route exact path="/questionnaireInstances/solve/:uuid" component={QuestionnaireInstance} />
-                <Route exact path="/questionnaireAnswer" component={QuestionnaireAnswerList} />
-                <Route exact path="/questionnaireAnswer/:id" component={QuestionnaireAnswer} />
+                <Route exact path="/questionnaireAnswer/:id" render={({match}) => <QuestionnaireAnswer match={match} />} />
                 <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />
             </Switch>
         </>
