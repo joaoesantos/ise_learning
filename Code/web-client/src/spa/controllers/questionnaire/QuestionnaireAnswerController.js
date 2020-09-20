@@ -13,32 +13,29 @@ export const QuestionnaireAnswerController = {
         let response = await fetch(url, options)
         return handleFetchResponse(response)
     },
-
-    getAllQuestionnaireAnswersFromQuestionnaireCreator: async () => {
+  
+    getQuestionnaireAnswers: async (questionnaireInstanceId) => {
+  
         const headers = fetchHeaders.get()
-        let url = apiUrlTemplates.getAllQuestionnaireAnswersFromQuestionnaireCreator()
+        let url =  apiUrlTemplates.getAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId)
         let options = {
             method: HttpMethods.get,
             headers: headers
         }
         let response = await fetch(url, options)
-        return handleFetchResponse(response)
-    },
-  
-    getQuestionnaireAnswers: async (id) => {
-  
-        const headers = fetchHeaders.get()
-        let url =  apiUrlTemplates.getQuestionnaireAnswers(id)
-        let options = {
-            method: HttpMethods.get,
-            headers: headers
+        let handledResponse = await handleFetchResponse(response)
+        if(handledResponse.severity === "error") {
+            return handledResponse
+        } else {
+            let challenges = handledResponse.json.map(el => el.answer)
+            handledResponse.json.challenges = challenges
+            return handledResponse
         }
-        let response = await fetch(url, options)
-        const responseJson = await response.json()
-        const questionnaire = {
-            challenges: responseJson.map(el => el.answer)
-        }
-        return questionnaire
+        // const responseJson = await response.json()
+        // const questionnaire = {
+        //     challenges: responseJson.map(el => el.answer)
+        // }
+        // return questionnaire
     },
 
 }

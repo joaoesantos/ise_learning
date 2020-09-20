@@ -56,16 +56,14 @@ export default function QuestionnaireinstanceListPage(props) {
             { title: "Status", field: 'status', editable: 'never' },
             { title: 'Link', field: 'link', editable: 'never' },
             { title: 'Questionnaire answers', field: 'answers', editable: 'never',
-            render: questionnaire => 
-                <Link component={RouterLink} to={`/questionnaireAnswer/${questionnaire.id}`} key={`${questionnaire.id}`} >
-                {`Show`}
+            render: questionnaireInstance => 
+                <Link component={RouterLink} to={`/questionnaireAnswer/${questionnaireInstance.questionnaireInstanceId}`} key={`${questionnaireInstance.questionnaireInstanceId}`} >
+                    {`Show`}
                 </Link>
             },
         ],
         data: [],
     })
-
-    console.log(response)
 
     React.useEffect(() => {
     if (response === undefined && actionState === ActionStates.clear) {
@@ -104,58 +102,58 @@ export default function QuestionnaireinstanceListPage(props) {
                     spacing={3}
                 >
                     <Grid item xs={12} sm={12}>
-                    <Toolbar className={classes.toolbar} variant="regular" >
-                        <Typography variant="h5">
-                            {`Instances of Questionnaire # ${questionnaireId}`}
-                        </Typography>
-                    </Toolbar>
-                    <MaterialTable
-                        columns={table.columns}
-                        data={table.data}
-                        title=""
-                        editable={{
-                            onRowAdd: (newData) =>
-                            new Promise((resolve) => {
-                                setAction({
-                                    function: QuestionnaireInstanceController.createQuestionnaireInstance,
-                                        args: [{
-                                            questionnaireId: questionnaireId,
-                                            description: newData.description,
-                                            timer: parseInt(newData.timer)*(1000*60)
-                                        }],
-                                        render: true
-                                })
-                                resolve()
-                            }),
-                            onRowUpdate: (newData, oldData) =>
-                            new Promise((resolve) => {
-                                console.log(newData)
-                                setAction({
-                                    function: QuestionnaireInstanceController.updateQuestionnaireInstance,
-                                        args: [{
-                                            questionnaireId: questionnaireId,
-                                            questionnaireInstanceId: newData.questionnaireInstanceId,
-                                            description: newData.description,
-                                            timer: parseInt(newData.timer)*(1000*60)
-                                        }],
-                                        render: true
-                                })
-                              resolve()
-                            }),
-                            onRowDelete: (oldData) =>
+                        <Toolbar className={classes.toolbar} variant="regular" >
+                            <Typography variant="h5">
+                                {`Instances of Questionnaire # ${questionnaireId}`}
+                            </Typography>
+                        </Toolbar>
+                        <MaterialTable
+                            columns={table.columns}
+                            data={table.data}
+                            title=""
+                            editable={{
+                                onRowAdd: (newData) =>
                                 new Promise((resolve) => {
                                     setAction({
-                                        function: QuestionnaireInstanceController.deleteQuestionnaireInstance,
+                                        function: QuestionnaireInstanceController.createQuestionnaireInstance,
                                             args: [{
                                                 questionnaireId: questionnaireId,
-                                                questionnaireInstanceId: oldData.questionnaireInstanceId,
+                                                description: newData.description,
+                                                timer: parseInt(newData.timer)*(1000*60)
+                                            }],
+                                            render: true
+                                    })
+                                    resolve()
+                                }),
+                                onRowUpdate: (newData, oldData) =>
+                                new Promise((resolve) => {
+                                    console.log(newData)
+                                    setAction({
+                                        function: QuestionnaireInstanceController.updateQuestionnaireInstance,
+                                            args: [{
+                                                questionnaireId: questionnaireId,
+                                                questionnaireInstanceId: newData.questionnaireInstanceId,
+                                                description: newData.description,
+                                                timer: parseInt(newData.timer)*(1000*60)
                                             }],
                                             render: true
                                     })
                                 resolve()
-                            }),
-                        }} 
-                    />
+                                }),
+                                onRowDelete: (oldData) =>
+                                    new Promise((resolve) => {
+                                        setAction({
+                                            function: QuestionnaireInstanceController.deleteQuestionnaireInstance,
+                                                args: [{
+                                                    questionnaireId: questionnaireId,
+                                                    questionnaireInstanceId: oldData.questionnaireInstanceId,
+                                                }],
+                                                render: true
+                                        })
+                                    resolve()
+                                }),
+                            }} 
+                        />
                     </Grid>
                 </Grid>
                 </Container>

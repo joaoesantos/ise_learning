@@ -37,7 +37,7 @@ export default function Routes() {
                 <Route exact path="/createEditQuestionnaire/:questionnaireId" render={({match}) => <CreateEditQuestionnaire match={match} />} />
                 <Route exact path="/questionnaireInstances/:questionnaireId" render={({match}) => <QuestionnaireInstanceList match={match} />} />
                 <Route exact path="/questionnaireInstances/solve/:uuid" component={QuestionnaireInstance} />
-                <Route exact path="/questionnaireAnswer/:id" render={({match}) => <QuestionnaireAnswer match={match} />} />
+                <Route exact path="/questionnaireAnswer/:questionnaireInstanceId" render={({match}) => <QuestionnaireAnswer match={match} />} />
                 <Route path="*" render={() => <DefaultErrorMessage message={"404 | Not Found"} /> } />
             </Switch>
         </>
