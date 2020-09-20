@@ -31,11 +31,6 @@ export const QuestionnaireAnswerController = {
             handledResponse.json.challenges = challenges
             return handledResponse
         }
-        // const responseJson = await response.json()
-        // const questionnaire = {
-        //     challenges: responseJson.map(el => el.answer)
-        // }
-        // return questionnaire
     },
 
 }

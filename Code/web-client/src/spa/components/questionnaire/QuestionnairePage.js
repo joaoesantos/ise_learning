@@ -18,9 +18,14 @@ import Typography from '@material-ui/core/Typography'
 // custom components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
+// notifications
+import CircularProgress from '../notifications/CircularProgress'
+import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
+import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnairePageController } from '../../controllers/questionnaire/QuestionnairePageController'
+import { RunCodeController } from '../../controllers/RunCodeController'
 // utils
 import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig'
 
@@ -127,17 +132,26 @@ export default function QuestionnairePage() {
     const [unitTests, setUnitTests] = React.useState('');
     
     React.useEffect(() => {
-        if (response === undefined && actionState === ActionStates.clear) {
+        // React.state evaluation for run code button action
+        if (action && action.name && action.name === "runcode") {
+            if(actionState === ActionStates.inProgress) {
+                setRunState('running')
+            } else if(actionState === ActionStates.done && response.severity === "success") {
+            response.json.wasError ? setRunState('error') : setRunState('finished')
+                setTextArea({ value: response.json, toUpdate: true })
+            } 
+        // React.state evaluation to set questionnaire
+        } else if (action && action.name && action.name === "getQuestionnaire" && actionState === ActionStates.done) {
+            setQuestionnaire(response)
+        } 
+        // React.state evaluation for action.clear
+        else if (response === undefined && actionState === ActionStates.clear) {
             setAction({
                 function: QuestionnairePageController.getQuestionnaire,
                 args: [],
-                render: true
+                name: "getQuestionnaire"
             })
-        } else if (actionState === ActionStates.done && action.render) {
-            setQuestionnaire(response)
-        } else {
-            //not Done || done but not rendering
-        }
+        } 
     }, [actionState]);
 
     let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
@@ -163,9 +177,18 @@ export default function QuestionnairePage() {
 
     const onRunCode = async () => {
         if (runState !== 'running') {
-            setRunState('running');
-            setRunState('finished');
-            setTextArea({ ...textArea, value: response, toUpdate: true });
+            setRunState('running')
+            const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
+            setAction({
+                function: RunCodeController.execute,
+                args: [{
+                    language: codeLanguage,
+                    code: selectedChallengeAnswer.answer.answerCode,
+                    unitTests: unitTests,
+                    executeTests: "runTests"
+                }],
+                name: 'runcode'
+            })
         }
     }
 
@@ -304,7 +327,8 @@ export default function QuestionnairePage() {
                                     <Button className={classes.runButton}
                                         id="runCodeButton"
                                         variant="contained"
-                                        onClick={onRunCode}>
+                                        onClick={onRunCode}
+                                    >
                                         Run Code
                                     </Button>
                                 </Toolbar>
@@ -356,12 +380,8 @@ export default function QuestionnairePage() {
         )
     }
 
-    if (actionState === ActionStates.clear) {
-        return <p>insert URL</p>
-    } else if (actionState === ActionStates.inProgress) {
-        return <p>fetching...</p>
-    } else if (actionState === ActionStates.done && questionnaire) {
-        return (
+    const renderQuestionnairePage = () => {
+        return(
             <React.Fragment>
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
@@ -389,7 +409,8 @@ export default function QuestionnairePage() {
                                             variant="contained" A
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}>
+                                            className={classes.button}
+                                        >
                                             Next
                                         </Button>
                                     )
@@ -398,7 +419,8 @@ export default function QuestionnairePage() {
                                     id="submitAnswer"
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleSubmitChallenge}>
+                                    onClick={handleSubmitChallenge}
+                                >
                                     Submit answer
                                 </Button>
                             </div>
@@ -407,7 +429,24 @@ export default function QuestionnairePage() {
                 </main>
             </React.Fragment>
         )
-    } else {
-        return <p>error...</p>
     }
+
+    if(actionState === ActionStates.clear) {
+        return <CircularProgress />
+    } else if(questionnaire) {
+        if(actionState === ActionStates.done && response.severity === "success") {
+            return(
+                <>
+                    {actionState === ActionStates.done && response && response.message && 
+                        <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                    {renderQuestionnairePage()}
+                </>
+            )
+        } else if(actionState === ActionStates.done && response.message) {
+            return <DefaultErrorMessage message={ response.message } />
+        }
+    } else {
+        return <DefaultErrorMessage message={"404 | Not Found"} />
+    }
+
 }

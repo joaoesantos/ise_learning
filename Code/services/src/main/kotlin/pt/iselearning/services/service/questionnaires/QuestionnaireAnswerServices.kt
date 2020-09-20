@@ -4,11 +4,10 @@ import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.validation.annotation.Validated
-import pt.iselearning.services.controller.questionnaire.input.QuestionnaireAnswerInputModel
+import pt.iselearning.services.models.questionnaire.input.QuestionnaireAnswerInputModel
 import pt.iselearning.services.domain.Answer
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
-import pt.iselearning.services.domain.questionnaires.QuestionnaireChallenge
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
 import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
@@ -20,7 +19,6 @@ import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRep
 import pt.iselearning.services.util.checkIfQuestionnaireAnswerExists
 import pt.iselearning.services.util.checkIfQuestionnaireInstanceExists
 import pt.iselearning.services.util.checkQuestionnaireInstanceTimeout
-import javax.persistence.*
 import javax.validation.Valid
 import javax.validation.constraints.Positive
 

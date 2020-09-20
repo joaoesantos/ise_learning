@@ -21,18 +21,11 @@ import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnaireController } from '../../controllers/questionnaire/QuestionnaireController'
+// utils
+import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
     layout: {},
-    buttons: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-    button: {
-        marginTop: theme.spacing(3),
-        marginLeft: theme.spacing(1),
-        margin: theme.spacing(3, 0, 2),
-    },
     container: {
         padding: theme.spacing(1),
     },
@@ -48,7 +41,26 @@ const useStyles = makeStyles(theme => ({
         background: 'fff',
         minWidth: 120,
         maxWidth: 300,
-    }
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    button: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+        margin: theme.spacing(3, 0, 2),
+    },
+    deleteButton: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+        margin: theme.spacing(3, 0, 2),
+        color: "#ffffff",
+        backgroundColor:'#9b1003',
+        '&:hover' : {
+          backgroundColor: '#e3242b'
+        }
+    },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -101,33 +113,28 @@ export default function CreateEditQuestionnairePage(props) {
     const classes = useStyles()
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
-    const [editable, setEditable] = React.useState(props.match.params.questionnaireId === 'undefined')
-    const [questionnaire, setQuestionnaire] = React.useState({
-        id: props.match.params.questionnaireId,
-        title: '',
-        language: '',
-        timer: '',
-        selectedChallenges: [],
-        creatorId : ''
-    })
+
+    const questionnaireId = props.match.params.questionnaireId
+
+    const [editable, setEditable] = React.useState(questionnaireId === 'undefined')
+    const [questionnaire, setQuestionnaire] = React.useState()
     const [savedQuestionnaire, setSavedQuestionnaire] = React.useState(questionnaire)
-    const [challengesData, setChallengesData] = React.useState([])
+    const [challengesData, setChallengesData] = React.useState()
 
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
                 function: QuestionnaireController.getQuestionnaire,
-                args: [questionnaire.id],
+                args: [questionnaireId],
                 render: true
             })
         } else if (actionState === ActionStates.done && action.render && action.render === true) {
-            console.log()
             setQuestionnaire(response.questionnaire)
             setSavedQuestionnaire(response.questionnaire)
             setChallengesData(response.challenges)
-        } else {
-            //not Done || done but not rendering
-        }
+        } else if(response && actionState === ActionStates.done && action.name && action.name === 'deleteQuestionnaire') {
+            history.push("/questionnaires")
+          }
     }, [actionState]);
 
     const isChallengeSelected = (id) => (typeof questionnaire.selectedChallenges.find(element => element.id === id) !== 'undefined');
@@ -145,25 +152,31 @@ export default function CreateEditQuestionnairePage(props) {
         setQuestionnaire({ ...questionnaire, selectedChallenges: sc })
     }
 
-    const onTitleChangeHandler = function (event) {
+    const onTitleChangeHandler = (event) => {
         const { value } = event.target
         setQuestionnaire({ ...questionnaire, title: value })
     }
 
-    const onTimerChangeHandler = function (event) {
+    const onTimerChangeHandler = (event) => {
         const { value } = event.target
         if (!isNaN(value)) {
             setQuestionnaire({ ...questionnaire, timer: value })
           }
     }
 
-    const handleCancel = function (event) {
-        setQuestionnaire(savedQuestionnaire)
-        toggleEdit()
+    const handleDelete = () => {
+        setAction({
+            function: QuestionnaireController.deleteQuestionnaire,
+            args: [questionnaireId],
+            name: "deleteQuestionnaire",
+        })
     }
 
-    const createLink = function (event) {
-        alert('this should be a link')
+    const handleCancel = () => {
+        setQuestionnaire(savedQuestionnaire)
+        if(questionnaire.id !== undefined) {
+            toggleEdit()
+        }
     }
 
     const renderChallengesTable = () => {
@@ -203,8 +216,8 @@ export default function CreateEditQuestionnairePage(props) {
                         icon: 'remove',
                         tooltip: 'Remove Challenge',
                         onClick: (event, rowData) => {
-                            let newSelected = [...questionnaire.selectedChallenges]
-                            newSelected = questionnaire.selectedChallenges.filter(c => c.id !== rowData.id)
+                            // let newSelected = [...questionnaire.selectedChallenges]
+                            let newSelected = questionnaire.selectedChallenges.filter(c => c.id !== rowData.id)
                             setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
                         },
                         disabled: !editable
@@ -213,18 +226,18 @@ export default function CreateEditQuestionnairePage(props) {
         )
     }
 
-    const CreateEditQuestionnairePage = () => {
+    const renderCreateEditQuestionnairePage = () => {
         return (
             <Formik
                 initialValues={{
                     title: questionnaire.title,
-                    timer:questionnaire.timer
+                    timer: questionnaire.timer
                 }}
                 onSubmit={async (values, {setSubmitting}) => {
                     setSubmitting(false)
                     setAction({
                         function: QuestionnaireController.saveQuestionnaire,
-                        args: [questionnaire, props.credentials],
+                        args: [questionnaire],
                         render: true
                     })
                     toggleEdit()
@@ -310,17 +323,15 @@ export default function CreateEditQuestionnairePage(props) {
                                             color="primary"
                                             variant="contained"
                                             className={classes.button}
-                                            onClick={() => toggleEdit()}
+                                            onClick={toggleEdit}
                                         >
                                             Edit
                                         </Button>
-                                        <Button
-                                            color="primary"
+                                        <Button className={classes.deleteButton}
                                             variant="contained"
-                                            onClick={createLink}
-                                            className={classes.button}
+                                            onClick={handleDelete}
                                         >
-                                            Create Link
+                                            Delete
                                         </Button>
                                     </React.Fragment>
 
@@ -341,7 +352,8 @@ export default function CreateEditQuestionnairePage(props) {
                                                 color="primary"
                                                 variant="contained"
                                                 onClick={handleCancel}
-                                                className={classes.button}>
+                                                className={classes.button}
+                                            >
                                                 Cancel
                                             </Button>
                                         </React.Fragment>
@@ -362,10 +374,12 @@ export default function CreateEditQuestionnairePage(props) {
             <>
                 {actionState === ActionStates.done && response && response.message && 
                     <CustomizedSnackbars message={response.message} severity={response.severity} />}
-                {CreateEditQuestionnairePage()}
+                {renderCreateEditQuestionnairePage()}
             </>
         )
     } else {
+        console.log("yoyo",actionState,response)
         return <DefaultErrorMessage message={"404 | Not Found"} />
     }
-};
+
+}

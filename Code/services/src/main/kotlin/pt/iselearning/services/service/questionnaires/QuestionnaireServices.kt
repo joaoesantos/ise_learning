@@ -103,6 +103,7 @@ class QuestionnaireServices(
                 questionnaireId,
                 questionnaire.description,
                 questionnaire.timer,
+                questionnaire.creatorId,
                 challenges.map { QuestionnaireChallengeOutputModel(it.challenge, it.languageFilter) }
         )
     }

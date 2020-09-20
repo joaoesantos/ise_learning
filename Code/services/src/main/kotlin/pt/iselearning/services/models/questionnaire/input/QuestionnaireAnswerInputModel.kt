@@ -1,4 +1,4 @@
-package pt.iselearning.services.controller.questionnaire.input
+package pt.iselearning.services.models.questionnaire.input
 
 import pt.iselearning.services.models.ChallengeAnswerOutputModel
 import javax.validation.constraints.Positive

@@ -14,7 +14,7 @@ export const themes = {
                 type: "light",
                 primary: {
                     // light: will be calculated from palette.primary.main,
-                    main: "#db9e07",
+                    main: "#e1ad01",
                     dark: "#be5041",
                     contrastText: '#fff',
                 },

@@ -103,7 +103,7 @@ class QuestionnaireController(
     @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
     fun getQuestionnaireByIdWithChallenge(
             @PathVariable questionnaireId: Int
-    ) : ResponseEntity<QuestionnaireOutputModel> {
+    ): ResponseEntity<QuestionnaireOutputModel> {
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireServices.getQuestionnaireByIdWithChallenge(questionnaireId))

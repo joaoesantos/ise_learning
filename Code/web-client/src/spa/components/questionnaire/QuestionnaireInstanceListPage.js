@@ -14,7 +14,6 @@ import { QuestionnaireInstanceController } from '../../controllers/questionnaire
 // notifications
 import CircularProgress from '../notifications/CircularProgress'
 import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
-import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 // utils
@@ -94,68 +93,68 @@ export default function QuestionnaireinstanceListPage(props) {
                 {actionState === ActionStates.done && response.message && 
                     <CustomizedSnackbars message={response.message} severity={response.severity} />}
                 <Container className={classes.mainContainer}>
-                <Grid 
-                    container 
-                    direction="row"
-                    justify="space-evenly"
-                    alignItems="center"
-                    spacing={3}
-                >
-                    <Grid item xs={12} sm={12}>
-                        <Toolbar className={classes.toolbar} variant="regular" >
-                            <Typography variant="h5">
-                                {`Instances of Questionnaire # ${questionnaireId}`}
-                            </Typography>
-                        </Toolbar>
-                        <MaterialTable
-                            columns={table.columns}
-                            data={table.data}
-                            title=""
-                            editable={{
-                                onRowAdd: (newData) =>
-                                new Promise((resolve) => {
-                                    setAction({
-                                        function: QuestionnaireInstanceController.createQuestionnaireInstance,
-                                            args: [{
-                                                questionnaireId: questionnaireId,
-                                                description: newData.description,
-                                                timer: parseInt(newData.timer)*(1000*60)
-                                            }],
-                                            render: true
-                                    })
-                                    resolve()
-                                }),
-                                onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve) => {
-                                    console.log(newData)
-                                    setAction({
-                                        function: QuestionnaireInstanceController.updateQuestionnaireInstance,
-                                            args: [{
-                                                questionnaireId: questionnaireId,
-                                                questionnaireInstanceId: newData.questionnaireInstanceId,
-                                                description: newData.description,
-                                                timer: parseInt(newData.timer)*(1000*60)
-                                            }],
-                                            render: true
-                                    })
-                                resolve()
-                                }),
-                                onRowDelete: (oldData) =>
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="space-evenly"
+                        alignItems="center"
+                        spacing={3}
+                    >
+                        <Grid item xs={12} sm={12}>
+                            <Toolbar className={classes.toolbar} variant="regular" >
+                                <Typography variant="h5">
+                                    {`Instances of Questionnaire # ${questionnaireId}`}
+                                </Typography>
+                            </Toolbar>
+                            <MaterialTable
+                                columns={table.columns}
+                                data={table.data}
+                                title=""
+                                editable={{
+                                    onRowAdd: (newData) =>
                                     new Promise((resolve) => {
                                         setAction({
-                                            function: QuestionnaireInstanceController.deleteQuestionnaireInstance,
+                                            function: QuestionnaireInstanceController.createQuestionnaireInstance,
                                                 args: [{
                                                     questionnaireId: questionnaireId,
-                                                    questionnaireInstanceId: oldData.questionnaireInstanceId,
+                                                    description: newData.description,
+                                                    timer: parseInt(newData.timer)*(1000*60)
+                                                }],
+                                                render: true
+                                        })
+                                        resolve()
+                                    }),
+                                    onRowUpdate: (newData, oldData) =>
+                                    new Promise((resolve) => {
+                                        console.log(newData)
+                                        setAction({
+                                            function: QuestionnaireInstanceController.updateQuestionnaireInstance,
+                                                args: [{
+                                                    questionnaireId: questionnaireId,
+                                                    questionnaireInstanceId: newData.questionnaireInstanceId,
+                                                    description: newData.description,
+                                                    timer: parseInt(newData.timer)*(1000*60)
                                                 }],
                                                 render: true
                                         })
                                     resolve()
-                                }),
-                            }} 
-                        />
+                                    }),
+                                    onRowDelete: (oldData) =>
+                                        new Promise((resolve) => {
+                                            setAction({
+                                                function: QuestionnaireInstanceController.deleteQuestionnaireInstance,
+                                                    args: [{
+                                                        questionnaireId: questionnaireId,
+                                                        questionnaireInstanceId: oldData.questionnaireInstanceId,
+                                                    }],
+                                                    render: true
+                                            })
+                                        resolve()
+                                    }),
+                                }} 
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
                 </Container>
             </>
         )

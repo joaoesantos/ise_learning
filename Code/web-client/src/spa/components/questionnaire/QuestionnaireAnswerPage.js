@@ -108,8 +108,6 @@ export default function QuestionnaireAnswerPage(props) {
             const selectedChallenge = response.json.challenges[activeStep]
             setTextEditorArea(selectedChallenge.answerCode)
             setTextArea(selectedChallenge.isCorrect)
-        } else {
-            //not Done || done but not rendering
         }
     }, [actionState]);
 

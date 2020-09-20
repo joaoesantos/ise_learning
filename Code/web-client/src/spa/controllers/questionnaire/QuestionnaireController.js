@@ -36,7 +36,7 @@ export const QuestionnaireController = {
     })
     // questionnaire
     let questionnaire = {
-      id: null,
+      id: undefined,
       title: '',
       selectedChallenges: []
     }
@@ -66,15 +66,17 @@ export const QuestionnaireController = {
     }
   },
   
-  saveQuestionnaire: async (questionnaire, credentials) => {
-    let url = apiUrlTemplates.saveQuestionnaire()
+  saveQuestionnaire: async (questionnaire) => {
+    console.log("cenas")
+    console.log("cenas",questionnaire)
+    let url = apiUrlTemplates.saveQuestionnaire(questionnaire.questionnaireId)
     let headers = fetchHeaders.get()
     let body = {}
     let options = {
       headers: headers,
     }
-  
-    if(questionnaire.id){
+    let message = ""
+    if(questionnaire.id) {
       options.method = HttpMethods.put
       body = {
         questionnaireId: questionnaire.id,
@@ -84,7 +86,8 @@ export const QuestionnaireController = {
           creatorId: questionnaire.creatorId
         }
       }
-    }else{
+      message = "Questionnaire updated successfully!"
+    } else {
       options.method = HttpMethods.post
       url = apiUrlTemplates.createQuestionnaire()
       body = {
@@ -99,11 +102,28 @@ export const QuestionnaireController = {
           }
         })
       }
+      message = "Questionnaire created successfully!"
     }
     options.body = JSON.stringify(body)
     let response = await fetch(url, options)
-    let json = await response.json()
-    return await this.getQuestionnaire(json.questionnaireId, credentials)
-  }
+    let handledResponse = await handleFetchResponse(response)
+    if(handledResponse.severity === "error") {
+      return handledResponse
+    } else {
+      let secondReponse = QuestionnaireController.getQuestionnaire(handledResponse.json.questionnaireId)
+      return handleFetchResponse(secondReponse, message)
+    }
+  },
+
+  deleteQuestionnaire: async (questionnaireId) => {
+    const headers = fetchHeaders.get()
+    let url = apiUrlTemplates.deleteQuestionnaire(questionnaireId)
+    let options = {
+        method: HttpMethods.delete,
+        headers: headers
+    }
+    let response = await fetch(url, options)
+    return handleFetchResponse(response)
+  },
 
 }
