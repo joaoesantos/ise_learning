@@ -1,4 +1,5 @@
 ﻿using NetCoreExecutionEnvironment.Commands.Arguments;
+using NetCoreExecutionEnvironment.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ namespace NetCoreExecutionEnvironment.Utils
     public class CommandLineUtils
     {
         private static readonly string _commandFilesFolder = Path.Combine("Commands", "Files");
-        public static CommandInfo ExecuteCommandFile(CommandType ct, ICommandArguments commandArguments)
+        public static ExecutableResult ExecuteCommandFile(CommandType ct, ICommandArguments commandArguments)
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), _commandFilesFolder, ct.GetFileName());
             try
@@ -33,8 +34,8 @@ namespace NetCoreExecutionEnvironment.Utils
                     string result = ""; 
                     bool wasError = false;
 
-                    //indicates if everything went ok
-                    if (np.ExitCode != 0)
+                    //indicates that everything went ok
+                    if (np.ExitCode == 0)
                     {
                         result = np.StandardOutput.ReadToEnd();
                     }
@@ -44,7 +45,7 @@ namespace NetCoreExecutionEnvironment.Utils
                         result = np.StandardError.ReadToEnd();
                     }
 
-                    return new CommandInfo(runningTime, result, wasError);
+                    return new ExecutableResult(result, wasError, runningTime);
                 }
             }
             catch (Exception e)

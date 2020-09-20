@@ -21,34 +21,57 @@ namespace NetCoreExecutionEnvironment.Controllers
 
         // POST
         [HttpPost]
-        public ExecutableResult Post([FromBody] Executable value)
+        public ActionResult<ExecutableResult> Post([FromBody] Executable value)
         {
             Guid guid = new Guid();
             string cleanedContent = FileUtils.RemoveNewLines(value.code);
             DirectoryInfo di = Directory.GetParent(Directory.GetCurrentDirectory());
-            CommandInfo ci = null;
+            ExecutableResult result = null;
+            string solutionName = $"{Constants.SolutionBaseName}_{guid}";
+            string testContent = string.Empty;
 
-            if (!value.executeTests)
+            if (RuntimeUtils.IsWindows)
             {
-                // run code
-                if (RuntimeUtils.IsWindows)
+                if (!value.executeTests)
                 {
-                    ci = CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS, new CreateSolutionWithTests(di.FullName, guid.ToString(), "App", "AppTest", cleanedContent, ""));
-                    Console.WriteLine("time:" + ci.ProcessDuration + ",std:" + ci.StandardOutput + ",wasError:" + ci.WasError);
+                    // run code
+                    result = CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS, new CreateSolutionWithTests(di.FullName, solutionName, Constants.CodeProjectName, Constants.UnitTestsProjectName));
+                    
+                }
+                else
+                {
+                    //create tests file
+                    testContent = FileUtils.RemoveNewLines(value.unitTests);
+
+                    CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS, new CreateSolutionWithTests(di.FullName, solutionName, Constants.CodeProjectName, Constants.UnitTestsProjectName));
+                    DocumentManager.WriteFile(cleanedContent, Constants.BaseCodeFile, Path.Combine(di.FullName, solutionName, Constants.CodeProjectName));
+                    DocumentManager.WriteFile(testContent, Constants.UnitTestFile, Path.Combine(di.FullName, solutionName, Constants.UnitTestsProjectName));
+                    result = CommandLineUtils.ExecuteCommandFile(CommandType.EXECUTE_TESTS_WINDOWS, new RunTests(di.FullName, solutionName));
+                    
+                }
+            } else if (RuntimeUtils.IsLinux)
+            {
+                if (!value.executeTests)
+                {
+                    // run code
+                    result = CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS, new CreateSolutionWithTests(di.FullName, solutionName, Constants.CodeProjectName, Constants.UnitTestsProjectName));
+
+                }
+                else
+                {
+                    //create tests file
+                    testContent = FileUtils.RemoveNewLines(value.unitTests);
+
+                    CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_LINUX_WITH_TESTS, new CreateSolutionWithTests(di.FullName, solutionName, Constants.CodeProjectName, Constants.UnitTestsProjectName));
+                    DocumentManager.WriteFile(cleanedContent, Constants.BaseCodeFile, Path.Combine(di.FullName, solutionName, Constants.CodeProjectName));
+                    DocumentManager.WriteFile(testContent, Constants.UnitTestFile, Path.Combine(di.FullName, solutionName, Constants.UnitTestsProjectName));
+                    result = CommandLineUtils.ExecuteCommandFile(CommandType.EXECUTE_TESTS_LINUX, new RunTests(di.FullName, solutionName));
                 }
             }
-            else
-            {
-                //create tests file
-                string testContent = FileUtils.RemoveNewLines(value.unitTests);
-                if (RuntimeUtils.IsWindows)
-                {
-                    ci = CommandLineUtils.ExecuteCommandFile(CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS, new CreateSolutionWithTests(di.FullName, guid.ToString(), "App", "AppTest", cleanedContent, testContent));
-                    Console.WriteLine("time:" + ci.ProcessDuration + ",std:" + ci.StandardOutput + ",wasError:" + ci.WasError);
-                }
-            }
 
-            return new ExecutableResult(ci.StandardOutput, ci.WasError, ci.ProcessDuration);
+
+
+            return Ok(result);
         }
 
     }

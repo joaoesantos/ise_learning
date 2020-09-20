@@ -5,24 +5,19 @@ using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment.Commands.Arguments
 {
-    public class CreateSolutionWithTests : ICommandArguments
+    public class RunTests : ICommandArguments
     {
         private string baseDirectory;
         private string solutionName;
-        private string appName;
-        private string testAppName;
 
-        public CreateSolutionWithTests(string baseDirectory, string solutionName, string appName, string testAppName)
+        public RunTests(string baseDirectory, string solutionName)
         {
             this.baseDirectory = baseDirectory;
             this.solutionName = solutionName;
-            this.appName = appName;
-            this.testAppName = testAppName;
         }
-
         public string getArgumments()
         {
-            return $"{baseDirectory} {solutionName} {appName} {testAppName}";
+            return $"{baseDirectory} {solutionName}";
         }
     }
 }

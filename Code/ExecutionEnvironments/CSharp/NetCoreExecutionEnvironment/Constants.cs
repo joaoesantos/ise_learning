@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment
@@ -9,7 +10,11 @@ namespace NetCoreExecutionEnvironment
     public class Constants
     {
         public static string CodeFilesDirectory = "CodeFiles";
-        public static string BaseCodeFile = "Program";
+        public static string BaseCodeFile = "Program.cs";
+        public static string UnitTestFile = "UnitTest1.cs";
+        public static string SolutionBaseName = "Exercise_";
+        public static string CodeProjectName = "App";
+        public static string UnitTestsProjectName = "AppTests";
         public enum CommandType
         {
             CREATE_SOLUTION_WINDOWS_WITH_TESTS,

@@ -9,14 +9,8 @@ namespace NetCoreExecutionEnvironment
 {
     public class DocumentManager
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="fileContent"></param>
-        /// <param name="filename"></param>
-        /// <param name="directoryPath"></param>
-        /// <returns></returns>
-        public static string WriteFile(string fileContent, string filename, string directoryPath )
+
+        public static string WriteFile(string fileContent, string filename, string directoryPath)
         {
             if (!Directory.Exists(directoryPath.ToString()))
             {
@@ -24,9 +18,13 @@ namespace NetCoreExecutionEnvironment
             }
 
             string filePath = Path.Combine(directoryPath, filename);
-            using (FileStream fs = File.Create(filePath))
+            using (FileStream fs = File.OpenWrite(filePath))
             {
-                fs.Write(Encoding.UTF8.GetBytes(fileContent));
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    fs.SetLength(0);
+                    sw.Write(fileContent);
+                }
             }
 
             return filePath;
