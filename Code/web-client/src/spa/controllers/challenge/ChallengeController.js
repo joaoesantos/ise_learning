@@ -1,6 +1,7 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
 import { HttpMethods, fetchHeaders, handleFetchResponse } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
+import { ChallengeAnswerController } from '../challenge/ChallengeAnswerController'
 
 export const ChallengeController = {
 
@@ -28,6 +29,16 @@ export const ChallengeController = {
     let url = apiUrlTemplates.challenge(challengeId)
     let options = {
       method: HttpMethods.get,
+      headers: fetchHeaders.get()
+    }
+    let response = await fetch(url, options)
+    return handleFetchResponse(response)
+  },
+
+  deleteChallengeById: async (challengeId) => {
+    let url = apiUrlTemplates.challenge(challengeId)
+    let options = {
+      method: HttpMethods.delete,
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
@@ -76,6 +87,32 @@ export const ChallengeController = {
       json : {
         languages: responses[1].json,
         challenge: responses[0].json
+      }
+    }
+  },
+
+  getChallengeByIdAvailableLanguagesAndChallengeAnswerIfExists: async(challengeId, userId) => {
+    let challengeAndLanguagesPromisse = ChallengeController.getChallengeByIdAndAvailableLanguages(challengeId)
+    let challengeAnswersPromisse = (userId === undefined) ? Promise.resolve({json: []}) : ChallengeAnswerController.getChallengeAnswerByChallengeIdAndUserId(challengeId, userId)
+
+    let responses = await Promise.all([challengeAndLanguagesPromisse, challengeAnswersPromisse])
+    if(responses[0].severity && responses[0].severity === 'error') {
+      return {
+        message: responses[0].message,
+        severity: 'error'
+      }
+    }
+    if(responses[1].severity && responses[1].severity === 'error') {
+      return {
+        message: responses[1].message,
+        severity: 'error'
+      }
+    }
+    return {
+      json : {
+        languages: responses[0].json.languages,
+        challenge: responses[0].json.challenge,
+        challengeAnswers: responses[1].json
       }
     }
   }

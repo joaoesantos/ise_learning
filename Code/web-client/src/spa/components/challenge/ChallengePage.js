@@ -121,7 +121,7 @@ export default withRouter(function ChallengePage(props) {
     const [actionState, response] = UseAction(action)
     const [runState, setRunState] = React.useState('notRunning')
     const [challenge, setChallenge] = React.useState()
-    const [challengeAnswer, setChallengeAnswer] = React.useState({})
+    const [challengeAnswers, setChallengeAnswers] = React.useState({})
     const [availableLanguages, setAvailableLanguages] = React.useState([])
 
     let componentAggregateStates = {
@@ -137,7 +137,7 @@ export default withRouter(function ChallengePage(props) {
         ourTests: { state: ourTests, setter: setOurTests},
         action: { state: action, setter: setAction},
         challenge: { state: challenge, setter: setChallenge},
-        challengeAnswer: { state: challengeAnswer, setter: setChallengeAnswer},
+        challengeAnswers: { state: challengeAnswers, setter: setChallengeAnswers},
         availableLanguages: { state: availableLanguages, setter: setAvailableLanguages}
     }
     let pageConfigs = ChallengePageConfigs(challengeId, componentAggregateStates, user)[props.location.configKey ? props.location.configKey : props.configKey]
@@ -189,10 +189,20 @@ export default withRouter(function ChallengePage(props) {
         }
     }
 
-    let yourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "", "", false, "Your Solution")
-    let ourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage, ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "", "", false, "Our Solution")
-    let yourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",  yourTests.value, true, "Your Tests")
-    let ourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage, yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",  ourTests.value, true, "Our Tests")
+    let yourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
+        yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",
+        "", false, "Your Solution")
+    let ourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
+        ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "",
+        "", false, "Our Solution")
+    let yourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
+        yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "", 
+        yourTests[codeLanguage] ? yourTests[codeLanguage].value : "",
+        true, "Your Tests")
+    let ourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
+        yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "", 
+        ourTests[codeLanguage] ? ourTests[codeLanguage].value : "",
+        true, "Our Tests")
 
     let determineDefaultTextForEditableEditors = (map, type) => {
         if(map[codeLanguage]) {
@@ -414,6 +424,7 @@ export default withRouter(function ChallengePage(props) {
             if(challenge) {
                 return (
                     <>
+                        {redirectObject !== undefined && <Redirect push to={redirectObject} />}
                         {actionState === ActionStates.done && response.message && 
                             <CustomizedSnackbars message={response.message} severity={response.severity} />}
                         {renderChallengePage()}
