@@ -10,6 +10,5 @@ COPY KotlinExecutionEnvironment-1.0.0-SNAPSHOT-spring-boot.jar .
 COPY startup.sh .
 RUN chmod +x startup.sh 
 COPY ./libs ./libs
-RUN echo $(ls -1 .)
 EXPOSE 8080
 ENTRYPOINT [ "./startup.sh" ]
