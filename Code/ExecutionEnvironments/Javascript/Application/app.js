@@ -35,7 +35,7 @@ app.use(function(err, req, res, next) {
 
   res.setHeader('content-type', 'application/problem+json');
   res.status(err.status || 500);
-  res.json(new ProblemJson(
+  res.status(500).json(new ProblemJson(
       "Internal Server Error",
       "Internal Server Error",
       err.message,

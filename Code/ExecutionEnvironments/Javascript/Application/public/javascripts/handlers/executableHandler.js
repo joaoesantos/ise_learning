@@ -58,18 +58,18 @@ let executableHandler = () => {
                 wasError = obj.error
                 executionTime = obj.executionTime
             }
-            res.json(new ExecutionResult(rawResult, wasError, executionTime).toJson())
+            res.status(200).json(new ExecutionResult(rawResult, wasError, executionTime).toJson())
         } catch (error) {
             console.log(`Executable Handler error: ${error.message}`, error.stack)
             res.setHeader('content-type', 'application/problem+json');
             if(error.wasTimeout) {
-                res.json(new ProblemJson(
+                res.status(408).json(new ProblemJson(
                     "TimeoutExpired",
                     "TimeoutExpired",
                     error.message,
                     "/execute/javascript/timeout").toJson())
             }
-            res.json(new ProblemJson(
+            res.status(500).json(new ProblemJson(
                 "Internal Server Error",
                 "Internal Server Error",
                 error.message,
