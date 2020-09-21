@@ -114,18 +114,23 @@ const useStyles = makeStyles((theme) => ({
     },
     timerText: {
         fontSize: '10px'
-    }
+    },
+    runStatePaper: {
+        elevation:1,
+        borderStyle:'solid',
+    },
 }));
 
 export default function QuestionnairePage() {
-    const classes = useStyles();
+    
+    const classes = useStyles()
     const { theme } = React.useContext(ThemeContext)
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState(new Set());
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
     const [questionnaire, setQuestionnaire] = React.useState()
-    const [timer, setTimer] = React.useState(5000)
+    const [timer, setTimer] = React.useState(0)
     const [runState, setRunState] = React.useState('notRunning');
     const [runTests, setRunTests] = React.useState(false)
     const [textEditorArea, setTextEditorArea] = React.useState();
@@ -134,7 +139,7 @@ export default function QuestionnairePage() {
     const [activeChallenge, setActiveChallenge] = React.useState()
     const [codeLanguage, setCodeLanguage] = React.useState()
 
-    const {uuid} = useParams()
+    const { uuid } = useParams()
 
     React.useEffect(() => {
         // React.state evaluation for run code button action
@@ -146,13 +151,14 @@ export default function QuestionnairePage() {
                 setTextArea({ value: response.json, toUpdate: true })
             }
         // React.state evaluation to set questionnaire
-        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done) {
+        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.render) {
             const initChallenge = response.json.challenges[0]
             const initialLanguage = response.json.challenges[0].answer.codeLanguage || defaultLanguage
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
             setQuestionnaire(response.json)
-            setTimer(response.json.Containertimer)
+            console.log(Date.now(), response.json.startTimestamp, response.json.timer)
+            setTimer( (response.json.startTimestamp + response.json.timer) -Date.now() )
             setActiveChallenge(initChallenge)
             setCodeLanguage(initChallenge.codeLanguage || initChallenge.languages && initChallenge.languages[0])
             setUnitTests(initChallenge.answer.unitTests || '')
@@ -166,9 +172,9 @@ export default function QuestionnairePage() {
         }
     }, [actionState]);
 
-    let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
-    let minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
-    let hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2);
+    let seconds = new Date(timer).getSeconds()
+    let minutes = new Date(timer).getMinutes()
+    let hours = new Date(timer).getHours()
 
     React.useEffect(() => {
         let intervalId = null
@@ -463,7 +469,8 @@ export default function QuestionnairePage() {
                                     id="submitAnswer"
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleSubmitChallenge}>
+                                    onClick={handleSubmitChallenge}
+                                >
                                     Save answer
                                 </Button>
                             </div>

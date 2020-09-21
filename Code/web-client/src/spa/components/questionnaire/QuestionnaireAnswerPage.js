@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useParams } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -94,9 +95,8 @@ export default function QuestionnaireAnswerPage(props) {
     const [textArea, setTextArea] = React.useState()
     const [questionnaireAnswer, setQuestionnaireAnswer] = React.useState()
 
-    const questionnaireInstanceId = props.match.params.questionnaireInstanceId
+    const { questionnaireInstanceId } = useParams()
 
-    console.log(response)
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
@@ -143,7 +143,8 @@ export default function QuestionnaireAnswerPage(props) {
                                         id="challenge-description"
                                         defaultValue={challenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, }} />
+                                        InputProps={{ readOnly: true, }} 
+                                    />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl variant="standard" className={classes.form} fullWidth>

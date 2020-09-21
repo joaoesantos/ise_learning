@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useParams } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
@@ -114,7 +115,7 @@ export default function CreateEditQuestionnairePage(props) {
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
 
-    const questionnaireId = props.match.params.questionnaireId
+    const { questionnaireId } = useParams()
 
     const [editable, setEditable] = React.useState(questionnaireId === 'undefined')
     const [questionnaire, setQuestionnaire] = React.useState()

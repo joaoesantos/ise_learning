@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
 import Container from '@material-ui/core/Container'
@@ -16,8 +17,6 @@ import CircularProgress from '../notifications/CircularProgress'
 import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
-// utils
-import { API_VERSION } from '../../clientSideConfig'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -45,7 +44,7 @@ export default function QuestionnaireinstanceListPage(props) {
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
 
-    const questionnaireId = props.match.params.questionnaireId
+    const { questionnaireId } = useParams()
 
     // table data
     const [table, setTable] = React.useState({
@@ -79,7 +78,7 @@ export default function QuestionnaireinstanceListPage(props) {
                 description: it.description,
                 timer: it.timer ? parseInt(it.timer)/(1000*60) : "N/A",
                 status: it.isFinish ? "Closed" : "Open",
-                link: `${window.location.host}/${API_VERSION}/questionnaireInstances/solve/${it.questionnaireInstanceUuid}`
+                link: `${window.location.host}/questionnaireInstances/solve/${it.questionnaireInstanceUuid}`
             }))
         setTable({...table, data:data})
     } 
