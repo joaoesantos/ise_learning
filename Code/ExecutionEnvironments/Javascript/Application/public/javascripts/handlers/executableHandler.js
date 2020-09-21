@@ -62,6 +62,13 @@ let executableHandler = () => {
         } catch (error) {
             console.log(`Executable Handler error: ${error.message}`, error.stack)
             res.setHeader('content-type', 'application/problem+json');
+            if(error.wasTimeout) {
+                res.json(new ProblemJson(
+                    "TimeoutExpired",
+                    "TimeoutExpired",
+                    error.message,
+                    "/execute/javascript/timeout").toJson())
+            }
             res.json(new ProblemJson(
                 "Internal Server Error",
                 "Internal Server Error",
@@ -79,8 +86,8 @@ let executableHandler = () => {
     }
 
     async function execChildProcess(command) {
+        let timeout = 60*1000; //milliseconds
         try{
-            let timeout = 60*1000; //milliseconds
             let hrstart = process.hrtime()
             const {stdout, stderr, error} = await exec(command, {timeout: timeout})
             let hrend = process.hrtime(hrstart)
@@ -99,10 +106,16 @@ let executableHandler = () => {
             }
         } catch (error) {
             console.log(`Error executing command: ${error.message}`)
-            return {
-                rawResult: error.stdout ? error.stdout : error.message,
-                error: true,
-                executionTime: 0
+            if(error.killed && error.signal === 'SIGTERM') {
+                let timeoutError = new Error(`Execution exceeded timeout of ${timeout / 1000} seconds.`);
+                timeoutError.wasTimeout = true;
+                throw timeoutError;
+            } else {
+                return {
+                    rawResult: error.stdout ? error.stdout : error.message,
+                    error: true,
+                    executionTime: 0
+                }
             }
         }
     }
