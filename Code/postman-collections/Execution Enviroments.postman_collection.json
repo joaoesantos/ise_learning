@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "91a174b2-4931-4478-ad9d-aee629d10d10",
+		"_postman_id": "12d7d60a-4a73-4e26-9c1f-43b7db4fde1b",
 		"name": "Execution Enviroments",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -179,6 +179,35 @@
 							"raw": "{{hostPythonExec}}",
 							"host": [
 								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "NodeJs",
+			"item": [
+				{
+					"name": "Execute NodeJs Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"code\":\"function getNthFib(n) {return n};exports.getNthFib = getNthFib;\",\n\t\"executeTests\": true,\n\t\"unitTests\": \"var assert = require('assert');describe('Teste1', function() {describe('#getNthFib()', function() {it('should return 1 when the value is not present', function() {assert.equal(getNthFib(1), 1);});});});\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostJavascriptExec}}",
+							"host": [
+								"{{hostJavascriptExec}}"
 							]
 						}
 					},
