@@ -52,8 +52,8 @@ class QuestionnaireServices(
     fun createQuestionnaireWithChallenges(@Valid questionnaireWithChallengesModel: QuestionnaireWithChallengesModel, loggedUser: User): Questionnaire? {
         val questionnaire = convertToEntity(questionnaireWithChallengesModel.questionnaire)
         questionnaire.creatorId = loggedUser.userId
-
         val createdQuestionnaire = questionnaireRepository.save(questionnaire)
+        
         val questionnaireChallengeModel = QuestionnaireChallengeModel(
                 createdQuestionnaire.questionnaireId!!,
                 questionnaireWithChallengesModel.challenges
@@ -71,7 +71,7 @@ class QuestionnaireServices(
      * @return questionnaire object
      */
     @Validated
-    fun getQuestionnaireById(@Positive questionnaireId: Int) : Questionnaire {
+    fun getQuestionnaireById(@Positive questionnaireId: Int): Questionnaire {
         val questionnaire = questionnaireRepository.findById(questionnaireId)
         checkIfQuestionnaireExists(questionnaire, questionnaireId)
         return questionnaire.get()
@@ -84,7 +84,7 @@ class QuestionnaireServices(
      * @return List of questionnaires objects
      */
     @Validated
-    fun getUserAllQuestionnaires(@Valid loggedUser: User) : List<Questionnaire> {
+    fun getUserAllQuestionnaires(@Valid loggedUser: User): List<Questionnaire> {
         return questionnaireRepository.findAllByCreatorId(loggedUser.userId!!)
     }
 

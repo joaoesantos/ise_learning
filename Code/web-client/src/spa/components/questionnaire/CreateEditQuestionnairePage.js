@@ -134,7 +134,7 @@ export default function CreateEditQuestionnairePage(props) {
             setChallengesData(response.challenges)
         } else if(response && actionState === ActionStates.done && action.name && action.name === 'deleteQuestionnaire') {
             history.push("/questionnaires")
-          }
+        }
     }, [actionState]);
 
     const isChallengeSelected = (id) => (typeof questionnaire.selectedChallenges.find(element => element.id === id) !== 'undefined');
@@ -161,7 +161,7 @@ export default function CreateEditQuestionnairePage(props) {
         const { value } = event.target
         if (!isNaN(value)) {
             setQuestionnaire({ ...questionnaire, timer: value })
-          }
+        }
     }
 
     const handleDelete = () => {
@@ -234,6 +234,7 @@ export default function CreateEditQuestionnairePage(props) {
                     timer: questionnaire.timer
                 }}
                 onSubmit={async (values, {setSubmitting}) => {
+                    console.log("rrrr", questionnaire)
                     setSubmitting(false)
                     setAction({
                         function: QuestionnaireController.saveQuestionnaire,
@@ -336,8 +337,7 @@ export default function CreateEditQuestionnairePage(props) {
                                     </React.Fragment>
 
                                 )}
-                                {
-                                    editable && (
+                                {editable && (
                                         <React.Fragment>
                                             <Button
                                                 color="primary"
@@ -378,7 +378,6 @@ export default function CreateEditQuestionnairePage(props) {
             </>
         )
     } else {
-        console.log("yoyo",actionState,response)
         return <DefaultErrorMessage message={"404 | Not Found"} />
     }
 

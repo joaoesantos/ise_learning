@@ -67,9 +67,7 @@ export const QuestionnaireController = {
   },
   
   saveQuestionnaire: async (questionnaire) => {
-    console.log("cenas")
-    console.log("cenas",questionnaire)
-    let url = apiUrlTemplates.saveQuestionnaire(questionnaire.questionnaireId)
+    let url = apiUrlTemplates.saveQuestionnaire(questionnaire.id)
     let headers = fetchHeaders.get()
     let body = {}
     let options = {
@@ -82,7 +80,7 @@ export const QuestionnaireController = {
         questionnaireId: questionnaire.id,
         questionnaireModel: {
           description: questionnaire.title,
-          timer: Number(questionnaire.timer),
+          timer: Number(questionnaire.timer)*(1000*60),
           creatorId: questionnaire.creatorId
         }
       }
@@ -93,7 +91,7 @@ export const QuestionnaireController = {
       body = {
         questionnaire: {
           description: questionnaire.title,
-          timer: Number(questionnaire.timer)
+          timer: Number(questionnaire.timer)*(1000*60)
         },
         challenges:questionnaire.selectedChallenges.map(c => {
           return {
@@ -110,8 +108,9 @@ export const QuestionnaireController = {
     if(handledResponse.severity === "error") {
       return handledResponse
     } else {
-      let secondReponse = QuestionnaireController.getQuestionnaire(handledResponse.json.questionnaireId)
-      return handleFetchResponse(secondReponse, message)
+      let secondResponse = await QuestionnaireController.getQuestionnaire(handledResponse.json.questionnaireId)
+      secondResponse.message = message
+      return secondResponse
     }
   },
 

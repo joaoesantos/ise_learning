@@ -8,8 +8,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 // components
 import QuestionnaireListTable from './QuestionnaireListTable'
-// controllers
-import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
 // utils
@@ -43,12 +41,6 @@ export default function QuestionnaireListPage() {
 
   const classes = useStyles()
   const { isAuthed } = React.useContext(AuthContext)
-  const [action, setAction] = React.useState()
-  const [actionState, response] = UseAction(action)
-
-  React.useEffect(() => {
-    
-  },[actionState]);
 
   const onCreateQuestionnaireButton = () => {
     history.push(`/createEditQuestionnaire/${undefined}`)

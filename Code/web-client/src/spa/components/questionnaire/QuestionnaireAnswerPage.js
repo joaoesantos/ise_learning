@@ -96,6 +96,7 @@ export default function QuestionnaireAnswerPage(props) {
 
     const questionnaireInstanceId = props.match.params.questionnaireInstanceId
 
+    console.log(response)
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
@@ -103,7 +104,7 @@ export default function QuestionnaireAnswerPage(props) {
                 args: [questionnaireInstanceId],
                 render: true
             })
-        } else if (actionState === ActionStates.done && action.render) {
+        } else if (actionState === ActionStates.done && response.json.challenges.length > 0 && action.render) {
             setQuestionnaireAnswer(response.json)
             const selectedChallenge = response.json.challenges[activeStep]
             setTextEditorArea(selectedChallenge.answerCode)
@@ -203,8 +204,7 @@ export default function QuestionnaireAnswerPage(props) {
                                         Back
                                     </Button>
                                 )}
-                                {
-                                    activeStep !== questionnaireAnswer.challenges.length - 1 && (
+                                {activeStep !== questionnaireAnswer.challenges.length - 1 && (
                                         <Button
                                             variant="contained"
                                             color="primary"
@@ -222,6 +222,6 @@ export default function QuestionnaireAnswerPage(props) {
             </>
         )
     } else {
-        return <p>error...</p>
+        return <DefaultErrorMessage message={"404 | Not Found"} />
     }
 }
