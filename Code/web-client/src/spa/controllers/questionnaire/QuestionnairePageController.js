@@ -1,23 +1,26 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, fetchHeaders, handleFetchResponse } from '../../utils/fetchUtils'
 import { LanguageController } from '../LanguageController'
 
 export const QuestionnairePageController = {
     getQuestionnaire: async (uuid) => {
-        let url = `/v0/questionnaireInstances/solve/${uuid}`
+        let url = apiUrlTemplates.getQuestionnaireByUuid(uuid)
         let options = {
           method: HttpMethods.get,
           headers: fetchHeaders.get()
         }
         let response = await fetch(url, options)
-        let json = await response.json();
+        let handledResponse = await handleFetchResponse(response)
+        if(handledResponse.severity === "error") {
+            return handledResponse
+        }
         const availableLanguages = await LanguageController.getAvailableLanguages()
-        json.challenges.forEach(async (element) => {
+        handledResponse.json.challenges.forEach(async (element) => {
             if(!element.languages){
                 element.languages = availableLanguages.json.map(l => l.codeLanguage)
             }
         });
-        return json
+        return handledResponse
 
     },
     submitChallenge: async () => {
@@ -35,8 +38,8 @@ export const QuestionnairePageController = {
         }
 
         options.body = JSON.stringify(body)
-        const url = apiUrlTemplates.createQuestionnaireAnswer
-        let response = await fetch('/v0/questionnaireAnswers', options)
-        return response.json()
+        let url = apiUrlTemplates.createQuestionnaireAnswer()
+        let response = await fetch(url, options)
+        return handleFetchResponse(response)
     }
 }

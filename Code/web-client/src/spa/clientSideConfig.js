@@ -94,6 +94,7 @@ export const apiUrlTemplates = {
     deleteQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
     // QUESTIONNAIRE INSTANCES
     createQuestionnaireInstance: () => `/${API_VERSION}/questionnaireInstances`,
+    getQuestionnaireByUuid: (uuid) => `/${API_VERSION}/questionnaireInstances/solve/${uuid}`,
     getAllQuestionnaireInstancesByQuestionnaireId: (questionnaireId) => `/${API_VERSION}/questionnaireInstances/questionnaires/${questionnaireId}`,
     updateQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
     deleteQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
