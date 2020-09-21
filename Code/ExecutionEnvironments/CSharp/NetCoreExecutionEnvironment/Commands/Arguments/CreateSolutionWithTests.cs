@@ -8,21 +8,20 @@ namespace NetCoreExecutionEnvironment.Commands.Arguments
     public class CreateSolutionWithTests : ICommandArguments
     {
         private string baseDirectory;
-        private string solutionName;
-        private string appName;
-        private string testAppName;
+        private string templateDirectory;
+        private string newDirectory;
+ 
 
-        public CreateSolutionWithTests(string baseDirectory, string solutionName, string appName, string testAppName)
+        public CreateSolutionWithTests(string baseDirectory, string templateDirectory, string newDirectory)
         {
             this.baseDirectory = baseDirectory;
-            this.solutionName = solutionName;
-            this.appName = appName;
-            this.testAppName = testAppName;
+            this.templateDirectory = templateDirectory;
+            this.newDirectory = newDirectory;
         }
 
         public string getArgumments()
         {
-            return $"{baseDirectory} {solutionName} {appName} {testAppName}";
+            return $"{baseDirectory} {templateDirectory} {newDirectory}";
         }
     }
 }

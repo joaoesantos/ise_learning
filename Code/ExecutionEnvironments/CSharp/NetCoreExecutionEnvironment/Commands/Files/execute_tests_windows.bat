@@ -1,11 +1,10 @@
 @echo off
 Rem Arguments section
 set base_dir=%1
-set solution_name=%2
-
-cd /d %base_dir%
+set dir_name=%2
+set solution_name=%3
 
 Rem Run tests
-dotnet test ./%solution_name%
+dotnet test %base_dir%/%dir_name%/%solution_name%
 
 EXIT

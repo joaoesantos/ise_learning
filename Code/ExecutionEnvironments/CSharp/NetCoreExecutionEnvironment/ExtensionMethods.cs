@@ -12,14 +12,10 @@ namespace NetCoreExecutionEnvironment
         {
             switch (ct)
             {
-                case CommandType.CREATE_SOLUTION_WINDOWS_WITH_TESTS:
+                case CommandType.CREATE_SOLUTION_WINDOWS:
                     return "create_solution_windows_with_tests.bat";
-                case CommandType.CREATE_SOLUTION_LINUX_WITH_TESTS:
+                case CommandType.CREATE_SOLUTION_LINUX:
                     return "create_solution_linux_with_tests.sh";
-                case CommandType.CREATE_SOLUTION_LINUX_WITHOUT_TESTS:
-                    return "create_solution_linux_without_tests.sh";
-                case CommandType.CREATE_SOLUTION_WINDOWS_WITHOUT_TESTS:
-                    return "create_solution_windows_without_tests.bat";
                 case CommandType.EXECUTE_CODE_LINUX:
                     return "runcode_linux.sh";
                 case CommandType.EXECUTE_CODE_WINDOWS:

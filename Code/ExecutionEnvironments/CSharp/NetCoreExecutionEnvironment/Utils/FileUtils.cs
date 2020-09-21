@@ -9,7 +9,7 @@ namespace NetCoreExecutionEnvironment
     {
         public static string RemoveNewLines(string content)
         {
-            return content.Replace(Environment.NewLine, string.Empty);
+            return string.IsNullOrWhiteSpace(content) ? string.Empty : content.Replace(Environment.NewLine, string.Empty);
         }
     }
 }
