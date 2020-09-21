@@ -84,7 +84,7 @@ let executableHandler = () => {
             let hrstart = process.hrtime()
             const {stdout, stderr, error} = await exec(command, {timeout: timeout})
             let hrend = process.hrtime(hrstart)
-            let execTimeMili = hrend[1] / 1000000
+            let execTimeMili = Math.round(hrend[1] / 1000000)
             let res = stdout
             let err = false;
                 if(error) {
