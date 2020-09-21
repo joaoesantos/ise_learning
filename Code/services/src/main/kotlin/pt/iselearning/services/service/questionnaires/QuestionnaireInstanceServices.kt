@@ -90,7 +90,6 @@ class QuestionnaireInstanceServices(
      * @return questionnaire instance object
      */
     @Validated
-    @Transactional
     fun getQuestionnaireInstanceByUuid(questionnaireInstanceUuid: String) : QuestionnaireInstanceOutputModel {
         val questionnaireInstanceOptional = questionnaireInstanceRepository.findByQuestionnaireInstanceUuid(questionnaireInstanceUuid)
 

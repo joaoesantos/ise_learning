@@ -95,7 +95,7 @@ class QuestionnaireServices(
      * @return List of QuestionnaireOutputModel objects
      */
     @Validated
-    fun getQuestionnaireByIdWithChallenge(@Positive questionnaireId: Int): QuestionnaireOutputModel? {
+    fun getQuestionnaireWithChallengeById(@Positive questionnaireId: Int): QuestionnaireOutputModel? {
         val questionnaire = checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
         val challenges = questionnaireChallengeServices.getAllQuestionnaireChallengeByQuestionnaireId(questionnaireId)
 
@@ -106,6 +106,36 @@ class QuestionnaireServices(
                 questionnaire.creatorId,
                 challenges.map { QuestionnaireChallengeOutputModel(it.challenge, it.languageFilter) }
         )
+    }
+
+    /**
+     * Update a questionnaire and its challenges.
+     *
+     * @param questionnaireWithChallengesModel object information
+     * @param loggedUser user that is calling the service
+     * @return updated questionnaire
+     */
+    @Validated
+    fun updateQuestionnaireWithChallengesById(@Positive questionnaireId: Int, @Valid questionnaireWithChallengesModel: QuestionnaireWithChallengesModel, @Valid loggedUser: User): Questionnaire {
+        var updatedQuestionnaire = checkIfQuestionnaireExists(questionnaireRepository, questionnaireId)
+        checkIfLoggedUserIsResourceOwner(loggedUser.userId!!, updatedQuestionnaire.creatorId!!)
+
+        //region data for update operation
+        if(questionnaireWithChallengesModel.questionnaire.description != null)
+            updatedQuestionnaire.description = questionnaireWithChallengesModel.questionnaire.description
+        if(questionnaireWithChallengesModel.questionnaire.timer != null)
+            updatedQuestionnaire.timer = questionnaireWithChallengesModel.questionnaire.timer
+        //endregion
+
+        updatedQuestionnaire = questionnaireRepository.save(updatedQuestionnaire)
+
+        val questionnaireChallengeModel = QuestionnaireChallengeModel(
+                updatedQuestionnaire.questionnaireId!!,
+                questionnaireWithChallengesModel.challenges
+        )
+        questionnaireChallengeServices.updateChallengesOnQuestionnaire(questionnaireChallengeModel)
+
+        return updatedQuestionnaire
     }
 
     /**

@@ -90,7 +90,7 @@ export const apiUrlTemplates = {
     getQuestionnaireWithChallenges: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
     getQuestionnaireById: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
     getAllUserQuestionnaires: () => `/${API_VERSION}/questionnaires/users`,
-    saveQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    saveQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
     deleteQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
     // QUESTIONNAIRE INSTANCES
     createQuestionnaireInstance: () => `/${API_VERSION}/questionnaireInstances`,

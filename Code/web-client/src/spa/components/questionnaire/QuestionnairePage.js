@@ -151,13 +151,12 @@ export default function QuestionnairePage() {
                 setTextArea({ value: response.json, toUpdate: true })
             }
         // React.state evaluation to set questionnaire
-        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.render) {
+        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.severity === "success") {
             const initChallenge = response.json.challenges[0]
             const initialLanguage = response.json.challenges[0].answer.codeLanguage || defaultLanguage
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
             setQuestionnaire(response.json)
-            console.log(Date.now(), response.json.startTimestamp, response.json.timer)
             setTimer( (response.json.startTimestamp + response.json.timer) -Date.now() )
             setActiveChallenge(initChallenge)
             setCodeLanguage(initChallenge.codeLanguage || initChallenge.languages && initChallenge.languages[0])
@@ -208,7 +207,7 @@ export default function QuestionnairePage() {
                 function: RunCodeController.execute,
                 args: [{
                     language: codeLanguage,
-                    code: selectedChallengeAnswer.answer.answerCode,
+                    code: selectedChallengeAnswer.answerCode,
                     unitTests: unitTests,
                     executeTests: "runTests"
                 }],
@@ -245,6 +244,7 @@ export default function QuestionnairePage() {
     }
 
     const getCodeArea = (idx) => {
+        console.log(questionnaire)
         const selectedAnswer = questionnaire.challenges[idx].answer
         let codeText = selectedAnswer.answerCode
         if (!codeText) {
@@ -373,7 +373,6 @@ export default function QuestionnairePage() {
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Grid item xs={7} style={{ paddingTop: 20 }}>
                             <Grid>
                                 <Toolbar className={classes.runCodetoolbar} variant="dense">
@@ -426,7 +425,6 @@ export default function QuestionnairePage() {
                         </Grid>
                     </Grid>
                 </Container>
-
             </React.Fragment>
         )
     }
@@ -460,7 +458,8 @@ export default function QuestionnairePage() {
                                             variant="contained" A
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}>
+                                            className={classes.button}
+                                        >
                                             Next
                                         </Button>
                                     )
@@ -479,7 +478,7 @@ export default function QuestionnairePage() {
                 </main>
             </React.Fragment>
         )
-    } 
+    }
 
     if(actionState === ActionStates.clear) {
         return <CircularProgress />
@@ -492,9 +491,11 @@ export default function QuestionnairePage() {
                     {renderQuestionnairePage()}
                 </>
             )
-        } else if(actionState === ActionStates.done && response.message) {
+        } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
             return <DefaultErrorMessage message={ response.message } />
         }
+    } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
+        return <DefaultErrorMessage message={ response.message } />
     } else {
         return <DefaultErrorMessage message={"404 | Not Found"} />
     }

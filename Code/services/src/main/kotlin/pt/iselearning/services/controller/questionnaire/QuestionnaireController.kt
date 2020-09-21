@@ -100,13 +100,13 @@ class QuestionnaireController(
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<QuestionnaireOutputModel> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
+    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireWithChallengeById")
     fun getQuestionnaireByIdWithChallenge(
             @PathVariable questionnaireId: Int
     ): ResponseEntity<QuestionnaireOutputModel> {
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.getQuestionnaireByIdWithChallenge(questionnaireId))
+                .body(questionnaireServices.getQuestionnaireWithChallengeById(questionnaireId))
     }
 
     /**
@@ -124,6 +124,23 @@ class QuestionnaireController(
     ): ResponseEntity<Questionnaire> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireServices.updateQuestionnaireById(questionnaireId,questionnaireModel, loggedUser))
+    }
+
+    /**
+     * Method to update an questionnaire.
+     *
+     * @param questionnaireId represents a Questionnaire unique identifier
+     * @param questionnaireWithChallengesModel json object that represents a Questionnaire object and a collection of challenges unique identifiers
+     * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @PutMapping("/{questionnaireId}/withChallenges", name = "updateQuestionnaireWithChallengesById")
+    fun updateQuestionnaireWithChallengeById(
+            @PathVariable questionnaireId: Int,
+            @RequestBody questionnaireWithChallengesModel: QuestionnaireWithChallengesModel,
+            loggedUser: User
+    ): ResponseEntity<Questionnaire> {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireServices.updateQuestionnaireWithChallengesById(questionnaireId,questionnaireWithChallengesModel, loggedUser))
     }
 
     /**

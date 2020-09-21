@@ -55,6 +55,7 @@ const useStyles = makeStyles(theme => ({
     deleteButton: {
         marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
         margin: theme.spacing(3, 0, 2),
         color: "#ffffff",
         backgroundColor:'#9b1003',
@@ -129,10 +130,13 @@ export default function CreateEditQuestionnairePage(props) {
                 args: [questionnaireId],
                 render: true
             })
-        } else if (actionState === ActionStates.done && action.render && action.render === true) {
+        } else if (actionState === ActionStates.done && action.render && action.render === true && response.severity === "success") {
             setQuestionnaire(response.questionnaire)
             setSavedQuestionnaire(response.questionnaire)
             setChallengesData(response.challenges)
+        } else if (actionState === ActionStates.done && action.render && action.render === true && response.severity === "error") {
+            handleCancel()
+            toggleEdit()
         } else if(response && actionState === ActionStates.done && action.name && action.name === 'deleteQuestionnaire') {
             history.push("/questionnaires")
         }
@@ -217,7 +221,6 @@ export default function CreateEditQuestionnairePage(props) {
                         icon: 'remove',
                         tooltip: 'Remove Challenge',
                         onClick: (event, rowData) => {
-                            // let newSelected = [...questionnaire.selectedChallenges]
                             let newSelected = questionnaire.selectedChallenges.filter(c => c.id !== rowData.id)
                             setQuestionnaire({ ...questionnaire, selectedChallenges: newSelected })
                         },
@@ -235,7 +238,6 @@ export default function CreateEditQuestionnairePage(props) {
                     timer: questionnaire.timer
                 }}
                 onSubmit={async (values, {setSubmitting}) => {
-                    console.log("rrrr", questionnaire)
                     setSubmitting(false)
                     setAction({
                         function: QuestionnaireController.saveQuestionnaire,
@@ -339,27 +341,26 @@ export default function CreateEditQuestionnairePage(props) {
 
                                 )}
                                 {editable && (
-                                        <React.Fragment>
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                type="submit"
-                                                className={classes.button}
-                                                disabled={isSubmitting}
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                variant="contained"
-                                                onClick={handleCancel}
-                                                className={classes.button}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </React.Fragment>
-                                    )
-                                }
+                                    <React.Fragment>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            type="submit"
+                                            className={classes.button}
+                                            disabled={isSubmitting}
+                                        >
+                                            Save
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            variant="contained"
+                                            onClick={handleCancel}
+                                            className={classes.button}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </React.Fragment>
+                                )}
                             </div>
                         </Form>
                     </div>
@@ -367,6 +368,8 @@ export default function CreateEditQuestionnairePage(props) {
             </Formik>
         )
     }
+
+    console.log("asasa",actionState, response, questionnaire)
 
     if (actionState === ActionStates.clear || actionState === ActionStates.inProgress) {
         return <CircularProgress />

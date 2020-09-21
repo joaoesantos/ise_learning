@@ -69,40 +69,31 @@ export const QuestionnaireController = {
   saveQuestionnaire: async (questionnaire) => {
     let url = apiUrlTemplates.saveQuestionnaire(questionnaire.id)
     let headers = fetchHeaders.get()
-    let body = {}
+    let body = {
+      questionnaire: {
+        description: questionnaire.title,
+        timer: Number(questionnaire.timer)*(1000*60)
+      },
+      challenges:questionnaire.selectedChallenges.map(c => {
+        return {
+          challengeId: c.id,
+          languageFilter: c.selectedLanguages.join()
+        }
+      })
+    }
     let options = {
       headers: headers,
+      body: JSON.stringify(body)
     }
     let message = ""
     if(questionnaire.id) {
       options.method = HttpMethods.put
-      body = {
-        questionnaireId: questionnaire.id,
-        questionnaireModel: {
-          description: questionnaire.title,
-          timer: Number(questionnaire.timer)*(1000*60),
-          creatorId: questionnaire.creatorId
-        }
-      }
       message = "Questionnaire updated successfully!"
     } else {
-      options.method = HttpMethods.post
       url = apiUrlTemplates.createQuestionnaire()
-      body = {
-        questionnaire: {
-          description: questionnaire.title,
-          timer: Number(questionnaire.timer)*(1000*60)
-        },
-        challenges:questionnaire.selectedChallenges.map(c => {
-          return {
-            challengeId: c.id,
-            languageFilter: c.selectedLanguages.join()
-          }
-        })
-      }
+      options.method = HttpMethods.post
       message = "Questionnaire created successfully!"
     }
-    options.body = JSON.stringify(body)
     let response = await fetch(url, options)
     let handledResponse = await handleFetchResponse(response)
     if(handledResponse.severity === "error") {

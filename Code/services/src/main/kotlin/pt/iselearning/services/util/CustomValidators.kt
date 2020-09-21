@@ -505,7 +505,14 @@ fun checkIfAllChallengesBelongToSameQuestionnaire(listOfQuestionnaireChallenge: 
  * @throws ServiceException when on failure to match a supported language
  */
 fun checkSupportedLanguagesForChallengeLanguageFilter(languageFilter: String?) {
-    if(languageFilter == null) return
+    if(languageFilter == null || languageFilter.isEmpty()) {
+        throw ServiceException(
+                "Unsupported language.",
+                "Challenge needs at least one code language",
+                "/iselearning/codeLanguage/nonexistentCodeLanguage",
+                ErrorCode.BAD_REQUEST
+        )
+    }
     val regex = SupportedLanguages.getRegexForSupportedLanguages().toRegex()
     val languages = languageFilter.split(",")
     languages.forEach {

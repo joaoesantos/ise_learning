@@ -19,13 +19,12 @@ export const QuestionnairePageController = {
             if(!element.languages){
                 element.languages = availableLanguages.json.map(l => l.codeLanguage)
             }
-        });
+        })
+        console.log("handledResponse",handledResponse)
         return handledResponse
 
     },
-    submitChallenge: async () => {
 
-    },
     submitQuestionnaire: async(questionnaireInfo) => {
         let options = {
             method: HttpMethods.post,
