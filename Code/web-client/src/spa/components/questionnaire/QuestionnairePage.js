@@ -126,15 +126,15 @@ export default function QuestionnairePage() {
     const classes = useStyles()
     const { theme } = React.useContext(ThemeContext)
     const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState(new Set());
+    const [completed, setCompleted] = React.useState(new Set())
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
     const [questionnaire, setQuestionnaire] = React.useState()
     const [timer, setTimer] = React.useState(0)
     const [runState, setRunState] = React.useState('notRunning');
     const [runTests, setRunTests] = React.useState(false)
-    const [textEditorArea, setTextEditorArea] = React.useState();
-    const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
+    const [textEditorArea, setTextEditorArea] = React.useState()
+    const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false })
     const [unitTests, setUnitTests] = React.useState('');
     const [activeChallenge, setActiveChallenge] = React.useState()
     const [codeLanguage, setCodeLanguage] = React.useState()
@@ -157,7 +157,7 @@ export default function QuestionnairePage() {
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
             setQuestionnaire(response.json)
-            setTimer( (response.json.startTimestamp + response.json.timer) -Date.now() )
+            setTimer( (response.json.startTimestamp + response.json.timer) - Date.now() )
             setActiveChallenge(initChallenge)
             setCodeLanguage(initChallenge.codeLanguage || initChallenge.languages && initChallenge.languages[0])
             setUnitTests(initChallenge.answer.unitTests || '')
@@ -198,23 +198,41 @@ export default function QuestionnairePage() {
         setActiveChallenge(cha)
         setCodeLanguage(event.target.value)
     }
-
+    
     const onRunCode = async () => {
         if (runState !== 'running') {
-            setRunState('running')
+            setRunState('running');
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
-            setAction({
-                function: RunCodeController.execute,
-                args: [{
-                    language: codeLanguage,
-                    code: selectedChallengeAnswer.answerCode,
-                    unitTests: unitTests,
-                    executeTests: "runTests"
-                }],
-                name: 'runcode'
+            let result = await RunCodeController.execute({
+                language: codeLanguage,
+                code: selectedChallengeAnswer.answer.answerCodecode,
+                unitTests: unitTests,
+                executeTests: runTests
+            });
+            setTextArea({
+                value: result,
+                toUpdate: true
             })
+            setRunState('finished');
         }
     }
+
+    // const onRunCode = async () => {
+    //     if (runState !== 'running') {
+    //         setRunState('running')
+    //         const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
+    //         setAction({
+    //             function: RunCodeController.execute,
+    //             args: [{
+    //                 language: codeLanguage,
+    //                 code: selectedChallengeAnswer.answerCode,
+    //                 unitTests: unitTests,
+    //                 executeTests: runTests
+    //             }],
+    //             name: 'runcode'
+    //         })
+    //     }
+    // }
 
     const onClearConsole = () => {
         if (runState !== 'notRunning') {
@@ -244,7 +262,6 @@ export default function QuestionnairePage() {
     }
 
     const getCodeArea = (idx) => {
-        console.log(questionnaire)
         const selectedAnswer = questionnaire.challenges[idx].answer
         let codeText = selectedAnswer.answerCode
         if (!codeText) {
@@ -271,7 +288,6 @@ export default function QuestionnairePage() {
         if(!nextChallenge.unitTests){
             nextChallenge.answer.unitTests = defaultUnitTests[nextChallenge.answer.codeLanguage]
         }
-
         setActiveChallenge(nextChallenge)
         setTextEditorArea(getCodeArea(nextStep))
         setTextArea({ value: '', toUpdate: false })
@@ -309,25 +325,28 @@ export default function QuestionnairePage() {
                         Submit Questionnaire
                     </Button>
                 </div>
-
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{hours}</span>
-                    <div className={classes.timerText}>Hours</div>
-                </div>
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{minutes}</span>
-                    <div className={classes.timerText}>minutes</div>
-                </div>
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{seconds}</span>
-                    <div className={classes.timerText}>seconds</div>
-                </div>
+                {questionnaire.timer !== null &&
+                <>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{hours}</span>
+                        <div className={classes.timerText}>Hours</div>
+                    </div>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{minutes}</span>
+                        <div className={classes.timerText}>minutes</div>
+                    </div>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{seconds}</span>
+                        <div className={classes.timerText}>seconds</div>
+                    </div>
+                </>
+                }
             </div>
         )
     }
 
     const languageOptions = () => {
-        return activeChallenge.languages.map( (l, index) => 
+        return activeChallenge.languages.map((l, index) => 
         <option key={index} value={l}>{l.toLowerCase()}</option>   
         )
     }
@@ -335,7 +354,7 @@ export default function QuestionnairePage() {
     const getChallengeContent = (step) => {
         const challenge = activeChallenge.description
         return (
-            <React.Fragment>
+            <>
                 <Container className={classes.container} maxWidth={false}>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} >
@@ -366,7 +385,8 @@ export default function QuestionnairePage() {
                                             id="languageSelect"
                                             native
                                             value={codeLanguage}
-                                            onChange={onLanguageChange}>
+                                            onChange={onLanguageChange}
+                                        >
                                             {languageOptions()}
                                         </Select>
                                     </FormControl>
@@ -425,18 +445,18 @@ export default function QuestionnairePage() {
                         </Grid>
                     </Grid>
                 </Container>
-            </React.Fragment>
+            </>
         )
     }
 
     const renderQuestionnairePage = () => {
         return(
-            <React.Fragment>
+            <>
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
-                        <React.Fragment>
+                        <>
                             {renderTimer()}
-                        </React.Fragment>
+                        </>
                         <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
                             {questionnaire.challenges.map((c, idx) => (
                                 <Step key={idx} completed={isStepCompleted(idx)}>
@@ -444,7 +464,7 @@ export default function QuestionnairePage() {
                                 </Step>
                             ))}
                         </Stepper>
-                        <React.Fragment>
+                        <>
                             {getChallengeContent(activeStep)}
                             <div className={classes.buttons}>
                                 {activeStep !== 0 && (
@@ -473,10 +493,10 @@ export default function QuestionnairePage() {
                                     Save answer
                                 </Button>
                             </div>
-                        </React.Fragment>
+                        </>
                     </Paper>
                 </main>
-            </React.Fragment>
+            </>
         )
     }
 

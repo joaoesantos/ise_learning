@@ -25,8 +25,6 @@ export default function QuestionnaireAnswerListPage() {
       })
     } else if (actionState === ActionStates.done && action.render && action.render === true) {
       setTable({...table, data:response})
-    } else {
-      //not Done || done but not rendering
     }
   },[actionState]);
 

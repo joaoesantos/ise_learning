@@ -20,9 +20,7 @@ export const QuestionnairePageController = {
                 element.languages = availableLanguages.json.map(l => l.codeLanguage)
             }
         })
-        console.log("handledResponse",handledResponse)
         return handledResponse
-
     },
 
     submitQuestionnaire: async(questionnaireInfo) => {
@@ -35,7 +33,6 @@ export const QuestionnairePageController = {
             questionnaireId: questionnaireInfo.questionnaireId,
             challenges: questionnaireInfo.challenges
         }
-
         options.body = JSON.stringify(body)
         let url = apiUrlTemplates.createQuestionnaireAnswer()
         let response = await fetch(url, options)

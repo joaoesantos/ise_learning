@@ -171,7 +171,7 @@ export default function QuestionnaireAnswerPage(props) {
                             <FormLabel component="legend">Passed Challenge?</FormLabel>
                             <RadioGroup aria-label="passed" name="passed" >
                                 <FormControlLabel control={<Radio checked={challenge.isCorrect} />} label="Yes" />
-                                <FormControlLabel control={<Radio checked={!challenge.isCorrect}/>} label="No" />
+                                <FormControlLabel control={<Radio checked={!challenge.isCorrect} />} label="No" />
                             </RadioGroup>
                         </Grid>
                     </Grid>
