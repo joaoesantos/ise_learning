@@ -12,12 +12,14 @@ router.post('/', Executable.validate(), function(req, res, next) {
     executableHandler.runCode(req, res)
     res.status(200)
   }catch(err){
-    res.status(422).json({
-      message: err
-    })
+    res.setHeader('content-type', 'application/problem+json');
+    res.status(422).json(new ProblemJson(
+      "Unprocessable Entity",
+      "Unprocessable Entity",
+      err.message,
+      "/execute/javascript/modelValidation/error").toJson())
+    console.log(`Validation error: ${err.message}`, err.stack)
   }
-    
-
 });
 
 module.exports = router;
