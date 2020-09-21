@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function QuestionnairePage() {
-    
+
     const classes = useStyles()
     const { theme } = React.useContext(ThemeContext)
     const [activeStep, setActiveStep] = React.useState(0);
@@ -198,21 +198,18 @@ export default function QuestionnairePage() {
         setActiveChallenge(cha)
         setCodeLanguage(event.target.value)
     }
-    
+
     const onRunCode = async () => {
         if (runState !== 'running') {
             setRunState('running');
             const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
             let result = await RunCodeController.execute({
                 language: codeLanguage,
-                code: selectedChallengeAnswer.answer.answerCodecode,
+                code: selectedChallengeAnswer.answerCode,
                 unitTests: unitTests,
                 executeTests: runTests
             });
-            setTextArea({
-                value: result,
-                toUpdate: true
-            })
+            setTextArea({ value: result.json, toUpdate: true })
             setRunState('finished');
         }
     }
@@ -225,7 +222,7 @@ export default function QuestionnairePage() {
     //             function: RunCodeController.execute,
     //             args: [{
     //                 language: codeLanguage,
-    //                 code: selectedChallengeAnswer.answerCode,
+    //                 code: "selectedChallengeAnswer.answerCode",
     //                 unitTests: unitTests,
     //                 executeTests: runTests
     //             }],
@@ -280,7 +277,7 @@ export default function QuestionnairePage() {
 
     const handleStepChange = (nextStep) => {
         const nextChallenge = questionnaire.challenges[nextStep]
-        
+
         if(!nextChallenge.answer.codeLanguage || nextChallenge.answer.codeLanguage == '') {
             nextChallenge.answer.codeLanguage = defaultLanguage
         }
@@ -346,8 +343,8 @@ export default function QuestionnairePage() {
     }
 
     const languageOptions = () => {
-        return activeChallenge.languages.map((l, index) => 
-        <option key={index} value={l}>{l.toLowerCase()}</option>   
+        return activeChallenge.languages.map((l, index) =>
+        <option key={index} value={l}>{l.toLowerCase()}</option>
         )
     }
 
@@ -506,7 +503,7 @@ export default function QuestionnairePage() {
         if(actionState === ActionStates.done && response.severity === "success") {
             return(
                 <>
-                    {actionState === ActionStates.done && response && response.message && 
+                    {actionState === ActionStates.done && response && response.message &&
                         <CustomizedSnackbars message={response.message} severity={response.severity} />}
                     {renderQuestionnairePage()}
                 </>
