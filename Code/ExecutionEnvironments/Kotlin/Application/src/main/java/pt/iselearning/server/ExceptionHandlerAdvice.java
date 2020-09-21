@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pt.iselearning.exceptions.ApplicationException;
+import pt.iselearning.exceptions.CommandExecutionTimeout;
 import pt.iselearning.exceptions.MissingClassException;
 import pt.iselearning.models.ProblemJsonModel;
 
@@ -24,6 +25,13 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ProblemJsonModel> handleMissingClassException(MissingClassException e) {
         LOGGER.debug("handleMissingClassException Exception Handler.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeaders)
+                .body(new ProblemJsonModel(e.getType(), e.getTitle(), e.getMessage(), e.getInstance()));
+    }
+
+    @ExceptionHandler(CommandExecutionTimeout.class)
+    public ResponseEntity<ProblemJsonModel> handleTimeoutException(ApplicationException e) {
+        LOGGER.debug("handleException Timeout Exception Handler.");
+        return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).headers(httpHeaders)
                 .body(new ProblemJsonModel(e.getType(), e.getTitle(), e.getMessage(), e.getInstance()));
     }
 

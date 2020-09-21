@@ -135,7 +135,7 @@ public class CommandExecutor implements AutoCloseable {
         long end = System.currentTimeMillis();
         if(wasTimeout) {
             throw new CommandExecutionTimeout(
-                    "TimeoutExpire",
+                    "TimeoutExpired",
                     "TimeoutExpired",
                     String.format("The command execution timed out, took more than %d seconds", this.timeout),
                     "/execute/java/timeout"
