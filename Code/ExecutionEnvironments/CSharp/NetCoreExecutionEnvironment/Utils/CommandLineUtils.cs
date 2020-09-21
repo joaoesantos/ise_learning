@@ -1,11 +1,12 @@
-﻿using NetCoreExecutionEnvironment.Commands.Arguments;
+﻿using Microsoft.AspNetCore.Http;
+using NetCoreExecutionEnvironment.Commands.Arguments;
 using NetCoreExecutionEnvironment.Contracts;
+using NetCoreExecutionEnvironment.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Threading;
 using static NetCoreExecutionEnvironment.Constants;
 
 namespace NetCoreExecutionEnvironment.Utils
@@ -13,11 +14,12 @@ namespace NetCoreExecutionEnvironment.Utils
     public class CommandLineUtils
     {
         private static readonly string _commandFilesFolder = Path.Combine("Commands", "Files");
-        public static ExecutableResult ExecuteCommandFile(CommandType ct, ICommandArguments commandArguments)
+
+        public static ExecutableResult ExecuteCommandFile(CommandType ct, ICommandArguments commandArguments, int timeout = Timeout.Infinite)
         {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), _commandFilesFolder, ct.GetFileName());
             try
             {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), _commandFilesFolder, ct.GetFileName());
                 //launch new process
                 using(Process np = new Process())
                 {
@@ -29,8 +31,12 @@ namespace NetCoreExecutionEnvironment.Utils
                     np.StartInfo.RedirectStandardOutput = true;
                     np.Start();
 
-                    np.WaitForExit();
-                    long runningTime = (np.ExitTime - np.StartTime).Ticks;
+                    bool ok = np.WaitForExit(timeout);
+                    if (!ok)
+                    {
+                        throw new RunEnvironmentException(StatusCodes.Status408RequestTimeout, Constants.ExceptionType.REQUEST_TIMEOUT, "Program ran for too long. Please make changes in your code", Constants.ExceptionInstance.TIMEOUT, "Program ran for too long");
+                    }
+                    long runningTime = Convert.ToInt64((np.ExitTime - np.StartTime).TotalMilliseconds);
                     string result = ""; 
                     bool wasError = false;
 
@@ -50,9 +56,7 @@ namespace NetCoreExecutionEnvironment.Utils
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error executing command File");
-                Console.WriteLine(e.Message);
-                throw e;
+                throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.COMMAND_ERROR, "Error while executing command files");
             }
         }
     }
