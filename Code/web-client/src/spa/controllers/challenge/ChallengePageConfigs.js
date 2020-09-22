@@ -48,7 +48,7 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
             componentAggregateStates.isChallengeEditable.setter(true)
         },
         title: "Edit Challenge",
-        isVisible: !componentAggregateStates.isChallengeEditable.state && componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
+        isVisible: user && !componentAggregateStates.isChallengeEditable.state && componentAggregateStates.challenge.state && componentAggregateStates.challenge.state.creatorId === user.userId
     }
     let saveChallenge = {
         id: "saveChallenge",
