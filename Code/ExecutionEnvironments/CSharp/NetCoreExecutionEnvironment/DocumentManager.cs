@@ -9,10 +9,18 @@ using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment
 {
-    public class DocumentManager
+    public class DocumentManager : IDisposable
     {
+        private string _mainFolderPath;
+        private bool _deleteMainFolder;
 
-        public static string WriteFile(string fileContent, string filename, string directoryPath)
+        public DocumentManager(string mainFolderPath, bool deleteMainFolder)
+        {
+            _mainFolderPath = mainFolderPath;
+            _deleteMainFolder = deleteMainFolder;
+        }
+
+        public string WriteFile(string fileContent, string filename, string directoryPath)
         {
             try
             {
@@ -37,6 +45,31 @@ namespace NetCoreExecutionEnvironment
                 throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while using file system");
             }
 
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (_deleteMainFolder)
+                {
+                    Directory.Delete(_mainFolderPath, true);
+                } else
+                {
+                    DirectoryInfo di = new DirectoryInfo(_mainFolderPath);
+                    foreach (FileInfo file in di.EnumerateFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (DirectoryInfo dir in di.EnumerateDirectories())
+                    {
+                        dir.Delete(true);
+                    }
+                }
+            } catch (Exception e)
+            {
+                throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while deleting folders");
+            }
         }
     }
 }

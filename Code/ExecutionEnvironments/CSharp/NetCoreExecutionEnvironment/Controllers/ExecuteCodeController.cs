@@ -47,20 +47,25 @@ namespace NetCoreExecutionEnvironment.Controllers
             string testContent = FileUtils.RemoveNewLines(value.unitTests);
 
             CommandLineUtils.ExecuteCommandFile(CommandOS.Instance.CommandCreateSolution, new CreateSolutionWithTests(di.FullName, Constants.TemplateFolder, solutionFolder));
-            DocumentManager.WriteFile(cleanedContent, Constants.BaseCodeFile, Path.Combine(di.FullName, solutionFolder, Constants.SolutionName, Constants.CodeProjectName));
-
             ExecutableResult result;
-            if (!value.executeTests)
+            using (DocumentManager dm = new DocumentManager(Path.Combine(di.FullName, solutionFolder), true))
             {
-                // run code
-                result = CommandLineUtils.ExecuteCommandFile(CommandOS.Instance.CommandRunCode, new RunCode(di.FullName, solutionFolder, Constants.SolutionName, Constants.CodeProjectName), timeout);
+                dm.WriteFile(cleanedContent, Constants.BaseCodeFile, Path.Combine(di.FullName, solutionFolder, Constants.SolutionName, Constants.CodeProjectName));
 
+
+                if (!value.executeTests)
+                {
+                    // run code
+                    result = CommandLineUtils.ExecuteCommandFile(CommandOS.Instance.CommandRunCode, new RunCode(di.FullName, solutionFolder, Constants.SolutionName, Constants.CodeProjectName), timeout);
+
+                }
+                else
+                {
+                    dm.WriteFile(testContent, Constants.UnitTestFile, Path.Combine(di.FullName, solutionFolder, Constants.SolutionName, Constants.UnitTestsProjectName));
+                    result = CommandLineUtils.ExecuteCommandFile(CommandOS.Instance.CommandRunTests, new RunTests(di.FullName, solutionFolder, Constants.SolutionName), timeout);
+                }
             }
-            else
-            {
-                DocumentManager.WriteFile(testContent, Constants.UnitTestFile, Path.Combine(di.FullName, solutionFolder, Constants.SolutionName, Constants.UnitTestsProjectName));
-                result = CommandLineUtils.ExecuteCommandFile(CommandOS.Instance.CommandRunTests, new RunTests(di.FullName, solutionFolder, Constants.SolutionName), timeout);
-            }
+
 
             return Ok(result);
         }
