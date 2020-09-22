@@ -1,5 +1,5 @@
 import { apiUrlTemplates } from '../../clientSideConfig'
-import { HttpMethods, fetchHeaders } from '../../utils/fetchUtils'
+import { HttpMethods, fetchHeaders, handleFetchResponse } from '../../utils/fetchUtils'
 import { ChallengeController } from './ChallengeController'
 
 export const ChallengeAnswerController = {
@@ -35,17 +35,7 @@ export const ChallengeAnswerController = {
       headers: fetchHeaders.get()
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response)
   },
 
   createChallengeAnswer: async (challengeAnswerModel) => {
@@ -56,17 +46,7 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response)
   },
 
   updateChallengeAnswer: async (challengeAnswerId, challengeAnswerModel) => {
@@ -77,17 +57,7 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    let jsonResponse = await response.json()
-    if(response.ok) {
-      return {
-        json: jsonResponse,
-      }
-    } else {
-      return {
-        message: jsonResponse.message,
-        severity: 'error'
-      }
-    }
+    return handleFetchResponse(response)
   },
   
 }

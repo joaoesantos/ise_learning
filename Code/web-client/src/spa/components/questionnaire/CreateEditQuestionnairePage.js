@@ -93,7 +93,7 @@ export default function CreateEditQuestionnairePage(props) {
                     multiple
                     value={rowData.selectedLanguages}
                     onChange={(event) => changeSelectedLanguages(event, rowData)}
-                    input={<Input id="elect-language-multiple-chip" />}
+                    input={<Input id="elect-language-multiple-chip" disabled={!editable} />}
                     renderValue={(selected) => (
                         <div className={classes.chips}>
                         {selected.map((value) => (
@@ -274,42 +274,6 @@ export default function CreateEditQuestionnairePage(props) {
                                         />
                                     </Grid>
                                 </Grid>
-                                {/* <Grid container spacing={0} direction="row">
-                                    <Grid item xs={2}>
-                                        <Grid container spacing={2} direction="column">
-                                            <Grid item >
-                                                <Field
-                                                    component={TextField}
-                                                    name="title"
-                                                    label="Title"
-                                                    disabled={!editable}
-                                                    InputProps={{onChange:onTitleChangeHandler, value:questionnaire.title || ''}}
-                                                    style={{width:'50ch'}}
-                                                />
-                                            </Grid>
-                                            <Grid item>
-                                                <ErrorMessage name="title" />
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Grid container spacing={2} direction="column">
-                                            <Grid item >
-                                                <Field
-                                                    component={TextField}
-                                                    name="timer"
-                                                    label="Timer (minutes)"
-                                                    value={questionnaire.timer}
-                                                    disabled={!editable}
-                                                    InputProps={{onChange:onTimerChangeHandler, value:questionnaire.timer || ''}}
-                                                />
-                                            </Grid>
-                                            <Grid item>
-                                                <ErrorMessage name="title" />
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid> */}
                             </Toolbar>
 
                             <Grid container spacing={2}>
@@ -369,8 +333,6 @@ export default function CreateEditQuestionnairePage(props) {
             </Formik>
         )
     }
-
-    console.log("asasa",actionState, response, questionnaire)
 
     if (actionState === ActionStates.clear || actionState === ActionStates.inProgress) {
         return <CircularProgress />

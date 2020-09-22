@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
     layout: {
         width: 'auto',
+        height: "80%",
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
@@ -131,7 +132,7 @@ export default function QuestionnairePage() {
     const [actionState, response] = UseAction(action)
     const [questionnaire, setQuestionnaire] = React.useState()
     const [timer, setTimer] = React.useState(0)
-    const [runState, setRunState] = React.useState('notRunning');
+    const [runState, setRunState] = React.useState('notRunning')
     const [runTests, setRunTests] = React.useState(false)
     const [textEditorArea, setTextEditorArea] = React.useState()
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false })
@@ -153,7 +154,7 @@ export default function QuestionnairePage() {
         // React.state evaluation to set questionnaire
         } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.severity === "success") {
             const initChallenge = response.json.challenges[0]
-            const initialLanguage = response.json.challenges[0].answer.codeLanguage || defaultLanguage
+            const initialLanguage = response.json.challenges[0].answer.codeLanguage || initChallenge.languages[0]
             initChallenge.answer.codeLanguage = initialLanguage
             initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
             setQuestionnaire(response.json)
@@ -171,14 +172,28 @@ export default function QuestionnairePage() {
         }
     }, [actionState]);
 
-    let seconds = new Date(timer).getSeconds()
-    let minutes = new Date(timer).getMinutes()
-    let hours = new Date(timer).getHours()
+    let deepCopy = (obj) => {
+        return (JSON.parse(JSON.stringify(obj)));
+    }
+
+    let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
+    let minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
+    let hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2)
+
+    // let seconds = new Date(timer).getSeconds()
+    // let minutes = new Date(timer).getMinutes()
+    // let hours = new Date(timer).getHours()
 
     React.useEffect(() => {
         let intervalId = null
         if (timer > 0) {
             intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
+        } else {
+            setAction({
+                function: QuestionnairePageController.getQuestionnaire,
+                args: [uuid],
+                name: "getQuestionnaireByUuid"
+            })
         }
 
         return () => {
@@ -189,23 +204,23 @@ export default function QuestionnairePage() {
 
     const onLanguageChange = (event) => {
         onClearConsole()
-        let clone = { ...questionnaire }
+        let clone = deepCopy(questionnaire)
         const cha = clone.challenges[activeStep]
         cha.answer.codeLanguage = event.target.value
-        cha.answer.codeText = CodeMirrorOptions.get(event.target.value).value
+        cha.answer.answerCode = CodeMirrorOptions.get(event.target.value).value
         cha.answer.unitTests = defaultUnitTests[event.target.value]
-        setQuestionnaire(clone);
+        console.log("cha,cha",cha)
+        //setQuestionnaire(clone)
         setActiveChallenge(cha)
         setCodeLanguage(event.target.value)
     }
 
     const onRunCode = async () => {
         if (runState !== 'running') {
-            setRunState('running');
-            const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
+            setRunState('running')
             let result = await RunCodeController.execute({
                 language: codeLanguage,
-                code: selectedChallengeAnswer.answerCode,
+                code: activeChallenge.answer.answerCode,
                 unitTests: unitTests,
                 executeTests: runTests
             });
@@ -217,12 +232,11 @@ export default function QuestionnairePage() {
     // const onRunCode = async () => {
     //     if (runState !== 'running') {
     //         setRunState('running')
-    //         const selectedChallengeAnswer = questionnaire.challenges[activeStep].answer
     //         setAction({
     //             function: RunCodeController.execute,
     //             args: [{
     //                 language: codeLanguage,
-    //                 code: "selectedChallengeAnswer.answerCode",
+    //                 code: activeChallenge.answer.answerCode,
     //                 unitTests: unitTests,
     //                 executeTests: runTests
     //             }],
@@ -233,36 +247,37 @@ export default function QuestionnairePage() {
 
     const onClearConsole = () => {
         if (runState !== 'notRunning') {
-            setRunState('notRunning');
+            setRunState('notRunning')
             setTextArea('cls')
         }
     }
 
-    const handleComplete = () => {
-        const newCompleted = new Set(completed);
-        newCompleted.add(activeStep);
-        setCompleted(newCompleted);
-    }
-
-    const setTestArea = (text) => {
-        const clone = { ...questionnaire }
-        const selectedAnswer = clone.challenges[activeStep].answer
-        selectedAnswer.unitTests = text
+    const handleSaveAnswer = () => {
+        let clone = deepCopy(questionnaire)
+        clone.challenges[activeStep] = activeChallenge
         setQuestionnaire(clone)
-        setUnitTests(text)
+
+        const newCompleted = new Set(completed)
+        newCompleted.add(activeStep)
+        setCompleted(newCompleted)
     }
 
     const setCodeArea = (text) => {
-        const clone = { ...questionnaire }
-        clone.challenges[activeStep].answer.answerCode = text
-        setQuestionnaire(clone)
+        let clone = deepCopy(activeChallenge)
+        clone.answer.answerCode = text
+        setActiveChallenge({...clone})
+    }
+
+    const getActiveCodeArea = () => {
+        return activeChallenge && activeChallenge.answer && activeChallenge.answer.answerCode ? activeChallenge.answer.answerCode : getCodeArea(activeStep)
     }
 
     const getCodeArea = (idx) => {
-        const selectedAnswer = questionnaire.challenges[idx].answer
+        let clone = deepCopy(questionnaire)
+        const selectedAnswer = clone.challenges[idx].answer
         let codeText = selectedAnswer.answerCode
         if (!codeText) {
-            codeText = CodeMirrorOptions.get(selectedAnswer.codeLanguage || defaultLanguage).value
+            codeText = CodeMirrorOptions.get(selectedAnswer.codeLanguage || clone.challenges[idx].languages[0]).value
         }
         return codeText
     }
@@ -276,10 +291,11 @@ export default function QuestionnairePage() {
     }
 
     const handleStepChange = (nextStep) => {
-        const nextChallenge = questionnaire.challenges[nextStep]
+        let clone = deepCopy(questionnaire)
+        let nextChallenge = clone.challenges[nextStep]
 
         if(!nextChallenge.answer.codeLanguage || nextChallenge.answer.codeLanguage == '') {
-            nextChallenge.answer.codeLanguage = defaultLanguage
+            nextChallenge.answer.codeLanguage = nextChallenge.languages[0]
         }
 
         if(!nextChallenge.unitTests){
@@ -289,15 +305,11 @@ export default function QuestionnairePage() {
         setTextEditorArea(getCodeArea(nextStep))
         setTextArea({ value: '', toUpdate: false })
         setCodeLanguage(nextChallenge.answer.codeLanguage)
-        setActiveStep(nextStep);
+        setActiveStep(nextStep)
     }
 
     const handleRunTestsChange = (event) => {
         setRunTests(event.target.checked)
-    }
-
-    const handleSubmitChallenge = () => {
-        handleComplete()
     }
 
     const handleSubmitQuestionnaire = () => {
@@ -318,7 +330,8 @@ export default function QuestionnairePage() {
                         id="completeQuestionnaire"
                         variant="contained"
                         color="primary"
-                        onClick={handleSubmitQuestionnaire}>
+                        onClick={handleSubmitQuestionnaire}
+                    >
                         Submit Questionnaire
                     </Button>
                 </div>
@@ -401,7 +414,7 @@ export default function QuestionnairePage() {
                                     </Button>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor theme={theme} textEditorData={textEditorArea} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setCodeArea} />
+                            <RunCodeTextEditor theme={theme} textEditorData={getActiveCodeArea()} codeLanguage={activeChallenge.answer.codeLanguage || activeChallenge.languages[0]} setTextEditorData={setCodeArea} />
                         </Grid>
                         <Grid item xs={5}>
                             <Grid style={{ paddingTop: 50 }}>
@@ -438,7 +451,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor theme={theme} textEditorData={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || defaultLanguage} setTextEditorData={setUnitTests} editorHeigth='300' />
+                            <RunCodeTextEditor theme={theme} textEditorData={unitTests} codeLanguage={activeChallenge.answer.codeLanguage || activeChallenge.languages[0]} setTextEditorData={setUnitTests} editorHeigth='300' />
                         </Grid>
                     </Grid>
                 </Container>
@@ -472,7 +485,7 @@ export default function QuestionnairePage() {
                                 {
                                     activeStep !== questionnaire.challenges.length - 1 && (
                                         <Button
-                                            variant="contained" A
+                                            variant="contained"
                                             color="primary"
                                             onClick={handleNext}
                                             className={classes.button}
@@ -485,7 +498,7 @@ export default function QuestionnairePage() {
                                     id="submitAnswer"
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleSubmitChallenge}
+                                    onClick={handleSaveAnswer}
                                 >
                                     Save answer
                                 </Button>
@@ -513,6 +526,8 @@ export default function QuestionnairePage() {
         }
     } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
         return <DefaultErrorMessage message={ response.message } />
+    } else if(actionState === ActionStates.inProgress) {
+        return <CircularProgress />
     } else {
         return <DefaultErrorMessage message={"404 | Not Found"} />
     }
