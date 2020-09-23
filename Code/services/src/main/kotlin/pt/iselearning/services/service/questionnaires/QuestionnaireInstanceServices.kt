@@ -121,7 +121,6 @@ class QuestionnaireInstanceServices(
         return questionnaireInstanceRepository.findAllByQuestionnaireId(questionnaireId)
     }
 
-
     /**
      * Update a questionnaire instance.
      *
@@ -149,6 +148,19 @@ class QuestionnaireInstanceServices(
         }
         //endregion
 
+        return questionnaireInstanceRepository.save(updatedQuestionnaireInstance)
+    }
+
+    /**
+     * Close a questionnaire instance.
+     *
+     * @param questionnaireInstanceId unique identifier of questionnaire instance object
+     * @return updated questionnaire instance
+     */
+    @Validated
+    fun closeQuestionnaireInstanceById(@Positive questionnaireInstanceId: Int): QuestionnaireInstance {
+        val updatedQuestionnaireInstance = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository, questionnaireInstanceId)
+        updatedQuestionnaireInstance.isFinish = true
         return questionnaireInstanceRepository.save(updatedQuestionnaireInstance)
     }
 

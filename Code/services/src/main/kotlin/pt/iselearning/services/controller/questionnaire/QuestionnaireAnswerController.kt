@@ -48,7 +48,7 @@ class QuestionnaireAnswerController(
      * @param ucb helps build URLs
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @PostMapping(name = "submitQuestionnaireAnswer")
+    @PostMapping("/submit", name = "submitQuestionnaireAnswer")
     fun submitQuestionnaireAnswer(
             @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder

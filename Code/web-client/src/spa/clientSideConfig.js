@@ -99,7 +99,7 @@ export const apiUrlTemplates = {
     updateQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
     deleteQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
     // QUESTIONNAIRE ANSWERS
-    createQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers`,
+    submitQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers/submit`,
     getAllQuestionnaireAnswersFromQuestionnaireInstanceId: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${questionnaireInstanceId}`,   
 
 }

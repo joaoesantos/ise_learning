@@ -58,7 +58,7 @@ class QuestionnaireAnswerServices(
                         questionnaireAnswerModel.challengeId
                 )
 
-        questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.get().questionnaireInstanceId
+        questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.questionnaireInstanceId
         questionnaireAnswer.qcId = questionnaireChallenge.qcId
 
         return questionnaireAnswerRepository.save(questionnaireAnswer)
@@ -75,6 +75,10 @@ class QuestionnaireAnswerServices(
     fun submitQuestionnaireAnswer(@Valid questionnaireAnswerInputModel: QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
         val questionnaireAnswerParent = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository,questionnaireAnswerInputModel.questionnaireInstanceId)
         checkQuestionnaireInstanceTimeout(questionnaireAnswerParent, questionnaireInstanceRepository)
+
+        //TODO tenho quase a certeza que isto vai partir, se um gajo fizer submit 2 x ou mais,
+        //TODO porque agora já não ha restrições na BD
+        //TODO talvez apaagr todas as answwers que existam se existirem antes de fazer submit?
 
         val questionnaireAnswers = questionnaireAnswerInputModel
                 .challenges?.map { challenge ->
@@ -118,7 +122,7 @@ class QuestionnaireAnswerServices(
                             ))
         }
 
-        questionnaireInstanceServices.updateQuestionnaireInstanceById()
+        questionnaireInstanceServices.closeQuestionnaireInstanceById(questionnaireAnswerInputModel.questionnaireInstanceId)
 
         return questionnaireAnswers?.let { questionnaireAnswerRepository.saveAll(it) }
     }
