@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment
@@ -49,27 +50,32 @@ namespace NetCoreExecutionEnvironment
 
         public void Dispose()
         {
-            try
-            {
-                if (_deleteMainFolder)
+            new Thread(() => {
+                try
                 {
-                    Directory.Delete(_mainFolderPath, true);
-                } else
-                {
-                    DirectoryInfo di = new DirectoryInfo(_mainFolderPath);
-                    foreach (FileInfo file in di.EnumerateFiles())
+                    if (_deleteMainFolder)
                     {
-                        file.Delete();
+                        Directory.Delete(_mainFolderPath, true);
                     }
-                    foreach (DirectoryInfo dir in di.EnumerateDirectories())
+                    else
                     {
-                        dir.Delete(true);
+                        DirectoryInfo di = new DirectoryInfo(_mainFolderPath);
+                        foreach (FileInfo file in di.EnumerateFiles())
+                        {
+                            file.Delete();
+                        }
+                        foreach (DirectoryInfo dir in di.EnumerateDirectories())
+                        {
+                            dir.Delete(true);
+                        }
                     }
                 }
-            } catch (Exception e)
-            {
-                throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while deleting folders");
-            }
+                catch (Exception e)
+                {
+                    throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while deleting folders");
+                }
+            }).Start();
+
         }
     }
 }
