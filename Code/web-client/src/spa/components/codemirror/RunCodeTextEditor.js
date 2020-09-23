@@ -68,7 +68,6 @@ class RunCodeTextEditor extends Component {
 
     // is invoked immediately after props change
     componentDidUpdate(prevProps) {
-        console.log("props", this.props)
         if(prevProps !== this.props) {
 
             if(prevProps.theme.palette.type !== this.props.theme.palette.type) {

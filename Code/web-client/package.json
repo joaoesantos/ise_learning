@@ -1,5 +1,6 @@
 {
   "name": "web-client",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mv build docs",
     "eject": "react-scripts eject",
     "build:gradle": "cross-env CI=true npm run test && npm run build",
     "postbuild": "copyfiles -u 1 build/**/* ../services/src/main/resources/static"

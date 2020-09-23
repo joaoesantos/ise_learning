@@ -36,6 +36,6 @@ export const QuestionnairePageController = {
         options.body = JSON.stringify(body)
         let url = apiUrlTemplates.createQuestionnaireAnswer()
         let response = await fetch(url, options)
-        return handleFetchResponse(response)
+        return handleFetchResponse(response, "Questionnaire submited successfully!")
     }
 }

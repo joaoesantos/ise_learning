@@ -7,7 +7,9 @@ class QuestionnaireAnswerInputModel (
 
         @field:Positive(message = "Questionnaire id must be positive")
         var questionnaireInstanceId: Int,
+
         var questionnaireId : Int,
+
         var challenges : List<ChallengeAnswerOutputModel>?
 
 )

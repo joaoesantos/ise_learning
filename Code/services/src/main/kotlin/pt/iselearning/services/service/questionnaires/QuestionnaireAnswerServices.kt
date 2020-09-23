@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated
 import pt.iselearning.services.models.questionnaire.input.QuestionnaireAnswerInputModel
 import pt.iselearning.services.domain.Answer
 import pt.iselearning.services.domain.User
+import pt.iselearning.services.domain.executable.ExecutableModel
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
 import pt.iselearning.services.exception.ServiceException
@@ -16,6 +17,7 @@ import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepos
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceQuestionnaireViewRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceRepository
+import pt.iselearning.services.service.ExecutionEnvironmentsService
 import pt.iselearning.services.util.checkIfQuestionnaireAnswerExists
 import pt.iselearning.services.util.checkIfQuestionnaireInstanceExists
 import pt.iselearning.services.util.checkQuestionnaireInstanceTimeout
@@ -30,9 +32,9 @@ import javax.validation.constraints.Positive
 class QuestionnaireAnswerServices(
         private val questionnaireInstanceRepository: QuestionnaireInstanceRepository,
         private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
-        private val questionnaireChallengeServices: QuestionnaireChallengeServices,
         private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
         private val questionnaireInstanceQuestionnaireViewRepository : QuestionnaireInstanceQuestionnaireViewRepository,
+        private val executionEnvironmentsService: ExecutionEnvironmentsService,
         private val modelMapper: ModelMapper
 ) {
 
@@ -44,13 +46,14 @@ class QuestionnaireAnswerServices(
      */
     @Validated
     @Transactional
-    fun createQuestionnaireAnswer(@Valid questionnaireAnswerInputModel : QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
+    fun createQuestionnaireAnswer(@Valid questionnaireAnswerInputModel: QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
         val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerInputModel.questionnaireInstanceId)
         checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerInputModel.questionnaireInstanceId)
         checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
 
         val questionnaireAnswers = questionnaireAnswerInputModel
                 .challenges?.map { challenge ->
+
                     val optionalQc = questionnaireChallengeRepository
                             .findByQuestionnaireQuestionnaireIdAndChallengeChallengeId(
                                     questionnaireAnswerInputModel.questionnaireId,
@@ -62,6 +65,21 @@ class QuestionnaireAnswerServices(
                                 "/iselearning/questionnaireAnswers/noChallengesToAnswer",
                                 ErrorCode.ITEM_NOT_FOUND)
                     }
+
+                    val qc = optionalQc.get()
+
+                    // evaluates if answer is corrected based on challenge unit tests
+                    val executableResult = executionEnvironmentsService.execute(
+                            ExecutableModel(
+                                    challenge.answer.codeLanguage!!,
+                                    challenge.answer.answerCode!!,
+                                    qc.challenge?.solutions
+                                            ?.first { it -> it.codeLanguage.toString() in challenge.answer.codeLanguage!! }
+                                            ?.unitTests!!,
+                                    true
+                            )
+                    )
+
                     QuestionnaireAnswer(
                             null,
                             questionnaireAnswerInputModel.questionnaireInstanceId,
@@ -71,11 +89,9 @@ class QuestionnaireAnswerServices(
                                     challenge.answer.codeLanguage,
                                     challenge.answer.answerCode,
                                     challenge.answer.unitTests,
-                                    null
+                                    !executableResult.wasError
                             ))
         }
-
-
 
         return questionnaireAnswers?.let { questionnaireAnswerRepository.saveAll(it) }
     }
@@ -87,7 +103,7 @@ class QuestionnaireAnswerServices(
      * @return questionnaire answer object
      */
     @Validated
-    fun getQuestionnaireAnswerById(@Positive questionnaireAnswerId: Int) : QuestionnaireAnswer {
+    fun getQuestionnaireAnswerById(@Positive questionnaireAnswerId: Int): QuestionnaireAnswer {
         val questionnaireAnswer = questionnaireAnswerRepository.findById(questionnaireAnswerId)
         checkIfQuestionnaireAnswerExists(questionnaireAnswer, questionnaireAnswerId)
         return questionnaireAnswer.get()
@@ -100,7 +116,7 @@ class QuestionnaireAnswerServices(
      * @return List of questionnaire answer objects
      */
     @Validated
-    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int) : List<QuestionnaireAnswer> {
+    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int): List<QuestionnaireAnswer> {
         return questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
     }
 
