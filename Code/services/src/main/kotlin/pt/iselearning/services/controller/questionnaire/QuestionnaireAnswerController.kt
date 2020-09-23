@@ -24,16 +24,36 @@ class QuestionnaireAnswerController(
     /**
      * Method to create an questionnaire answer.
      *
-     * @param questionnaireAnswerInputModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
+     * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
      * @param ucb helps build URLs
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
+            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
+            ucb: UriComponentsBuilder
+    ): ResponseEntity<QuestionnaireAnswer> {
+        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
+        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
+                .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
+                .build()
+                .toUri()
+        return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
+    }
+
+    /**
+     * Method to submit an questionnaire answer.
+     *
+     * @param questionnaireAnswerInputModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
+     * @param ucb helps build URLs
+     * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @PostMapping(name = "submitQuestionnaireAnswer")
+    fun submitQuestionnaireAnswer(
             @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder
     ): ResponseEntity<Unit> {
-        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerInputModel)
+        val submittedQuestionnaireAnswer = questionnaireAnswerServices.submitQuestionnaireAnswer(questionnaireAnswerInputModel)
         return ResponseEntity.created(ucb.build().toUri()).build()
     }
 

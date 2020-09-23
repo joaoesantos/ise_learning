@@ -1,9 +1,7 @@
 package pt.iselearning.services.models.questionnaire
 
 import org.springframework.validation.annotation.Validated
-import pt.iselearning.services.models.AnswerModel
 import pt.iselearning.services.models.ChallengeAnswerModel
-import javax.validation.Valid
 import javax.validation.constraints.Positive
 
 /**

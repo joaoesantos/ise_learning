@@ -34,6 +34,8 @@ class QuestionnaireAnswerServices(
         private val questionnaireAnswerRepository: QuestionnaireAnswerRepository,
         private val questionnaireChallengeRepository: QuestionnaireChallengeRepository,
         private val questionnaireInstanceQuestionnaireViewRepository : QuestionnaireInstanceQuestionnaireViewRepository,
+        private val questionnaireInstanceServices: QuestionnaireInstanceServices,
+        private val questionnaireChallengeServices: QuestionnaireChallengeServices,
         private val executionEnvironmentsService: ExecutionEnvironmentsService,
         private val modelMapper: ModelMapper
 ) {
@@ -41,15 +43,38 @@ class QuestionnaireAnswerServices(
     /**
      * Create a questionnaire answer.
      *
+     * @param questionnaireAnswerModel object information
+     * @return created questionnaire answer
+     */
+    @Validated
+    fun createQuestionnaireAnswer(@Valid questionnaireAnswerModel: QuestionnaireAnswerModel): QuestionnaireAnswer {
+        val questionnaireAnswer = convertToEntity(questionnaireAnswerModel)
+        val questionnaireAnswerParent = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository,questionnaireAnswerModel.questionnaireInstanceId)
+        checkQuestionnaireInstanceTimeout(questionnaireAnswerParent, questionnaireInstanceRepository)
+
+        val questionnaireChallenge = questionnaireChallengeServices
+                .getQuestionnaireChallengeByQuestionnaireIdAndChallengeId(
+                        questionnaireAnswerModel.questionnaireId,
+                        questionnaireAnswerModel.challengeId
+                )
+
+        questionnaireAnswer.questionnaireInstanceId = questionnaireAnswerParent.get().questionnaireInstanceId
+        questionnaireAnswer.qcId = questionnaireChallenge.qcId
+
+        return questionnaireAnswerRepository.save(questionnaireAnswer)
+    }
+
+    /**
+     * Submit a questionnaire answer.
+     *
      * @param questionnaireAnswerInputModel object information
      * @return created questionnaire answer
      */
     @Validated
     @Transactional
-    fun createQuestionnaireAnswer(@Valid questionnaireAnswerInputModel: QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
-        val questionnaireAnswerParent = questionnaireInstanceRepository.findById(questionnaireAnswerInputModel.questionnaireInstanceId)
-        checkIfQuestionnaireInstanceExists(questionnaireAnswerParent, questionnaireAnswerInputModel.questionnaireInstanceId)
-        checkQuestionnaireInstanceTimeout(questionnaireAnswerParent.get(), questionnaireInstanceRepository)
+    fun submitQuestionnaireAnswer(@Valid questionnaireAnswerInputModel: QuestionnaireAnswerInputModel): MutableIterable<QuestionnaireAnswer>? {
+        val questionnaireAnswerParent = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository,questionnaireAnswerInputModel.questionnaireInstanceId)
+        checkQuestionnaireInstanceTimeout(questionnaireAnswerParent, questionnaireInstanceRepository)
 
         val questionnaireAnswers = questionnaireAnswerInputModel
                 .challenges?.map { challenge ->
@@ -92,6 +117,8 @@ class QuestionnaireAnswerServices(
                                     !executableResult.wasError
                             ))
         }
+
+        questionnaireInstanceServices.updateQuestionnaireInstanceById()
 
         return questionnaireAnswers?.let { questionnaireAnswerRepository.saveAll(it) }
     }
