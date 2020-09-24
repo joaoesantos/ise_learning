@@ -46,7 +46,7 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    return handleFetchResponse(response)
+    return handleFetchResponse(response, "Answer submited successfully!")
   },
 
   updateChallengeAnswer: async (challengeAnswerId, challengeAnswerModel) => {
@@ -57,7 +57,7 @@ export const ChallengeAnswerController = {
       body: JSON.stringify(challengeAnswerModel)
     }
     let response = await fetch(url, options)
-    return handleFetchResponse(response)
+    return handleFetchResponse(response, "Answer updated successfully!")
   },
   
 }

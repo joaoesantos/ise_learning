@@ -121,7 +121,7 @@ export default withRouter(function ChallengePage(props) {
     const [actionState, response] = UseAction(action)
     const [runState, setRunState] = React.useState('notRunning')
     const [challenge, setChallenge] = React.useState()
-    const [challengeAnswers, setChallengeAnswers] = React.useState({})
+    const [challengeAnswers, setChallengeAnswers] = React.useState([])
     const [availableLanguages, setAvailableLanguages] = React.useState([])
 
     let componentAggregateStates = {
@@ -221,7 +221,7 @@ export default withRouter(function ChallengePage(props) {
             <div className={classes.layout}>
                 <InputBase
                     className={classes.title}
-                    defaultValue={challenge ? challenge.challengeTitle : ''}
+                    value={challenge ? challenge.challengeTitle : ''}
                     placeholder={"New Challenge Title"}
                     inputProps={{ 'aria-label': 'naked' }}
                     disabled={!isChallengeEditable}

@@ -99,10 +99,9 @@ export default function SignUp() {
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     let credentials = btoa(`${state.username}:${state.password}`)
-    fetchHeaders.append({ key: "Authorization", value: `Basic ${credentials}` })
     setAction({
         function: UserController.logMein,
-        args: [],
+        args: [`Basic ${credentials}`],
         authorization:  `Basic ${credentials}`
       })
   }

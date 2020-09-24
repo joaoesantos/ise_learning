@@ -46,6 +46,8 @@ export const QuestionnaireController = {
       if(handledResponse.severity === "error") {
         return handledResponse
       }
+
+      console.log("handledResponse.json.timer",handledResponse.json.timer, handledResponse)
       questionnaire.id = handledResponse.json.questionnaireId
       questionnaire.title = handledResponse.json.description
       questionnaire.timer = handledResponse.json.timer ? parseInt(handledResponse.json.timer)/(1000*60) : "N/A"

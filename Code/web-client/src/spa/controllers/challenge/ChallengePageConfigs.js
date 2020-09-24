@@ -99,12 +99,6 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                               severity: 'error'
                             }
                         }
-                        let cenas = componentAggregateStates.challengeAnswers.state.map(ca => {
-                            if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
-                                return newChallengeAnswer.json;
-                            }
-                            return ca;
-                        })
                         return {
                             json: {
                                 languages: componentAggregateStates.challengeLanguages.state,
@@ -115,7 +109,9 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                                     }
                                     return ca;
                                 })
-                            }
+                            },
+                            message: newChallengeAnswer.message,
+                            severity: newChallengeAnswer.severity
                         };
                     },
                     args: [matchingChallengeAnswer.challengeAnswerId, challengeAnswerModel],
@@ -126,22 +122,17 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                     function: async (arg) => {
                         let newChallengeAnswer = await ChallengeAnswerController.createChallengeAnswer(arg);
                         if(newChallengeAnswer.severity && newChallengeAnswer.severity === 'error') {
-                            return {
-                              message: newChallengeAnswer.message,
-                              severity: 'error'
-                            }
+                            return newChallengeAnswer
                         }
+                        componentAggregateStates.challengeAnswers.state.push(newChallengeAnswer.json)
                         return {
                             json: {
                                 languages: componentAggregateStates.challengeLanguages.state,
                                 challenge: componentAggregateStates.challenge.state,
-                                challengeAnswers: componentAggregateStates.challengeAnswers.state.map(ca => {
-                                    if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
-                                        return newChallengeAnswer.json;
-                                    }
-                                    return ca;
-                                })
-                            }
+                                challengeAnswers: componentAggregateStates.challengeAnswers.state
+                            },
+                            message: newChallengeAnswer.message,
+                            severity: newChallengeAnswer.severity
                         };
                     },
                     args: [challengeAnswerModel],
@@ -211,7 +202,9 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                     response.challengeAnswers.forEach(e => {
                         yourSolution[e.answer.codeLanguage] = { value: e.answer.answerCode }
                         yourTests[e.answer.codeLanguage] = { value: e.answer.unitTests }
+                        console.log("e.answer.codeLanguage",e.answer.codeLanguage)
                     });
+                    console.log("yourSolution",yourSolution)
                     componentAggregateStates.yourSolution.setter(yourSolution)
                     componentAggregateStates.yourTests.setter(yourTests)
                     componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))

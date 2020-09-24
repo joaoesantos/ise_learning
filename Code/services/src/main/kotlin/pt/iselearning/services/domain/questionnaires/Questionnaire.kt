@@ -22,7 +22,7 @@ data class Questionnaire(
         @Column(name = "description")
         var description: String?,
 
-        @Column(name = "timer", insertable = false, updatable = true)
+        @Column(name = "timer", updatable = true)
         var timer: Long?,
 
         @Column(name = "creator_id")

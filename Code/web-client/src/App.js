@@ -1,6 +1,6 @@
 // react
 import React from 'react'
-import { Router } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 import history from './spa/components/navigation/history'
 // material-ui components
 import { makeStyles } from '@material-ui/core/styles'
