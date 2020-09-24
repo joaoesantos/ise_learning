@@ -90,7 +90,7 @@ export default function Navbar() {
       <AppBar className={classes.appBar}>
         <Toolbar variant="dense">
             <Link className={classes.link} component={RouterLink} to="/">
-              <img src={ISELearningLogo} height={40}/>
+              <img src={ISELearningLogo} alt='ISELearningLogo' height={40}/>
             </Link>
             <Typography className={classes.title}>
               <Link className={classes.link} component={RouterLink} to="/runCode">

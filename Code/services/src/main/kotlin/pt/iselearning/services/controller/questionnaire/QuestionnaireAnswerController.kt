@@ -4,7 +4,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
-import pt.iselearning.services.controller.questionnaire.input.QuestionnaireAnswerInputModel
+import pt.iselearning.services.models.questionnaire.input.QuestionnaireAnswerInputModel
 import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
@@ -24,16 +24,36 @@ class QuestionnaireAnswerController(
     /**
      * Method to create an questionnaire answer.
      *
+     * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
      * @param ucb helps build URLs
-     * @param questionnaireAnswerModel represents a json object that represents a object of the type QuestionnaireAnswerModel
      * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping(name = "createQuestionnaireAnswer")
     fun createQuestionnaireAnswer(
+            @RequestBody questionnaireAnswerModel: QuestionnaireAnswerModel,
+            ucb: UriComponentsBuilder
+    ): ResponseEntity<QuestionnaireAnswer> {
+        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerModel)
+        val location = ucb.path(QUESTIONNAIRE_ANSWER_PATTERN)
+                .path((createdQuestionnaireAnswer.questionnaireAnswerId).toString())
+                .build()
+                .toUri()
+        return ResponseEntity.created(location).body(createdQuestionnaireAnswer)
+    }
+
+    /**
+     * Method to submit an questionnaire answer.
+     *
+     * @param questionnaireAnswerInputModel represents a json object that represents a object of the type QuestionnaireAnswerInputModel
+     * @param ucb helps build URLs
+     * @return ResponseEntity<QuestionnaireAnswer> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @PostMapping("/submit", name = "submitQuestionnaireAnswer")
+    fun submitQuestionnaireAnswer(
             @RequestBody questionnaireAnswerInputModel: QuestionnaireAnswerInputModel,
             ucb: UriComponentsBuilder
     ): ResponseEntity<Unit> {
-        val createdQuestionnaireAnswer = questionnaireAnswerServices.createQuestionnaireAnswer(questionnaireAnswerInputModel)
+        val submittedQuestionnaireAnswer = questionnaireAnswerServices.submitQuestionnaireAnswer(questionnaireAnswerInputModel)
         return ResponseEntity.created(ucb.build().toUri()).build()
     }
 
@@ -66,6 +86,19 @@ class QuestionnaireAnswerController(
     }
 
     /**
+     * Method to get all questionnaire answers from Questionnaire Creator.
+     *
+     * @param loggedUser user that is calling the service
+     * @return ResponseEntity<QuestionnaireInstanceQuestionnaireView>
+     */
+    @GetMapping(name = "getAllQuestionnaireAnswersFromQuestionnaireCreator")
+    fun getAllQuestionnaireAnswersFromQuestionnaireCreator(
+            loggedUser: User
+    ): ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
+        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromQuestionnaireCreator(loggedUser))
+    }
+
+    /**
      * Method to update an questionnaire answer.
      *
      * @param questionnaireAnswerId represents a Questionnaire unique identifier
@@ -93,16 +126,6 @@ class QuestionnaireAnswerController(
     ): ResponseEntity<QuestionnaireAnswer> {
         questionnaireAnswerServices.deleteQuestionnaireAnswerById(questionnaireAnswerId)
         return ResponseEntity.noContent().build()
-    }
-
-    /**
-     *
-     */
-    @GetMapping(name="getQuestionnaireAnswerList")
-    fun getQuestionnaireAnswerList( loggedUser: User)
-            : ResponseEntity<List<QuestionnaireInstanceQuestionnaireView>> {
-
-        return ResponseEntity.ok().body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromCreator(loggedUser))
     }
 
 }

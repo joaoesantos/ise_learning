@@ -45,19 +45,18 @@ class QuestionnaireController(
     /**
      * Method to create an questionnaire with challenges associated.
      *
-     * A json object that represents a object of the type Questionnaire and its Challenges Ids must be present in the body
+     * @param questionnaireWithChallengesModel json object that represents a Questionnaire object and a collection of challenges unique identifiers
+     * @param loggedUser user that is calling the service
      * @param ucb helps build URLs
-     * @param questionnaireWithChallengesModel represents a Questionnaire object and a collection of challenges unique identifiers
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PostMapping("/withChallenges", name = "createQuestionnaireWithChallenges")
     fun createQuestionnaireWithChallenges(
             @RequestBody questionnaireWithChallengesModel: QuestionnaireWithChallengesModel,
-            user: User,
+            loggedUser: User,
             ucb: UriComponentsBuilder
     ): ResponseEntity<Questionnaire> {
-        questionnaireWithChallengesModel.questionnaire.creatorId = user.userId
-        val createdQuestionnaire = questionnaireServices.createQuestionnaireWithChallenges(questionnaireWithChallengesModel)
+        val createdQuestionnaire = questionnaireServices.createQuestionnaireWithChallenges(questionnaireWithChallengesModel, loggedUser)
         val location = ucb.path(QUESTIONNAIRE_PATTERN)
                 .path((createdQuestionnaire?.questionnaireId).toString())
                 .build()
@@ -83,64 +82,80 @@ class QuestionnaireController(
     /**
      * Method to get all user questionnaires.
      *
-     * Path variable "userId" must be present
-     * @param userId represents the Questionnaire creator
+     * @param loggedUser user that is calling the service
      * @return ResponseEntity<List<Questionnaire>> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/users/{userId}", name = "getAllUserQuestionnaires") //TODO change to logged in user
+    @GetMapping("/users", name = "getAllUserQuestionnaires")
     fun getAllUserQuestionnaires(
-            @PathVariable userId: Int
+            loggedUser: User
     ): ResponseEntity<List<Questionnaire>> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.getUserAllQuestionnaires(userId))
+                .body(questionnaireServices.getUserAllQuestionnaires(loggedUser))
     }
 
     /**
      * Method to get an questionnaire with its challenges.
      *
-     * A json object that represents a object of the type Questionnaire must be present in the body
      * Path variable "questionnaireId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
      * @return ResponseEntity<QuestionnaireOutputModel> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
-    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireInstanceWithChallenge")
+    @GetMapping("/{questionnaireId}/withChallenges", name="getQuestionnaireWithChallengeById")
     fun getQuestionnaireByIdWithChallenge(
             @PathVariable questionnaireId: Int
-    ) : ResponseEntity<QuestionnaireOutputModel> {
+    ): ResponseEntity<QuestionnaireOutputModel> {
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.getQuestionnaireInstanceByIdWithChallenge(questionnaireId))
+                .body(questionnaireServices.getQuestionnaireWithChallengeById(questionnaireId))
     }
 
     /**
      * Method to update an questionnaire.
      *
-     * A json object that represents a object of the type Questionnaire must be present in the body
      * @param questionnaireId represents a Questionnaire unique identifier
-     * @param questionnaireModel represents a Questionnaire
+     * @param questionnaireModel json object that represents a Questionnaire
      * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
      */
     @PutMapping("/{questionnaireId}", name = "updateQuestionnaireById")
     fun updateQuestionnaireById(
             @PathVariable questionnaireId: Int,
-            @RequestBody questionnaireModel: QuestionnaireModel
+            @RequestBody questionnaireModel: QuestionnaireModel,
+            loggedUser: User
     ): ResponseEntity<Questionnaire> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(questionnaireServices.updateQuestionnaireById(questionnaireId,questionnaireModel))
+                .body(questionnaireServices.updateQuestionnaireById(questionnaireId,questionnaireModel, loggedUser))
+    }
+
+    /**
+     * Method to update an questionnaire.
+     *
+     * @param questionnaireId represents a Questionnaire unique identifier
+     * @param questionnaireWithChallengesModel json object that represents a Questionnaire object and a collection of challenges unique identifiers
+     * @return ResponseEntity<Questionnaire> represents a data stream that can hold zero or one elements of the type ServerResponse
+     */
+    @PutMapping("/{questionnaireId}/withChallenges", name = "updateQuestionnaireWithChallengesById")
+    fun updateQuestionnaireWithChallengeById(
+            @PathVariable questionnaireId: Int,
+            @RequestBody questionnaireWithChallengesModel: QuestionnaireWithChallengesModel,
+            loggedUser: User
+    ): ResponseEntity<Questionnaire> {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+                .body(questionnaireServices.updateQuestionnaireWithChallengesById(questionnaireId,questionnaireWithChallengesModel, loggedUser))
     }
 
     /**
      * Method to delete a single questionnaire.
      *
-     * Path variable "questionnaireId" must be present
      * @param questionnaireId represents Questionnaire unique identifier
+     * @param loggedUser user that is calling the service
      * @return No Content
      */
     @DeleteMapping("/{questionnaireId}", name = "deleteQuestionnaireById")
     fun deleteQuestionnaireById(
-            @PathVariable questionnaireId: Int
+            @PathVariable questionnaireId: Int,
+            loggedUser: User
     ): ResponseEntity<Questionnaire> {
-        questionnaireServices.deleteQuestionnaireById(questionnaireId)
+        questionnaireServices.deleteQuestionnaireById(questionnaireId, loggedUser)
         return ResponseEntity.noContent().build()
     }
 

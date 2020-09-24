@@ -1,25 +1,33 @@
-import React from 'react';
-import {useParams} from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
+// react
+import React from 'react'
+import { useParams } from 'react-router-dom'
+// material-ui components
 import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import UseAction, { ActionStates } from '../../controllers/UseAction'
-import questionnaireCtrl from '../../controllers/questionnaireCtrl'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormLabel from '@material-ui/core/FormLabel'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+// custom components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
-
+// notifications
+import CircularProgress from '../notifications/CircularProgress'
+import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
+import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
+// context
+import { ThemeContext } from '../../context/ThemeContext'
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { QuestionnaireAnswerController } from '../../controllers/questionnaire/QuestionnaireAnswerController'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -40,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
         padding: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            //marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
             padding: theme.spacing(3),
         },
@@ -78,29 +85,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function QuestionnaireAnswerPage(props) {
-    const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
+    
+    const classes = useStyles()
+    const { theme } = React.useContext(ThemeContext)
+    const [activeStep, setActiveStep] = React.useState(0)
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
-    const [textEditorArea, setTextEditorArea] = React.useState();
-    const [textArea, setTextArea] = React.useState();
-    const [questionnaire, setQuestionnaire] = React.useState()
+    const [textEditorArea, setTextEditorArea] = React.useState()
+    const [textArea, setTextArea] = React.useState()
+    const [questionnaireAnswer, setQuestionnaireAnswer] = React.useState()
 
-    let { id } = useParams();
+    const { questionnaireInstanceId } = useParams()
+
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
             setAction({
-                function: questionnaireCtrl.getQuestionnaireAnswers,
-                args: [id, props.credentials],
+                function: QuestionnaireAnswerController.getQuestionnaireAnswers,
+                args: [questionnaireInstanceId],
                 render: true
             })
-        } else if (actionState === ActionStates.done && action.render) {
-            setQuestionnaire(response)
-            const selectedChallenge = response.challenges[activeStep]
+        } else if (actionState === ActionStates.done && response.json.challenges.length > 0 && action.render) {
+            setQuestionnaireAnswer(response.json)
+            const selectedChallenge = response.json.challenges[activeStep]
             setTextEditorArea(selectedChallenge.answerCode)
             setTextArea(selectedChallenge.isCorrect)
-        } else {
-            //not Done || done but not rendering
         }
     }, [actionState]);
 
@@ -113,16 +121,16 @@ export default function QuestionnaireAnswerPage(props) {
     };
 
     const handleStepChange = (nextStep) => {
-        const selectedChallenge = questionnaire.challenges[nextStep]
+        const selectedChallenge = questionnaireAnswer.challenges[nextStep]
         setTextEditorArea(selectedChallenge.answerCode)
         setTextArea(selectedChallenge.isCorrect)
         setActiveStep(nextStep);
     }
 
     const getChallengeAnswerContent = (step) => {
-        const challenge = questionnaire.challenges[step]
+        const challenge = questionnaireAnswer.challenges[step]
         return (
-            <React.Fragment>
+            <>
                 <Container className={classes.container} maxWidth={false}>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} >
@@ -135,7 +143,8 @@ export default function QuestionnaireAnswerPage(props) {
                                         id="challenge-description"
                                         defaultValue={challenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, }} />
+                                        InputProps={{ readOnly: true, }} 
+                                    />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl variant="standard" className={classes.form} fullWidth>
@@ -156,40 +165,39 @@ export default function QuestionnaireAnswerPage(props) {
                         </Grid>
 
                         <Grid item xs={7} style={{ paddingTop: 20 }}>
-                            <RunCodeTextEditor readOnly={true} value={textEditorArea} setTextEditorData={setTextEditorArea} codeLanguage={challenge.codeLanguage} />
+                            <RunCodeTextEditor theme={theme} readOnly={true} value={textEditorArea} setTextEditorData={setTextEditorArea} codeLanguage={challenge.codeLanguage} />
                         </Grid>
                         <Grid item xs={5} style={{ paddingTop: 20 }}>
                             <FormLabel component="legend">Passed Challenge?</FormLabel>
                             <RadioGroup aria-label="passed" name="passed" >
                                 <FormControlLabel control={<Radio checked={challenge.isCorrect} />} label="Yes" />
-                                <FormControlLabel control={<Radio checked={!challenge.isCorrect}/>} label="No" />
+                                <FormControlLabel control={<Radio checked={!challenge.isCorrect} />} label="No" />
                             </RadioGroup>
                         </Grid>
                     </Grid>
                 </Container>
 
-            </React.Fragment>
+            </>
         )
     }
 
-    if (actionState === ActionStates.clear) {
-        return <p>insert URL</p>
-    } else if (actionState === ActionStates.inProgress) {
-        return <p>fetching...</p>
-    } else if (actionState === ActionStates.done && questionnaire) {
+    if (actionState === ActionStates.clear || actionState === ActionStates.inProgress) {
+        return <CircularProgress />
+    } else if (actionState === ActionStates.done && questionnaireAnswer) {
         return (
-            <React.Fragment>
-                <CssBaseline />
+            <>
+                {actionState === ActionStates.done && response.message && 
+                    <CustomizedSnackbars message={response.message} severity={response.severity} />}
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
-                            {questionnaire.challenges.map((c, idx) => (
+                            {questionnaireAnswer.challenges.map((c, idx) => (
                                 <Step key={idx}>
                                     <StepLabel>Challenge #{idx + 1}</StepLabel>
                                 </Step>
                             ))}
                         </Stepper>
-                        <React.Fragment>
+                        <>
                             {getChallengeAnswerContent(activeStep)}
                             <div className={classes.buttons}>
                                 {activeStep !== 0 && (
@@ -197,24 +205,24 @@ export default function QuestionnaireAnswerPage(props) {
                                         Back
                                     </Button>
                                 )}
-                                {
-                                    activeStep !== questionnaire.challenges.length - 1 && (
+                                {activeStep !== questionnaireAnswer.challenges.length - 1 && (
                                         <Button
                                             variant="contained"
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}>
+                                            className={classes.button}
+                                        >
                                             Next
                                         </Button>
                                     )
                                 }
                             </div>
-                        </React.Fragment>
+                        </>
                     </Paper>
                 </main>
-            </React.Fragment>
+            </>
         )
     } else {
-        return <p>error...</p>
+        return <DefaultErrorMessage message={"404 | Not Found"} />
     }
 }

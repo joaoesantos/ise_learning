@@ -51,7 +51,7 @@ export const defaultUnitTests = {
     python: "import unittest\r\n\r\ndef foo():\r\n    return  True\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
 }
 
-const API_VERSION = "v0"
+export const API_VERSION = "v0"
 
 export const languageLabelMappings = {
     java: "Java",
@@ -62,7 +62,7 @@ export const languageLabelMappings = {
 }
 
 export const feloniousStatusCodes = [
-    403,    // Forbidden
+    //403,    // Forbidden
     404,    // Not Found
     500     // Internal Server Error
 ]
@@ -70,28 +70,36 @@ export const feloniousStatusCodes = [
 export const apiUrlTemplates = {
     // USER
     login: () => `/${API_VERSION}/login`,
-    logout: () => `/${API_VERSION}/logout`,
-    createUser:()=> `/${API_VERSION}/users`,
+    createUser: ()=> `/${API_VERSION}/users`,
     myUserOperations: () => `/${API_VERSION}/users/me`,
     myCredentials: () => `/${API_VERSION}/users/me/password`,
     // RUN CODE
     executeCode: () => `/${API_VERSION}/execute`,
+    // LANGUAGES
+    languages: () => `/${API_VERSION}/codeLanguages`,
     // CHALLENGES
     challenge: (challengeId) => `/${API_VERSION}/challenges/${challengeId}`,
     challenges: () => `/${API_VERSION}/challenges`,
     challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/challenges/${challengeId}/users/${userId}`,
     challengeAnswer: (challengeAnswerId) => `/${API_VERSION}/challengeAnswers/${challengeAnswerId}`,
     challengeAnswers: () => `/${API_VERSION}/challengeAnswers`,
-    languages: () => `/${API_VERSION}/codeLanguages`,
     getAllChallenges: () => `/${API_VERSION}/challenges`,
     getRandomChallenge: () => `/${API_VERSION}/challenges/random`,
     // QUESTIONNAIRES
-    getQuestionnaireInstances: () => `/${API_VERSION}/questionnaireAnswers`,
-    getQuestionnaireAnswers: (id) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${id}`,
-    getChallenges: () => `/${API_VERSION}/challenges`,
-    getQuestionnaire: () => `/${API_VERSION}/questionnaires/{id}`,
-    saveQuestionnaire: () => `/${API_VERSION}/questionnaires/{id}`,
     createQuestionnaire: () => `/${API_VERSION}/questionnaires/withChallenges`,
-    getQuestionnaireWithChallenges: () => `/${API_VERSION}/questionnaires/{questionnaireId}/withChallenges`,
-    createQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers`
+    getQuestionnaireWithChallenges: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
+    getQuestionnaireById: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    getAllUserQuestionnaires: () => `/${API_VERSION}/questionnaires/users`,
+    saveQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
+    deleteQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    // QUESTIONNAIRE INSTANCES
+    createQuestionnaireInstance: () => `/${API_VERSION}/questionnaireInstances`,
+    getQuestionnaireByUuid: (uuid) => `/${API_VERSION}/questionnaireInstances/solve/${uuid}`,
+    getAllQuestionnaireInstancesByQuestionnaireId: (questionnaireId) => `/${API_VERSION}/questionnaireInstances/questionnaires/${questionnaireId}`,
+    updateQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
+    deleteQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
+    // QUESTIONNAIRE ANSWERS
+    submitQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers/submit`,
+    getAllQuestionnaireAnswersFromQuestionnaireInstanceId: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${questionnaireInstanceId}`,   
+
 }

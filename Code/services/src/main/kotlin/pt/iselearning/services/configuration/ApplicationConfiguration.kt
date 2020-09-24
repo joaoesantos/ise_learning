@@ -52,12 +52,12 @@ class ApplicationConfiguration() : WebMvcConfigurer {
         registrationBean.filter = AuthenticationFilter(authenticationService, objectMapper)
         registrationBean.addUrlPatterns(
                 "/v0/login",
-                CHALLENGE_PATTERN,
                 "${CHALLENGE_PATTERN}/*",
-                CHALLENGE_ANSWER_PATTERN,
                 "${CHALLENGE_ANSWER_PATTERN}/*",
-                QUESTIONNAIRE_ANSWER_PATTERN,
-                "/v0/questionnaires/withChallenges")
+                "${QUESTIONNAIRE_PATTERN}/*",
+                "${QUESTIONNAIRE_INSTANCE_PATTERN}/*",
+                "${QUESTIONNAIRE_ANSWER_PATTERN}/*"
+        )
 
         return registrationBean
     }

@@ -34,6 +34,7 @@ fun checkQuestionnaireInstanceTimeout(
         val expireTimeMillis = questionnaireInstance.startTimestamp!! + questionnaireInstance.timer!!
         if (System.currentTimeMillis() > expireTimeMillis) {
             questionnaireInstance.endTimestamp = expireTimeMillis
+            questionnaireInstance.isFinish = true
             questionnaireInstanceRepository.save(questionnaireInstance)
             throw ServiceException(
                     "Timeout.",

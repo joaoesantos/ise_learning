@@ -11,6 +11,7 @@ import pt.iselearning.services.exception.error.ServerError
 import pt.iselearning.services.service.AuthenticationService
 import pt.iselearning.services.util.CHALLENGE_PATTERN
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
+import pt.iselearning.services.util.QUESTIONNAIRE_INSTANCE_PATTERN
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -20,14 +21,14 @@ import kotlin.reflect.KFunction2
  * Class responsible to validate user credentials
  */
 class AuthenticationFilter(private val authenticationService: AuthenticationService, private val objectMapper: ObjectMapper): OncePerRequestFilter() {
-    private val validateFilters : HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
-            "/v0/challenges/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
-            "/v0/challenges/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
-            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest,
-            "/v0/questionnaires/**" to AuthenticationFilter::shouldNotFilterQuestionnairePattern
+    private val validateFilters: HashMap<String, KFunction2<AuthenticationFilter, HttpServletRequest, Boolean>> = hashMapOf(
+            "${CHALLENGE_PATTERN}/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            "${CHALLENGE_PATTERN}/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
+            "${QUESTIONNAIRE_INSTANCE_PATTERN}/solve/**" to AuthenticationFilter::shouldNotFilterGenericPattern,
+            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
     )
 
-    private val optionalAuthenticationPaths : HashMap<String, HashSet<HttpMethod>> = hashMapOf(
+    private val optionalAuthenticationPaths: HashMap<String, HashSet<HttpMethod>> = hashMapOf(
             CHALLENGE_PATTERN to hashSetOf<HttpMethod>(HttpMethod.GET),
             "${CHALLENGE_PATTERN}/**" to hashSetOf<HttpMethod>(HttpMethod.GET),
             "${CHALLENGE_PATTERN}/**/tags" to hashSetOf<HttpMethod>(HttpMethod.GET)
@@ -77,8 +78,7 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             request.method != HttpMethod.GET.name ||
                     !AntPathMatcher().match(QUESTIONNAIRE_ANSWER_PATTERN, request.servletPath)
 
-    private fun shouldNotFilterQuestionnairePattern(request: HttpServletRequest): Boolean =
-            request.method == HttpMethod.GET.name
+    private fun shouldNotFilterGenericPattern(request: HttpServletRequest): Boolean = true
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val pathMatcher = AntPathMatcher()

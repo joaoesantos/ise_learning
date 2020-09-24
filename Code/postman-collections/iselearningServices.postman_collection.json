@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "dfa267e6-8518-45dc-922c-d507775f2f11",
+		"_postman_id": "404f6164-984f-4e6c-ac5c-ff0aa63f70aa",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -138,31 +138,46 @@
 					"name": "Challenge Answers",
 					"item": [
 						{
-							"name": "getChallengesAnswersByUser",
+							"name": "getChallengeAnswersByChallengeIdAndUserId",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user5",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user5",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
+									"raw": "{{hostServices}}/v0/challengeAnswers/challenges/:challengeId/users/:userId",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
+										"challengeAnswers",
 										"challenges",
 										":challengeId",
-										"answers",
 										"users",
 										":userId"
 									],
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "2"
+											"value": "4"
 										},
 										{
 											"key": "userId",
-											"value": "2"
+											"value": "5"
 										}
 									]
 								}
@@ -512,7 +527,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "10"
+									"value": "5"
 								}
 							]
 						}
@@ -710,7 +725,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"description\" : \"questionnaire created on postman\",\n\t\"creatorId\" : 1\n}",
+									"raw": "{\n\t\"description\" : \"questionnaire created on postman\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -737,7 +752,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\",\r\n        \"creatorId\" : 1\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
+									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\"\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -786,23 +801,72 @@
 						{
 							"name": "getAllUserQuestionnaires",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/questionnaires/users/:userId",
+									"raw": "{{hostServices}}/v0/questionnaires/users",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
 										"questionnaires",
-										"users",
-										":userId"
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireWithChallengesById",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId",
+										"withChallenges"
 									],
 									"variable": [
 										{
-											"key": "userId",
-											"value": "2"
+											"key": "questionnaireId",
+											"value": "1"
 										}
 									]
 								}
@@ -812,6 +876,21 @@
 						{
 							"name": "updateQuestionnaireById",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [],
 								"body": {
@@ -836,7 +915,42 @@
 									"variable": [
 										{
 											"key": "questionnaireId",
-											"value": "8"
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireWithChallengesById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\"\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId",
+										"withChallenges"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
 										}
 									]
 								}
@@ -986,7 +1100,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"description\" : \"questionnaire instance updated on postman\"\n}\n",
+									"raw": "{\n    \"questionnaireId\": 1,\n\t\"description\" : \"questionnaire instance updated on postman\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1499,30 +1613,6 @@
 							],
 							"path": [
 								"v0"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "languages",
-			"item": [
-				{
-					"name": "Code languages",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostServices}}/v0/codeLanguages",
-							"host": [
-								"{{hostServices}}"
-							],
-							"path": [
-								"v0",
-								"codeLanguages"
 							]
 						}
 					},

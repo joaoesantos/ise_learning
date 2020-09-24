@@ -1,29 +1,40 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import blue from '@material-ui/core/colors/blue';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import { createMuiTheme } from '@material-ui/core/styles';
-
-import UseAction, { ActionStates } from '../../controllers/UseAction'
-import { QuestionnairePageController } from '../../controllers/QuestionnairePageController'
+// react
+import React from 'react'
+import { useParams } from 'react-router-dom'
+// material-ui components
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import Container from '@material-ui/core/Container'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
+import Stepper from '@material-ui/core/Stepper'
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+// custom components
 import RunCodeTextEditor from '../codemirror/RunCodeTextEditor'
 import OutputTextEditor from '../codemirror/OutputTextEditor'
+// notifications
+import CircularProgress from '../notifications/CircularProgress'
+import CustomizedSnackbars from '../notifications/CustomizedSnackbars'
+import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
+// controllers
+import UseAction, { ActionStates } from '../../controllers/UseAction'
+import { QuestionnairePageController } from '../../controllers/questionnaire/QuestionnairePageController'
+import { RunCodeController } from '../../controllers/RunCodeController'
+// context
+import { ThemeContext } from '../../context/ThemeContext'
+// utils
+import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 
-import { defaultLanguage, CodeMirrorOptions } from '../../clientSideConfig';
+import blue from '@material-ui/core/colors/blue'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -31,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     },
     layout: {
         width: 'auto',
+        height: "80%",
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
@@ -44,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
         padding: theme.spacing(2),
         [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            //marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
             padding: theme.spacing(3),
         },
@@ -64,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         textTransform: "none",
         color: '#ffffff',
-        backgroundColor: '#5cb85c', // cor do isel -> '#963727'
+        backgroundColor: '#5cb85c',
         '&:hover': {
             backgroundColor: '#17b033',
         }
@@ -104,133 +115,231 @@ const useStyles = makeStyles((theme) => ({
     },
     timerText: {
         fontSize: '10px'
-    }
+    },
+    runStatePaper: {
+        elevation:1,
+        borderStyle:'solid',
+    },
 }));
 
-
-
 export default function QuestionnairePage() {
-    const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState(new Set());
+
+    const classes = useStyles()
+    const { theme } = React.useContext(ThemeContext)
     const [action, setAction] = React.useState()
     const [actionState, response] = UseAction(action)
+    const [runState, setRunState] = React.useState('notRunning')
+    const [timer, setTimer] = React.useState()
+    const [completed, setCompleted] = React.useState(new Set())
     const [questionnaire, setQuestionnaire] = React.useState()
-    const [timer, setTimer] = React.useState(5000)
-    const [runState, setRunState] = React.useState('notRunning');
-    const [codeLanguage, setCodeLanguage] = React.useState(defaultLanguage);
-    const [textEditorData, setTextEditorData] = React.useState([]);
-    const [unitTestsData, setUnitTestsData] = React.useState([])
-    const [textEditorArea, setTextEditorArea] = React.useState();
-    const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false });
-    const [unitTests, setUnitTests] = React.useState('');
-    
+    const [activeStep, setActiveStep] = React.useState(0)
+    const [codeLanguage, setCodeLanguage] = React.useState()
+    const [activeChallenge, setActiveChallenge] = React.useState()
+    const [runTests, setRunTests] = React.useState(false)
+    const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false })
+
+    const { uuid } = useParams()
+
+    let seconds = undefined, minutes = undefined, hours = undefined
+
     React.useEffect(() => {
-        if (response === undefined && actionState === ActionStates.clear) {
+        // React.state evaluation for run code button action
+        if (action && action.name && action.name === "runcode") {
+            if(actionState === ActionStates.inProgress) {
+                setRunState('running')
+            } else if(actionState === ActionStates.done && response.severity === "success") {
+            response.json.wasError ? setRunState('error') : setRunState('finished')
+                setTextArea({ value: response.json, toUpdate: true })
+            }
+        // React.state evaluation to set questionnaire
+        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.severity === "success") {
+            const initChallenge = response.json.challenges[0]
+            const initialLanguage = response.json.challenges[0].answer.codeLanguage || initChallenge.languages[0]
+            initChallenge.answer.codeLanguage = initialLanguage
+            initChallenge.answer.unitTests = defaultUnitTests[initialLanguage]
+            setQuestionnaire(response.json)
+            setTimer( response.json.timer === null ? null : (response.json.startTimestamp + response.json.timer) - Date.now() )
+            setActiveChallenge(initChallenge)
+            setCodeLanguage(initChallenge.codeLanguage || initChallenge.languages && initChallenge.languages[0])
+        // React.state evaluation for action.clear
+        } else if (response === undefined && actionState === ActionStates.clear) {
             setAction({
                 function: QuestionnairePageController.getQuestionnaire,
-                args: [],
-                render: true
+                args: [uuid],
+                name: "getQuestionnaireByUuid"
             })
-        } else if (actionState === ActionStates.done && action.render) {
-            setQuestionnaire(response)
-        } else {
-            //not Done || done but not rendering
         }
     }, [actionState]);
 
-    let seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
-    let minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
-    let hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2);
+    if(timer !== null) {
+        seconds = ("0" + (Math.floor((timer / 1000) % 60) % 60)).slice(-2);
+        minutes = ("0" + Math.floor((timer / 60000) % 60)).slice(-2);
+        hours = ("0" + Math.floor((timer / 3600000) % 60)).slice(-2)
+    }
 
     React.useEffect(() => {
-        let intervalId = null
-        if (timer > 0) {
-            intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
+        if(timer !== null) {
+            let intervalId = null
+            if (timer > 0) {
+                intervalId = setInterval(() => setTimer(old => old - 1000), 1000);
+            } else {
+                setAction({
+                    function: QuestionnairePageController.getQuestionnaire,
+                    args: [uuid],
+                    name: "getQuestionnaireByUuid"
+                })
+            }
+            return () => {
+                clearInterval(intervalId)
+            }
         }
-
-        return () => {
-            clearInterval(intervalId)
-        }
-
     }, [timer])
+
+    const deepCopy = (obj) => {
+        return (JSON.parse(JSON.stringify(obj)));
+    }
 
     const onLanguageChange = (event) => {
         onClearConsole()
-        setCodeLanguage(event.target.value);
+        let clone = deepCopy(questionnaire)
+        let challenge = clone.challenges[activeStep]
+        challenge.answer.codeLanguage = event.target.value
+        challenge.answer.answerCode = CodeMirrorOptions.get(event.target.value).value
+        challenge.answer.unitTests = defaultUnitTests[event.target.value]
+        setActiveChallenge(challenge)
+        setCodeLanguage(event.target.value)
     }
 
     const onRunCode = async () => {
         if (runState !== 'running') {
-            setRunState('running');
+            setRunState('running')
+            let result = await RunCodeController.execute({
+                language: codeLanguage,
+                code: activeChallenge.answer.answerCode,
+                unitTests: activeChallenge.answer.unitTests,
+                executeTests: runTests
+            });
+            setTextArea({ value: result.json, toUpdate: true })
             setRunState('finished');
-            setTextArea({ ...textArea, value: response, toUpdate: true });
         }
     }
 
+    // const onRunCode = async () => {
+    //     if (runState !== 'running') {
+    //         setRunState('running')
+    //         setAction({
+    //             function: RunCodeController.execute,
+    //             args: [{
+    //                 language: codeLanguage,
+    //                 code: activeChallenge.answer.answerCode,
+    //                 unitTests: unitTests,
+    //                 executeTests: runTests
+    //             }],
+    //             name: 'runcode'
+    //         })
+    //     }
+    // }
+
     const onClearConsole = () => {
         if (runState !== 'notRunning') {
-            setRunState('notRunning');
+            setRunState('notRunning')
             setTextArea('cls')
         }
     }
 
-    const handleComplete = () => {
-        const newCompleted = new Set(completed);
-        newCompleted.add(activeStep);
-        setCompleted(newCompleted);
-    };
+    const handleSaveAnswer = () => {
+        let clone = deepCopy(questionnaire)
+        clone.challenges[activeStep] = activeChallenge
+        console.log("clone",clone)
+        setQuestionnaire(clone)
 
-    const setTestArea = (text) => {
-        const newTests = [...unitTestsData]
-        newTests[activeStep] = text
-        setUnitTestsData(newTests)
-        setUnitTests(text)
+        const newCompleted = new Set(completed)
+        newCompleted.add(activeStep)
+        setCompleted(newCompleted)
     }
 
     const setCodeArea = (text) => {
-        const newCodes = [...textEditorData]
-        newCodes[activeStep] = text
-        setTextEditorData(newCodes)
+        let clone = deepCopy(activeChallenge)
+        clone.answer.answerCode = text
+        setActiveChallenge({...clone})
     }
 
     const getCodeArea = (idx) => {
-        let codeText = textEditorData[idx];
-
-        if(!codeText){
-            codeText = CodeMirrorOptions.get(codeLanguage).value
+        let clone = deepCopy(questionnaire)
+        const selectedAnswer = clone.challenges[idx].answer
+        let codeText = selectedAnswer.answerCode
+        if (!codeText) {
+            codeText = CodeMirrorOptions.get(selectedAnswer.codeLanguage || clone.challenges[idx].languages[0]).value
         }
         return codeText
     }
 
-    
+    const getActiveCodeArea = () => {
+        return activeChallenge && activeChallenge.answer && activeChallenge.answer.answerCode ? activeChallenge.answer.answerCode : getCodeArea(activeStep)
+    }
+
+    const setTestArea = (text) => {
+        let clone = deepCopy(activeChallenge)
+        clone.answer.unitTests = text
+        setActiveChallenge({...clone})
+    }
+
+    const getTestArea = (idx) => {
+        let clone = deepCopy(questionnaire)
+        const selectedAnswer = clone.challenges[idx].answer
+        let unitTestsText = selectedAnswer.unitTests
+        if (!unitTestsText) {
+            unitTestsText = defaultUnitTests[selectedAnswer.codeLanguage || clone.challenges[idx].languages[0]]
+        }
+        return unitTestsText
+    }
+
+    const getActiveTestArea = () => {
+        return activeChallenge && activeChallenge.answer && activeChallenge.answer.unitTests ? activeChallenge.answer.unitTests : getTestArea(activeStep)
+    }
+
+
     const handleNext = () => {
         handleStepChange(activeStep + 1)
-    };
+    }
 
     const handleBack = () => {
         handleStepChange(activeStep - 1)
-    };
-
-    const handleStepChange = (nextStep) => {
-        setTextEditorArea(getCodeArea(nextStep))
-        setTextArea({ value: '', toUpdate: false })
-        setActiveStep(nextStep);
     }
 
-    const handleSubmitChallenge = () => {
-        handleComplete();
+    const handleStepChange = (nextStep) => {
+        let clone = deepCopy(questionnaire)
+        let nextChallenge = clone.challenges[nextStep]
+
+        if(!nextChallenge.answer.codeLanguage) {
+            nextChallenge.answer.codeLanguage = nextChallenge.languages[0]
+        }
+
+        setActiveChallenge(nextChallenge)
+        setTextArea({ value: '', toUpdate: false })
+        setCodeLanguage(nextChallenge.answer.codeLanguage)
+        setActiveStep(nextStep)
+    }
+
+    const handleRunTestsChange = (event) => {
+        setRunTests(event.target.checked)
     }
 
     const handleSubmitQuestionnaire = () => {
         setAction({
             function: QuestionnairePageController.submitQuestionnaire,
-            args: [],
+            args: [questionnaire],
             render: false
         })
     }
 
     const isStepCompleted = (idx) => completed.has(idx)
+
+    const languageOptions = () => {
+        return activeChallenge.languages.map((l, index) =>
+        <option key={index} value={l}>{l.toLowerCase()}</option>
+        )
+    }
 
     const renderTimer = () => {
         return (
@@ -240,32 +349,34 @@ export default function QuestionnairePage() {
                         id="completeQuestionnaire"
                         variant="contained"
                         color="primary"
-                        onClick={handleSubmitQuestionnaire}>
-                        Complete
+                        onClick={handleSubmitQuestionnaire}
+                    >
+                        Submit Questionnaire
                     </Button>
                 </div>
-
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{hours}</span>
-                    <div className={classes.timerText}>Hours</div>
-                </div>
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{minutes}</span>
-                    <div className={classes.timerText}>minutes</div>
-                </div>
-                <div className={classes.timerElement}>
-                    <span className={classes.timerValue}>{seconds}</span>
-                    <div className={classes.timerText}>seconds</div>
-                </div>
+                {questionnaire.timer !== null &&
+                <>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{hours}</span>
+                        <div className={classes.timerText}>Hours</div>
+                    </div>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{minutes}</span>
+                        <div className={classes.timerText}>minutes</div>
+                    </div>
+                    <div className={classes.timerElement}>
+                        <span className={classes.timerValue}>{seconds}</span>
+                        <div className={classes.timerText}>seconds</div>
+                    </div>
+                </>
+                }
             </div>
         )
-
     }
 
     const getChallengeContent = (step) => {
-        const challenge = questionnaire.challenges[step]
         return (
-            <React.Fragment>
+            <>
                 <Container className={classes.container} maxWidth={false}>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} >
@@ -276,27 +387,34 @@ export default function QuestionnairePage() {
                                         size='medium'
                                         multiline
                                         id="challenge-description"
-                                        defaultValue={challenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, }} />
+                                        InputProps={{ readOnly: true, value: activeChallenge.description }} />
+
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            checked={runTests}
+                                            onChange={handleRunTestsChange}
+                                            color="primary"
+                                            inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                        />}
+                                        label="Run unit tests?"
+                                    />
+
                                 </Grid>
                                 <Grid item xs={1}>
                                     <FormControl variant="standard" className={classes.form} fullWidth>
                                         <Select
                                             id="languageSelect"
                                             native
-                                            onChange={onLanguageChange}>
-                                            <option value={'java'}>Java</option>
-                                            <option value={'kotlin'}>Kotlin</option>
-                                            <option value={'javascript'}>JavaScript</option>
-                                            <option value={'csharp'}>C#</option>
-                                            <option value={'python'}>Python</option>
+                                            value={codeLanguage}
+                                            onChange={onLanguageChange}
+                                        >
+                                            {languageOptions()}
                                         </Select>
                                     </FormControl>
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Grid item xs={7} style={{ paddingTop: 20 }}>
                             <Grid>
                                 <Toolbar className={classes.runCodetoolbar} variant="dense">
@@ -308,7 +426,7 @@ export default function QuestionnairePage() {
                                     </Button>
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor value={textEditorArea} codeLanguage={codeLanguage} setTextEditorData={setCodeArea} />
+                            <RunCodeTextEditor theme={theme} textEditorData={getActiveCodeArea()} codeLanguage={activeChallenge.answer.codeLanguage || activeChallenge.languages[0]} setTextEditorData={setCodeArea} />
                         </Grid>
                         <Grid item xs={5}>
                             <Grid style={{ paddingTop: 50 }}>
@@ -335,7 +453,7 @@ export default function QuestionnairePage() {
                                     </Box>
                                 </Toolbar>
                             </Grid>
-                            <OutputTextEditor textArea={textArea} setTextArea={setTestArea} editorHeigth='300'/>
+                            <OutputTextEditor theme={theme} textArea={textArea} setTextArea={setTextArea} editorHeigth='300' />
                             <Grid>
                                 <Toolbar className={classes.outputToolbar} variant="dense">
                                     <Box display="flex">
@@ -343,31 +461,24 @@ export default function QuestionnairePage() {
                                             Tests:
                                         </Typography>
                                     </Box>
-
                                 </Toolbar>
                             </Grid>
-                            <RunCodeTextEditor value={unitTests} codeLanguage={codeLanguage} setTextEditorData={setUnitTests} editorHeigth='300'/>
+                            <RunCodeTextEditor theme={theme} textEditorData={getActiveTestArea()} codeLanguage={activeChallenge.answer.codeLanguage || activeChallenge.languages[0]} setTextEditorData={setTestArea} editorHeigth='300' />
                         </Grid>
                     </Grid>
                 </Container>
-
-            </React.Fragment>
+            </>
         )
     }
 
-    if (actionState === ActionStates.clear) {
-        return <p>insert URL</p>
-    } else if (actionState === ActionStates.inProgress) {
-        return <p>fetching...</p>
-    } else if (actionState === ActionStates.done && questionnaire) {
-        return (
-            <React.Fragment>
-                <CssBaseline />
+    const renderQuestionnairePage = () => {
+        return(
+            <>
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
-                        <React.Fragment>
+                        <>
                             {renderTimer()}
-                        </React.Fragment>
+                        </>
                         <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
                             {questionnaire.challenges.map((c, idx) => (
                                 <Step key={idx} completed={isStepCompleted(idx)}>
@@ -375,7 +486,7 @@ export default function QuestionnairePage() {
                                 </Step>
                             ))}
                         </Stepper>
-                        <React.Fragment>
+                        <>
                             {getChallengeContent(activeStep)}
                             <div className={classes.buttons}>
                                 {activeStep !== 0 && (
@@ -386,10 +497,11 @@ export default function QuestionnairePage() {
                                 {
                                     activeStep !== questionnaire.challenges.length - 1 && (
                                         <Button
-                                            variant="contained" A
+                                            variant="contained"
                                             color="primary"
                                             onClick={handleNext}
-                                            className={classes.button}>
+                                            className={classes.button}
+                                        >
                                             Next
                                         </Button>
                                     )
@@ -398,16 +510,38 @@ export default function QuestionnairePage() {
                                     id="submitAnswer"
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleSubmitChallenge}>
-                                    Submit answer
+                                    onClick={handleSaveAnswer}
+                                >
+                                    Save answer
                                 </Button>
                             </div>
-                        </React.Fragment>
+                        </>
                     </Paper>
                 </main>
-            </React.Fragment>
+            </>
         )
-    } else {
-        return <p>error...</p>
     }
+
+    if(actionState === ActionStates.clear) {
+        return <CircularProgress />
+    } else if(questionnaire) {
+        if(actionState === ActionStates.done && response.severity === "success") {
+            return(
+                <>
+                    {actionState === ActionStates.done && response && response.message &&
+                        <CustomizedSnackbars message={response.message} severity={response.severity} />}
+                    {renderQuestionnairePage()}
+                </>
+            )
+        } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
+            return <DefaultErrorMessage message={ response.message } />
+        }
+    } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
+        return <DefaultErrorMessage message={ response.message } />
+    } else if(actionState === ActionStates.inProgress) {
+        return <CircularProgress />
+    } else {
+        return <DefaultErrorMessage message={"404 | Not Found"} />
+    }
+
 }

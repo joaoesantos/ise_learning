@@ -58,11 +58,7 @@ export default function FullWidthTabs(props) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
+  }
 
   React.useEffect(() => {
     SetState({
