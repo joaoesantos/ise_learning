@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Runtime.InteropServices;
 
 namespace NetCoreExecutionEnvironment
 {
@@ -7,6 +9,7 @@ namespace NetCoreExecutionEnvironment
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(RuntimeInformation.OSDescription);
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -14,7 +17,8 @@ namespace NetCoreExecutionEnvironment
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .UseStartup<Startup>();
                 });
     }
 }

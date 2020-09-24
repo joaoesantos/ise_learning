@@ -36,7 +36,7 @@ namespace NetCoreExecutionEnvironment.Controllers
             else
             {
                 problem = Problem(
-                    detail: "Uncaught exception",
+                    detail: exception.Message,
                     title: "Internal Server Error",
                     type: "Internal Server Error",
                     instance: "/execute/csharp/error/unexpected",

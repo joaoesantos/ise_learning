@@ -9,7 +9,6 @@ namespace NetCoreExecutionEnvironment
 {
     public class Constants
     {
-        public static string CodeFilesDirectory = "CodeFiles";
         public static string BaseCodeFile = "Program.cs";
         public static string UnitTestFile = "UnitTest1.cs";
         public static string SolutionBaseFolder = "Exercise_";
@@ -17,16 +16,6 @@ namespace NetCoreExecutionEnvironment
         public static string CodeProjectName = "App";
         public static string UnitTestsProjectName = "UnitTests";
         public static string TemplateFolder = "TemplateFolder";
-
-        public enum CommandType
-        {
-            CREATE_SOLUTION_WINDOWS,
-            CREATE_SOLUTION_LINUX,
-            EXECUTE_TESTS_WINDOWS,
-            EXECUTE_TESTS_LINUX,
-            EXECUTE_CODE_WINDOWS,
-            EXECUTE_CODE_LINUX
-        }
 
         public class ExceptionType {
             public static string INTERNAL_SERVER_ERROR = "Internal Server Error";

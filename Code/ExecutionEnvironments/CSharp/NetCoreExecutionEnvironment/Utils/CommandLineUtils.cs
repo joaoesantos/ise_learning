@@ -1,57 +1,43 @@
 ﻿using Microsoft.AspNetCore.Http;
-using NetCoreExecutionEnvironment.Commands.Arguments;
+using NetCoreExecutionEnvironment.Commands;
 using NetCoreExecutionEnvironment.Contracts;
 using NetCoreExecutionEnvironment.Exceptions;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Threading;
-using static NetCoreExecutionEnvironment.Constants;
 
 namespace NetCoreExecutionEnvironment.Utils
 {
     public class CommandLineUtils
     {
-        private static readonly string _commandFilesFolder = Path.Combine("Commands", "Files");
-
-        public static ExecutableResult ExecuteCommandFile(CommandType ct, ICommandArguments commandArguments, int timeout = Timeout.Infinite)
+        public static ExecutableResult ExecuteCommand(string args, int timeout = Timeout.Infinite)
         {
             try
             {
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), _commandFilesFolder, ct.GetFileName());
-                //launch new process
-                using(Process np = new Process())
+                Stopwatch stopwatch = new Stopwatch();
+                using (Process np = new Process())
                 {
                     np.StartInfo.UseShellExecute = false;
-                    np.StartInfo.FileName = filePath;
+                    np.StartInfo.FileName = DetectOS.ConsolePrompt;
                     np.StartInfo.CreateNoWindow = true;
-                    np.StartInfo.Arguments = commandArguments.getArgumments();
+                    np.StartInfo.Arguments = $"{DetectOS.ConsolePromptArgumentStart} {args}";
                     np.StartInfo.RedirectStandardError = true;
                     np.StartInfo.RedirectStandardOutput = true;
                     np.Start();
+                    stopwatch.Start();
+                    string result = np.StandardOutput.ReadToEnd();
+                    string errorText = np.StandardError.ReadToEnd();
 
                     bool ok = np.WaitForExit(timeout);
+                    stopwatch.Stop();
                     if (!ok)
                     {
                         throw new RunEnvironmentException(StatusCodes.Status408RequestTimeout, Constants.ExceptionType.REQUEST_TIMEOUT, "Program ran for too long. Please make changes in your code", Constants.ExceptionInstance.TIMEOUT, "Program ran for too long");
                     }
-                    long runningTime = Convert.ToInt64((np.ExitTime - np.StartTime).TotalMilliseconds);
-                    string result = ""; 
-                    bool wasError = false;
 
-                    //indicates that everything went ok
-                    if (np.ExitCode == 0)
-                    {
-                        result = np.StandardOutput.ReadToEnd();
-                    }
-                    else
-                    {
-                        wasError = true;
-                        result = np.StandardError.ReadToEnd();
-                    }
+                    bool wasError = np.ExitCode != 0;
 
-                    return new ExecutableResult(result, wasError, runningTime);
+                    return new ExecutableResult(wasError ? errorText : result, wasError, stopwatch.ElapsedMilliseconds);
                 }
             }
             catch (Exception e)
@@ -60,4 +46,6 @@ namespace NetCoreExecutionEnvironment.Utils
             }
         }
     }
+
+   
 }

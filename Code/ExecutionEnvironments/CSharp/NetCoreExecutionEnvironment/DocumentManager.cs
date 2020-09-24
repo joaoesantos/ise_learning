@@ -10,71 +10,38 @@ using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment
 {
-    public class DocumentManager : IDisposable
+    public class DocumentManager
     {
-        private string _mainFolderPath;
-        private bool _deleteMainFolder;
-
-        public DocumentManager(string mainFolderPath, bool deleteMainFolder)
+        public async Task DirectoryCopy(string src, string dist)
         {
-            _mainFolderPath = mainFolderPath;
-            _deleteMainFolder = deleteMainFolder;
-        }
-
-        public string WriteFile(string fileContent, string filename, string directoryPath)
-        {
-            try
+            DirectoryInfo dir = new DirectoryInfo(src);
+            if (!dir.Exists)
             {
-                if (!Directory.Exists(directoryPath.ToString()))
-                {
-                    Directory.CreateDirectory(directoryPath);
-                }
-
-                string filePath = Path.Combine(directoryPath, filename);
-                using (FileStream fs = File.OpenWrite(filePath))
-                {
-                    using (StreamWriter sw = new StreamWriter(fs))
-                    {
-                        fs.SetLength(0);
-                        sw.Write(fileContent);
-                    }
-                }
-
-                return filePath;
-            } catch (Exception e)
-            {
-                throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while using file system");
+                throw new RunEnvironmentException(
+                    StatusCodes.Status500InternalServerError,
+                    Constants.ExceptionType.INTERNAL_SERVER_ERROR, $"Directory {src} not found", Constants.ExceptionInstance.CONTROLLER_FILE_SYSTEM, "Error while using file system");
             }
 
-        }
+            DirectoryInfo nd = Directory.CreateDirectory(dist);
 
-        public void Dispose()
-        {
-            new Thread(() => {
-                try
+            foreach (string filename in Directory.EnumerateFiles(src))
+            {
+
+                using (FileStream st = File.Open(filename, FileMode.Open))
                 {
-                    if (_deleteMainFolder)
+                    string fp = Path.Combine(nd.FullName, filename.Substring(filename.LastIndexOf(Path.DirectorySeparatorChar) + 1));
+                    using (FileStream ds = File.Create(fp))
                     {
-                        Directory.Delete(_mainFolderPath, true);
-                    }
-                    else
-                    {
-                        DirectoryInfo di = new DirectoryInfo(_mainFolderPath);
-                        foreach (FileInfo file in di.EnumerateFiles())
-                        {
-                            file.Delete();
-                        }
-                        foreach (DirectoryInfo dir in di.EnumerateDirectories())
-                        {
-                            dir.Delete(true);
-                        }
+                        await st.CopyToAsync(ds);
                     }
                 }
-                catch (Exception e)
-                {
-                    throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while deleting folders");
-                }
-            }).Start();
+            }
+
+            foreach (string dirName in Directory.EnumerateDirectories(src))
+            {
+                string folderName = dirName.Substring(dirName.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                await DirectoryCopy(dirName, Path.Combine(nd.FullName, folderName));
+            }
 
         }
     }
