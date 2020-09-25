@@ -61,7 +61,7 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //Ignored
                 }

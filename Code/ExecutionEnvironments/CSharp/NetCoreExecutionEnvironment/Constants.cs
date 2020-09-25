@@ -24,7 +24,6 @@ namespace NetCoreExecutionEnvironment
 
         public class ExceptionInstance
         {
-            public static string INSTANCE = "";
             public static string TIMEOUT = "/execute/dotnet/timeout";
             public static string COMMAND_ERROR = "/execute/dotnet/command";
             public static string FILE_SYSTEM = "/execute/dotnet/filesystem";
