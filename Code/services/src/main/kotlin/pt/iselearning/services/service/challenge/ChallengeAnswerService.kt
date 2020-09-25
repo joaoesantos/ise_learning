@@ -42,7 +42,9 @@ class ChallengeAnswerService (
     fun createChallengeAnswer(@Valid challengeAnswerModel: ChallengeAnswerModel, loggedUser: User): ChallengeAnswer {
 
         val challenge = challengeService.getChallengeById(challengeAnswerModel.challengeId, loggedUser)
+
         val createdChallengeAnswer = convertToEntity(challengeAnswerModel)
+        checkIfChallengeAnswerAlreadyExistsForLanguage(createdChallengeAnswer, loggedUser.userId!!)
         val challengeSolution = checkIfChallengeSolutionExistsForCodeLanguage(challenge, challengeAnswerModel.answer.codeLanguage!!)
 
         // evaluates if answer is corrected based on challenge unit tests
@@ -60,6 +62,19 @@ class ChallengeAnswerService (
         //endregion
 
         return challengeAnswerRepository.save(createdChallengeAnswer);
+    }
+
+    private fun checkIfChallengeAnswerAlreadyExistsForLanguage(challengeAnswer : ChallengeAnswer, userId: Int) {
+        var language = challengeAnswer.answer!!.codeLanguage!!
+        var challengeAnswerOpt = challengeAnswerRepository.findAllByChallengeIdAndUserIdAndAnswerCodeLanguage(challengeAnswer.challengeId!!, userId, language)
+        if(challengeAnswerOpt.isNotEmpty()) {
+            throw ServiceException(
+                    "Challenge Answer already exists for $language.",
+                    "Challenge Answer already exists for $language.",
+                    "/iselearning/challengeAnswer/alreadyExistsForLanguage/$language",
+                    ErrorCode.UNEXPECTED_ERROR
+            )
+        }
     }
 
     /**
