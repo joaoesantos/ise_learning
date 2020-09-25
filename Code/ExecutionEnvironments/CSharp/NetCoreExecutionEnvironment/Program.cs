@@ -9,7 +9,6 @@ namespace NetCoreExecutionEnvironment
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine(RuntimeInformation.OSDescription);
             CreateHostBuilder(args).Build().Run();
         }
 

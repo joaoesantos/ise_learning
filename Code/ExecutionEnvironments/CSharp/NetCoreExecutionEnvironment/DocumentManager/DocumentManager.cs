@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using NetCoreExecutionEnvironment.DocumentManager;
 using NetCoreExecutionEnvironment.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NetCoreExecutionEnvironment
+namespace NetCoreExecutionEnvironment.DocumentManager
 {
     public class DocumentManager
     {
-        public async Task DirectoryCopy(string src, string dist)
+        public static async Task DirectoryCopy(string src, string dist)
         {
             DirectoryInfo dir = new DirectoryInfo(src);
             if (!dir.Exists)
@@ -43,6 +44,14 @@ namespace NetCoreExecutionEnvironment
                 await DirectoryCopy(dirName, Path.Combine(nd.FullName, folderName));
             }
 
+        }
+
+        public static async Task ReplaceFileContents(string filePath, string text)
+        {
+            using (StreamWriter sw = File.CreateText(filePath))
+            {
+                await sw.WriteAsync(text);
+            }
         }
     }
 }

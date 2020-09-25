@@ -15,8 +15,6 @@ namespace NetCoreExecutionEnvironment
         public static string ConsolePrompt { get; private set; }
         public static string ConsolePromptArgumentStart { get; private set; }
 
-        public static Guid guid = new Guid();
-
         public static void RegisterCommandFacade(IServiceCollection services)
         {
             if (RuntimeUtils.IsWindows)

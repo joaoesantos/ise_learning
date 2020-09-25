@@ -44,10 +44,5 @@ namespace NetCoreExecutionEnvironment.Commands.Contracts
         /// <returns>Command results</returns>
         public Task<ExecutableResult> RunCode(string solutionDirectory, int timeout);
 
-        public Task ReplaceProgramCode(string code, string filePath);
-
-        public Task ReplaceUnitTestsCode(string unitTests, string filePath);
-
-
     }
 }

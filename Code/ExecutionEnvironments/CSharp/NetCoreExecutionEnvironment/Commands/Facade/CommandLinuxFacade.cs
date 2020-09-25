@@ -1,47 +1,38 @@
 ﻿using NetCoreExecutionEnvironment.Commands.Contracts;
 using NetCoreExecutionEnvironment.Contracts;
+using NetCoreExecutionEnvironment.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetCoreExecutionEnvironment.Commands.Facade
 {
-    public class CommandLinuxFacade : ICommandFacade
+    public class CommandLinuxFacade : AbstractCommandFacade
     {
-        public Task<string> CopyBaseSolution(string directory, bool toBeDelete)
+        public override Task<ExecutableResult> RunCode(string solutionDirectory, int timeout)
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                return CommandLineUtils.ExecuteCommand($"dotnet run --project {solutionDirectory}", timeout);
+            });
         }
 
-        public Task<string> CreateDirectory(string directory)
+        public override Task<ExecutableResult> RunTests(string solutionDirectory, int timeout)
         {
-            throw new NotImplementedException();
-        }
+            return Task.Run(() =>
+            {
+                ExecutableResult res = CommandLineUtils.ExecuteCommand($"dotnet test {solutionDirectory}", timeout);
+                if (!res.WasError)
+                {
+                    int idx = res.RawResult.LastIndexOf("Microsoft");
+                    res.RawResult = res.RawResult.Substring(idx);
+                }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ReplaceProgramCode(string code, string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ReplaceUnitTestsCode(string unitTests, string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ExecutableResult> RunCode(string solutionDirectory, int timeout)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ExecutableResult> RunTests(string solutionDirectory, int timeout)
-        {
-            throw new NotImplementedException();
+                return res;
+            });
+            
         }
     }
 }
