@@ -20,7 +20,7 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
         {
             return Task.Run(() =>
             {
-                return CommandLineUtils.ExecuteCommand($"dotnet run --project {solutionDirectory}", timeout);
+                return CommandLineUtils.ExecuteCommand($"{DetectOS.ConsolePromptArgumentStart} dotnet run --project {solutionDirectory}", timeout);
             });
 
         }
@@ -29,7 +29,7 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
         {
             ExecutableResult res = await Task.Run(() =>
             {
-                return CommandLineUtils.ExecuteCommand($"dotnet test {solutionDirectory}", timeout);
+                return CommandLineUtils.ExecuteCommand($"{DetectOS.ConsolePromptArgumentStart} dotnet test {solutionDirectory}", timeout);
             });
 
             if (!res.WasError)

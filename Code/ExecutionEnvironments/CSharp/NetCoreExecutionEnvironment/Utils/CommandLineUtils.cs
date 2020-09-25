@@ -10,6 +10,15 @@ namespace NetCoreExecutionEnvironment.Utils
 {
     public class CommandLineUtils
     {
+        /// <summary>
+        /// Execute commands using system commant line
+        /// </summary>
+        /// <param name="args">Command to be ran in the command line
+        /// Example windows: "/C echo hello"
+        /// Example linux: "-c echo \""echo hello\"""
+        /// </param>
+        /// <param name="timeout">Timeout for command. Infinite by default</param>
+        /// <returns>Instance of ExecutableResult</returns>
         public static ExecutableResult ExecuteCommand(string args, int timeout = Timeout.Infinite)
         {
             try
@@ -20,7 +29,7 @@ namespace NetCoreExecutionEnvironment.Utils
                     np.StartInfo.UseShellExecute = false;
                     np.StartInfo.FileName = DetectOS.ConsolePrompt;
                     np.StartInfo.CreateNoWindow = true;
-                    np.StartInfo.Arguments = $"{DetectOS.ConsolePromptArgumentStart} {args}";
+                    np.StartInfo.Arguments = args;
                     np.StartInfo.RedirectStandardError = true;
                     np.StartInfo.RedirectStandardOutput = true;
                     np.Start();

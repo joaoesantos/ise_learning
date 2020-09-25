@@ -13,6 +13,13 @@ namespace NetCoreExecutionEnvironment.DocumentManager
 {
     public class DocumentManager
     {
+
+        /// <summary>
+        /// Method for copying directory contents to other
+        /// </summary>
+        /// <param name="src">Full path of the source directory</param>
+        /// <param name="dist">Full path of the destination directory. If this directory doesnt exist one is created at this path</param>
+        /// <returns></returns>
         public static async Task DirectoryCopy(string src, string dist)
         {
             DirectoryInfo dir = new DirectoryInfo(src);
@@ -46,6 +53,12 @@ namespace NetCoreExecutionEnvironment.DocumentManager
 
         }
 
+        /// <summary>
+        /// Replace fil content
+        /// </summary>
+        /// <param name="filePath">Full path to file</param>
+        /// <param name="text">New file content</param>
+        /// <returns></returns>
         public static async Task ReplaceFileContents(string filePath, string text)
         {
             using (StreamWriter sw = File.CreateText(filePath))

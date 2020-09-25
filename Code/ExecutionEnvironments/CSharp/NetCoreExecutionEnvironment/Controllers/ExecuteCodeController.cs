@@ -42,6 +42,7 @@ namespace NetCoreExecutionEnvironment.Controllers
              
             string solutionFolder = $"{Constants.SolutionBaseFolder}_{Guid.NewGuid()}";
             string cleanedContent = FileUtils.RemoveNewLines(value.code);
+            string testContents = FileUtils.RemoveNewLines(value.unitTests);
 
             using (CommandFacade)
             {
@@ -54,7 +55,7 @@ namespace NetCoreExecutionEnvironment.Controllers
                 } else
                 {
                     string testFilePath = Path.Combine(solutionPath, Constants.UnitTestsProjectName, Constants.UnitTestFile);
-                    await DocumentManager.DocumentManager.ReplaceFileContents(testFilePath, FileUtils.RemoveNewLines(value.unitTests));
+                    await DocumentManager.DocumentManager.ReplaceFileContents(testFilePath, testContents);
                     result = await CommandFacade.RunTests(Path.Combine(solutionPath, Constants.UnitTestsProjectName), timeout);
                 }
                 

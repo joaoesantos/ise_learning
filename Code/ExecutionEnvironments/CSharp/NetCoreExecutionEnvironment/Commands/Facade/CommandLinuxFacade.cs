@@ -15,7 +15,8 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
         {
             return Task.Run(() =>
             {
-                return CommandLineUtils.ExecuteCommand($"dotnet run --project {solutionDirectory}", timeout);
+                return CommandLineUtils
+                .ExecuteCommand($"{DetectOS.ConsolePromptArgumentStart} " + $"\"dotnet run --project {solutionDirectory}\"" , timeout);
             });
         }
 
@@ -23,7 +24,9 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
         {
             return Task.Run(() =>
             {
-                ExecutableResult res = CommandLineUtils.ExecuteCommand($"dotnet test {solutionDirectory}", timeout);
+                Console.WriteLine("sd:" + solutionDirectory);
+                ExecutableResult res = CommandLineUtils
+                .ExecuteCommand($"{DetectOS.ConsolePromptArgumentStart} " + @"""" + $"dotnet test {solutionDirectory}" + @"""", timeout);
                 if (!res.WasError)
                 {
                     int idx = res.RawResult.LastIndexOf("Microsoft");

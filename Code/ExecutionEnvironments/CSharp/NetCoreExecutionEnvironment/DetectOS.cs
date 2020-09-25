@@ -15,6 +15,10 @@ namespace NetCoreExecutionEnvironment
         public static string ConsolePrompt { get; private set; }
         public static string ConsolePromptArgumentStart { get; private set; }
 
+        /// <summary>
+        /// Method for registering CommandFacade for dependency injection
+        /// </summary>
+        /// <param name="services"></param>
         public static void RegisterCommandFacade(IServiceCollection services)
         {
             if (RuntimeUtils.IsWindows)

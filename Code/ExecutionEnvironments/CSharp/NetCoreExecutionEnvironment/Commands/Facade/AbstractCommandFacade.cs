@@ -63,7 +63,7 @@ namespace NetCoreExecutionEnvironment.Commands.Facade
                 }
                 catch (Exception e)
                 {
-                    throw new RunEnvironmentException(StatusCodes.Status500InternalServerError, Constants.ExceptionType.INTERNAL_SERVER_ERROR, e.Message, Constants.ExceptionInstance.FILE_SYSTEM, "Error while deleting folders");
+                    //Ignored
                 }
             });
         }
