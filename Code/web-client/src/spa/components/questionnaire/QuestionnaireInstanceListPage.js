@@ -78,7 +78,7 @@ export default function QuestionnaireinstanceListPage(props) {
                 description: it.description,
                 timer: it.timer ? parseInt(it.timer)/(1000*60) : "N/A",
                 status: it.isFinish ? "Closed" : "Open",
-                link: `${window.location.host}/questionnaireInstances/solve/${it.questionnaireInstanceUuid}`
+                link: `${window.location.host}/#/questionnaireInstances/solve/${it.questionnaireInstanceUuid}`
             }))
         setTable({...table, data:data})
     } 

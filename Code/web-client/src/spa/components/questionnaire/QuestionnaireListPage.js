@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -10,8 +11,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import QuestionnaireListTable from './QuestionnaireListTable'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
-// utils
-import history from '../navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -42,8 +41,10 @@ export default function QuestionnaireListPage() {
   const classes = useStyles()
   const { isAuthed } = React.useContext(AuthContext)
 
+  let history = useHistory()
+
   const onCreateQuestionnaireButton = () => {
-    history.push(`/createEditQuestionnaire/${undefined}`)
+    history.push(`/createQuestionnaire`)
   }
 
   return (

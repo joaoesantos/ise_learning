@@ -8,10 +8,8 @@ import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     // BUTTONS - init
-    if(!user){
-        console.log(localStorage.getItem('ISELearningLoggedUser'))
-        user = JSON.parse(localStorage.getItem('ISELearningLoggedUser'))
-    }
+    if(!user){ user = JSON.parse(localStorage.getItem('ISELearningLoggedUser')) }
+
     let createChallenge = {
         id: "createChallenge",
         onClick: () => {
@@ -156,7 +154,7 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                         }
                     }
                     componentAggregateStates.redirectObject.setter({
-                            pathname: `/listChallenges`
+                            pathname: `listChallenges`
                     })
                     return newChallengeAnswer;
                 },
@@ -202,9 +200,7 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                     response.challengeAnswers.forEach(e => {
                         yourSolution[e.answer.codeLanguage] = { value: e.answer.answerCode }
                         yourTests[e.answer.codeLanguage] = { value: e.answer.unitTests }
-                        console.log("e.answer.codeLanguage",e.answer.codeLanguage)
                     });
-                    console.log("yourSolution",yourSolution)
                     componentAggregateStates.yourSolution.setter(yourSolution)
                     componentAggregateStates.yourTests.setter(yourTests)
                     componentAggregateStates.ourSolution.setter(reduceObjectArrayToMap(response.challenge.solutions, "codeLanguage", "solutionCode", "solutionId"))

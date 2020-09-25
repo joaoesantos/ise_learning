@@ -41,7 +41,7 @@ export default function QuestionnaireListTable() {
           { title: '#', field: 'id' , width: '5%', cellStyle: {color: '#777777'} },
           { title: 'Title', field: 'title',
           render: questionnaire => 
-            <Link component={RouterLink} to={`/createEditQuestionnaire/${questionnaire.id}`} key={`${questionnaire.id}`} >
+            <Link component={RouterLink} to={`/editQuestionnaire/${questionnaire.id}`} key={`${questionnaire.id}`} >
               {`${questionnaire.title}`}
             </Link>
           },

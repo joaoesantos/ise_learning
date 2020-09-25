@@ -1,6 +1,6 @@
 // react
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 // material-ui components
 import AppBar from '@material-ui/core/AppBar'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
@@ -21,7 +21,6 @@ import { themes, ThemeContext } from '../../context/ThemeContext'
 import { AuthContext } from '../../context/AuthContext'
 // utils
 import { fetchHeaders } from '../../utils/fetchUtils'
-import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -62,6 +61,8 @@ export default function Navbar() {
   const [checked, setChecked] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
+
+  let history = useHistory()
 
   const handleOnMenu = event => {
     setAnchorEl(event.currentTarget)

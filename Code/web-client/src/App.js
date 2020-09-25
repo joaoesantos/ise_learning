@@ -1,7 +1,6 @@
 // react
 import React from 'react'
 import { HashRouter as Router } from 'react-router-dom'
-import history from './spa/components/navigation/history'
 // material-ui components
 import { makeStyles } from '@material-ui/core/styles'
 // components
@@ -30,7 +29,7 @@ export default function App() {
       <div className={classes.layout}>
         <CssBaseline />
         <AuthProvider>
-          <Router history={history}>
+          <Router>
             <Routes />
           </Router>
         </AuthProvider>

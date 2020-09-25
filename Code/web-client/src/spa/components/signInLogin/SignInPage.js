@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 // material-ui components
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -23,9 +24,6 @@ import { UserController } from '../../controllers/UserController'
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
-// utils
-import { fetchHeaders } from '../../utils/fetchUtils'
-import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,27 +39,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
     marginTop: theme.spacing(3),
-    // '& label.Mui-focused': {
-    //   color: '#be5041',
-    // },
-    // '& .MuiOutlinedInput-root': {
-    //   '& fieldset': {
-    //     borderColor: 'gray',
-    //   },
-    //   '&:hover fieldset': {
-    //     borderColor: 'black',
-    //   },
-    //   '&.Mui-focused fieldset': {
-    //     borderColor: '#e68d4c',
-    //   },
-    // },
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    // backgroundColor: "#be5041",
-    // '&:hover': {
-    //   backgroundColor: '#cf6744',
-    // },
   },
 }));
 
@@ -78,13 +58,14 @@ export default function SignUp() {
     password: '',
   })
 
+  let history = useHistory()
+
   React.useEffect(() => {
     if (actionState === ActionStates.done) {
       if(response.severity === 'success') {
         setAuth(true)
         setUser(response.json)
         localStorage.setItem('ISELearningLoggedUser', JSON.stringify(response.json))
-        fetchHeaders.append({ key: "Authorization", value: `Basic ${action.credentials}` })
         history.push("/")
       }
     }

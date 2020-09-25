@@ -1,5 +1,6 @@
 // react
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -14,8 +15,6 @@ import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { ChallengeController } from '../../controllers/challenge/ChallengeController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
-// utils
-import history from '../navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -47,6 +46,8 @@ export default function ChallengeListPage() {
   const { isAuthed } = React.useContext(AuthContext)
   const [action, setAction] = React.useState()
   const [actionState, response] = UseAction(action)
+
+  let history = useHistory()
 
   React.useEffect(() => {
     if (actionState === ActionStates.done && action.name && action.name === 'getRandomChallenge') {

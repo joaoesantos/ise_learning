@@ -45,7 +45,6 @@ export const handleFetchResponse = async (response, message) => {
             json = await response.json()
         }
     }
-    console.log("f", json)
     if(response.ok) {
         return {
           json: json,

@@ -1,8 +1,10 @@
 // react
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+// formik components
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-// material-ui/Formik components
+// material-ui
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Avatar from '@material-ui/core/Avatar'
 import { Button, LinearProgress } from '@material-ui/core'
@@ -25,7 +27,6 @@ import { UserController } from '../controllers/UserController'
 import { AuthContext } from '../context/AuthContext'
 // utils
 import { fetchHeaders } from '../utils/fetchUtils'
-import history from '../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -62,6 +63,8 @@ export default function UserProfile() {
   const [showNewPassword, setShowNewPassword] = React.useState(false)
   const [showRepeatNewPassword, setShowRepeatNewPassword] = React.useState(false)
   const [deleteAccount, setDeleteAccount] = React.useState(false)
+
+  let history = useHistory()
 
   React.useEffect(() => {
     if (response && actionState === ActionStates.done && action.name && action.name === 'updateMe') {
