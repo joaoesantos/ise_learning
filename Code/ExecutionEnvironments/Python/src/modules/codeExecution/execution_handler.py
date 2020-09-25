@@ -1,5 +1,5 @@
 import os, pathlib, glob
-from time import time_ns
+from time import time
 import uuid, json
 from subprocess import run, PIPE, CompletedProcess
 
@@ -15,9 +15,9 @@ class ExecutionHandler:
     # if script is not completed during a pre-determinated time, an timeout exception is raise and the process is killed
     def executeScript(self, script: str, timeout: float) -> (CompletedProcess, float):
         try:
-            start_time = time_ns()
+            start_time = time()
             completedProcess = run(['python', script],stdout=PIPE,stderr=PIPE,timeout=timeout)
-            end_time = time_ns()
+            end_time = time()
             return completedProcess, (end_time - start_time) * 1000
         except Exception as e:
             raise    
