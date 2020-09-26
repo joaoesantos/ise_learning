@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "12d7d60a-4a73-4e26-9c1f-43b7db4fde1b",
-		"name": "Execution Enviroments",
+		"_postman_id": "d24d5e37-e4c3-47db-841d-ec12887153d8",
+		"name": "Execution Enviroments Copy 2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -209,6 +209,40 @@
 							"host": [
 								"{{hostJavascriptExec}}"
 							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CSharp",
+			"item": [
+				{
+					"name": "Execute CSharp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"class HelloWorld  \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n{static void Main() {\\r\\n System.Console.WriteLine(\\\"Hello World from postman!\\\"); \\r\\n}\\r\\n}\",\r\n    \"unitTests\": \"using Xunit;\\r\\n  public class PrimeService_IsPrimeShould\\r\\n   { \\r\\n [Fact] \\r\\n  public void IsPrime_InputIs1_ReturnFalse() \\r\\n  { \\r\\n  Assert.False(false); \\r\\n  }\\r\\n   }  \",\r\n    \"executeTests\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.99.100:8080",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080"
 						}
 					},
 					"response": []
