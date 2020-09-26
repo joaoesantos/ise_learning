@@ -102,10 +102,10 @@ export default function ChallengeListPage() {
             </Toolbar>
             <ChallengeListTable />
           </Grid>
-          <Grid item xs={12} sm={2}>
+          {/* <Grid item xs={12} sm={2}>
             <p>Possible user information</p>
             <p>Pie-chart statistics of number of challenges completed?</p>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </>
