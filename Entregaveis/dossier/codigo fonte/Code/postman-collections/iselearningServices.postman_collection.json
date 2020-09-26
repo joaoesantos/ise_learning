@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c476d3d8-1804-4983-900b-ba4bca3063e5",
+		"_postman_id": "404f6164-984f-4e6c-ac5c-ff0aa63f70aa",
 		"name": "iselearningServices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,15 +21,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\",\n\t\"password\": \"xpto1\"\n}"
+							"raw": "{\n\t\"name\":\"Luis\",\n\t\"username\":\"lp\",\n\t\"email\":\"LuisPaulo@email.com\",\n    \"password\": 1234\n}"
 						},
 						"url": {
-							"raw": "{{hostServices}}/v0/users",
+							"raw": "{{hostServices}}/users",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users"
 							]
 						}
@@ -42,12 +41,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/users/:id",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users",
 								":id"
 							],
@@ -67,20 +65,46 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{hostServices}}/v0/users/:id",
+							"raw": "{{hostServices}}/users/:id",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
-								"v0",
 								"users",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7"
+									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates an User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Sergio\",\n\t\"id\":1,\n\t\"username\":\"sergionNew\",\n\t\"email\":\"sergio@email.com\"\n}"
+						},
+						"url": {
+							"raw": "{{hostServices}}/users",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -114,31 +138,46 @@
 					"name": "Challenge Answers",
 					"item": [
 						{
-							"name": "getChallengesAnswersByUser",
+							"name": "getChallengeAnswersByChallengeIdAndUserId",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user5",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user5",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{hostServices}}/v0/challenges/:challengeId/answers/users/:userId",
+									"raw": "{{hostServices}}/v0/challengeAnswers/challenges/:challengeId/users/:userId",
 									"host": [
 										"{{hostServices}}"
 									],
 									"path": [
 										"v0",
+										"challengeAnswers",
 										"challenges",
 										":challengeId",
-										"answers",
 										"users",
 										":userId"
 									],
 									"variable": [
 										{
 											"key": "challengeId",
-											"value": "2"
+											"value": "4"
 										},
 										{
 											"key": "userId",
-											"value": "2"
+											"value": "5"
 										}
 									]
 								}
@@ -148,11 +187,26 @@
 						{
 							"name": "createChallengesAnswers",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 5,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"python\",\r\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\r\n        \"unitTests\": \"is was supose to be a test\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -173,13 +227,28 @@
 							"response": []
 						},
 						{
-							"name": "updateChallengesAnswers Copy",
+							"name": "updateChallengesAnswers",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"challengeId\": 8,\r\n    \"userId\": 1,\r\n    \"answer\": {\r\n        \"id\": 21,\r\n        \"codeLanguage\": \"Python\",\r\n        \"answerCode\": \"print(\\\"Helloeryherthrdtjrtheryjrtyjetry World!\\\")\",\r\n        \"unitTests\": \"TRUE\",\r\n        \"isCorrect\": false\r\n    }\r\n}",
+									"raw": "{\r\n    \"challengeId\": 5,\r\n    \"answer\": {\r\n        \"codeLanguage\": \"python\",\r\n        \"answerCode\": \"print(\\\"Hello update from Postman!\\\")\",\r\n        \"unitTests\": \"this was supose to be a test\"\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -199,7 +268,7 @@
 									"variable": [
 										{
 											"key": "challengeAnswerId",
-											"value": "14"
+											"value": "11"
 										}
 									]
 								}
@@ -207,7 +276,7 @@
 							"response": []
 						},
 						{
-							"name": "deleteChallengesAnswers Copy Copy",
+							"name": "deleteChallengesAnswers",
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -245,7 +314,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "tags",
+					"name": "Tags",
 					"item": [
 						{
 							"name": "getChallengeTagByChallengeId",
@@ -375,6 +444,48 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "createChallenge",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"challengeTitle\": \"Challenge created on postman\",\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getChallenges",
 					"request": {
 						"method": "GET",
@@ -399,33 +510,6 @@
 					"response": []
 				},
 				{
-					"name": "createChallenge",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostServices}}/v0/challenges",
-							"host": [
-								"{{hostServices}}"
-							],
-							"path": [
-								"v0",
-								"challenges"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "getChallengeById",
 					"request": {
 						"method": "GET",
@@ -443,7 +527,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "1"
+									"value": "5"
 								}
 							]
 						}
@@ -483,13 +567,73 @@
 					"response": []
 				},
 				{
+					"name": "getChallengesByQuestionnaireId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/questionnaires/:questionnaireId",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"questionnaires",
+								":questionnaireId"
+							],
+							"variable": [
+								{
+									"key": "questionnaireId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRandomChallenge",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/challenges/random",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"challenges",
+								"random"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "editChallenge",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"creatorId\": 1,\r\n    \"challengeText\": \"Type on the console the sewgreaeraewraerhaerhearhaerhaerhearhertence <Hello World_1!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 31,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"Java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World_1!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 32,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"JavaScript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World_1!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"challengeTitle\": \"Challenge updated on postman\",\r\n    \"challengeText\": \"Type on the console the <Hello World!>\",\r\n    \"isPrivate\": false,\r\n    \"solutions\": [\r\n        {\r\n        \t\"solutionId\": 28,\r\n            \"challengeCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"codeLanguage\": \"java\",\r\n            \"solutionCode\": \"public class Main {\\n\\t\\t\\tpublic static void main(String[] args) {\\n\\t\\t\\t\\tSystem.out.println(\\\"Hello World!\\\");\\n\\t\\t\\t}\\n\\t\\t}\",\r\n            \"unitTests\": \"false\"\r\n        },\r\n        {\r\n        \t\"solutionId\": 29,\r\n            \"challengeCode\": \"function main() {\\n\\t\\t\\t// WRITE YOUR CODE HERE\\n\\t\\t}());\",\r\n            \"codeLanguage\": \"javascript\",\r\n            \"solutionCode\": \"function main() {\\n\\t\\t\\tconsole.log(\\\"Hello World!\\\");\\n\\t\\t}());\",\r\n            \"unitTests\": \"true\"\r\n        },\r\n        {\r\n            \"challengeCode\": \"WRITE YOUR CODE HERE\",\r\n            \"codeLanguage\": \"python\",\r\n            \"solutionCode\": \"print(\\\"Hello World!\\\")\",\r\n            \"unitTests\": \"true\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -509,7 +653,7 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "21"
+									"value": "10"
 								}
 							]
 						}
@@ -519,6 +663,21 @@
 				{
 					"name": "deleteChallenge",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -543,8 +702,795 @@
 							"variable": [
 								{
 									"key": "challengeId",
-									"value": "21"
+									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Questionnaires",
+			"item": [
+				{
+					"name": "Questionnaire",
+					"item": [
+						{
+							"name": "createQuestionnaire",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"description\" : \"questionnaire created on postman\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createQuestionnaireWithChallenges",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\"\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										"withChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllUserQuestionnaires",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/users",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireWithChallengesById",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId",
+										"withChallenges"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireById",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"description\" : \"questionnaire updated on postman\",\n\t\"timer\" : 3600000\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireWithChallengesById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaire\": {\r\n        \"description\" : \"questionnaire created on postman\"\r\n    },\r\n        \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId/withChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId",
+										"withChallenges"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire Instance",
+					"item": [
+						{
+							"name": "createQuestionnaireInstance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"questionnaireId\" : 1,\n\t\"description\" : \"questionnaire instance created on postman\",\n\t\"timer\" : 1800000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireInstanceById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireInstanceByUuid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/solve/:questionnaireInstanceUuid",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										"solve",
+										":questionnaireInstanceUuid"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceUuid",
+											"value": "7eecc8ed-7cfb-4707-ac39-3ef02a852223"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireInstancesByQuestionnaireId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/questionnaires/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										"questionnaires",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireInstance",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"questionnaireId\": 1,\n\t\"description\" : \"questionnaire instance updated on postman\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireInstanceById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire Answer",
+					"item": [
+						{
+							"name": "createQuestionnaireAnswer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"questionnaireId\": 1,\n    \"questionnaireInstanceId\": 1,\n    \"challengeId\": 1,\n    \"answer\": {\n        \"codeLanguage\": \"python\",\n        \"answerCode\": \"print(\\\"Hello World!\\\")\",\n        \"unitTests\": \"TRUE\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getQuestionnaireAnswersById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireAnswersByQuestionnaireInstanceId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/questionnaireInstances/:questionnaireInstanceId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										"questionnaireInstances",
+										":questionnaireInstanceId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionnaireAnswersByQuestionnaireInstanceUuid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/questionnaireInstances/:questionnaireInstanceUuid",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										"questionnaireInstances",
+										":questionnaireInstanceUuid"
+									],
+									"variable": [
+										{
+											"key": "questionnaireInstanceUuid",
+											"value": "7eecc8ed-7cfb-4707-ac39-3ef02a852223"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateQuestionnaireAnswerById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"questionnaireId\": 1,\n    \"questionnaireInstanceId\": 1,\n    \"challengeId\": 1,\n    \"answer\": {\n        \"codeLanguage\": \"python\",\n        \"answerCode\": \"print(\\\"Updated on postman!\\\")\",\n        \"unitTests\": \"TRUE\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteQuestionnaireAnswerById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireAnswers/:questionnaireAnswerId?=",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireAnswers",
+										":questionnaireAnswerId"
+									],
+									"query": [
+										{
+											"key": null,
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "questionnaireAnswerId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Questionnaire-Challenges",
+					"item": [
+						{
+							"name": "getQuestionnaireChallengeByChallengeIdAndQuestionnaireId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges/:questionnaireId/:challengeId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges",
+										":questionnaireId",
+										":challengeId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "2"
+										},
+										{
+											"key": "challengeId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addChallengesToQuestionnaire",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaireId\": 4,\r\n    \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        },\r\n        {\r\n            \"challengeId\": 3,\r\n            \"languageFilter\": \"javascript,python\"\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateChallengesOnQuestionnaire",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionnaireId\": 4,\r\n    \"challenges\": [\r\n        {\r\n            \"challengeId\": 1,\r\n            \"languageFilter\": \"java\"\r\n        },\r\n        {\r\n            \"challengeId\": 2,\r\n            \"languageFilter\": \"java,kotlin\"\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeAllChallengesFromQuestionnaire",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{hostServices}}/v0/questionnaireChallenges/:questionnaireId",
+									"host": [
+										"{{hostServices}}"
+									],
+									"path": [
+										"v0",
+										"questionnaireChallenges",
+										":questionnaireId"
+									],
+									"variable": [
+										{
+											"key": "questionnaireId",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "getAllTags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/tags",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Languages",
+			"item": [
+				{
+					"name": "Code languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0/codeLanguages",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"codeLanguages"
 							]
 						}
 					},
@@ -586,26 +1532,87 @@
 						}
 					},
 					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "tags",
-			"item": [
+				},
 				{
-					"name": "getAllTags",
+					"name": "Execute Python code < print Hello World! > without unitTests",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"python\",\n    \"code\": \"print(\\\"Hello World!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
 						"url": {
-							"raw": "{{hostServices}}/v0/tags",
+							"raw": "{{hostServices}}/v0/execute",
 							"host": [
 								"{{hostServices}}"
 							],
 							"path": [
 								"v0",
-								"tags"
+								"execute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute Python code < print Hello World!> with infinite cycle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"python\",\n    \"code\": \"while True:\\r\\n    print(\\\"Hello Worlds!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostServices}}/v0/execute",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "getHandlerMappingMethods",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "{{hostServices}}/v0",
+							"host": [
+								"{{hostServices}}"
+							],
+							"path": [
+								"v0"
 							]
 						}
 					},

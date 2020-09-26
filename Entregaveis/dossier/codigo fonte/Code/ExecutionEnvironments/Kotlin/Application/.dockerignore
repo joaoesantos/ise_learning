@@ -1,0 +1,6 @@
+Dockerfile
+Application.iml
+KotlinExecutionEnvironment.iml
+.dockerignore
+target/
+.idea/

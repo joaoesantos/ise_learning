@@ -2,10 +2,12 @@ class ExecutionResult {
 
     #rawResult = "";
     #wasError = false;
+    #executionTime = 0;
 
-    constructor(rawResult, wasError) {
+    constructor(rawResult, wasError, executionTime) {
         this.#rawResult = rawResult;
-        this.#wasError = wasError
+        this.#wasError = wasError;
+        this.#executionTime = executionTime;
     }
 
     get rawResult() {
@@ -16,10 +18,15 @@ class ExecutionResult {
         return this.#wasError;
     }
 
+    get executionTime() {
+        return this.#executionTime;
+    }
+
     toJson = () => {
         return {
             rawResult: this.#rawResult,
-            wasError: this.#wasError
+            wasError: this.#wasError,
+            executionTime: this.#executionTime
         }
     }
 }

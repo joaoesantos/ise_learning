@@ -1,7 +1,5 @@
-//export const apiBaseUrl = "http://localhost:3000";
-export const apiBaseUrl = "http://localhost:8080";
-export const defaultLanguage = 'java';
-export const CodeMirrorOptions = new Map();
+export const defaultLanguage = 'java'
+export const CodeMirrorOptions = new Map()
 
 // JAVA
 CodeMirrorOptions.set('java',{
@@ -42,14 +40,66 @@ value:
 // PYTHON
 CodeMirrorOptions.set('python',{
 mode:'python',
-value:`print "Hello World!"`
+value:`print("Hello World!")`
 });
 
-export const apiVersion = "v0";
+export const defaultUnitTests = {
+    java: "import org.junit.Assert;\r\nimport org.junit.Test;\r\npublic class unitTests {\r\n\t@Test public void TestCase() {\r\n\t\tAssert.assertTrue(true);\r\n\t}\r\n}",
+    kotlin: "import org.junit.Assert \r\nimport org.junit.Test \r\nclass UnitTests {\r\n\t@Test fun foo() {\r\n\t\tAssert.assertTrue(true)\r\n\t}\r\n}",
+    javascript: "var assert = require('assert');describe('Teste1', function() {describe('#firstTest()', function() {it('should return return true', function() {assert(true);});});});",
+    csharp: "using Xunit;\r\n  public class TestCases\r\n   { \r\n [Fact] \r\n  public void testFoo() \r\n  { \r\n  Assert.False(false); \r\n  }\r\n   }",
+    python: "import unittest\r\n\r\ndef foo():\r\n    return  True\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
+}
+
+export const API_VERSION = "v0"
+
+export const languageLabelMappings = {
+    java: "Java",
+    kotlin: "Kotlin",
+    javascript: "JavaScript",
+    csharp: "C#",
+    python: "Python"
+}
+
+export const feloniousStatusCodes = [
+    //403,    // Forbidden
+    404,    // Not Found
+    500     // Internal Server Error
+]
 
 export const apiUrlTemplates = {
-    login: () => `/${apiVersion}/login`,
-    logout: () => `/${apiVersion}/logout`,
-    myUserOperations: () => `/${apiVersion}/users/me`,
-    myCredentials: () => `/${apiVersion}/users/me/password`,
+    // USER
+    login: () => `/${API_VERSION}/login`,
+    createUser: ()=> `/${API_VERSION}/users`,
+    myUserOperations: () => `/${API_VERSION}/users/me`,
+    myCredentials: () => `/${API_VERSION}/users/me/password`,
+    // RUN CODE
+    executeCode: () => `/${API_VERSION}/execute`,
+    // LANGUAGES
+    languages: () => `/${API_VERSION}/codeLanguages`,
+    // CHALLENGES
+    challenge: (challengeId) => `/${API_VERSION}/challenges/${challengeId}`,
+    challenges: () => `/${API_VERSION}/challenges`,
+    challengeAnswerByChallengeIdAndUserId: (challengeId, userId) => `/${API_VERSION}/challengeAnswers/challenges/${challengeId}/users/${userId}`,
+    challengeAnswer: (challengeAnswerId) => `/${API_VERSION}/challengeAnswers/${challengeAnswerId}`,
+    challengeAnswers: () => `/${API_VERSION}/challengeAnswers`,
+    getAllChallenges: () => `/${API_VERSION}/challenges`,
+    getRandomChallenge: () => `/${API_VERSION}/challenges/random`,
+    // QUESTIONNAIRES
+    createQuestionnaire: () => `/${API_VERSION}/questionnaires/withChallenges`,
+    getQuestionnaireWithChallenges: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
+    getQuestionnaireById: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    getAllUserQuestionnaires: () => `/${API_VERSION}/questionnaires/users`,
+    saveQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}/withChallenges`,
+    deleteQuestionnaire: (questionnaireId) => `/${API_VERSION}/questionnaires/${questionnaireId}`,
+    // QUESTIONNAIRE INSTANCES
+    createQuestionnaireInstance: () => `/${API_VERSION}/questionnaireInstances`,
+    getQuestionnaireByUuid: (uuid) => `/${API_VERSION}/questionnaireInstances/solve/${uuid}`,
+    getAllQuestionnaireInstancesByQuestionnaireId: (questionnaireId) => `/${API_VERSION}/questionnaireInstances/questionnaires/${questionnaireId}`,
+    updateQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
+    deleteQuestionnaireInstance: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireInstances/${questionnaireInstanceId}`,
+    // QUESTIONNAIRE ANSWERS
+    submitQuestionnaireAnswer: () => `/${API_VERSION}/questionnaireAnswers/submit`,
+    getAllQuestionnaireAnswersFromQuestionnaireInstanceId: (questionnaireInstanceId) => `/${API_VERSION}/questionnaireAnswers/questionnaireInstances/${questionnaireInstanceId}`,   
+
 }

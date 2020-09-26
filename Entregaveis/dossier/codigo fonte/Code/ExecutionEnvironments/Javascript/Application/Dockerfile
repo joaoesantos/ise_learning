@@ -3,4 +3,5 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install
 COPY . /app
-CMD ["npm", "start"]
+RUN chmod +x startup.sh 
+ENTRYPOINT [ "./startup.sh" ]

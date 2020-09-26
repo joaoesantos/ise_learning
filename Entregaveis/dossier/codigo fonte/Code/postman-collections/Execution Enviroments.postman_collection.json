@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "21973be1-2b3c-4dfe-8f99-3027bdab44b1",
-		"name": "Execution Enviroments",
+		"_postman_id": "d24d5e37-e4c3-47db-841d-ec12887153d8",
+		"name": "Execution Enviroments Copy 2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -72,7 +72,123 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "nodeJs",
+			"name": "Python",
+			"item": [
+				{
+					"name": "Python code < print Hello World! > without unitTests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"print(\\\"Hello World!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python code < print Hello World!> with infinite cycle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"while True:\\r\\n    print(\\\"Hello Worlds!\\\")\",\n    \"unitTests\": \"\",\n    \"executeTests\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python toLowerCase with unitTests -> all test passed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"def toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(toLowerCase(\\\"true\\\"), \\\"true\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"True\\\"), \\\"true\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"fAlSe\\\"), \\\"false\\\")\\r\\n        self.assertEqual(toLowerCase(\\\"false\\\"), \\\"false\\\")\\r\\n\\r\\nif __name__ == '__main__':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Python toLowerCase with unitTests -> test falied",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"def toLowerCase(string: str) -> str:\\r\\n    return string\",\n    \"unitTests\": \"import unittest\\r\\n\\r\\ndef toLowerCase(string: str) -> str:\\r\\n    return ''.join([chr(ord(x)+32) if 65<=ord(x)<=90 else x for x in string])\\r\\n\\r\\n\\r\\nclass TestChallenge(unittest.TestCase):\\r\\n    def test(self):\\r\\n        self.assertEqual(toLowerCase(\\\"true\\\"), True)\\r\\n        self.assertEqual(toLowerCase(\\\"True\\\"), False)\\r\\n        self.assertEqual(toLowerCase(\\\"fAlSe\\\"), False)\\r\\n        self.assertEqual(toLowerCase(\\\"false\\\"), True)\\r\\n\\r\\nif __name__ == '__main__':\\r\\n    unittest.main()\",\n    \"executeTests\": true\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{hostPythonExec}}",
+							"host": [
+								"{{hostPythonExec}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "NodeJs",
 			"item": [
 				{
 					"name": "Execute NodeJs Code",
@@ -81,7 +197,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"code\":\"function getNthFib(n) {return n};exports.getNthFib = getNthFib;\",\n\t\"executeTests\": \"true\",\n\t\"unitTests\": \"var assert = require('assert');describe('Teste1', function() {describe('#getNthFib()', function() {it('should return 1 when the value is not present', function() {assert.equal(getNthFib(1), 1);});});});\"\n}",
+							"raw": "{\n\t\"code\":\"function getNthFib(n) {return n};exports.getNthFib = getNthFib;\",\n\t\"executeTests\": true,\n\t\"unitTests\": \"var assert = require('assert');describe('Teste1', function() {describe('#getNthFib()', function() {it('should return 1 when the value is not present', function() {assert.equal(getNthFib(1), 1);});});});\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,6 +209,40 @@
 							"host": [
 								"{{hostJavascriptExec}}"
 							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CSharp",
+			"item": [
+				{
+					"name": "Execute CSharp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"class HelloWorld  \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n{static void Main() {\\r\\n System.Console.WriteLine(\\\"Hello World from postman!\\\"); \\r\\n}\\r\\n}\",\r\n    \"unitTests\": \"using Xunit;\\r\\n  public class PrimeService_IsPrimeShould\\r\\n   { \\r\\n [Fact] \\r\\n  public void IsPrime_InputIs1_ReturnFalse() \\r\\n  { \\r\\n  Assert.False(false); \\r\\n  }\\r\\n   }  \",\r\n    \"executeTests\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.99.100:8080",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"99",
+								"100"
+							],
+							"port": "8080"
 						}
 					},
 					"response": []

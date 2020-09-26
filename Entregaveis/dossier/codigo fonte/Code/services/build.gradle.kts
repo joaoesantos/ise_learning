@@ -27,10 +27,12 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.postgresql:postgresql")
+	implementation("org.modelmapper:modelmapper:2.3.7")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.projectreactor:reactor-spring:1.0.1.RELEASE")
 	//testImplementation ("org.mockito:mockito-core:3.3.3")
 	testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
