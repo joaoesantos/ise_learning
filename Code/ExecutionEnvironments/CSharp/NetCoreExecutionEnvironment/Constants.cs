@@ -11,9 +11,11 @@ namespace NetCoreExecutionEnvironment
     {
         public static string BaseCodeFile = "Program.cs";
         public static string UnitTestFile = "UnitTest1.cs";
+        public static string LibraryFile = "Class1.cs";
         public static string SolutionBaseFolder = "Exercise_";
         public static string SolutionName = "RunCode";
         public static string CodeProjectName = "App";
+        public static string LibraryProjectName = "Library";
         public static string UnitTestsProjectName = "UnitTests";
         public static string TemplateFolder = "TemplateFolder";
 

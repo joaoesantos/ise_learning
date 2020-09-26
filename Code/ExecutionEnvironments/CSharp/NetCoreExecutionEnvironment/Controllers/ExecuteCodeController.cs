@@ -48,12 +48,15 @@ namespace NetCoreExecutionEnvironment.Controllers
             {
                 string solutionPath = await CommandFacade.CopyBaseSolution(Path.Combine(di.FullName, solutionFolder), true);
                 string codeFilePath = Path.Combine(solutionPath, Constants.CodeProjectName, Constants.BaseCodeFile);
+                
                 if (!value.executeTests)
                 {
                     await DocumentManager.DocumentManager.ReplaceFileContents(codeFilePath, cleanedContent);
                     result = await CommandFacade.RunCode(Path.Combine(solutionPath, Constants.CodeProjectName), timeout);
                 } else
                 {
+                    string libraryFilePath = Path.Combine(solutionPath, Constants.LibraryProjectName, Constants.LibraryFile);
+                    await DocumentManager.DocumentManager.ReplaceFileContents(libraryFilePath, cleanedContent);
                     string testFilePath = Path.Combine(solutionPath, Constants.UnitTestsProjectName, Constants.UnitTestFile);
                     await DocumentManager.DocumentManager.ReplaceFileContents(testFilePath, testContents);
                     result = await CommandFacade.RunTests(Path.Combine(solutionPath, Constants.UnitTestsProjectName), timeout);
