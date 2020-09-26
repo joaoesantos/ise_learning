@@ -189,6 +189,15 @@ export default withRouter(function ChallengePage(props) {
         }
     }
 
+    let codeToRunOnOurTest = () => {
+        let key = props.location.configKey ? props.location.configKey : props.configKey;
+        if (key === "newChallenge") {
+            return ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "";
+        } else if (key == "challenge") {
+            return yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "";
+        }
+    }
+
     let yourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
         yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",
         "", false, "Your Solution")
@@ -203,15 +212,6 @@ export default withRouter(function ChallengePage(props) {
         codeToRunOnOurTest(), 
         ourTests[codeLanguage] ? ourTests[codeLanguage].value : "",
         true, "Our Tests")
-
-    let codeToRunOnOurTest = () => {
-        let key = props.location.configKey ? props.location.configKey : props.configKey;
-        if (key === "newChallenge") {
-            return ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "";
-        } else if (key == "challenge") {
-            return yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "";
-        }
-    }
 
     let determineDefaultTextForEditableEditors = (map, type) => {
         if(map[codeLanguage]) {

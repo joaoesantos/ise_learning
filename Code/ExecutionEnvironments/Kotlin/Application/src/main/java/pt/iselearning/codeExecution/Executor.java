@@ -32,7 +32,7 @@ public class Executor implements AutoCloseable {
     private final Path CODE_OUTPUT = Paths.get(".", "codeOutput", UUID.randomUUID().toString());
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
-        this.code = CodeParser.removeEndLinesAndDuplicateSpaces(code);
+        this.code = code;
         if(testCode != null) {
             this.testCode = CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
             this.testClassName = CodeParser.extractClassName(this.testCode);
