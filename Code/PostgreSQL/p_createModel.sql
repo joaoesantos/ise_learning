@@ -159,8 +159,9 @@ BEGIN
 		FOREIGN KEY (questionnaire_instance_id) 
 			REFERENCES questionnaire_instance (questionnaire_instance_id) ON DELETE CASCADE,
 		FOREIGN KEY (qc_id) 
-			REFERENCES qc (id) ON DELETE CASCADE
-		UNIQUE(qc_id, questionnaire_instance_id)
+			REFERENCES qc (id) ON DELETE CASCADE,
+		--
+		UNIQUE(qc_id,questionnaire_instance_id)
 	);
 	
 	CREATE OR REPLACE VIEW questionnaire_instances_questionnaire AS
