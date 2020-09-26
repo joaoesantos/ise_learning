@@ -1,6 +1,6 @@
 // react
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 // material-ui components
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -35,6 +35,7 @@ import { ThemeContext } from '../../context/ThemeContext'
 import { CodeMirrorOptions, defaultUnitTests } from '../../clientSideConfig'
 
 import blue from '@material-ui/core/colors/blue'
+import { act } from 'react-dom/test-utils'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -137,6 +138,7 @@ export default function QuestionnairePage() {
     const [activeChallenge, setActiveChallenge] = React.useState()
     const [runTests, setRunTests] = React.useState(false)
     const [textArea, setTextArea] = React.useState({ value: '', toUpdate: false })
+    let history = useHistory();
 
     const { uuid } = useParams()
 
@@ -152,7 +154,7 @@ export default function QuestionnairePage() {
                 setTextArea({ value: response.json, toUpdate: true })
             }
         // React.state evaluation to set questionnaire
-        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.severity === "success") {
+        } else if (action && action.name && action.name === "getQuestionnaireByUuid" && actionState === ActionStates.done && response.severity === "success")  {
             const initChallenge = response.json.challenges[0]
             const initialLanguage = response.json.challenges[0].answer.codeLanguage || initChallenge.languages[0]
             initChallenge.answer.codeLanguage = initialLanguage
@@ -223,22 +225,6 @@ export default function QuestionnairePage() {
             setRunState('finished');
         }
     }
-
-    // const onRunCode = async () => {
-    //     if (runState !== 'running') {
-    //         setRunState('running')
-    //         setAction({
-    //             function: RunCodeController.execute,
-    //             args: [{
-    //                 language: codeLanguage,
-    //                 code: activeChallenge.answer.answerCode,
-    //                 unitTests: unitTests,
-    //                 executeTests: runTests
-    //             }],
-    //             name: 'runcode'
-    //         })
-    //     }
-    // }
 
     const onClearConsole = () => {
         if (runState !== 'notRunning') {
@@ -328,7 +314,7 @@ export default function QuestionnairePage() {
         setAction({
             function: QuestionnairePageController.submitQuestionnaire,
             args: [questionnaire],
-            render: false
+            redirect: true
         })
     }
 
@@ -336,13 +322,11 @@ export default function QuestionnairePage() {
 
     const languageOptions = () => {
         return activeChallenge.languages.map((l, index) =>
-        <option key={index} value={l}>{l.toLowerCase()}</option>
-        )
+        <option key={index} value={l}>{l.toLowerCase()}</option>)
     }
 
     const renderTimer = () => {
-        return (
-            <div className={classes.questionnaireToolbar}>
+        return (<div className={classes.questionnaireToolbar}>
                 <div className={classes.questionnaireToolbarElement}>
                     <Button className={classes.button}
                         id="completeQuestionnaire"
@@ -369,13 +353,11 @@ export default function QuestionnairePage() {
                     </div>
                 </>
                 }
-            </div>
-        )
+            </div>)
     }
 
     const getChallengeContent = (step) => {
-        return (
-            <>
+        return (<>
                 <Container className={classes.container} maxWidth={false}>
                     <Grid container spacing={2}>
                         <Grid container spacing={2} >
@@ -466,14 +448,11 @@ export default function QuestionnairePage() {
                         </Grid>
                     </Grid>
                 </Container>
-            </>
-        )
+            </>)
     }
 
     const renderQuestionnairePage = () => {
-        return(
-            <>
-                <main className={classes.layout}>
+        return(<><main className={classes.layout}>
                     <Paper className={classes.paper}>
                         <>
                             {renderTimer()}
@@ -517,30 +496,35 @@ export default function QuestionnairePage() {
                         </>
                     </Paper>
                 </main>
-            </>
-        )
+            </>)
+    }
+
+    const redirect = function(action) {
+        if(action && action.redirect) {
+             setInterval(() => history.push('/'), 1000);
+         }
     }
 
     if(actionState === ActionStates.clear) {
-        return <CircularProgress />
+        return (<CircularProgress />)
     } else if(questionnaire) {
         if(actionState === ActionStates.done && response.severity === "success") {
-            return(
-                <>
+            return(<>
+                    {redirect(action)}
                     {actionState === ActionStates.done && response && response.message &&
                         <CustomizedSnackbars message={response.message} severity={response.severity} />}
                     {renderQuestionnairePage()}
-                </>
-            )
+                </>)
         } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
-            return <DefaultErrorMessage message={ response.message } />
+            return (<DefaultErrorMessage message={ response.message } />)
+        }else{
+            return null
         }
     } else if(actionState === ActionStates.done && response.severity === "error" && response.message) {
-        return <DefaultErrorMessage message={ response.message } />
+        return (<DefaultErrorMessage message={ response.message } />)
     } else if(actionState === ActionStates.inProgress) {
-        return <CircularProgress />
+        return (<CircularProgress />)
     } else {
-        return <DefaultErrorMessage message={"404 | Not Found"} />
+        return (<DefaultErrorMessage message={"404 | Not Found"} />)
     }
-
 }
