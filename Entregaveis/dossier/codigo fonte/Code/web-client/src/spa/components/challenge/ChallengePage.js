@@ -189,6 +189,15 @@ export default withRouter(function ChallengePage(props) {
         }
     }
 
+    let codeToRunOnOurTest = () => {
+        let key = props.location.configKey ? props.location.configKey : props.configKey;
+        if (key === "newChallenge") {
+            return ourSolution[codeLanguage] ? ourSolution[codeLanguage].value : "";
+        } else if (key == "challenge") {
+            return yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "";
+        }
+    }
+
     let yourSolutionRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
         yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "",
         "", false, "Your Solution")
@@ -200,7 +209,7 @@ export default withRouter(function ChallengePage(props) {
         yourTests[codeLanguage] ? yourTests[codeLanguage].value : "",
         true, "Your Tests")
     let ourTestsRunCodeAction = genericRunCodeAction(setAction, codeLanguage,
-        yourSolution[codeLanguage] ? yourSolution[codeLanguage].value : "", 
+        codeToRunOnOurTest(), 
         ourTests[codeLanguage] ? ourTests[codeLanguage].value : "",
         true, "Our Tests")
 

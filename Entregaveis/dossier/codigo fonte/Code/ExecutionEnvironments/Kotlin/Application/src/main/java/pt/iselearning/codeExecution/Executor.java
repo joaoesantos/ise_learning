@@ -32,15 +32,15 @@ public class Executor implements AutoCloseable {
     private final Path CODE_OUTPUT = Paths.get(".", "codeOutput", UUID.randomUUID().toString());
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
-        this.code = CodeParser.removeEndLinesAndDuplicateSpaces(code);
+        this.code = code;
         if(testCode != null) {
-            this.testCode = CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
+            this.testCode = testCode;
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
                 throw new MissingClassException(
-                        "MissingPublicClass",
-                        "No public class name on unit tests",
-                        "Cannot parse public class name from unit test code.",
+                        "MissingClass",
+                        "No class name on unit tests",
+                        "Cannot parse class name from unit test code.",
                         "/execute/kotlin/tests/compile/publicClass"
                 );
             }

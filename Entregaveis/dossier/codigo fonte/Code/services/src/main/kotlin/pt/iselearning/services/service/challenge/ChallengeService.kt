@@ -48,7 +48,7 @@ class ChallengeService (
     fun createChallenge(@Valid challengeModel: ChallengeModel, loggedUser: User): Challenge {
         challengeModel.solutions.forEach {
             val executableResult = executionEnvironmentsService.execute(
-                    ExecutableModel(it.codeLanguage,it.challengeCode,it.unitTests,true)
+                    ExecutableModel(it.codeLanguage,it.solutionCode,it.unitTests,true)
             )
             checkIfUnitTestsPassed(executableResult)
 
