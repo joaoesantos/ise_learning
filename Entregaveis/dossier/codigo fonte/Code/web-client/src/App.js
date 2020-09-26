@@ -1,51 +1,39 @@
 // react
-import React from 'react';
-import { HashRouter as Router, Switch, Route} from 'react-router-dom';
+import React from 'react'
+import { HashRouter as Router } from 'react-router-dom'
 // material-ui components
-import { makeStyles } from '@material-ui/core/styles';
-// page components
-import Navbar from './spa/components/navigation/Navbar.js'
-import SignIn from './spa/components/signInLogin/SignInPage.js';
-import Login from './spa/components/signInLogin/LoginPage.js';
-import Home from './spa/components/home/HomePage.js';
-import Challenge from './spa/components/challenge/ChallengePage.js';
-import Questionnaire from './spa/components/questionnaire/QuestionnairePage.js';
-import RunCode from './spa/components/runCode/RunCodePage.js';
-import Footer from './spa/components/footer/Footer.js';
-import UserProfile from './spa/components/UserProfile';
+import { makeStyles } from '@material-ui/core/styles'
+// components
+import Routes from './spa/components/navigation/Routes'
+// context
+import { AuthProvider } from './spa/context/AuthContext'
+import { ThemeProvider } from './spa/context/ThemeContext'
 // css normalization
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@material-ui/core/CssBaseline'
+import 'react-reflex/styles.css'
+import './spa/css/iselearning.css'
+import './spa/css/wickedcss.min.css'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
     minWidth: 570,
+    height: "100%",
+    position: "relative"
   },
 }));
 
-function App() {
-
-  const [isAuthed, setAuth] = React.useState(false);
-
+export default function App() {
   const classes = useStyles();
   return (
-    <Router>
+    <ThemeProvider>
       <div className={classes.layout}>
         <CssBaseline />
-        <Navbar isAuthed={isAuthed} setAuth={setAuth}/>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" render={() => <Login isAuthed={isAuthed} setAuth={setAuth} />} />
-          <Route path="/signIn" render={() => <SignIn isAuthed={isAuthed} setAuth={setAuth} />} />
-          <Route path="/challenges" render={() => <Challenge isAuthed={isAuthed} />} />
-          <Route path="/questionnaires" render={() => <Questionnaire isAuthed={isAuthed} />} />
-          <Route path="/runCode" component={RunCode} />
-          <Route exact path="/profile" render={() => <UserProfile isAuthed={isAuthed} />} />
-        </Switch>
-        <Footer />
+        <AuthProvider>
+          <Router>
+            <Routes />
+          </Router>
+        </AuthProvider>
       </div>
-    </Router>
-  );
+    </ThemeProvider>
+  )
 }
-
-export default App;
-

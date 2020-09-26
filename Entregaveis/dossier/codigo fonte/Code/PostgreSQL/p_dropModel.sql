@@ -11,10 +11,10 @@ BEGIN
 	SET search_path TO ise_learning,public;
 	DROP TABLE challenge_solution, challenge_answer, questionnaire_answer, answer;
 	DROP TABLE qc, ct; -- MANY TO MANY
-	DROP TABLE challenge, questionnaire;
+	DROP TABLE challenge, questionnaire_instance, questionnaire;
+	DROP VIEW questionnaire_instances_questionnaire;
 	DROP TABLE app_user;
 	DROP TABLE tag;
-	DROP TABLE runcode;
 	DROP TABLE code_language;
     COMMIT;
 END;

@@ -1,30 +1,30 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 // material-ui components
-import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 // IS E-Learning images
-import mainImage from '../../images/ISELearning.png';
-import scriptIcon from '../../images/icons/color/scriptYlw.png'
-// cards components
-import BusinessCard from './BusinessCard.js';
-import MotivationCard from './MotivationCard.js';
-import ChallengesCard from './ChallengesCard.js';
+import mainImage from '../../images/ISELearning.png'
+import scriptIcon from '../../images/icons/services/color/scriptYlw.png'
+// custom components
+import BusinessCard from './BusinessCard.js'
+import MotivationCard from './MotivationCard.js'
+import ChallengesCard from './ChallengesCard.js'
 import QuestionnairesCard from './QuestionnairesCard.js'
-import CodeLanguagesCard from './CodeLanguagesCard.js';
-import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js';
-//import OpenSourceCard from './OpenSourceCard.js';
-import '../../images/wickedcss.min.css';
+import CodeLanguagesCard from './CodeLanguagesCard.js'
+import CodeExecutionEnvironmentsCard from './CodeExecutionEnvironmentsCard.js'
+import Footer from '../footer/Footer.js'
+// import OpenSourceCard from './OpenSourceCard.js';
+
 
 const useStyles = makeStyles((theme) => ({
   layout: {
     flexGrow: 1,
-    background: '#ffffff',
     textAlign: 'center',
   },
   mainLogoGrid: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   mainContainer: {
     maxWidth: '95%',
   },
-  mainGridContainer: {
+  mainGridContainer: {  
     maxWidth: '75%',
     padding: theme.spacing(2),
   },
@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
   },
   textTitle: {
     paddingBottom: theme.spacing(2),
-    color:'#be5041',
   },
   textContent: {
     fontSize:15,
@@ -65,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function HomePage() {
-  const classes = useStyles();
 
+  const classes = useStyles()
   const motivationRef = React.useRef(null)
   const challQuestRef = React.useRef(null)
   const langEnvRef = React.useRef(null)
@@ -75,23 +74,22 @@ export default function HomePage() {
 
   return (
     <div className={classes.layout} >
-        <Grid 
-        className={classes.mainLogoGrid}
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
+        <Grid  className={classes.mainLogoGrid}
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
         >
-          <img src={mainImage} class='slideLeft'/>
+          <img src={mainImage} className='slideLeft'/>
         </Grid>
         <Container className={classes.mainContainer}>
           <Container className={classes.mainGridContainer}>
               <Grid 
-              container 
-              direction="row"
-              justify="space-evenly"
-              alignItems="center"
-              spacing={3}
+                container 
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+                spacing={3}
               >
                 <Grid item>
                 <MotivationCard handleOnClick={()=>scrollToRef(motivationRef)} />
@@ -112,27 +110,27 @@ export default function HomePage() {
         </Container>
         <Divider variant="middle" />
         <Container ref={motivationRef} className={classes.motivationContainer}>
-          <Typography className={classes.textTitle} variant="h4">
+          <Typography className={classes.textTitle} color="secondary" variant="h4">
               Who are we?
           </Typography>
-          <Typography className={classes.textContent} variant="h6">
+          <Typography className={classes.textContent} color="secondary" variant="h6">
             We are 3 friends (for most of the time, when we agree on semantic) doing our final IT project.<br/>
             Our goal is simple and honest, not only we want to provide an e-learning platform that can be useful in academic environment, professional interviews, or even for just a programming enthusiast who wants to learn more, but also we want to do it  in openly manner, so that it can be freely accessed, used, changed, and shared by everyone.
           </Typography>
           <Grid className={classes.businessGrid}
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={3}
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={3}
           >
             <Grid item>
               <BusinessCard
-              avatar={require('..\\..\\images\\avatar\\AndreOliveiraAvatar.jpg')}
-              name="André Oliveira"
-              email="alaqo@hotmail.com"
-              text="I just want to make mustaches great again."
-              href="https://www.linkedin.com/in/andré-oliveira-13078a85"
+                avatar={require('..\\..\\images\\avatar\\AndreOliveiraAvatar.jpg')}
+                name="André Oliveira"
+                email="alaqo@hotmail.com"
+                text="I just want to make mustaches great again."
+                href="https://www.linkedin.com/in/andré-oliveira-13078a85"
               />
             </Grid>
             <Grid item>
@@ -146,19 +144,19 @@ export default function HomePage() {
             </Grid>
             <Grid item>
               <BusinessCard
-              avatar={require('..\\..\\images\\avatar\\JoaoSantosAvatar.jpg')}
-              name="João Santos"
-              email="joao.silva.santos1988@gmail.com"
-              text="I'm the project leader, so i live to write documentation. I'm proficient in javadoc, cdock, kdoc. Well pretty much all docs. And LaTex"
-              href="https://www.linkedin.com/in/jo%C3%A3o-santos-0449a1b8/"
+                avatar={require('..\\..\\images\\avatar\\JoaoSantosAvatar.jpg')}
+                name="João Santos"
+                email="joao.silva.santos1988@gmail.com"
+                text="I'm the project leader, so i live to write documentation. I'm proficient in javadoc, cdock, kdoc. Well pretty much all docs. And LaTex"
+                href="https://www.linkedin.com/in/jo%C3%A3o-santos-0449a1b8/"
               />
             </Grid>
           </Grid>
         </Container>
         <Divider variant="middle" />
         <Container ref={challQuestRef} className={classes.challQuestContainer}>
-          <Typography className={classes.textTitle} variant="h4">
-              Challenges & Questionnaires
+          <Typography className={classes.textTitle} color="secondary" variant="h4">
+              {"Challenges & Questionnaires"}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={6} style={{textAlign:'right'}}>
@@ -171,12 +169,12 @@ export default function HomePage() {
             <Typography className={classes.textContent} variant="h6" component="p">
                 Create problems, solve them and challenge your peers!
             </Typography>
-            <Link style={{color:"#db9e07"}} component={RouterLink} to="/challenges">
-                View Challenges >
+            <Link component={RouterLink} to="/listChallenges">
+                {"View Challenges >"}
             </Link>
             </Grid>
             <Grid item xs={6}>
-              <img src={scriptIcon} width={150} height={150} class='pulse'/>
+              <img src={scriptIcon} width={150} height={150} className='pulse'/>
             </Grid>
           </Grid>
         </Container>
@@ -184,17 +182,17 @@ export default function HomePage() {
         <Container ref={langEnvRef} className={classes.langEnvContainer}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography className={classes.textTitle} variant="h4" style={{textAlign:'left'}}>
+              <Typography className={classes.textTitle} color="secondary" variant="h4" style={{textAlign:'left'}}>
                 We Speak 5 Languages
               </Typography>
-              <Typography className={classes.textContent}  variant="h6" style={{textAlign:'left'}}>
+              <Typography className={classes.textContent} variant="h6" style={{textAlign:'left'}}>
                 There's nothing more frustrating than opening an interview prep book, 
                 only to find a bunch of solutions in a programming language that you don't know. 
                 That is you can write your solutions in 5 popular languages!
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography className={classes.textTitle} variant="h4" style={{textAlign:'left'}}>
+              <Typography className={classes.textTitle} color="secondary" variant="h4" style={{textAlign:'left'}}>
                 Code Execution Environment
               </Typography>
               <Typography className={classes.textContent} variant="h6" style={{textAlign:'left'}}>
@@ -209,6 +207,7 @@ export default function HomePage() {
           </Grid>
         </Container>
       </Container>
+      <Footer />
     </div>
-  );
+  )
 }

@@ -1,6 +1,7 @@
 package pt.iselearning.services.domain
 
 import org.springframework.validation.annotation.Validated
+import pt.iselearning.services.util.SCHEMA
 import pt.iselearning.services.util.SupportedLanguages
 import javax.persistence.*
 import javax.validation.constraints.Pattern
@@ -11,7 +12,7 @@ import javax.validation.constraints.Positive
  */
 @Validated
 @Entity
-@Table(name="challenge_solution")
+@Table(name="challenge_solution", schema = SCHEMA)
 data class Solution (
     @Id
     @Column(name="challenge_solution_id")

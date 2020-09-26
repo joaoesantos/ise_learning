@@ -1,28 +1,33 @@
 // react
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from 'react'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 // material-ui components
-import AppBar from '@material-ui/core/AppBar';
-import Badge from '@material-ui/core/Badge';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar'
+import Brightness4Icon from '@material-ui/icons/Brightness4'
+import Brightness7Icon from '@material-ui/icons/Brightness7'
+import IconButton from '@material-ui/core/IconButton'
+import Link from '@material-ui/core/Link'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 // logo
-import logo from '../../images/ISELearning_logo_wht.png';
+import ISELearningLogo from '../../images/ISELearning_logo_wht.png'
+// authentication context
+import { themes, ThemeContext } from '../../context/ThemeContext'
+import { AuthContext } from '../../context/AuthContext'
+// utils
+import { fetchHeaders } from '../../utils/fetchUtils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
       marginLeft: theme.spacing(0),
     },
     appBar: {
-      position : 'static',
+      position : 'sticky',
       background : '#202020',
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
@@ -48,65 +53,81 @@ const useStyles = makeStyles(theme => ({
     },
 }));
   
-export default function Navbar(props) {
+export default function Navbar() {
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const classes = useStyles()
+  const { setTheme } = React.useContext(ThemeContext)
+  const { isAuthed, setAuth, setUser } = React.useContext(AuthContext)
+  const [checked, setChecked] = React.useState(true)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
 
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
+  let history = useHistory()
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleOnMenu = event => {
+    setAnchorEl(event.currentTarget)
+  }
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    props.setAuth(false);
-  };
+  const handleOnClose = () => {
+    setAnchorEl(null)
+  }
 
-  const classes = useStyles();
+  const toggleChecked = () => {
+    setChecked((prev) => !prev)
+    checked ? setTheme(themes.dark) : setTheme(themes.light)
+  }
+
+  const handleOnLogout = () => {
+    setAnchorEl(null)
+    setAuth(false)
+    setUser(undefined)
+    localStorage.removeItem('ISELearningLoggedUser')
+    fetchHeaders.clear()
+    history.push("/")
+  }
+
   return (
     <div className={classes.layout}>
       <AppBar className={classes.appBar}>
         <Toolbar variant="dense">
             <Link className={classes.link} component={RouterLink} to="/">
-              <img src={logo} height={40}/>
+              <img src={ISELearningLogo} alt='ISELearningLogo' height={40}/>
             </Link>
-          {props.isAuthed ? 
             <Typography className={classes.title}>
-              <Link className={classes.link} component={RouterLink} to="/challenges">
+              <Link className={classes.link} component={RouterLink} to="/runCode">
+                Run Code
+              </Link>
+              <Link className={classes.link} component={RouterLink} to="/listChallenges">
                 Challenges
               </Link>
-              <Link className={classes.link} component={RouterLink} to="/questionnaires">
-                Questionnaires
-              </Link>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
+              {isAuthed &&
+                <Link className={classes.link} component={RouterLink} to="/questionnaires">
+                  Questionnaires
+                </Link>
+              }
             </Typography>
-            :
-            <Typography className={classes.title}>
-              <Link className={classes.link} component={RouterLink} to="/runCode">
-                Run Code
-              </Link>
-            </Typography>}
-            {props.isAuthed ? 
-              <div>
-                <IconButton color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
+            <Tooltip title={checked ? "Switch to darkmode" : "Switch to lightmode"} >
               <IconButton
-                aria-controls="menu-user"
+                aria-controls="theme-button"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={toggleChecked}
                 color="inherit"
               >
-                <PowerSettingsNewIcon />
+                {checked ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
+            </Tooltip>
+            {isAuthed ? 
+            <>
+              <Tooltip title="User options">
+                <IconButton
+                  aria-controls="menu-user"
+                  aria-haspopup="true"
+                  onClick={handleOnMenu}
+                  color="inherit"
+                >
+                  <PowerSettingsNewIcon />
+                </IconButton>
+              </Tooltip>
               <Menu className={classes.menu}
                 id="menu-user"
                 getContentAnchorEl={null}
@@ -115,25 +136,24 @@ export default function Navbar(props) {
                 keepMounted
                 transformOrigin={{vertical:'top', horizontal:'center'}}
                 open={open}
-                onClose={handleClose}
+                onClose={handleOnClose}
               >
-                <MenuItem component={RouterLink} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={RouterLink} to="/" onClick={handleLogout}>Log out</MenuItem>
+                <MenuItem component={RouterLink} to="/profile" onClick={handleOnClose}>Profile</MenuItem>
+                <MenuItem onClick={handleOnLogout}>Log out</MenuItem>
               </Menu>
-            </div>
+            </>
             :
-            <div>
+            <>
               <Tooltip title="Login">
                 <IconButton color="inherit" component={RouterLink} to="/login">
                   <PowerSettingsNewIcon />
                 </IconButton>
               </Tooltip>
-            </div>
+            </>
           }
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }
-
 

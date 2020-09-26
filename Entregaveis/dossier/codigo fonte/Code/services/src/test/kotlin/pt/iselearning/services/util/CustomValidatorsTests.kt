@@ -7,7 +7,7 @@ class CustomValidatorsTests {
 
     @Test
     fun privacyRegexTest() {
-        val regex = CustomValidators.PRIVACY_REGEX_STRING.toRegex()
+        val regex = PRIVACY_REGEX_STRING.toRegex()
         Assert.isTrue(regex.matches("private"), "The private should match")
         Assert.isTrue(regex.matches("public"), "The public should match")
         Assert.isTrue(!regex.matches(""), "Empty string should not match")
@@ -15,7 +15,7 @@ class CustomValidatorsTests {
 
     @Test
     fun tagsRegexTest() {
-        val regex = CustomValidators.TAGS_REGEX_STRING.toRegex()
+        val regex = TAGS_REGEX_STRING.toRegex()
         Assert.isTrue(regex.matches("a"), "A single value with no commas should match")
         Assert.isTrue(regex.matches("b,b,b,b,b"), "Comma separated values should match")
         Assert.isTrue(!regex.matches(",c,c,c,c"), "Starting with a comma should not match")

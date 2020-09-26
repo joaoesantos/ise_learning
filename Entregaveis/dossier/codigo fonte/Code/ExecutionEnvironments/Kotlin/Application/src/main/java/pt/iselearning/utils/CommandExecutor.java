@@ -3,13 +3,19 @@ package pt.iselearning.utils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import pt.iselearning.exceptions.CommandExecutionTimeout;
 import pt.iselearning.models.ExecutionResult;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,29 +24,38 @@ import java.util.stream.Stream;
  * which allow to compile and execute koltin code.
  *
  */
-public class CommandExecutor {
+public class CommandExecutor implements AutoCloseable {
     private static final Logger LOGGER = LogManager.getLogger(CommandExecutor.class);
-    private static final Path CMD_OUTPUT_FILE = Paths.get(".", "CMD_Output.txt");
-    private static CommandExecutor instance;
+    private final Path CMD_OUTPUT_DIR = Paths.get(".", UUID.randomUUID().toString());
+    private final Path CMD_OUTPUT_FILE =CMD_OUTPUT_DIR.resolve("CMD_Output.txt");
 
     private ProcessBuilder processBuilder;
     private ShellType shellType;
+
+    private long timeout;
+
+    @Override
+    public void close() throws Exception {
+        if(CMD_OUTPUT_DIR.toFile().exists()) {
+            FileUtils.deleteDirectory(CMD_OUTPUT_DIR.toFile());
+        }
+    }
 
     private enum ShellType {
         BASH("bash", "-c", ":"), CMD("cmd.exe", "/c", ";");
 
         String exec;
         String c;
-        String classpathSeperator;
+        String classpathSeparator;
 
-        ShellType(String exec, String c, String classpathSeperator) {
+        ShellType(String exec, String c, String classpathSeparator) {
             this.exec = exec;
             this.c = c;
-            this.classpathSeperator = classpathSeperator;
+            this.classpathSeparator = classpathSeparator;
         }
     }
 
-    private CommandExecutor() throws IOException {
+    public CommandExecutor() throws IOException {
         if(SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC){
             LOGGER.debug("Linux or Mac environment detected.");
             this.shellType = ShellType.BASH;
@@ -53,14 +68,18 @@ public class CommandExecutor {
         }
         processBuilder = new ProcessBuilder();
         processBuilder.redirectErrorStream(true);
-        processBuilder.redirectOutput(CMD_OUTPUT_FILE.toFile());
-    }
-
-    public static CommandExecutor getInstance() throws IOException {
-        if(instance == null) {
-            instance = new CommandExecutor();
+        if(!CMD_OUTPUT_DIR.toFile().exists()) {
+            CMD_OUTPUT_DIR.toFile().mkdirs();
         }
-        return instance;
+        processBuilder.redirectOutput(CMD_OUTPUT_FILE.toFile());
+
+        Properties prop = new Properties();
+        String propFileName = "props.properties";
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);) {
+            prop.load(inputStream);
+            this.timeout = Long.parseLong(prop.getProperty("execution.timeout"));
+        }
     }
 
     public enum CodeType { TEST, CODE}
@@ -84,7 +103,7 @@ public class CommandExecutor {
         processBuilder.command(shellType.exec, shellType.c, commandText);
         Process process = processBuilder.start();
         int exitVal = process.waitFor();
-        return getExecutionResult(exitVal);
+        return getExecutionResult(exitVal, 0);
     }
 
     /**
@@ -98,7 +117,7 @@ public class CommandExecutor {
      * @throws IOException
      */
     public ExecutionResult executionCommand(CodeType type, Path[] classpath, String fullQualifiedClassNameToExecute)
-            throws InterruptedException, IOException {
+            throws InterruptedException, IOException, CommandExecutionTimeout {
         if(type.equals(CodeType.TEST)) {
             String executeTestCommandText = String.format("java -cp %s org.junit.runner.JUnitCore %s",
                     classpathPathArrayToString(classpath), fullQualifiedClassNameToExecute);
@@ -110,25 +129,37 @@ public class CommandExecutor {
             LOGGER.info(String.format("Execute execute code command %s", executeCodeCommandText));
             processBuilder.command(shellType.exec, shellType.c, executeCodeCommandText);
         }
+        long start = System.currentTimeMillis();
         Process process = processBuilder.start();
-        int exitVal = process.waitFor();
-        return getExecutionResult(exitVal);
+        boolean wasTimeout = !process.waitFor(this.timeout, TimeUnit.SECONDS);
+        long end = System.currentTimeMillis();
+        if(wasTimeout) {
+            throw new CommandExecutionTimeout(
+                    "TimeoutExpire",
+                    "TimeoutExpired",
+                    String.format("The command execution timed out, took more than %d seconds", this.timeout),
+                    "/execute/kotlin/timeout"
+            );
+        }
+        int exitVal = process.exitValue();
+        return getExecutionResult(exitVal, end-start);
     }
 
     /**
      * Auxiliary method to get Execution result depending of value returned from shell.
      *
      * @param exitVal
+     * @param duration
      * @return
      * @throws IOException
      */
-    public ExecutionResult getExecutionResult(int exitVal) throws IOException {
+    public ExecutionResult getExecutionResult(int exitVal, long duration) throws IOException {
         if (exitVal == 0) {
             LOGGER.info("Command executed successfuly.");
-            return new ExecutionResult(getDataFromCmdResultFile(), false);
+            return new ExecutionResult(getDataFromCmdResultFile(), false, duration);
         } else {
             LOGGER.error("Command executed with error.");
-            return new ExecutionResult(getDataFromCmdResultFile(), true);
+            return new ExecutionResult(getDataFromCmdResultFile(), true, duration);
         }
     }
 
@@ -138,7 +169,7 @@ public class CommandExecutor {
      * @return
      * @throws IOException
      */
-    private static String getDataFromCmdResultFile() throws IOException {
+    private String getDataFromCmdResultFile() throws IOException {
         try(Stream<String> lines = Files.lines(CMD_OUTPUT_FILE)) {
             String data = lines.collect(Collectors.joining(System.lineSeparator()));
             return data;
@@ -155,7 +186,7 @@ public class CommandExecutor {
         String classpath = "";
         if(paths.length > 0) {
             classpath = Arrays.stream(paths).map(cp -> cp.toAbsolutePath().toString())
-                    .collect(Collectors.joining(shellType.classpathSeperator));
+                    .collect(Collectors.joining(shellType.classpathSeparator));
         }
         return classpath;
     }

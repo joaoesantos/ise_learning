@@ -1,0 +1,12 @@
+Dockerfile
+Application.iml
+build.gradle.kts
+gradlew
+gradlew.bat
+settings.gradle.kts
+.dockerignore
+build/
+out/
+gradle/
+.gradle/
+.idea/

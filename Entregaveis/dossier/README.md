@@ -9,6 +9,7 @@ O dossier deste projeto está distribuído em 5 pastas: **entregas**; **esquemas
     - relatório de progresso (rpG43.pdf); 
     - cartaz beta (cartazG43.pdf); 
     - relatório beta (rbG43.pdf);
+    - relatório final (rfG43.pdf);
 * **esquemas** - Esquemas relevantes no contexto do projeto, todos os esquemas também se encontram presentes no relatório mais recente quer no texto, quer nos anexos deste;
 * **planeamento** - Planeamento original presente na proposta de projeto, alterações e desvios deste plano são detalhados quer no relatório de progresso, quer no relatório beta;
 * **documentação tecnica** - Cópia do ficheiro de markdown presente na Wiki do repositório do projeto. Este ficheiro além de conter alguns detalhes técnicos é um manual de utilização da solução para que outros developer consigam executar este projeto com maior facilidade sabendo os passos que têm de ser seguidos e as configurações necessárias;
