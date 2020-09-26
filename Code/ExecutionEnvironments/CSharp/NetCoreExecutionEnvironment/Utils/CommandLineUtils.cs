@@ -46,7 +46,7 @@ namespace NetCoreExecutionEnvironment.Utils
 
                     bool wasError = np.ExitCode != 0;
 
-                    return new ExecutableResult(wasError ? errorText : result, wasError, stopwatch.ElapsedMilliseconds);
+                    return new ExecutableResult(wasError ? result + Environment.NewLine + errorText : result, wasError, stopwatch.ElapsedMilliseconds);
                 }
             }
             catch (Exception e)
