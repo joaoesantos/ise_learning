@@ -18,7 +18,7 @@ class ExecutionHandler:
             start_time = time()
             completedProcess = run(['python', script],stdout=PIPE,stderr=PIPE,timeout=timeout)
             end_time = time()
-            return completedProcess, end_time - start_time
+            return completedProcess, (end_time - start_time) * 1000
         except Exception as e:
             raise    
 

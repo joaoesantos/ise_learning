@@ -27,11 +27,6 @@ export let fetchHeaders = {
         return this.headers
     },
 
-    append: function({ key, value }) {
-        if(!this.headers) { this.get() }
-        this.headers.append(`${key}`,`${value}`)
-    },
-
     clear: function() {
         this.headers = undefined
     }
@@ -50,7 +45,6 @@ export const handleFetchResponse = async (response, message) => {
             json = await response.json()
         }
     }
-
     if(response.ok) {
         return {
           json: json,

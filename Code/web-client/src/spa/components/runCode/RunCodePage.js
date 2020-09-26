@@ -80,6 +80,8 @@ export default function RunCodePage() {
     } else if(actionState === ActionStates.done && response.severity === "success")  {
       response.json.wasError ? setRunState('error') : setRunState('finished')
       setTextArea({ ...textArea, value: response.json, toUpdate: true });
+    } else {
+      setRunState('notRunning')
     }
   },[actionState]);
 

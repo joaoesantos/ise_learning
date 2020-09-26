@@ -250,7 +250,6 @@ export default function QuestionnairePage() {
     const handleSaveAnswer = () => {
         let clone = deepCopy(questionnaire)
         clone.challenges[activeStep] = activeChallenge
-        console.log("clone",clone)
         setQuestionnaire(clone)
 
         const newCompleted = new Set(completed)
@@ -397,7 +396,7 @@ export default function QuestionnairePage() {
                                             color="primary"
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />}
-                                        label="Run unit tests?"
+                                        label="Run unit tests"
                                     />
 
                                 </Grid>

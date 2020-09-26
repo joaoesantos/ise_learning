@@ -1,6 +1,6 @@
 // react
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useHistory } from 'react-router-dom'
 // material-ui components
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -25,9 +25,6 @@ import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { UserController } from '../../controllers/UserController'
 // authentication context
 import { AuthContext } from '../../context/AuthContext'
-// utils
-import { fetchHeaders } from '../../utils/fetchUtils'
-import history from '../../components/navigation/history'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,20 +40,6 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
     marginTop: theme.spacing(3),
-  //   '& label.Mui-focused': {
-  //     color: '#be5041',
-  //   },
-  //   '& .MuiOutlinedInput-root': {
-  //     '& fieldset': {
-  //       borderColor: 'gray',
-  //     },
-  //     '&:hover fieldset': {
-  //       borderColor: 'black',
-  //     },
-  //     '&.Mui-focused fieldset': {
-  //       borderColor: '#e68d4c',
-  //     },
-  //   },
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -73,6 +56,8 @@ export default function SignUp() {
     username: '',
     password: ''
   })
+
+  let history = useHistory()
 
   React.useEffect(() => {
     if (actionState === ActionStates.done) {
@@ -99,10 +84,9 @@ export default function SignUp() {
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     let credentials = btoa(`${state.username}:${state.password}`)
-    fetchHeaders.append({ key: "Authorization", value: `Basic ${credentials}` })
     setAction({
         function: UserController.logMein,
-        args: [],
+        args: [`Basic ${credentials}`],
         authorization:  `Basic ${credentials}`
       })
   }

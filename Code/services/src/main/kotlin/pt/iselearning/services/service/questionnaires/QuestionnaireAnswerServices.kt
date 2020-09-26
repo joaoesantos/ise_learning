@@ -76,10 +76,6 @@ class QuestionnaireAnswerServices(
         val questionnaireAnswerParent = checkIfQuestionnaireInstanceExists(questionnaireInstanceRepository,questionnaireAnswerInputModel.questionnaireInstanceId)
         checkQuestionnaireInstanceTimeout(questionnaireAnswerParent, questionnaireInstanceRepository)
 
-        //TODO tenho quase a certeza que isto vai partir, se um gajo fizer submit 2 x ou mais,
-        //TODO porque agora já não ha restrições na BD
-        //TODO talvez apaagr todas as answwers que existam se existirem antes de fazer submit?
-
         val questionnaireAnswers = questionnaireAnswerInputModel
                 .challenges?.map { challenge ->
 

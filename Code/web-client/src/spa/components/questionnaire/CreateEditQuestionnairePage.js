@@ -1,6 +1,6 @@
 // react
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 // material-ui components
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
@@ -13,7 +13,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
 // other components
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 // notifications
 import CircularProgress from '../notifications/CircularProgress'
@@ -22,8 +22,6 @@ import DefaultErrorMessage from '../notifications/DefaultErrorMessage'
 // controllers
 import UseAction, { ActionStates } from '../../controllers/UseAction'
 import { QuestionnaireController } from '../../controllers/questionnaire/QuestionnaireController'
-// utils
-import history from '../../components/navigation/history'
 
 const useStyles = makeStyles(theme => ({
     layout: {},
@@ -119,10 +117,12 @@ export default function CreateEditQuestionnairePage(props) {
 
     const { questionnaireId } = useParams()
 
-    const [editable, setEditable] = React.useState(questionnaireId === 'undefined')
+    const [editable, setEditable] = React.useState(questionnaireId === undefined)
     const [questionnaire, setQuestionnaire] = React.useState()
     const [savedQuestionnaire, setSavedQuestionnaire] = React.useState(questionnaire)
     const [challengesData, setChallengesData] = React.useState()
+
+    let history = useHistory()
 
     React.useEffect(() => {
         if (response === undefined && actionState === ActionStates.clear) {
@@ -135,6 +135,9 @@ export default function CreateEditQuestionnairePage(props) {
             setQuestionnaire(response.questionnaire)
             setSavedQuestionnaire(response.questionnaire)
             setChallengesData(response.challenges)
+            if(response.redirect) {
+                history.push(`/editQuestionnaire/${response.questionnaire.id}`)
+            }
         } else if (actionState === ActionStates.done && action.render && action.render === true && response.severity === "error") {
             handleCancel()
             toggleEdit()
@@ -143,7 +146,7 @@ export default function CreateEditQuestionnairePage(props) {
         }
     }, [actionState]);
 
-    const isChallengeSelected = (id) => (typeof questionnaire.selectedChallenges.find(element => element.id === id) !== 'undefined');
+    const isChallengeSelected = (id) => (typeof questionnaire.selectedChallenges.find(element => element.id === id) !== "undefined");
 
     const toggleEdit = async function () {
         setEditable((prev) => {

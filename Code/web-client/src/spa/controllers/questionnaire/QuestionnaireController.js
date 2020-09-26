@@ -40,7 +40,7 @@ export const QuestionnaireController = {
       title: '',
       selectedChallenges: []
     }
-    if(questionnaireId !== "undefined") {
+    if(questionnaireId !== undefined) {
       response = await fetch(questionnaires_url, options)
       let handledResponse = await handleFetchResponse(response)
       if(handledResponse.severity === "error") {
@@ -86,13 +86,16 @@ export const QuestionnaireController = {
       body: JSON.stringify(body)
     }
     let message = ""
+    let redirect = false
     if(questionnaire.id) {
       options.method = HttpMethods.put
       message = "Questionnaire updated successfully!"
+      redirect = false
     } else {
       url = apiUrlTemplates.createQuestionnaire()
       options.method = HttpMethods.post
       message = "Questionnaire created successfully!"
+      redirect = true
     }
     let response = await fetch(url, options)
     let handledResponse = await handleFetchResponse(response)
@@ -101,6 +104,7 @@ export const QuestionnaireController = {
     } else {
       let secondResponse = await QuestionnaireController.getQuestionnaire(handledResponse.json.questionnaireId)
       secondResponse.message = message
+      secondResponse.redirect = redirect
       return secondResponse
     }
   },

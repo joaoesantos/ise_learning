@@ -3,12 +3,13 @@ import { HttpMethods, fetchHeaders, handleFetchResponse } from '../utils/fetchUt
 
 export const UserController = {
 
-  logMein: async () => {
+  logMein: async (authorizationHeader) => {
     let url = apiUrlTemplates.login()
     let options = {
       method: HttpMethods.post,
       headers: fetchHeaders.get(),
     }
+    options.headers.append("Authorization", authorizationHeader)
     let response = await fetch(url, options)
     return handleFetchResponse(response, "Welcome back!")
   },

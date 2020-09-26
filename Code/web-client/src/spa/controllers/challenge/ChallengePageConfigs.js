@@ -8,10 +8,8 @@ import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     // BUTTONS - init
-    if(!user){
-        console.log(localStorage.getItem('ISELearningLoggedUser'))
-        user = JSON.parse(localStorage.getItem('ISELearningLoggedUser'))
-    }
+    if(!user){ user = JSON.parse(localStorage.getItem('ISELearningLoggedUser')) }
+
     let createChallenge = {
         id: "createChallenge",
         onClick: () => {
@@ -99,12 +97,6 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                               severity: 'error'
                             }
                         }
-                        let cenas = componentAggregateStates.challengeAnswers.state.map(ca => {
-                            if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
-                                return newChallengeAnswer.json;
-                            }
-                            return ca;
-                        })
                         return {
                             json: {
                                 languages: componentAggregateStates.challengeLanguages.state,
@@ -115,7 +107,9 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                                     }
                                     return ca;
                                 })
-                            }
+                            },
+                            message: newChallengeAnswer.message,
+                            severity: newChallengeAnswer.severity
                         };
                     },
                     args: [matchingChallengeAnswer.challengeAnswerId, challengeAnswerModel],
@@ -126,22 +120,17 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                     function: async (arg) => {
                         let newChallengeAnswer = await ChallengeAnswerController.createChallengeAnswer(arg);
                         if(newChallengeAnswer.severity && newChallengeAnswer.severity === 'error') {
-                            return {
-                              message: newChallengeAnswer.message,
-                              severity: 'error'
-                            }
+                            return newChallengeAnswer
                         }
+                        componentAggregateStates.challengeAnswers.state.push(newChallengeAnswer.json)
                         return {
                             json: {
                                 languages: componentAggregateStates.challengeLanguages.state,
                                 challenge: componentAggregateStates.challenge.state,
-                                challengeAnswers: componentAggregateStates.challengeAnswers.state.map(ca => {
-                                    if(ca.answer.codeLanguage === newChallengeAnswer.json.answer.codeLanguage) {
-                                        return newChallengeAnswer.json;
-                                    }
-                                    return ca;
-                                })
-                            }
+                                challengeAnswers: componentAggregateStates.challengeAnswers.state
+                            },
+                            message: newChallengeAnswer.message,
+                            severity: newChallengeAnswer.severity
                         };
                     },
                     args: [challengeAnswerModel],
@@ -165,7 +154,7 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
                         }
                     }
                     componentAggregateStates.redirectObject.setter({
-                            pathname: `/listChallenges`
+                            pathname: `listChallenges`
                     })
                     return newChallengeAnswer;
                 },
