@@ -46,8 +46,8 @@ value:`print("Hello World!")`
 export const defaultUnitTests = {
     java: "import org.junit.Assert;\r\nimport org.junit.Test;\r\npublic class unitTests {\r\n\t@Test public void TestCase() {\r\n\t\tAssert.assertTrue(true);\r\n\t}\r\n}",
     kotlin: "import org.junit.Assert \r\nimport org.junit.Test \r\nclass UnitTests {\r\n\t@Test fun foo() {\r\n\t\tAssert.assertTrue(true)\r\n\t}\r\n}",
-    javascript: "should contain default test code for javascript",
-    csharp: "should contain default test code for C#",
+    javascript: "var assert = require('assert');describe('Teste1', function() {describe('#firstTest()', function() {it('should return return true', function() {assert(true);});});});",
+    csharp: "using Xunit;\r\n  public class TestCases\r\n   { \r\n [Fact] \r\n  public void testFoo() \r\n  { \r\n  Assert.False(false); \r\n  }\r\n   }",
     python: "import unittest\r\n\r\ndef foo():\r\n    return  True\r\n\r\nclass TestChallenge(unittest.TestCase):\r\n    def test(self):\r\n        self.assertTrue(foo())\r\n\r\nif __name__ == '__main__':\r\n    unittest.main()"
 }
 
