@@ -17,10 +17,10 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
             challengeModel.creatorId = user.userId
             challengeModel.solutions = componentAggregateStates.challengeLanguages.state.map(l => {
                 return {
-                    challengeCode: componentAggregateStates.yourSolution.state[l.value] ? componentAggregateStates.yourSolution.state[l.value].value : "",
+                    challengeCode: componentAggregateStates.yourSolution.state[l.value] ? componentAggregateStates.yourSolution.state[l.value].value.replace("↵", "\n") : "",
                     codeLanguage: l.value,
-                    solutionCode: componentAggregateStates.ourSolution.state[l.value] ? componentAggregateStates.ourSolution.state[l.value].value : "",
-                    unitTests: componentAggregateStates.ourTests.state[l.value] ? componentAggregateStates.ourTests.state[l.value].value : ""
+                    solutionCode: componentAggregateStates.ourSolution.state[l.value] ? componentAggregateStates.ourSolution.state[l.value].value.replace("↵", "\n") : "",
+                    unitTests: componentAggregateStates.ourTests.state[l.value] ? componentAggregateStates.ourTests.state[l.value].value.replace("↵", "\n") : ""
                 }
             });
             componentAggregateStates.action.setter({
@@ -83,8 +83,10 @@ export const ChallengePageConfigs = (challengeId, componentAggregateStates, user
             challengeAnswerModel.challengeId = Number(challengeId);
             challengeAnswerModel.answer = {
                 codeLanguage: componentAggregateStates.codeLanguage.state,
-                answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value,
-                unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value
+                answerCode: componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state] ? 
+                    componentAggregateStates.yourSolution.state[componentAggregateStates.codeLanguage.state].value : "",
+                unitTests: componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state] ? 
+                    componentAggregateStates.yourTests.state[componentAggregateStates.codeLanguage.state].value : ""
             }
             let matchingChallengeAnswer = componentAggregateStates.challengeAnswers.state.find(ca => ca.answer.codeLanguage === componentAggregateStates.codeLanguage.state);
             if(matchingChallengeAnswer) {
