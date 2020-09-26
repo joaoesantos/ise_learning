@@ -34,7 +34,7 @@ public class Executor implements AutoCloseable {
     public Executor(String code, String testCode) throws MissingClassException, IOException {
         this.code = code;
         if(testCode != null) {
-            this.testCode = CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
+            this.testCode = testCode;
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
                 throw new MissingClassException(
