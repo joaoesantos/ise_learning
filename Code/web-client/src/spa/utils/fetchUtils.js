@@ -20,7 +20,7 @@ export let fetchHeaders = {
             headers.append("Accept", "application/problem+json,application/json")
             let userString = localStorage.getItem('ISELearningLoggedUser')
             if(userString) {
-                headers.append("Authorization" , JSON.parse(userString).authorization);
+                headers.set("Authorization" , JSON.parse(userString).authorization);
             }
             this.headers = headers
         }

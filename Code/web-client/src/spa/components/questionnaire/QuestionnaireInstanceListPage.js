@@ -125,7 +125,6 @@ export default function QuestionnaireinstanceListPage(props) {
                                     }),
                                     onRowUpdate: (newData, oldData) =>
                                     new Promise((resolve) => {
-                                        console.log(newData)
                                         setAction({
                                             function: QuestionnaireInstanceController.updateQuestionnaireInstance,
                                                 args: [{
