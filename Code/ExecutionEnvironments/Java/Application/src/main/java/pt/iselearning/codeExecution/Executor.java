@@ -33,7 +33,7 @@ public class Executor implements AutoCloseable {
     private final Path CODE_OUTPUT = Paths.get(".", "codeOutput", UUID.randomUUID().toString());
 
     public Executor(String code, String testCode) throws MissingClassException, IOException {
-        this.code = String.format("package %s;", PACKAGE_NAME) + CodeParser.removeEndLinesAndDuplicateSpaces(code);
+        this.code = String.format("package %s;", PACKAGE_NAME) + code;
         this.codeClassName = CodeParser.extractClassName(this.code);
         if(this.codeClassName == null) {
             throw new MissingClassException(
@@ -44,7 +44,7 @@ public class Executor implements AutoCloseable {
             );
         }
         if(testCode != null) {
-            this.testCode = String.format("package %s; import %s.%s;",PACKAGE_NAME, PACKAGE_NAME, codeClassName) + CodeParser.removeEndLinesAndDuplicateSpaces(testCode);
+            this.testCode = String.format("package %s; import %s.%s;",PACKAGE_NAME, PACKAGE_NAME, codeClassName) + testCode;
             this.testClassName = CodeParser.extractClassName(this.testCode);
             if(this.testClassName == null) {
                 throw new MissingClassException(
