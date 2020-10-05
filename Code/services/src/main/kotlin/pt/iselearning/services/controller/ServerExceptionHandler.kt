@@ -38,6 +38,8 @@ class ServerExceptionHandler(
             request: HttpServletRequest,
             ex: ServiceException
     ) : ResponseEntity<Any> {
+        println(ex.message)
+        println(ex.stackTrace)
         return createResponseEntity(
                 ServerError(
                         request.requestURL.toString(),
@@ -70,6 +72,8 @@ class ServerExceptionHandler(
                         ))
             }
         }
+        println(ex.message)
+        println(ex.stackTrace)
         return createResponseEntity(
                 ServerError(
                         request.requestURL.toString(),
@@ -92,6 +96,8 @@ class ServerExceptionHandler(
             request: HttpServletRequest,
             ex: ExecutionEnvironmentException
     ): ResponseEntity<Any> {
+        println(ex.message)
+        println(ex.stackTrace)
         return createResponseEntity(
                 ServerError(
                         ex.type,
@@ -112,6 +118,8 @@ class ServerExceptionHandler(
             request: HttpServletRequest,
             ex: DataIntegrityViolationException
     ): ResponseEntity<Any> {
+        println(ex.message)
+        println(ex.stackTrace)
         return createResponseEntity(
                 ServerError(
                         request.requestURL.toString(),
@@ -132,6 +140,8 @@ class ServerExceptionHandler(
             request: HttpServletRequest,
             ex: Exception
     ): ResponseEntity<Any> {
+        println(ex.message)
+        println(ex.stackTrace)
         return createResponseEntity(
                 ServerError(
                         request.requestURL.toString(),
