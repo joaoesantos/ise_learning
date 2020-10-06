@@ -25,7 +25,8 @@ class AuthenticationFilter(private val authenticationService: AuthenticationServ
             "${CHALLENGE_PATTERN}/questionnaires/**" to AuthenticationFilter::shouldNotFilterChallengeRequest,
             "${CHALLENGE_PATTERN}/random" to AuthenticationFilter::shouldNotFilterChallengeRequest,
             "${QUESTIONNAIRE_INSTANCE_PATTERN}/solve/**" to AuthenticationFilter::shouldNotFilterGenericPattern,
-            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
+            QUESTIONNAIRE_ANSWER_PATTERN to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest,
+            "$QUESTIONNAIRE_ANSWER_PATTERN/**" to AuthenticationFilter::shouldNotFilterQuestionnaireAnswerRequest
     )
 
     private val optionalAuthenticationPaths: HashMap<String, HashSet<HttpMethod>> = hashMapOf(
