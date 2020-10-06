@@ -8,7 +8,10 @@ import { reduceObjectArrayToMap } from '../../utils/utils'
 
 export const ChallengePageConfigs = (challengeId, componentAggregateStates, user) => {
     // BUTTONS - init
-    if(!user){ user = JSON.parse(localStorage.getItem('ISELearningLoggedUser')) }
+    if(!user){
+        let ls = localStorage.getItem('ISELearningLoggedUser')
+        user = ls !== null ? JSON.parse(ls) : undefined
+    }
 
     let createChallenge = {
         id: "createChallenge",

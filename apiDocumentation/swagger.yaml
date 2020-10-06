@@ -124,10 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/user'
     post:
       tags:
         - Users
@@ -169,10 +166,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/user'
     delete:
       tags:
         - Users
@@ -228,13 +222,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: array
-                    description: List of challenges.
-                    items:
-                      $ref: '#/components/schemas/challenge'
+                type: array
+                description: List of challenges.
+                items:
+                  $ref: '#/components/schemas/challenge'
     post:
       tags:
         - Challenges
@@ -255,10 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challenge'
+                $ref: '#/components/schemas/challenge'
   '/v0/challenges/{challengeId}':
     get:
       tags:
@@ -280,11 +268,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: object
-                    $ref: '#/components/schemas/challenge'
+                $ref: '#/components/schemas/challenge'
     put:
       tags:
         - Challenges
@@ -312,10 +296,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challenge'
+                $ref: '#/components/schemas/challenge'
     delete:
       tags:
         - Challenges
@@ -377,13 +358,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: array
-                    description: List of challenges from a given user.
-                    items:
-                      $ref: '#/components/schemas/challenge'
+                type: array
+                description: List of challenges from a given user.
+                items:
+                  $ref: '#/components/schemas/challenge'
   '/v0/challenges/questionnaires/{questionnaireId}':
     get:
       tags:
@@ -405,10 +383,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challenge'
+                type: array
+                description: List of challenges from a given questionnaire.
+                items:
+                  $ref: '#/components/schemas/challenge'
   '/v0/challenges/{challengeId}/answers/{userId}':
     get:
       tags:
@@ -436,10 +414,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challengeAnswer'
+                $ref: '#/components/schemas/challengeAnswer'
   '/v0/challengeAnswers':
     post:
       tags:
@@ -461,10 +436,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challengeAnswer'
+                $ref: '#/components/schemas/challengeAnswer'
   '/v0/challengeAnswers/{challengeAnswerId}':
     put:
       tags:
@@ -493,10 +465,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challengeAnswer'
+                $ref: '#/components/schemas/challengeAnswer'
     delete:
       tags:
         - Challenge Answer
@@ -539,13 +508,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: array
-                    description: List of challenges.
-                    items:
-                      $ref: '#/components/schemas/challengeTag'
+                type: array
+                description: List of challenges.
+                items:
+                  $ref: '#/components/schemas/challengeTag'
     post:
       tags:
         - Challenge Tags
@@ -573,10 +539,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/challengeTag'
+                $ref: '#/components/schemas/challengeTag'
   '/v0/challenges/{challengeId}/tags/{tagId}':
     get:
       tags:
@@ -605,13 +568,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: object
-                    description: Challenge tag.
-                    items:
-                      $ref: '#/components/schemas/challengeTag'
+                $ref: '#/components/schemas/challengeTag'
     delete:
       tags:
         - Challenge Tags
@@ -654,13 +611,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    type: array
-                    description: Tag list.
-                    items:
-                      $ref: '#/components/schemas/tag'
+                type: array
+                description: Tag list.
+                items:
+                  $ref: '#/components/schemas/tag'
                       
 ##################################
 #         QUESTIONNAIRES         #
@@ -686,10 +640,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaire'
+                $ref: '#/components/schemas/questionnaire'
   '/v0/questionnaires/withChallenges':
     post:
       tags:
@@ -711,10 +662,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaire'
+                $ref: '#/components/schemas/questionnaire'
   '/v0/questionnaires/{questionnaireId}':
     get:
       tags:
@@ -736,10 +684,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaire'
+                $ref: '#/components/schemas/questionnaire'
     put:
       tags:
         - Questionnaires
@@ -767,10 +712,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaire'
+                $ref: '#/components/schemas/questionnaire'
     delete:
       tags:
         - Questionnaires
@@ -813,10 +755,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaire'
+                type: array
+                description: List all questionnaire instances from a given questionnaire
+                items:
+                  $ref: '#/components/schemas/questionnaire'
   '/v0/questionnaireInstances':
     post:
       tags:
@@ -838,10 +780,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireInstance'
+                $ref: '#/components/schemas/questionnaireInstance'
   '/v0/questionnaireInstances/{questionnaireInstanceId}':
     get:
       tags:
@@ -863,10 +802,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireInstance'
+                $ref: '#/components/schemas/questionnaireInstance'
     put:
       tags:
         - Questionnaire Instances
@@ -894,10 +830,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireInstance'
+                $ref: '#/components/schemas/questionnaireInstance'
     delete:
       tags:
         - Questionnaire Instances
@@ -940,10 +873,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireInstance'
+                $ref: '#/components/schemas/questionnaireInstance'
   '/v0/questionnaireInstances/questionnaires/{questionnaireId}':
     get:
       tags:
@@ -965,10 +895,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireInstance'
+                type: array
+                description: List all questionnaire instances froma questionnaire
+                items:
+                  $ref: '#/components/schemas/questionnaireInstance'
   '/v0/questionnaireAnswer':
     post:
       tags:
@@ -990,10 +920,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireAnswer'
+                $ref: '#/components/schemas/questionnaireAnswer'
   '/v0/questionnaireAnswer/{questionnaireAnswerId}':
     get:
       tags:
@@ -1015,10 +942,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireAnswer'
+                $ref: '#/components/schemas/questionnaireAnswer'
     put:
       tags:
         - Questionnaire Answers
@@ -1046,10 +970,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireAnswer'
+                $ref: '#/components/schemas/questionnaireAnswer'
     delete:
       tags:
         - Questionnaire Answers
@@ -1092,10 +1013,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireAnswer'
+                type: array
+                description: List all questinnaire answers from a given questionnaire instance
+                items:
+                  $ref: '#/components/schemas/questionnaireAnswer'
   '/v0/questionnaireChallenges':
     post:
       tags:
@@ -1117,10 +1038,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireChallenge'
+                $ref: '#/components/schemas/questionnaireChallenge'
     put:
       tags:
         - Questionnaire-Challenges
@@ -1141,15 +1059,12 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireChallenge'
+                $ref: '#/components/schemas/questionnaireChallenge'
   '/v0/questionnaireChallenges/{questionnaireId}/{challengeId}':
     get:
       tags:
         - Questionnaire-Challenges
-      summary: Retrieves all questionnaire answers from a questionnaire instance
+      summary: Retrieves specific questionnaire-challenge relationship from a given questionnaire and challenge
       operationId: getQuestionnaireChallengeByChallengeIdAndQuestionnaireId
       description: |
         Retrieves a questionnaire-challenge by the unique combination of a questionnaire and a challenge uniques identifers.
@@ -1172,10 +1087,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  payload:
-                    $ref: '#/components/schemas/questionnaireChallenge'
+                $ref: '#/components/schemas/questionnaireChallenge'
   '/v0/questionnaireChallenges/{questionnaireId}':
     delete:
       tags:
