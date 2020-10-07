@@ -165,7 +165,7 @@ export default function QuestionnaireAnswerPage(props) {
                         </Grid>
 
                         <Grid item xs={7} style={{ paddingTop: 20 }}>
-                            <RunCodeTextEditor theme={theme} readOnly={true} value={textEditorArea} setTextEditorData={setTextEditorArea} codeLanguage={challenge.codeLanguage} />
+                            <RunCodeTextEditor theme={theme} readOnly={true} textEditorData={textEditorArea} setTextEditorData={setTextEditorArea} codeLanguage={challenge.codeLanguage} />
                         </Grid>
                         <Grid item xs={5} style={{ paddingTop: 20 }}>
                             <FormLabel component="legend">Passed Challenge?</FormLabel>
