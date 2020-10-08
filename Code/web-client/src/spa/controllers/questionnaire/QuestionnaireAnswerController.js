@@ -28,7 +28,9 @@ export const QuestionnaireAnswerController = {
             return handledResponse
         } else {
             let challenges = handledResponse.json.map(el => el.answer)
+            let descriptions = handledResponse.json.map(el => el.description)
             handledResponse.json.challenges = challenges
+            handledResponse.json.descriptions = descriptions
             return handledResponse
         }
     },

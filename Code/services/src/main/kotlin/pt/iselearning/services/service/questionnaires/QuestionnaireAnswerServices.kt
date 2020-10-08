@@ -13,6 +13,8 @@ import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuesti
 import pt.iselearning.services.exception.ServiceException
 import pt.iselearning.services.exception.error.ErrorCode
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireAnswerOutputModel
+import pt.iselearning.services.repository.challenge.ChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireAnswerRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireChallengeRepository
 import pt.iselearning.services.repository.questionnaire.QuestionnaireInstanceQuestionnaireViewRepository
@@ -143,8 +145,15 @@ class QuestionnaireAnswerServices(
      * @return List of questionnaire answer objects
      */
     @Validated
-    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int): List<QuestionnaireAnswer> {
-        return questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
+    fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(@Positive questionnaireInstanceId: Int): List<QuestionnaireAnswerOutputModel> {
+        val questionnaireAnswers = questionnaireAnswerRepository.findAllByQuestionnaireInstanceId(questionnaireInstanceId)
+        val qcIds = questionnaireAnswers.map { it.qcId }
+        val questionnaireChallenges = questionnaireChallengeRepository.findAllById(qcIds);
+
+        return questionnaireAnswers.map { questionnaireAnswer ->
+            val challenge = questionnaireChallenges.find { it.qcId == questionnaireAnswer.qcId }?.challenge
+            QuestionnaireAnswerOutputModel(challenge?.challengeText!!, questionnaireAnswer.answer!!)
+        }
     }
 
     /**

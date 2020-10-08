@@ -141,9 +141,8 @@ export default function QuestionnaireAnswerPage(props) {
                                         size='medium'
                                         multiline
                                         id="challenge-description"
-                                        defaultValue={challenge.description}
                                         variant='outlined'
-                                        InputProps={{ readOnly: true, }} 
+                                        InputProps={{ readOnly: true, value: questionnaireAnswer.descriptions[step]}} 
                                     />
                                 </Grid>
                                 <Grid item xs={1}>

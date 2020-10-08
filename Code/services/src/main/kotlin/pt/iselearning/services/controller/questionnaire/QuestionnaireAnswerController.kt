@@ -9,6 +9,7 @@ import pt.iselearning.services.domain.User
 import pt.iselearning.services.domain.questionnaires.QuestionnaireAnswer
 import pt.iselearning.services.domain.questionnaires.QuestionnaireInstanceQuestionnaireView
 import pt.iselearning.services.models.questionnaire.QuestionnaireAnswerModel
+import pt.iselearning.services.models.questionnaire.output.QuestionnaireAnswerOutputModel
 import pt.iselearning.services.service.questionnaires.QuestionnaireAnswerServices
 import pt.iselearning.services.util.QUESTIONNAIRE_ANSWER_PATTERN
 
@@ -80,7 +81,7 @@ class QuestionnaireAnswerController(
     @GetMapping("/questionnaireInstances/{questionnaireInstanceId}", name = "getAllQuestionnaireAnswersFromQuestionnaireInstanceId")
     fun getAllQuestionnaireAnswersFromQuestionnaireInstanceId(
             @PathVariable questionnaireInstanceId: Int
-    ): ResponseEntity<List<QuestionnaireAnswer>> {
+    ): ResponseEntity<List<QuestionnaireAnswerOutputModel>> {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(questionnaireAnswerServices.getAllQuestionnaireAnswersFromQuestionnaireInstanceId(questionnaireInstanceId))
     }
